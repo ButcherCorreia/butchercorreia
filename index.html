@@ -39,6 +39,7 @@
       text-decoration: none;
       margin-bottom: 1rem;
       font-size: 1.1rem;
+      cursor: pointer;
     }
 
     .nav-links a:hover {
@@ -53,21 +54,19 @@
       overflow: hidden;
     }
 
-    .content-column {
-      flex: 2;
+    .content-column, .credits-column {
       padding: 2rem;
       height: 100vh;
       overflow-y: scroll;
       box-sizing: border-box;
     }
 
+    .content-column {
+      flex: 2;
+    }
+
     .credits-column {
       flex: 1;
-      margin-left: 300px;
-      padding: 2rem;
-      height: 100vh;
-      overflow-y: scroll;
-      box-sizing: border-box;
       border-left: 1px solid #ccc;
     }
 
@@ -75,8 +74,16 @@
       margin-bottom: 4rem;
     }
 
-    h2 {
+    h2, h3 {
       margin-top: 0;
+    }
+
+    .content-section, .credits-section {
+      display: none;
+    }
+
+    .active {
+      display: block;
     }
   </style>
 </head>
@@ -85,74 +92,55 @@
     <div>
       <div class="nav-title">BUTCHER & CORREIA</div>
       <div class="nav-links">
-        <a href="#sound-of-things">The Sound of Things</a>
-        <a href="#just-this">Just This And Only That</a>
-        <a href="#taste-of-sound">Taste of Sound</a>
-        <a href="#performance-vista">Performance Vista</a>
-        <a href="#about">About</a>
+        <a onclick="showSection('sound-of-things')">The Sound of Things</a>
+        <a onclick="showSection('taste-of-sound')">Taste of Sound</a>
+        <a onclick="showSection('performance-vista')">Performance Vista</a>
+        <a onclick="showSection('about')">About</a>
       </div>
     </div>
   </div>
 
   <div class="content-wrapper">
     <div class="content-column">
-      <section id="sound-of-things">
+      <section id="content-sound-of-things" class="content-section">
         <h2>The Sound of Things</h2>
         <p>Performance, 60 min.<br>
         Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
-
         <p>The Sound of Things is a collaborative, interdisciplinary performance conceived by Klaus Ellerhusen Holm (NO) and Katherine Butcher (AU), developed with Carlos A. Correia (PT), and featuring interdisciplinary artist in taste Ieva Grigelionyte (LT/UK). Aksiom Ensemble performs the sound composition.</p>
       </section>
 
-      <section id="just-this">
-         <h2>Just This And Only That</h2>
-          <p>2.01.2024–on going<br>
-          durational performance in the public realm, Trondheim (NO)<br>
-          www.justthisandonlythat.com<br>
-            <p>"Just This and Only That” is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.</p>       
-      </section>
-
-      <section id="taste-of-sound">
+      <section id="content-taste-of-sound" class="content-section">
         <h2>Taste of Sound</h2>
         <p>Performance, 60 min.<br>
         Part of KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
-
         <p>Collaboration between BUTCHER & CORREIA (visuals), Klaus Ellerhusen Holm (sound), and Martin Mosti (palate), where they delve into the realm of multi-sensory experiences.</p>
-
         <p>Layers of plasticity: elements such as background music, tableware, packaging design, lighting hues, and even menu item names have been recognized as significant factors that shape our perception of taste.</p>
-
         <p>"Taste of Sound" explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously can provide new and curious personal imagery. The performance interweaves sound, flavor, and visual impressions. Through manipulation of these elements, our gestures aim to challenge your sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food. This event serves as a scaled-down preview of our comprehensive showcase scheduled for 2024.</p>
       </section>
 
-      <section id="performance-vista">
+      <section id="content-performance-vista" class="content-section">
         <h2>Performance Vista (2022)</h2>
         <p>Performance, anemometer, support jacks, lifting straps, construction helmets, reflective vests, and HOEFLON C10 crane. Variable dimensions.</p>
         <p>Performance Vista is a pleasing sight between a long narrow row of trees; a succession of anticipated events, a vision, a view of a series of actions in the mind, a performance vista played out, unfolding retrospectively and prospectively.</p>
         <p>performancevista.com &nbsp; &nbsp; @performancevista</p>
       </section>
 
-      <section id="about">
+      <section id="content-about" class="content-section">
         <h2>About</h2>
         <p>we are Katherine BUTCHER & Carlos A. CORREIA. we are a duo since the fall 2022.<br>
         butchercorreia [at] gmail.com</p>
-
-        <p>
-          2025 &nbsp; Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)<br>
-          2025 &nbsp; The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
-          2024 &nbsp; Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
-          2023 &nbsp; Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
-          2023 &nbsp; net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
-          2022 &nbsp; Unlikely the same as yesterday - Grenseløs, Trondheim (NO)
-        </p>
-
-        <p>
-          BUTCHER & CORREIA (Katherine & Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.
-        </p>
+        <p>2025 &nbsp; Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)<br>
+        2025 &nbsp; The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
+        2024 &nbsp; Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
+        2023 &nbsp; Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
+        2023 &nbsp; net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
+        2022 &nbsp; Unlikely the same as yesterday - Grenseløs, Trondheim (NO)</p>
+        <p>BUTCHER & CORREIA (Katherine & Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.</p>
       </section>
     </div>
 
     <div class="credits-column">
-      <section>
+      <section id="credits-sound-of-things" class="credits-section">
         <h3>The Sound of Things – Credits</h3>
         <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm<br>
         Sound Composition: Klaus E. Holm<br>
@@ -161,7 +149,7 @@
         Food: Ieva Grigelionyte</p>
       </section>
 
-      <section>
+      <section id="credits-taste-of-sound" class="credits-section">
         <h3>Taste of Sound – Credits</h3>
         <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm<br>
         Visuals & Choreography: BUTCHER & CORREIA<br>
@@ -169,7 +157,29 @@
         Food: Martin Moen Mosti and Even Østby<br>
         Supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum, Norsk Komponistforening</p>
       </section>
+
+      <section id="credits-performance-vista" class="credits-section">
+        <!-- No specific credits listed, can add later -->
+      </section>
+
+      <section id="credits-about" class="credits-section">
+        <!-- Optional: add About-specific info here if needed -->
+      </section>
     </div>
   </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
+      const content = document.getElementById('content-' + id);
+      const credits = document.getElementById('credits-' + id);
+      if (content) content.classList.add('active');
+      if (credits) credits.classList.add('active');
+    }
+
+    // Show the first section by default
+    showSection('sound-of-things');
+  </script>
 </body>
 </html>
