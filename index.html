@@ -15,8 +15,8 @@
 
     .nav-column {
       width: 300px;
-      background-color: #333;
-      color: #fff;
+      background-color: #fff; /* Changed from #333 to white */
+      color: #000; /* Changed text color to black for visibility */
       padding: 2rem;
       box-sizing: border-box;
       position: fixed;
@@ -25,21 +25,22 @@
       left: 0;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
     }
 
     .nav-title {
       font-size: 1.5rem;
-      font-weight: bold;
+      font-weight: normal;
       margin-bottom: 2rem;
     }
 
     .nav-links a {
       display: block;
-      color: #fff;
+      color: #000; /* Changed from white to black */
       text-decoration: none;
       margin-bottom: 1rem;
       font-size: 1.1rem;
+      font-weight: normal;
     }
 
     .nav-links a:hover {
@@ -53,39 +54,48 @@
       height: 100vh;
       overflow-y: scroll;
       box-sizing: border-box;
+      /* changed to block because we will do inline flex inside sections */
+      display: block;
+    }
+
+    /* Each project section will have a flex container with main + credits columns */
+    section.project {
       display: flex;
+      margin-bottom: 4rem;
+      gap: 2rem;
     }
 
-    .main-content {
+    .project-main {
       flex: 3;
-      padding-right: 2rem;
     }
 
-    .side-column {
+    .project-credits {
       flex: 1;
-      background-color: #f4f4f4;
+      background-color: #f9f9f9;
       padding: 1rem;
-      box-sizing: border-box;
-      border-left: 1px solid #ccc;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #000;
     }
 
-    section {
+    /* General text sections (like news and about) keep margin bottom */
+    section:not(.project) {
       margin-bottom: 4rem;
     }
 
-    h2 {
-      margin-top: 0;
+    h2, h3, strong {
+      font-weight: normal;
     }
   </style>
 </head>
 <body>
   <div class="nav-column">
     <div>
-      <div class="nav-title">BUTCHER & CORREIA</div>
+      <div class="nav-title">BUTCHER &amp; CORREIA</div>
       <div class="nav-links">
         <a href="#news">News</a>
         <a href="#about">About</a>
-        <a href="#projects">Projects</a>
         <a href="#sound-of-things">The Sound of Things</a>
         <a href="#taste-of-sound">Taste of Sound</a>
       </div>
@@ -93,76 +103,70 @@
   </div>
 
   <div class="content-column">
-    <div class="main-content">
-      <section id="news">
-        <h2>News</h2>
-        <p>Upcoming exhibitions, performances, and updates will appear here.</p>
-      </section>
+    <section id="news">
+      <h2>News</h2>
+      <p>Upcoming exhibitions, performances, and updates will appear here.</p>
+    </section>
 
-      <section id="about">
-        <h2>About</h2>
-        <p>we are Katherine BUTCHER & Carlos A. CORREIA. we are a duo since the fall 2022.<br>
-        butchercorreia [at] gmail.com</p>
+    <section id="about">
+      <h2>About</h2>
+      <p>we are Katherine BUTCHER & Carlos A. CORREIA. we are a duo since the fall 2022.<br>
+      butchercorreia [at] gmail.com</p>
 
-        <p>
-          <strong>2025</strong> &nbsp; Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)<br>
-          <strong>2025</strong> &nbsp; The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
-          <strong>2024</strong> &nbsp; Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
-          <strong>2023</strong> &nbsp; Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
-          <strong>2023</strong> &nbsp; net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
-          <strong>2022</strong> &nbsp; Unlikely the same as yesterday - Grenseløs, Trondheim (NO)
-        </p>
+      <p>
+        2025 &nbsp; Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)<br>
+        2025 &nbsp; The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
+        2024 &nbsp; Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
+        2023 &nbsp; Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
+        2023 &nbsp; net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
+        2022 &nbsp; Unlikely the same as yesterday - Grenseløs, Trondheim (NO)
+      </p>
 
-        <p>
-          BUTCHER & CORREIA (Katherine & Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.
-        </p>
-      </section>
+      <p>
+        BUTCHER &amp; CORREIA (Katherine &amp; Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.
+      </p>
+    </section>
 
-      <section id="projects">
-        <h2>Projects</h2>
-        <p>A list of selected works with documentation, process insights, and media can be added here.</p>
-      </section>
-
-      <section id="sound-of-things">
+    <section id="sound-of-things" class="project">
+      <div class="project-main">
         <h2>The Sound of Things</h2>
-        <p><strong>Performance, 60 min.<br>
-        Only Connect 2025, Rosendal Teater - Trondheim, 2025</strong></p>
-
         <p>The Sound of Things is a collaborative, interdisciplinary performance conceived by Klaus Ellerhusen Holm (NO) and Katherine Butcher (AU), developed with Carlos A. Correia (PT), and featuring interdisciplinary artist in taste Ieva Grigelionyte (LT/UK). Aksiom Ensemble performs the sound composition.</p>
-      </section>
+        <p>Performance, 60 min.<br>Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
+      </div>
+      <div class="project-credits">
+        <h3>Credits</h3>
+        <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm<br>
+           Sound Composition: Klaus E. Holm<br>
+           Visuals &amp; Dramaturgy: BUTCHER &amp; CORREIA<br>
+           Sound: Aksiom Ensemble<br>
+           Food: Ieva Grigelionyte
+        </p>
+      </div>
+    </section>
 
-      <section id="taste-of-sound">
+    <section id="taste-of-sound" class="project">
+      <div class="project-main">
         <h2>Taste of Sound</h2>
-        <p><strong>Performance, 60 min.<br>
-        Part of KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</strong></p>
+        <p>Performance, 60 min.<br>Part of KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
 
-        <p>Collaboration between BUTCHER & CORREIA (visuals), Klaus Ellerhusen Holm (sound), and Martin Mosti (palate), where they delve into the realm of multi-sensory experiences.</p>
+        <p>Collaboration between BUTCHER &amp; CORREIA (visuals), Klaus Ellerhusen Holm (sound), and Martin Mosti (palate), where they delve into the realm of multi-sensory experiences.</p>
 
         <p>Layers of plasticity: elements such as background music, tableware, packaging design, lighting hues, and even menu item names have been recognized as significant factors that shape our perception of taste.</p>
 
         <p>"Taste of Sound" explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously can provide new and curious personal imagery. The performance interweaves sound, flavor, and visual impressions. Through manipulation of these elements, our gestures aim to challenge your sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food. This event serves as a scaled-down preview of our comprehensive showcase scheduled for 2024.</p>
-      </section>
-    </div>
-
-    <div class="side-column">
-      <h3>Credits</h3>
-      <p><strong>Concept:</strong> Katherine Butcher and Klaus Ellerhusen Holm<br>
-         <strong>Sound Composition:</strong> Klaus E. Holm<br>
-         <strong>Visuals & Dramaturgy:</strong> BUTCHER & CORREIA<br>
-         <strong>Sound:</strong> Aksiom Ensemble<br>
-         <strong>Food:</strong> Ieva Grigelionyte
-      </p>
-
-      <hr>
-
-      <h3>Taste of Sound Credits</h3>
-      <p><strong>Concept:</strong> Katherine Butcher and Klaus Ellerhusen Holm developed with Carlos A. Correia<br>
-         <strong>Visuals & Choreography:</strong> BUTCHER & CORREIA<br>
-         <strong>Sound:</strong> Klaus Ellerhusen Holm and Andreas Røysum<br>
-         <strong>Food:</strong> Martin Moen Mosti and Even Østby<br>
-         <strong>Supported by:</strong> Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum, Norsk Komponistforening
-      </p>
-    </div>
+      </div>
+      <div class="project-credits">
+        <h3>Credits</h3>
+        <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm<br>
+           Visuals &amp; Choreography: BUTCHER &amp; CORREIA<br>
+           Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
+           Food: Martin Moen Mosti and Even Østby</p>
+        <p><em>Event supported by:<br>
+        Rotvoll Kunstnerkollektiv - KunstFest,<br>
+        Norsk jazzforum<br>
+        Norsk Komponistforening</em></p>
+      </div>
+    </section>
   </div>
 </body>
 </html>
