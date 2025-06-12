@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Butcher & Correia</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      display: flex;
+      height: 100vh;
+      color: #000;
+    }
+
+    .nav-column {
+      width: 300px;
+      background-color: #333;
+      color: #fff;
+      padding: 2rem;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .nav-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+
+    .nav-links a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .content-column {
+      margin-left: 300px;
+      padding: 2rem;
+      background-color: #fff;
+      height: 100vh;
+      overflow-y: scroll;
+      box-sizing: border-box;
+    }
+
+    section {
+      margin-bottom: 4rem;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-column">
+    <div>
+      <div class="nav-title">BUTCHER & CORREIA</div>
+      <div class="nav-links">
+        <a href="#news">News</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-column">
+    <section id="news">
+      <h2>News</h2>
+      <p>Upcoming exhibitions, performances, and updates will appear here.</p>
+    </section>
+
+    <section id="about">
+      <h2>About</h2>
+      <p>we are Katherine BUTCHER & Carlos A. CORREIA. we are a duo since the fall 2022.<br>
+butchercorreia [at] gmail.com</p>
+
+      <p>
+        <strong>2025</strong> &nbsp; Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)<br>
+        <strong>2025</strong> &nbsp; The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
+        <strong>2024</strong> &nbsp; Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
+        <strong>2023</strong> &nbsp; Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
+        <strong>2023</strong> &nbsp; net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
+        <strong>2022</strong> &nbsp; Unlikely the same as yesterday - Grenseløs, Trondheim (NO)
+      </p>
+
+      <p>
+        BUTCHER & CORREIA (Katherine & Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.
+      </p>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <p>A list of selected works with documentation, process insights, and media can be added here.</p>
+    </section>
+  </div>
+</body>
+</html>
