@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BUTCHER & CORREIA</title>
+  <link rel="icon" href="favicon.png" type="image/png" />
+
   <style>
     body {
       margin: 0;
@@ -180,34 +182,43 @@
       </section>
     </div>
   </div>
-        
-      <script>
-        function showSection(id, link) {
-          // Hide all content and credits sections
-          document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-          document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
-      
-          // Show the selected content and credits
-          const content = document.getElementById('content-' + id);
-          const credits = document.getElementById('credits-' + id);
-          if (content) content.classList.add('active');
-          if (credits) credits.classList.add('active');
-      
-          // Update active nav link styling
-          document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
-          link.classList.add('active-link');
-      
-          // Align section display with nav link position
-          const navColumn = document.querySelector('.nav-column');
-          const linkOffset = link.getBoundingClientRect().top - navColumn.getBoundingClientRect().top;
-      
-          const contentColumn = document.querySelector('.content-column');
-          const creditsColumn = document.querySelector('.credits-column');
-      
-          contentColumn.scrollTo({ top: linkOffset, behavior: 'smooth' });
-          creditsColumn.scrollTo({ top: linkOffset, behavior: 'smooth' });
-        }
-      </script>
+            
+        <script>
+      function showSection(id, link) {
+        // Hide all sections
+        document.querySelectorAll('.content-section, .credits-section')
+          .forEach(el => el.classList.remove('active'));
+    
+        // Activate selected ones
+        const content = document.getElementById('content-' + id);
+        const credits = document.getElementById('credits-' + id);
+        if (content) content.classList.add('active');
+        if (credits) credits.classList.add('active');
+    
+        // Update active nav link
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
+        link.classList.add('active-link');
+    
+        // Scroll both columns to bring active section into view
+        content?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        credits?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+        // Then offset scroll to align with nav-link
+        const navTop = document.querySelector('.nav-column').getBoundingClientRect().top;
+        const linkTop = link.getBoundingClientRect().top;
+        const offset = linkTop - navTop;
+    
+        const contentColumn = document.querySelector('.content-column');
+        const creditsColumn = document.querySelector('.credits-column');
+    
+        // Slight delay to wait for scrollIntoView to finish
+        setTimeout(() => {
+          contentColumn.scrollTop -= offset;
+          creditsColumn.scrollTop -= offset;
+        }, 300);
+      }
+    </script>
+
 
 </body>
 </html>
