@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BUTCHER & CORREIA</title>
 <style>
+
+  
   body {
     margin: 0;
     font-family: 'Georgia', serif;
@@ -16,9 +18,6 @@
 
   /* Title bar split into 3 parts */
   .site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100vw;
     height: 60px;
     background: #fff;
@@ -29,6 +28,12 @@
     box-sizing: border-box;
     padding: 0 1rem;
     z-index: 1000;
+  }
+  
+  .sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
   }
 
   .site-header .left,
@@ -113,9 +118,44 @@
   .active {
     display: block;
   }
+  
+  <main id="main-content">
+  
+  .landing-section {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.landing-image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.landing-header {
+  position: absolute;
+  bottom: 0;
+
+</main>
+
+}
+
 </style>
 </head>
 <body>
+
+<div class="landing-section" onclick="scrollToMainContent()">
+  <img src="your-image.jpg" alt="Landing Image" class="landing-image" />
+  <header class="site-header landing-header">
+    <div class="left">BUTCHER</div>
+    <div class="center">&</div>
+    <div class="right">CORREIA</div>
+  </header>
+</div>
 
 <header class="site-header">
   <div class="left">BUTCHER</div>
@@ -235,6 +275,31 @@
     contentColumn.scrollTo({ top: contentScrollTop, behavior: 'smooth' });
     creditsColumn.scrollTo({ top: creditsScrollTop, behavior: 'smooth' });
   }
+
+  <script>
+  function scrollToMainContent() {
+    const main = document.getElementById('main-content');
+    const header = document.querySelector('.site-header');
+
+    window.scrollTo({
+      top: main.offsetTop,
+      behavior: 'smooth'
+    });
+
+    // Make header sticky after scroll
+    header.classList.add('sticky-header');
+  }
+
+  window.addEventListener('scroll', () => {
+    const main = document.getElementById('main-content');
+    const header = document.querySelector('.site-header');
+
+    if (window.scrollY >= main.offsetTop) {
+      header.classList.add('sticky-header');
+    } else {
+      header.classList.remove('sticky-header');
+    }
+  });
 
   window.addEventListener('DOMContentLoaded', () => {
     const firstLink = document.querySelector('.nav-links a');
