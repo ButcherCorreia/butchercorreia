@@ -180,31 +180,34 @@
       </section>
     </div>
   </div>
-  
+        
       <script>
-      function showSection(id, link) {
-        // Hide all content and credits sections
-        document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
-    
-        // Show the selected content and credits
-        const content = document.getElementById('content-' + id);
-        const credits = document.getElementById('credits-' + id);
-        if (content) content.classList.add('active');
-        if (credits) credits.classList.add('active');
-    
-        // Update active nav link
-        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
-        link.classList.add('active-link');
-    
-        // Align the scroll position of both columns with the clicked nav-link
-        const navLinkOffset = link.getBoundingClientRect().top - document.querySelector('.nav-column').getBoundingClientRect().top;
-    
-        // Scroll content and credits column to match the nav link's vertical position
-        document.querySelector('.content-column').scrollTo({ top: navLinkOffset, behavior: 'smooth' });
-        document.querySelector('.credits-column').scrollTo({ top: navLinkOffset, behavior: 'smooth' });
-      }
-    </script>
+        function showSection(id, link) {
+          // Hide all content and credits sections
+          document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+          document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
+      
+          // Show the selected content and credits
+          const content = document.getElementById('content-' + id);
+          const credits = document.getElementById('credits-' + id);
+          if (content) content.classList.add('active');
+          if (credits) credits.classList.add('active');
+      
+          // Update active nav link styling
+          document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
+          link.classList.add('active-link');
+      
+          // Align section display with nav link position
+          const navColumn = document.querySelector('.nav-column');
+          const linkOffset = link.getBoundingClientRect().top - navColumn.getBoundingClientRect().top;
+      
+          const contentColumn = document.querySelector('.content-column');
+          const creditsColumn = document.querySelector('.credits-column');
+      
+          contentColumn.scrollTo({ top: linkOffset, behavior: 'smooth' });
+          creditsColumn.scrollTo({ top: linkOffset, behavior: 'smooth' });
+        }
+      </script>
 
 </body>
 </html>
