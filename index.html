@@ -152,50 +152,30 @@
 
 <script>
   function showSection(id, link) {
-    // Hide all sections
+    // Remove 'active' class from all content and credits sections
     document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
 
-    // Show selected sections
+    // Add 'active' to the targeted sections
     const contentSection = document.getElementById('content-' + id);
     const creditsSection = document.getElementById('credits-' + id);
     if (contentSection) contentSection.classList.add('active');
     if (creditsSection) creditsSection.classList.add('active');
 
-    // Highlight nav link
+    // Remove 'active-link' from all nav links and add to clicked
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
     if(link) link.classList.add('active-link');
 
-    // Scroll columns to match
-    scrollColumns(contentSection, creditsSection);
+    // Scroll both columns to top instantly
+    document.querySelector('.content-column').scrollTop = 0;
+    document.querySelector('.credits-column').scrollTop = 0;
   }
 
-  function scrollColumns(contentSection, creditsSection) {
-    if (!contentSection || !creditsSection) return;
-
-    const contentColumn = document.querySelector('.content-column');
-    const creditsColumn = document.querySelector('.credits-column');
-
-    // Scroll .content-column to contentSection top
-    const contentScrollTop = contentSection.offsetTop;
-
-    // Calculate scroll percentage relative to total scroll height
-    const contentMaxScroll = contentColumn.scrollHeight - contentColumn.clientHeight;
-    const scrollPercent = contentMaxScroll > 0 ? contentScrollTop / contentMaxScroll : 0;
-
-    // Calculate equivalent scroll position for .credits-column
-    const creditsMaxScroll = creditsColumn.scrollHeight - creditsColumn.clientHeight;
-    const creditsScrollTop = creditsMaxScroll * scrollPercent;
-
-    // Scroll smoothly
-    contentColumn.scrollTo({ top: contentScrollTop, behavior: 'smooth' });
-    creditsColumn.scrollTo({ top: creditsScrollTop, behavior: 'smooth' });
-  }
-
-  // Initialize with first section visible and scrolled
+  // On page load, show first section by simulating a click on first nav link
   window.addEventListener('DOMContentLoaded', () => {
     const firstLink = document.querySelector('.nav-links a');
     if (firstLink) firstLink.click();
   });
 </script>
+
 </body>
 </html>
