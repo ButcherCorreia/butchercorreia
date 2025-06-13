@@ -95,11 +95,12 @@
     <div>
       <div class="nav-title">BUTCHER & CORREIA</div>
       <div class="nav-links">
-        <a onclick="showSection('sound-of-things')">The Sound of Things</a>
-        <a onclick="showSection('just-this')">Just This And Only That</a>
-        <a onclick="showSection('taste-of-sound')">Taste of Sound</a>
-        <a onclick="showSection('performance-vista')">Performance Vista</a>
-        <a onclick="showSection('about')">About</a>
+        <a onclick="showSection('sound-of-things', this)">The Sound of Things</a>
+        <a onclick="showSection('just-this', this)">Just This And Only That</a>
+        <a onclick="showSection('taste-of-sound', this)">Taste of Sound</a>
+        <a onclick="showSection('performance-vista', this)">Performance Vista</a>
+        <a onclick="showSection('about', this)">About</a>
+
       </div>
     </div>
   </div>
@@ -180,34 +181,30 @@
     </div>
   </div>
   
-    <script>
-  function showSection(id) {
-    // Hide all content and credits sections
-    document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
-
-    // Show the selected content and credits
-    const content = document.getElementById('content-' + id);
-    const credits = document.getElementById('credits-' + id);
-    if (content) {
-      content.classList.add('active');
-      content.parentElement.scrollTop = 0;  // Reset scroll to top in content column
-    }
-    if (credits) {
-      credits.classList.add('active');
-      credits.parentElement.scrollTop = 0;  // Reset scroll to top in credits column
-    }
-
-    // Update active nav link
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.classList.remove('active-link');
-      if (link.getAttribute('onclick')?.includes(id)) {
+      <script>
+      function showSection(id, link) {
+        // Hide all content and credits sections
+        document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
+    
+        // Show the selected content and credits
+        const content = document.getElementById('content-' + id);
+        const credits = document.getElementById('credits-' + id);
+        if (content) content.classList.add('active');
+        if (credits) credits.classList.add('active');
+    
+        // Update active nav link
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
         link.classList.add('active-link');
+    
+        // Align the scroll position of both columns with the clicked nav-link
+        const navLinkOffset = link.getBoundingClientRect().top - document.querySelector('.nav-column').getBoundingClientRect().top;
+    
+        // Scroll content and credits column to match the nav link's vertical position
+        document.querySelector('.content-column').scrollTo({ top: navLinkOffset, behavior: 'smooth' });
+        document.querySelector('.credits-column').scrollTo({ top: navLinkOffset, behavior: 'smooth' });
       }
-    });
-  }
-</script>
-
+    </script>
 
 </body>
 </html>
