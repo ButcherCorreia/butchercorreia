@@ -99,21 +99,19 @@
       text-decoration: underline;
     }
 
-     .content-wrapper {
-    display: flex;
-    flex: 1;
-    height: auto;
-    max-height: calc(100vh - 60px);
-    overflow: hidden;
-  }
-  
-  .content-column, .credits-column {
-    padding: 2rem;
-    height: auto;
-    max-height: calc(100vh - 60px);
-    overflow-y: auto;
-    box-sizing: border-box;
-  }
+       .content-wrapper {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 60px);
+      overflow: hidden;
+    }
+    
+    .content-column, .credits-column {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
 
 
     .content-column {
@@ -220,11 +218,9 @@
 <script>
   function revealMainContent() {
     const mainContent = document.getElementById('main-content');
-    const stickyHeader = document.getElementById('stickyHeader');
     const landingHeader = document.getElementById('landingHeader');
 
     mainContent.classList.add('visible');
-    stickyHeader.style.display = 'flex';
     landingHeader.style.display = 'none';
 
     const firstLink = document.querySelector('.nav-links a');
@@ -249,7 +245,21 @@
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
     if (link) link.classList.add('active-link');
   }
+
+  // Sticky header visibility on scroll
+  window.addEventListener('scroll', () => {
+    const stickyHeader = document.getElementById('stickyHeader');
+    const landingSection = document.querySelector('.landing-section');
+    const revealThreshold = landingSection.offsetHeight;
+
+    if (window.scrollY >= revealThreshold) {
+      stickyHeader.style.display = 'flex';
+    } else {
+      stickyHeader.style.display = 'none';
+    }
+  });
 </script>
+
 
 </body>
 </html>
