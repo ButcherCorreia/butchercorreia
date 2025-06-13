@@ -183,41 +183,31 @@
     </div>
   </div>
             
-        <script>
-      function showSection(id, link) {
-        // Hide all sections
-        document.querySelectorAll('.content-section, .credits-section')
-          .forEach(el => el.classList.remove('active'));
-    
-        // Activate selected ones
-        const content = document.getElementById('content-' + id);
-        const credits = document.getElementById('credits-' + id);
-        if (content) content.classList.add('active');
-        if (credits) credits.classList.add('active');
-    
-        // Update active nav link
-        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
-        link.classList.add('active-link');
-    
-        // Scroll both columns to bring active section into view
-        content?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        credits?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    
-        // Then offset scroll to align with nav-link
-        const navTop = document.querySelector('.nav-column').getBoundingClientRect().top;
-        const linkTop = link.getBoundingClientRect().top;
-        const offset = linkTop - navTop;
-    
-        const contentColumn = document.querySelector('.content-column');
-        const creditsColumn = document.querySelector('.credits-column');
-    
-        // Slight delay to wait for scrollIntoView to finish
-        setTimeout(() => {
-          contentColumn.scrollTop -= offset;
-          creditsColumn.scrollTop -= offset;
-        }, 300);
-      }
-    </script>
+     <script>
+  function showSection(id, link) {
+    // Hide all content and credits
+    document.querySelectorAll('.content-section, .credits-section')
+      .forEach(el => el.classList.remove('active'));
+
+    // Show matching sections
+    const content = document.getElementById('content-' + id);
+    const credits = document.getElementById('credits-' + id);
+    if (content) content.classList.add('active');
+    if (credits) credits.classList.add('active');
+
+    // Update nav link highlighting
+    document.querySelectorAll('.nav-links a')
+      .forEach(a => a.classList.remove('active-link'));
+    link.classList.add('active-link');
+
+    // Scroll each column to the top
+    const contentColumn = document.querySelector('.content-column');
+    const creditsColumn = document.querySelector('.credits-column');
+    contentColumn.scrollTop = 0;
+    creditsColumn.scrollTop = 0;
+  }
+</script>
+
 
 
 </body>
