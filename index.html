@@ -7,46 +7,47 @@
 <style>
   html, body {
     margin: 0;
-    padding: 0;
     height: 100%;
     scroll-behavior: smooth;
     font-family: 'Georgia', serif;
     color: #000;
   }
 
-  /* HERO SECTION */
+  /* Hero image fills viewport */
   .hero-image {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
+    position: relative;
     height: 100vh;
-    background: url('2025_The Sound of Things_PhotoCredit_LiliZaneta-49.jpg') center center / cover no-repeat;
+    background: url('2025_The%20Sound%20of%20Things_PhotoCredit_LiliZaneta-49.jpg') center center / cover no-repeat;
     display: flex;
-    align-items: flex-end;  /* text at bottom */
+    align-items: flex-end;
     justify-content: center;
     cursor: pointer;
-    z-index: 1000;
   }
 
+  /* Text at bottom of hero */
   .hero-text {
-    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    text-align: center;
     color: white;
     font-size: 3rem;
-    padding: 1rem 2rem;
-    margin-bottom: 40px; /* spacing from bottom */
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem 0;
     font-weight: bold;
-    user-select: none;
   }
 
-  /* MAIN CONTENT - placed below hero */
+  /* Hide main content initially */
   #main-content {
-    margin-top: 100vh; /* push below hero */
+    display: none;
+  }
+
+  /* Show main content after clicking hero */
+  #main-content.active {
     display: flex;
     height: calc(100vh - 60px);
+    margin-top: 60px;
   }
 
-  /* SITE HEADER */
+  /* Site header */
   .site-header {
     position: fixed;
     top: 0;
@@ -60,7 +61,7 @@
     justify-content: space-between;
     box-sizing: border-box;
     padding: 0 1rem;
-    z-index: 1100; /* above nav */
+    z-index: 1000;
     font-weight: bold;
     font-size: 1.5rem;
   }
@@ -80,12 +81,8 @@
     text-align: right;
   }
 
-  /* NAV COLUMN */
+  /* Nav column */
   .nav-column {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    bottom: 0;
     width: 300px;
     background-color: #fff;
     padding: 2rem 1rem;
@@ -95,7 +92,6 @@
     justify-content: space-between;
     overflow-y: auto;
     border-right: 5px dashed #ff4000;
-    z-index: 1050;
   }
 
   .nav-links a {
@@ -111,15 +107,12 @@
     text-decoration: underline;
   }
 
-  /* CONTENT WRAPPER */
+  /* Content wrapper flex */
   .content-wrapper {
-    margin-left: 300px;
-    margin-top: 60px;
-    display: flex;
     flex: 1;
+    display: flex;
     background-color: #fff;
     overflow: hidden;
-    height: calc(100vh - 60px);
   }
 
   .content-column, .credits-column {
@@ -148,16 +141,21 @@
   .active {
     display: block;
   }
+
+  /* Layout for main content after hero is clicked */
+  #main-content {
+    display: flex;
+  }
 </style>
 </head>
 <body>
 
 <!-- HERO SECTION -->
-<div class="hero-image" onclick="scrollToMainContent()">
-  <div class="hero-text">BUTCHER & CORREIA</div>
+<div class="hero-image" onclick="showMainContent()">
+  <div class="hero-text">BUTCHER &amp; CORREIA</div>
 </div>
 
-<!-- MAIN CONTENT BELOW HERO -->
+<!-- MAIN SITE CONTENT -->
 <div id="main-content">
   <header class="site-header">
     <div class="left">BUTCHER</div>
@@ -248,8 +246,13 @@
 </div>
 
 <script>
-  function scrollToMainContent() {
-    document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
+  function showMainContent() {
+    document.querySelector('.hero-image').style.display = 'none';
+    const mainContent = document.getElementById('main-content');
+    mainContent.style.display = 'flex';
+    // Automatically show first section:
+    const firstLink = document.querySelector('.nav-links a');
+    if (firstLink) firstLink.click();
   }
 
   function showSection(id, link) {
@@ -263,11 +266,6 @@
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
     if(link) link.classList.add('active-link');
   }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const firstLink = document.querySelector('.nav-links a');
-    if (firstLink) firstLink.click();
-  });
 </script>
 
 </body>
