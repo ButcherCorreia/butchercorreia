@@ -13,33 +13,39 @@
     scroll-behavior: smooth;
   }
 
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  /* HERO IMAGE */
+  /* HERO SECTION */
   .hero-image {
     position: relative;
     height: 100vh;
-    background: url('favicon.png') center center / cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: url('your-image.jpg') center center / cover no-repeat;
     cursor: pointer;
+    display: flex;
+    align-items: flex-end; /* Align text at bottom */
+    justify-content: center;
+    padding-bottom: 3rem; /* spacing from bottom */
   }
 
   .hero-overlay-text {
     color: white;
-    font-size: 2rem;
+    font-size: 2.5rem;
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 1rem 2rem;
+    padding: 0.75rem 2rem;
     border-radius: 10px;
     user-select: none;
   }
 
+  /* MAIN SITE STRUCTURE */
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
   /* Title bar split into 3 parts */
+  #main-content {
+    display: block;
+  }
+
   .site-header {
     position: fixed;
     top: 0;
@@ -137,22 +143,17 @@
   .active {
     display: block;
   }
-
-  /* Show main content only after hero */
-  #main-content {
-    display: block;
-  }
 </style>
 </head>
 <body>
 
 <!-- HERO SECTION -->
-<div class="hero-image" onclick="scrollToMainContent()">
-  <div class="hero-overlay-text">Enter</div>
+<div class="hero-image" onclick="scrollToMainContent()" role="button" tabindex="0" onkeypress="if(event.key==='Enter'){scrollToMainContent()}">
+  <div class="hero-overlay-text">BUTCHER &amp; CORREIA</div>
 </div>
 
 <!-- MAIN SITE CONTENT -->
-<div id="main-content">
+<div id="main-content" class="main-site-content">
   <header class="site-header">
     <div class="left">BUTCHER</div>
     <div class="center">&</div>
@@ -212,7 +213,7 @@
         Sound Composition: Klaus E. Holm<br>
         Visuals & Dramaturgy: BUTCHER & CORREIA<br>
         Sound: Aksiom Ensemble<br>
-        Food: Ieva Grigelionyte</p>
+        Food: Ieva Grigelionyte
         <p>Supported by: Trondheim kommune, Nettle T.O.C.</p>
       </section>
 
@@ -226,7 +227,7 @@
         Visuals & Choreography: BUTCHER & CORREIA<br>
         Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
         Food: Martin Moen Mosti and Even Østby<br>
-        Supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum, Norsk Komponistforening</p>
+        Supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum, Norsk Komponistforening
       </section>
 
       <section id="credits-performance-vista" class="credits-section">
