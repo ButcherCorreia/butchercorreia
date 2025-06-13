@@ -5,29 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BUTCHER & CORREIA</title>
 <style>
+  /* Reset & base */
   body {
     margin: 0;
     font-family: 'Georgia', serif;
+    color: #000;
     display: flex;
+    flex-direction: column;
     height: 100vh;
+  }
+
+  /* Fixed top header spanning full width */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+    box-sizing: border-box;
+    z-index: 1000;
+    font-size: 1.5rem;
+    font-weight: bold;
     color: #000;
   }
+
+  /* Fixed nav sidebar below header */
   .nav-column {
+    position: fixed;
+    top: 60px; /* below header */
+    left: 0;
+    bottom: 0;
     width: 300px;
     background-color: #fff;
-    color: #000;
-    padding: 2rem;
+    padding: 2rem 1rem;
     box-sizing: border-box;
-    position: fixed;
-    top: 0; bottom: 0; left: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
   }
+
   .nav-title {
     font-size: 1.5rem;
     margin-bottom: 2rem;
   }
+
   .nav-links a {
     display: block;
     color: #000;
@@ -36,43 +64,60 @@
     font-size: 1.1rem;
     cursor: pointer;
   }
+
   .nav-links a.active-link {
     text-decoration: underline;
   }
+
+  /* Content wrapper beside sidebar, below header */
   .content-wrapper {
-    display: flex;
     margin-left: 300px;
-    height: 100vh;
+    margin-top: 60px; /* below header */
+    display: flex;
+    height: calc(100vh - 60px);
     background-color: #fff;
     overflow: hidden;
   }
+
+  /* Content and credits columns */
   .content-column, .credits-column {
     padding: 2rem;
-    height: 100vh;
+    height: 100%;
     overflow-y: auto;
     box-sizing: border-box;
   }
+
   .content-column {
     flex: 2;
   }
+
   .credits-column {
     flex: 1;
+    border-left: 1px solid #ccc;
   }
+
   section {
     margin-bottom: 4rem;
   }
+
   .content-section, .credits-section {
     display: none;
   }
+
   .active {
     display: block;
   }
 </style>
 </head>
 <body>
+
+<header class="site-header">
+  BUTCHER & CORREIA
+</header>
+
 <div class="nav-column">
   <div>
-    <div class="nav-title">BUTCHER & CORREIA</div>
+    <div class="nav-title">Navigation</div>
     <div class="nav-links">
       <a onclick="showSection('sound-of-things', this)">The Sound of Things</a>
       <a onclick="showSection('just-this', this)">Just This And Only That</a>
@@ -152,25 +197,46 @@
 
 <script>
   function showSection(id, link) {
-    // Remove 'active' class from all content and credits sections
+    // Hide all sections
     document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
 
-    // Add 'active' to the targeted sections
+    // Show selected sections
     const contentSection = document.getElementById('content-' + id);
     const creditsSection = document.getElementById('credits-' + id);
     if (contentSection) contentSection.classList.add('active');
     if (creditsSection) creditsSection.classList.add('active');
 
-    // Remove 'active-link' from all nav links and add to clicked
+    // Highlight nav link
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
     if(link) link.classList.add('active-link');
 
-    // Scroll both columns to top instantly
-    document.querySelector('.content-column').scrollTop = 0;
-    document.querySelector('.credits-column').scrollTop = 0;
+    // Scroll columns to match
+    scrollColumns(contentSection, creditsSection);
   }
 
-  // On page load, show first section by simulating a click on first nav link
+  function scrollColumns(contentSection, creditsSection) {
+    if (!contentSection || !creditsSection) return;
+
+    const contentColumn = document.querySelector('.content-column');
+    const creditsColumn = document.querySelector('.credits-column');
+
+    // Scroll .content-column to contentSection top
+    const contentScrollTop = contentSection.offsetTop;
+
+    // Calculate scroll percentage relative to total scroll height
+    const contentMaxScroll = contentColumn.scrollHeight - contentColumn.clientHeight;
+    const scrollPercent = contentMaxScroll > 0 ? contentScrollTop / contentMaxScroll : 0;
+
+    // Calculate equivalent scroll position for .credits-column
+    const creditsMaxScroll = creditsColumn.scrollHeight - creditsColumn.clientHeight;
+    const creditsScrollTop = creditsMaxScroll * scrollPercent;
+
+    // Scroll smoothly
+    contentColumn.scrollTo({ top: contentScrollTop, behavior: 'smooth' });
+    creditsColumn.scrollTo({ top: creditsScrollTop, behavior: 'smooth' });
+  }
+
+  // Initialize with first section visible and scrolled
   window.addEventListener('DOMContentLoaded', () => {
     const firstLink = document.querySelector('.nav-links a');
     if (firstLink) firstLink.click();
