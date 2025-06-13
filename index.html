@@ -99,19 +99,22 @@
       text-decoration: underline;
     }
 
-    .content-wrapper {
-      display: flex;
-      flex: 1;
-      height: calc(100vh - 60px);
-      overflow: hidden;
-    }
+     .content-wrapper {
+    display: flex;
+    flex: 1;
+    height: auto;
+    max-height: calc(100vh - 60px);
+    overflow: hidden;
+  }
+  
+  .content-column, .credits-column {
+    padding: 2rem;
+    height: auto;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
 
-    .content-column, .credits-column {
-      padding: 2rem;
-      height: 100%;
-      overflow-y: auto;
-      box-sizing: border-box;
-    }
 
     .content-column {
       flex: 2;
