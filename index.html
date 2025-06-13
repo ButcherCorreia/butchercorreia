@@ -63,8 +63,9 @@
     .content-column, .credits-column {
       padding: 2rem;
       height: 100vh;
-      overflow-y: scroll;
+      overflow-y: auto;
       box-sizing: border-box;
+      position: relative;
     }
 
     .content-column {
@@ -183,36 +184,44 @@
   </div>
             
      <script>
-       function showSection(id, link) {
-        // Hide all sections
-        document.querySelectorAll('.content-section, .credits-section')
-          .forEach(el => el.classList.remove('active'));
-      
-        // Activate selected ones
-        const content = document.getElementById('content-' + id);
-        const credits = document.getElementById('credits-' + id);
-        if (content) content.classList.add('active');
-        if (credits) credits.classList.add('active');
-      
-        // Update active nav link
-        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
-        link.classList.add('active-link');
-      
-        const contentColumn = document.querySelector('.content-column');
-        const creditsColumn = document.querySelector('.credits-column');
-      
-        // Scroll each column to make its active section appear at the top
-        if (content && credits) {
-          // Calculate offsetTop relative to scroll container
-          const contentTop = content.offsetTop;
-          const creditsTop = credits.offsetTop;
-      
-          contentColumn.scrollTo({ top: contentTop, behavior: 'smooth' });
-          creditsColumn.scrollTo({ top: creditsTop, behavior: 'smooth' });
+           function showSection(id, link) {
+      // Hide all sections
+      document.querySelectorAll('.content-section, .credits-section')
+        .forEach(el => el.classList.remove('active'));
+    
+      // Activate selected ones
+      const content = document.getElementById('content-' + id);
+      const credits = document.getElementById('credits-' + id);
+      if (content) content.classList.add('active');
+      if (credits) credits.classList.add('active');
+    
+      // Update active nav link
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
+      link.classList.add('active-link');
+    
+      const contentColumn = document.querySelector('.content-column');
+      const creditsColumn = document.querySelector('.credits-column');
+    
+      function getRelativeOffsetTop(element, container) {
+        let offset = 0;
+        let current = element;
+        while (current && current !== container) {
+          offset += current.offsetTop;
+          current = current.offsetParent;
         }
+        return offset;
       }
-
-</script>
+    
+      if (content && credits) {
+        const contentTop = getRelativeOffsetTop(content, contentColumn);
+        const creditsTop = getRelativeOffsetTop(credits, creditsColumn);
+    
+        contentColumn.scrollTo({ top: contentTop, behavior: 'smooth' });
+        creditsColumn.scrollTo({ top: creditsTop, behavior: 'smooth' });
+      }
+    }
+    
+    </script>
 
 
 
