@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BUTCHER & CORREIA</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      font-family: 'Georgia', serif;
+      font-family: Georgia, serif;
       color: #000;
+      scroll-behavior: smooth;
+      height: 100%;
     }
 
     .landing-section {
@@ -40,9 +42,10 @@
       box-sizing: border-box;
       font-size: 1.5rem;
       font-weight: bold;
+      z-index: 2;
     }
 
-    .site-header.sticky-header {
+    .site-header {
       position: fixed;
       top: 0;
       left: 0;
@@ -62,11 +65,11 @@
 
     #main-content {
       display: none;
-      flex-direction: row;
     }
 
     #main-content.visible {
       display: flex;
+      flex-direction: row;
     }
 
     .nav-column {
@@ -76,8 +79,6 @@
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      overflow-y: auto;
       border-right: 5px dashed #ff4000;
       height: calc(100vh - 60px);
       position: sticky;
@@ -139,7 +140,7 @@
   </header>
 </div>
 
-<header class="site-header sticky-header">
+<header class="site-header" id="stickyHeader">
   <div>BUTCHER</div>
   <div>&</div>
   <div>CORREIA</div>
@@ -214,17 +215,21 @@
 
 <script>
   function revealMainContent() {
-    document.getElementById('main-content').classList.add('visible');
-    document.querySelector('.sticky-header').style.display = 'flex';
+    const mainContent = document.getElementById('main-content');
+    const stickyHeader = document.getElementById('stickyHeader');
 
-    // Optional: auto-open the first section
+    mainContent.classList.add('visible');
+    stickyHeader.style.display = 'flex';
+
     const firstLink = document.querySelector('.nav-links a');
     if (firstLink) firstLink.click();
 
-    // Scroll to top of main content
     setTimeout(() => {
-      window.scrollTo({ top: document.querySelector('.sticky-header').offsetHeight, behavior: 'smooth' });
-    }, 100);
+      window.scrollTo({
+        top: mainContent.offsetTop,
+        behavior: 'smooth'
+      });
+    }, 50);
   }
 
   function showSection(id, link) {
