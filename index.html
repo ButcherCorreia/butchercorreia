@@ -103,7 +103,6 @@
         <a onclick="showSection('taste-of-sound', this)">Taste of Sound</a>
         <a onclick="showSection('performance-vista', this)">Performance Vista</a>
         <a onclick="showSection('about', this)">About</a>
-
       </div>
     </div>
   </div>
@@ -155,11 +154,11 @@
         Visuals & Dramaturgy: BUTCHER & CORREIA<br>
         Sound: Aksiom Ensemble<br>
         Food: Ieva Grigelionyte</p>
-        Supported by: Trondheim kommune, Nettle T.O.C.</p>
+        <p>Supported by: Trondheim kommune, Nettle T.O.C.</p>
       </section>
 
       <section id="credits-just-this" class="credits-section">
-        <p><a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>        
+        <p><a href="https://justthisandonlythat.com">justthisandonlythat.com</a></p>        
         <p>Supported by: Kulturdirektoratet</p>
       </section>
 
@@ -174,7 +173,6 @@
       <section id="credits-performance-vista" class="credits-section">
         <a href="https://performancevista.com">performancevista.com</a><br>        
         <a href="https://instagram.com/performancevista">@performancevista</a><br>  
-      
       </section>
 
       <section id="credits-about" class="credits-section">
@@ -183,8 +181,8 @@
     </div>
   </div>
             
-     <script>
-           function showSection(id, link) {
+  <script>
+    function showSection(id, link) {
       // Hide all sections
       document.querySelectorAll('.content-section, .credits-section')
         .forEach(el => el.classList.remove('active'));
@@ -202,28 +200,31 @@
       const contentColumn = document.querySelector('.content-column');
       const creditsColumn = document.querySelector('.credits-column');
     
-      function getRelativeOffsetTop(element, container) {
-        let offset = 0;
-        let current = element;
-        while (current && current !== container) {
-          offset += current.offsetTop;
-          current = current.offsetParent;
-        }
-        return offset;
-      }
-    
       if (content && credits) {
-        const contentTop = getRelativeOffsetTop(content, contentColumn);
-        const creditsTop = getRelativeOffsetTop(credits, creditsColumn);
-    
-        contentColumn.scrollTo({ top: contentTop, behavior: 'smooth' });
-        creditsColumn.scrollTo({ top: creditsTop, behavior: 'smooth' });
+        scrollToSection(content, credits, contentColumn, creditsColumn);
       }
     }
-    
-    </script>
 
+    function scrollToSection(content, credits, contentColumn, creditsColumn) {
+      const contentTop = content.offsetTop;
+      const creditsTop = credits.offsetTop;
 
+      const contentScrollHeight = contentColumn.scrollHeight - contentColumn.clientHeight;
+      const creditsScrollHeight = creditsColumn.scrollHeight - creditsColumn.clientHeight;
 
+      // Avoid division by zero
+      const contentPercent = contentScrollHeight > 0 ? contentTop / contentScrollHeight : 0;
+      const creditsScrollTop = creditsScrollHeight * contentPercent;
+
+      contentColumn.scrollTo({ top: contentTop, behavior: 'smooth' });
+      creditsColumn.scrollTo({ top: creditsScrollTop, behavior: 'smooth' });
+    }
+
+    // Optional: activate the first link by default on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const firstLink = document.querySelector('.nav-links a');
+      if (firstLink) firstLink.click();
+    });
+  </script>
 </body>
 </html>
