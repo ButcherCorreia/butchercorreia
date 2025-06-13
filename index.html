@@ -34,7 +34,8 @@
       width: 100%;
       height: 60px;
       background: #fff;
-      border-top: 5px dashed #ff4000;
+      border-top: none;
+      border-bottom: 5px dashed #ff4000;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -42,7 +43,7 @@
       box-sizing: border-box;
       font-size: 1.5rem;
       font-weight: bold;
-      z-index: 2;
+      z-index: 10;
     }
 
     .site-header {
@@ -57,10 +58,10 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 1rem;
-      z-index: 1000;
       font-size: 1.5rem;
       font-weight: bold;
       box-sizing: border-box;
+      z-index: 1000;
     }
 
     #main-content {
@@ -133,7 +134,7 @@
 
 <div class="landing-section" onclick="revealMainContent()">
   <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
-  <header class="landing-header">
+  <header class="landing-header" id="landingHeader">
     <div>BUTCHER</div>
     <div>&</div>
     <div>CORREIA</div>
@@ -217,9 +218,11 @@
   function revealMainContent() {
     const mainContent = document.getElementById('main-content');
     const stickyHeader = document.getElementById('stickyHeader');
+    const landingHeader = document.getElementById('landingHeader');
 
     mainContent.classList.add('visible');
     stickyHeader.style.display = 'flex';
+    landingHeader.style.display = 'none';
 
     const firstLink = document.querySelector('.nav-links a');
     if (firstLink) firstLink.click();
