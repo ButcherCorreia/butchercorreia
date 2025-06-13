@@ -42,6 +42,10 @@
       cursor: pointer;
     }
 
+    .nav-links a.active-link {
+      text-decoration: underline;
+    }
+
     .nav-links a:hover {
       text-decoration: underline;
     }
@@ -177,18 +181,31 @@
     </div>
   </div>
 
-  <script>
-    function showSection(id) {
-      document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
-      const content = document.getElementById('content-' + id);
-      const credits = document.getElementById('credits-' + id);
-      if (content) content.classList.add('active');
-      if (credits) credits.classList.add('active');
-    }
+<script>
+  function showSection(id) {
+    // Hide all content and credits sections
+    document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.credits-section').forEach(el => el.classList.remove('active'));
 
-    // Show the first section by default
-    showSection('sound-of-things');
-  </script>
+    // Show the selected content and credits
+    const content = document.getElementById('content-' + id);
+    const credits = document.getElementById('credits-' + id);
+    if (content) content.classList.add('active');
+    if (credits) credits.classList.add('active');
+
+    // Update active nav link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.classList.remove('active-link');
+      if (link.getAttribute('onclick')?.includes(id)) {
+        link.classList.add('active-link');
+      }
+    });
+  }
+
+// Don't show any section on load
+// showSection('sound-of-things');
+
+</script>
+
 </body>
 </html>
