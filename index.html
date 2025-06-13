@@ -1,205 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BUTCHER & CORREIA</title>
-  <style>
-    :root {
-      --orange: #ff6600;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BUTCHER & CORREIA</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Georgia', serif;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
 
-    body {
-      margin: 0;
-      font-family: Georgia, serif;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      color: #000;
-      background-color: #fff;
-    }
+  /* Title bar split into 3 parts */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    background: #fff;
+    border-bottom: 5px dashed #ff4000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 1rem;
+    z-index: 1000;
+  }
 
-    .header {
-      position: relative;
-      width: 100%;
-      padding: 1rem 2rem;
-      box-sizing: border-box;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
+  .site-header .left,
+  .site-header .center,
+  .site-header .right {
+    width: 33.33%;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
 
-    .header .left {
-      text-align: left;
-      flex: 1;
-    }
+  .site-header .left {
+    text-align: left;
+  }
 
-    .header .center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
+  .site-header .right {
+    text-align: right;
+  }
 
-    .header .right {
-      text-align: right;
-      flex: 1;
-    }
+  .nav-column {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    background-color: #fff;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    border-right: 5px dashed #ff4000;
+  }
 
-    .main {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
+  .nav-links a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
 
-    .nav-column {
-      width: 300px;
-      padding: 2rem;
-      box-sizing: border-box;
-      border-right: 3px solid transparent;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        var(--orange),
-        var(--orange) 2px,
-        transparent 2px,
-        transparent 10px
-      );
-      background-repeat: repeat-y;
-      background-position: right;
-      background-size: 3px 100%;
-    }
+  .nav-links a.active-link {
+    text-decoration: underline;
+  }
 
-    .nav-links a {
-      display: block;
-      color: #000;
-      text-decoration: none;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
+  .content-wrapper {
+    margin-left: 300px;
+    margin-top: 60px;
+    display: flex;
+    height: calc(100vh - 60px);
+    background-color: #fff;
+    overflow: hidden;
+  }
 
-    .nav-links a.active-link {
-      text-decoration: underline;
-    }
+  .content-column, .credits-column {
+    padding: 2rem;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
 
-    .content-column, .credits-column {
-      padding: 2rem;
-      height: 100%;
-      overflow-y: auto;
-      box-sizing: border-box;
-    }
+  .content-column {
+    flex: 2;
+  }
 
-    .content-column {
-      flex: 2;
-      border-right: 3px solid transparent;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        var(--orange),
-        var(--orange) 2px,
-        transparent 2px,
-        transparent 10px
-      );
-      background-repeat: repeat-y;
-      background-position: right;
-      background-size: 3px 100%;
-    }
+  .credits-column {
+    flex: 1;
+    border-left: 3px dotted orange;
+  }
 
-    .credits-column {
-      flex: 1;
-    }
+  section {
+    margin-bottom: 4rem;
+  }
 
-    .content-section, .credits-section {
-      display: none;
-    }
+  .content-section, .credits-section {
+    display: none;
+  }
 
-    .active {
-      display: block;
-    }
-
-    section {
-      margin-bottom: 3rem;
-    }
-
-    img {
-      max-width: 100%;
-    }
-  </style>
+  .active {
+    display: block;
+  }
+</style>
 </head>
 <body>
-  <div class="header">
-    <div class="left">BUTCHER</div>
-    <div class="center">&</div>
-    <div class="right">CORREIA</div>
+
+<header class="site-header">
+  <div class="left">BUTCHER</div>
+  <div class="center">&</div>
+  <div class="right">CORREIA</div>
+</header>
+
+<div class="nav-column">
+  <div class="nav-links">
+    <a onclick="showSection('sound-of-things', this)">The Sound of Things</a>
+    <a onclick="showSection('just-this', this)">Just This And Only That</a>
+    <a onclick="showSection('taste-of-sound', this)">Taste of Sound</a>
+    <a onclick="showSection('performance-vista', this)">Performance Vista</a>
+    <a onclick="showSection('about', this)">About</a>
+  </div>
+</div>
+
+<div class="content-wrapper">
+  <div class="content-column">
+    <section id="content-sound-of-things" class="content-section">
+      <p>Performance, 60 min.<br>Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
+      <p>The Sound of Things is a collaborative, interdisciplinary performance conceived by Klaus Ellerhusen Holm (NO) and Katherine Butcher (AU), developed with Carlos A. Correia (PT), and featuring interdisciplinary artist in taste Ieva Grigelionyte (LT/UK). Aksiom Ensemble performs the sound composition.</p>
+    </section>
+    <section id="content-just-this" class="content-section">
+      <p>2.01.2024–on going</p>
+      <p>Just This and Only That is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.</p>
+    </section>
+    <section id="content-taste-of-sound" class="content-section">
+      <p>Performance, 60 min.<br>Part of KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
+      <p>Collaboration between BUTCHER & CORREIA (visuals), Klaus Ellerhusen Holm (sound), and Martin Mosti (palate), where they delve into the realm of multi-sensory experiences.</p>
+      <p>Layers of plasticity: elements such as background music, tableware, packaging design, lighting hues, and even menu item names have been recognized as significant factors that shape our perception of taste.</p>
+      <p>"Taste of Sound" explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously can provide new and curious personal imagery. The performance interweaves sound, flavor, and visual impressions. Through manipulation of these elements, our gestures aim to challenge your sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food. This event serves as a scaled-down preview of our comprehensive showcase scheduled for 2024.</p>
+    </section>
+    <section id="content-performance-vista" class="content-section">
+      <p>Performance, anemometer, support jacks, lifting straps, construction helmets, reflective vests, and HOEFLON C10 crane. Variable dimensions.</p>
+      <p>Performance Vista is a pleasing sight between a long narrow row of trees; a succession of anticipated events, a vision, a view of a series of actions in the mind, a performance vista played out, unfolding retrospectively and prospectively.</p>
+      <p>performancevista.com &nbsp; &nbsp; @performancevista</p>
+    </section>
+    <section id="content-about" class="content-section">
+      <p>we are Katherine BUTCHER & Carlos A. CORREIA. we are a duo since the fall 2022.<br>butchercorreia [at] gmail.com</p>
+      <p>2025 &nbsp; Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)<br>
+      2025 &nbsp; The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
+      2024 &nbsp; Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
+      2023 &nbsp; Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
+      2023 &nbsp; net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
+      2022 &nbsp; Unlikely the same as yesterday - Grenseløs, Trondheim (NO)</p>
+      <p>BUTCHER & CORREIA (Katherine & Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.</p>
+    </section>
   </div>
 
-  <div class="main">
-    <div class="nav-column">
-      <div class="nav-links">
-        <a onclick="showSection('sound-of-things', this)">The Sound of Things</a>
-        <a onclick="showSection('just-this', this)">Just This And Only That</a>
-        <a onclick="showSection('taste-of-sound', this)">Taste of Sound</a>
-        <a onclick="showSection('performance-vista', this)">Performance Vista</a>
-        <a onclick="showSection('about', this)">About</a>
-      </div>
-    </div>
+  <div class="credits-column">
+    <section id="credits-sound-of-things" class="credits-section">
+      <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm<br>
+      Sound Composition: Klaus E. Holm<br>
+      Visuals & Dramaturgy: BUTCHER & CORREIA<br>
+      Sound: Aksiom Ensemble<br>
+      Food: Ieva Grigelionyte</p>
+      <p>Supported by: Trondheim kommune, Nettle T.O.C.</p>
+    </section>
 
-    <div class="content-column">
-      <section id="content-sound-of-things" class="content-section active">
-        <p>The Sound of Things - performance details...</p>
-      </section>
-      <section id="content-just-this" class="content-section">
-        <p>Just This And Only That - description...</p>
-      </section>
-      <section id="content-taste-of-sound" class="content-section">
-        <p>Taste of Sound - project details...</p>
-      </section>
-      <section id="content-performance-vista" class="content-section">
-        <p>Performance Vista - project details...</p>
-      </section>
-      <section id="content-about" class="content-section">
-        <p>About BUTCHER & CORREIA...</p>
-      </section>
-    </div>
+    <section id="credits-just-this" class="credits-section">
+      <p><a href="https://justthisandonlythat.com">justthisandonlythat.com</a></p>        
+      <p>Supported by: Kulturdirektoratet</p>
+    </section>
 
-    <div class="credits-column">
-      <section id="credits-sound-of-things" class="credits-section active">
-        <p>Credits for The Sound of Things...</p>
-      </section>
-      <section id="credits-just-this" class="credits-section">
-        <p>Credits for Just This...</p>
-      </section>
-      <section id="credits-taste-of-sound" class="credits-section">
-        <p>Credits for Taste of Sound...</p>
-      </section>
-      <section id="credits-performance-vista" class="credits-section">
-        <p>Credits for Performance Vista...</p>
-      </section>
-      <section id="credits-about" class="credits-section">
-        <p><img src="BCportrait.jpg" alt="Polaroid" width="300" /></p>
-      </section>
-    </div>
+    <section id="credits-taste-of-sound" class="credits-section">
+      <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm<br>
+      Visuals & Choreography: BUTCHER & CORREIA<br>
+      Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
+      Food: Martin Moen Mosti and Even Østby<br>
+      Supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum, Norsk Komponistforening</p>
+    </section>
+
+    <section id="credits-performance-vista" class="credits-section">
+      <a href="https://performancevista.com">performancevista.com</a><br>        
+      <a href="https://instagram.com/performancevista">@performancevista</a><br>  
+    </section>
+
+    <section id="credits-about" class="credits-section">
+      <img src="BCportrait.jpg" alt="Polaroid" width="300" />
+    </section>
   </div>
+</div>
 
-  <script>
-    function showSection(id, link) {
-      // Hide all
-      document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
+<script>
+  function showSection(id, link) {
+    document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
 
-      // Show selected
-      document.getElementById('content-' + id)?.classList.add('active');
-      document.getElementById('credits-' + id)?.classList.add('active');
-      link.classList.add('active-link');
-    }
+    const contentSection = document.getElementById('content-' + id);
+    const creditsSection = document.getElementById('credits-' + id);
+    if (contentSection) contentSection.classList.add('active');
+    if (creditsSection) creditsSection.classList.add('active');
 
-    // Initialize
-    window.addEventListener('DOMContentLoaded', () => {
-      const firstLink = document.querySelector('.nav-links a');
-      if (firstLink) firstLink.click();
-    });
-  </script>
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
+    if(link) link.classList.add('active-link');
+
+    scrollColumns(contentSection, creditsSection);
+  }
+
+  function scrollColumns(contentSection, creditsSection) {
+    if (!contentSection || !creditsSection) return;
+
+    const contentColumn = document.querySelector('.content-column');
+    const creditsColumn = document.querySelector('.credits-column');
+
+    const contentScrollTop = contentSection.offsetTop;
+    const contentMaxScroll = contentColumn.scrollHeight - contentColumn.clientHeight;
+    const scrollPercent = contentMaxScroll > 0 ? contentScrollTop / contentMaxScroll : 0;
+
+    const creditsMaxScroll = creditsColumn.scrollHeight - creditsColumn.clientHeight;
+    const creditsScrollTop = creditsMaxScroll * scrollPercent;
+
+    contentColumn.scrollTo({ top: contentScrollTop, behavior: 'smooth' });
+    creditsColumn.scrollTo({ top: creditsScrollTop, behavior: 'smooth' });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const firstLink = document.querySelector('.nav-links a');
+    if (firstLink) firstLink.click();
+  });
+</script>
+
 </body>
 </html>
