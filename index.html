@@ -9,45 +9,6 @@
       margin: 0;
       font-family: 'Georgia', serif;
       color: #000;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .site-header {
-      width: 100vw;
-      height: 60px;
-      background: #fff;
-      border-bottom: 5px dashed #ff4000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-sizing: border-box;
-      padding: 0 1rem;
-      z-index: 1000;
-    }
-
-    .sticky-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      display: none;
-    }
-
-    .site-header .left,
-    .site-header .center,
-    .site-header .right {
-      width: 33.33%;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .site-header .left {
-      text-align: left;
-    }
-
-    .site-header .right {
-      text-align: right;
     }
 
     .landing-section {
@@ -68,13 +29,47 @@
     .landing-header {
       position: absolute;
       bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: #fff;
+      border-top: 5px dashed #ff4000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .site-header.sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: #fff;
+      border-bottom: 5px dashed #ff4000;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      z-index: 1000;
+      font-size: 1.5rem;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    #main-content {
+      display: none;
+      flex-direction: row;
+    }
+
+    #main-content.visible {
+      display: flex;
     }
 
     .nav-column {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      bottom: 0;
       width: 300px;
       background-color: #fff;
       padding: 2rem 1rem;
@@ -84,6 +79,9 @@
       justify-content: space-between;
       overflow-y: auto;
       border-right: 5px dashed #ff4000;
+      height: calc(100vh - 60px);
+      position: sticky;
+      top: 60px;
     }
 
     .nav-links a {
@@ -100,11 +98,9 @@
     }
 
     .content-wrapper {
-      margin-left: 300px;
-      margin-top: 60px;
       display: flex;
+      flex: 1;
       height: calc(100vh - 60px);
-      background-color: #fff;
       overflow: hidden;
     }
 
@@ -123,10 +119,6 @@
       flex: 1;
     }
 
-    section {
-      margin-bottom: 4rem;
-    }
-
     .content-section, .credits-section {
       display: none;
     }
@@ -138,24 +130,21 @@
 </head>
 <body>
 
-<!-- Landing with header -->
-<div class="landing-section" onclick="scrollToMainContent()">
+<div class="landing-section" onclick="revealMainContent()">
   <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
-  <header class="site-header landing-header">
-    <div class="left">BUTCHER</div>
-    <div class="center">&</div>
-    <div class="right">CORREIA</div>
+  <header class="landing-header">
+    <div>BUTCHER</div>
+    <div>&</div>
+    <div>CORREIA</div>
   </header>
 </div>
 
-<!-- Sticky header that appears after scroll -->
 <header class="site-header sticky-header">
-  <div class="left">BUTCHER</div>
-  <div class="center">&</div>
-  <div class="right">CORREIA</div>
+  <div>BUTCHER</div>
+  <div>&</div>
+  <div>CORREIA</div>
 </header>
 
-<!-- Main content area -->
 <main id="main-content">
   <div class="nav-column">
     <div class="nav-links">
@@ -169,69 +158,86 @@
 
   <div class="content-wrapper">
     <div class="content-column">
-      <!-- Your content sections here -->
+      <section id="content-sound-of-things" class="content-section">
+        <p>Performance, 60 min.<br>Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
+        <p>The Sound of Things is a collaborative, interdisciplinary performance...</p>
+      </section>
+
+      <section id="content-just-this" class="content-section">
+        <p>2.01.2024–on going</p>
+        <p>Just This and Only That is a deliberately slow and participatory performative project...</p>
+      </section>
+
+      <section id="content-taste-of-sound" class="content-section">
+        <p>Performance, 60 min.<br>KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
+        <p>Taste of Sound explores the possibilities of multisensory input...</p>
+      </section>
+
+      <section id="content-performance-vista" class="content-section">
+        <p>Performance, crane, safety gear, variable dimensions.</p>
+        <p>Performance Vista is a pleasing sight between a long narrow row of trees...</p>
+      </section>
+
+      <section id="content-about" class="content-section">
+        <p>we are Katherine BUTCHER & Carlos A. CORREIA<br>studio [at] butchercorreia.com</p>
+        <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes...</p>
+      </section>
     </div>
+
     <div class="credits-column">
-      <!-- Your credits sections here -->
+      <section id="credits-sound-of-things" class="credits-section">
+        <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm</p>
+        <p>Supported by: Trondheim kommune, Nettle T.O.C.</p>
+      </section>
+
+      <section id="credits-just-this" class="credits-section">
+        <a href="https://justthisandonlythat.com">justthisandonlythat.com</a>
+        <p>Supported by: Kulturdirektoratet</p>
+      </section>
+
+      <section id="credits-taste-of-sound" class="credits-section">
+        <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm</p>
+        <p>Supported by: Rotvoll Kunstnerkollektiv, Norsk jazzforum</p>
+      </section>
+
+      <section id="credits-performance-vista" class="credits-section">
+        <a href="https://performancevista.com">performancevista.com</a><br>
+        <a href="https://instagram.com/performancevista">@performancevista</a>
+      </section>
+
+      <section id="credits-about" class="credits-section">
+        <img src="BCportrait.jpg" alt="Polaroid" width="300" />
+      </section>
     </div>
   </div>
 </main>
 
 <script>
+  function revealMainContent() {
+    document.getElementById('main-content').classList.add('visible');
+    document.querySelector('.sticky-header').style.display = 'flex';
+
+    // Optional: auto-open the first section
+    const firstLink = document.querySelector('.nav-links a');
+    if (firstLink) firstLink.click();
+
+    // Scroll to top of main content
+    setTimeout(() => {
+      window.scrollTo({ top: document.querySelector('.sticky-header').offsetHeight, behavior: 'smooth' });
+    }, 100);
+  }
+
   function showSection(id, link) {
     document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
 
-    const contentSection = document.getElementById('content-' + id);
-    const creditsSection = document.getElementById('credits-' + id);
-    if (contentSection) contentSection.classList.add('active');
-    if (creditsSection) creditsSection.classList.add('active');
+    const content = document.getElementById('content-' + id);
+    const credits = document.getElementById('credits-' + id);
+    if (content) content.classList.add('active');
+    if (credits) credits.classList.add('active');
 
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
     if (link) link.classList.add('active-link');
-
-    scrollColumns(contentSection, creditsSection);
   }
-
-  function scrollColumns(contentSection, creditsSection) {
-    if (!contentSection || !creditsSection) return;
-
-    const contentColumn = document.querySelector('.content-column');
-    const creditsColumn = document.querySelector('.credits-column');
-
-    const contentScrollTop = contentSection.offsetTop;
-    const contentMaxScroll = contentColumn.scrollHeight - contentColumn.clientHeight;
-    const scrollPercent = contentMaxScroll > 0 ? contentScrollTop / contentMaxScroll : 0;
-
-    const creditsMaxScroll = creditsColumn.scrollHeight - creditsColumn.clientHeight;
-    const creditsScrollTop = creditsMaxScroll * scrollPercent;
-
-    contentColumn.scrollTo({ top: contentScrollTop, behavior: 'smooth' });
-    creditsColumn.scrollTo({ top: creditsScrollTop, behavior: 'smooth' });
-  }
-
-  function scrollToMainContent() {
-    const main = document.getElementById('main-content');
-    window.scrollTo({
-      top: main.offsetTop,
-      behavior: 'smooth'
-    });
-  }
-
-  window.addEventListener('scroll', () => {
-    const main = document.getElementById('main-content');
-    const stickyHeader = document.querySelector('.sticky-header');
-
-    if (window.scrollY >= main.offsetTop) {
-      stickyHeader.style.display = 'flex';
-    } else {
-      stickyHeader.style.display = 'none';
-    }
-  });
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const firstLink = document.querySelector('.nav-links a');
-    if (firstLink) firstLink.click();
-  });
 </script>
 
 </body>
