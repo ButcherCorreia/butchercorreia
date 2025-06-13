@@ -217,22 +217,23 @@
 
 <script>
   function revealMainContent() {
-    const mainContent = document.getElementById('main-content');
-    const landingHeader = document.getElementById('landingHeader');
+  const mainContent = document.getElementById('main-content');
+  const landingHeader = document.getElementById('landingHeader');
 
-    mainContent.classList.add('visible');
-    landingHeader.style.display = 'none';
+  mainContent.classList.add('visible');
+  landingHeader.style.display = 'none';
 
+  // Delay the first link click until content is visible
+  setTimeout(() => {
     const firstLink = document.querySelector('.nav-links a');
     if (firstLink) firstLink.click();
 
-    setTimeout(() => {
-      window.scrollTo({
-        top: mainContent.offsetTop,
-        behavior: 'smooth'
-      });
-    }, 50);
-  }
+    window.scrollTo({
+      top: mainContent.offsetTop,
+      behavior: 'smooth'
+    });
+  }, 100);
+}
 
   function showSection(id, link) {
     document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
