@@ -20,7 +20,7 @@
       height: 100vh;
       width: 100%;
       overflow: hidden;
-      cursor: pointer; /* CHANGE: Added for click-to-scroll indicator */
+      cursor: pointer;
     }
 
     .landing-image {
@@ -38,7 +38,6 @@
       width: 100%;
       height: 60px;
       background: #fff;
-      /* CHANGE: Border thickened */
       border-bottom: 6px dashed #ff4000;
       display: flex;
       align-items: center;
@@ -63,23 +62,24 @@
       flex-direction: row;
       position: relative;
       background-color: #fff;
+      /* Ensures content columns stretch to match the nav column's height */
+      align-items: stretch; 
     }
     
     .nav-column {
-      /* CHANGE: Width shortened */
       width: 250px;
       padding: 2rem 1rem;
       box-sizing: border-box;
-      /* CHANGE: Border thickened */
       border-right: 6px dashed #ff4000;
-      border-left: 6px dashed #ff4000;
+      /* CHANGE: Added bottom border */
+      border-bottom: 6px dashed #ff4000;
       position: sticky;
       top: 60px;
       height: calc(100vh - 60px);
-      /* CHANGE: Aligns nav links to the bottom */
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      /* CHANGE: Content aligned to top */
+      justify-content: flex-start;
     }
 
     .nav-links a {
@@ -98,17 +98,18 @@
     .content-wrapper {
       display: flex;
       flex: 1;
-      align-items: flex-start;
+      align-items: stretch;
     }
     
     .content-column, .credits-column {
       padding: 2rem;
       box-sizing: border-box;
-      /* CHANGE: Aligns content sections to the bottom */
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      min-height: calc(100vh - 100px); /* Gives columns height for bottom alignment */
+      /* CHANGE: Content aligned to top */
+      justify-content: flex-start; 
+      /* CHANGE: Added bottom border */
+      border-bottom: 6px dashed #ff4000;
     }
 
     .content-column {
@@ -116,20 +117,8 @@
     }
 
     .credits-column {
-        /* CHANGE: Width shortened */
-      width: 250px;
-      padding: 2rem 1rem;
-      box-sizing: border-box;
-      /* CHANGE: Border thickened */
-      border-right: 6px dashed #ff4000;
+      flex: 1;
       border-left: 6px dashed #ff4000;
-      position: sticky;
-      top: 60px;
-      height: calc(100vh - 60px);
-      /* CHANGE: Aligns nav links to the bottom */
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
     }
 
     .content-section, .credits-section {
@@ -139,13 +128,21 @@
     .active {
       display: block;
     }
+
+    /* CHANGE: Added footer styles */
+    .site-footer {
+      padding: 2rem;
+      text-align: center;
+      font-family: Georgia, serif;
+      color: #000;
+    }
   </style>
 </head>
 <body>
 
 <!-- The landing section is now just a visual element -->
 <div class="landing-section" id="landing-section">
-  <img src="landingimage2.jpg" alt="Landing Image" class="landing-image" />
+  <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
 </div>
 
 <!-- The single, persistent header -->
@@ -214,6 +211,11 @@
   </div>
 </main>
 
+<!-- CHANGE: Added footer element -->
+<footer class="site-footer">
+  BUTCHER & CORREIA © 2024
+</footer>
+
 <script>
   function showSection(id, link) {
     document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
@@ -248,7 +250,7 @@
     }
   });
 
-  // CHANGE: Added click event to scroll down
+  // Added click event to scroll down
   landingSection.addEventListener('click', () => {
     mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
