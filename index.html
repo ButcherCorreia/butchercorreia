@@ -11,16 +11,16 @@
       font-family: Georgia, serif;
       color: #000;
       scroll-behavior: smooth;
-      background-color: #fff; /* Ensure body has a background */
+      background-color: #fff;
     }
 
     /* --- Landing Section --- */
-    /* This section simply acts as a 100vh spacer at the top of the page. */
     .landing-section {
       position: relative;
       height: 100vh;
       width: 100%;
       overflow: hidden;
+      cursor: pointer; /* CHANGE: Added for click-to-scroll indicator */
     }
 
     .landing-image {
@@ -30,17 +30,16 @@
       display: block;
     }
 
-    /* --- THE UNIFIED HEADER (The Core of the Solution) --- */
+    /* --- Unified Header --- */
     #site-header {
-      /* Starts as absolute, positioned at the bottom of the initial viewport */
       position: absolute;
       bottom: 0;
       left: 0;
-      
       width: 100%;
       height: 60px;
       background: #fff;
-      border-bottom: 5px dashed #ff4000;
+      /* CHANGE: Border thickened */
+      border-bottom: 6px dashed #ff4000;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,36 +48,37 @@
       font-size: 1.5rem;
       font-weight: bold;
       z-index: 1000;
-      transition: transform 0.3s ease-in-out; /* Use transform for smooth transition */
+      transition: transform 0.3s ease-in-out;
     }
 
-    /* This class is added by JavaScript when you scroll down */
     #site-header.sticky {
-      /* Becomes fixed to the top of the viewport */
       position: fixed;
       top: 0;
-      bottom: auto; /* Overrides the 'bottom: 0' */
+      bottom: auto;
     }
 
     /* --- Main Content Layout --- */
-    /* The main content is ALWAYS displayed, allowing the page to have a scrollbar immediately. */
     #main-content {
       display: flex;
       flex-direction: row;
-      position: relative; /* Creates a new stacking context */
+      position: relative;
       background-color: #fff;
     }
     
     .nav-column {
-      width: 300px;
+      /* CHANGE: Width shortened */
+      width: 250px;
       padding: 2rem 1rem;
       box-sizing: border-box;
-      border-right: 5px dashed #ff4000;
-      
-      /* Sticks to the top of the viewport, under the header */
+      /* CHANGE: Border thickened */
+      border-right: 6px dashed #ff4000;
       position: sticky;
-      top: 60px; /* Space for the 60px sticky header */
-      height: calc(100vh - 60px); /* Ensures nav is full-height relative to the viewport */
+      top: 60px;
+      height: calc(100vh - 60px);
+      /* CHANGE: Aligns nav links to the bottom */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
     }
 
     .nav-links a {
@@ -97,12 +97,17 @@
     .content-wrapper {
       display: flex;
       flex: 1;
-      align-items: flex-start; /* Aligns columns to the top */
+      align-items: flex-start;
     }
     
     .content-column, .credits-column {
       padding: 2rem;
       box-sizing: border-box;
+      /* CHANGE: Aligns content sections to the bottom */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: calc(100vh - 100px); /* Gives columns height for bottom alignment */
     }
 
     .content-column {
@@ -111,6 +116,8 @@
 
     .credits-column {
       flex: 1;
+      /* CHANGE: Added border to credits column */
+      border-left: 6px dashed #ff4000;
     }
 
     .content-section, .credits-section {
@@ -126,7 +133,7 @@
 
 <!-- The landing section is now just a visual element -->
 <div class="landing-section" id="landing-section">
-  <img src="landingimage2.jpg" alt="Landing Image" class="landing-image" />
+  <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
 </div>
 
 <!-- The single, persistent header -->
@@ -189,7 +196,7 @@
         <a href="https://instagram.com/performancevista">@performancevista</a>
       </section>
       <section id="credits-about" class="credits-section">
-        <img src="BCportrait.jpg" alt="Polaroid" width="300" />
+        <img src="BCportrait.jpg" alt="Polaroid" width="200" />
       </section>
     </div>
   </div>
@@ -206,6 +213,12 @@
     if (link) link.classList.add('active-link');
   }
 
+  // Define DOM elements
+  const header = document.getElementById('site-header');
+  const mainContent = document.getElementById('main-content');
+  const landingSection = document.getElementById('landing-section');
+  const stickyThreshold = mainContent.offsetTop;
+
   // Activate the first section when the page is fully loaded
   document.addEventListener('DOMContentLoaded', () => {
     const firstLink = document.querySelector('.nav-links a');
@@ -214,19 +227,18 @@
     }
   });
 
-  // --- THE HEADER TRANSITION LOGIC ---
-  const header = document.getElementById('site-header');
-  // The point at which the header should become sticky is the top of the main content area.
-  const stickyThreshold = document.getElementById('main-content').offsetTop;
-
+  // Handle header stickiness on scroll
   window.addEventListener('scroll', () => {
-    // When the user scrolls past the threshold, add the .sticky class.
-    // Otherwise, remove it.
     if (window.scrollY >= stickyThreshold) {
       header.classList.add('sticky');
     } else {
       header.classList.remove('sticky');
     }
+  });
+
+  // CHANGE: Added click event to scroll down
+  landingSection.addEventListener('click', () => {
+    mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 </script>
 
