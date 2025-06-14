@@ -1,3 +1,6 @@
+adapt those changes with my current code:
+No mistakes this time!
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,10 +68,14 @@
     }
 
     #main-content {
+      display: none;
+    }
+
+    #main-content.visible {
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
-      min-height: 100vh;
+      flex-wrap: wrap; /* optional, for better responsiveness */
+      min-height: 100vh; /* or remove height restriction altogether */
     }
 
     .nav-column {
@@ -100,23 +107,23 @@
     .content-wrapper {
       display: flex;
       flex: 1;
-      min-height: calc(100vh - 60px);
-      overflow: visible;
+      min-height: calc(100vh - 60px); /* allow it to grow beyond viewport */
+      overflow: visible; /* or remove entirely */
     }
-
-    .content-column {
-      flex: 2;
-      padding: 2rem;
-      padding-top: 80px; /* ensures content starts below sticky header */
-      overflow-y: auto;
-      box-sizing: border-box;
-    }
-
-    .credits-column {
+    
+    .content-column, .credits-column {
       flex: 1;
       padding: 2rem;
       overflow-y: auto;
       box-sizing: border-box;
+    }
+
+    .content-column {
+      flex: 2;
+    }
+
+    .credits-column {
+      flex: 1;
     }
 
     .content-section, .credits-section {
@@ -130,7 +137,7 @@
 </head>
 <body>
 
-<div class="landing-section" onclick="scrollToMainContent()">
+<div class="landing-section" onclick="revealMainContent()">
   <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
   <header class="landing-header" id="landingHeader">
     <div>BUTCHER</div>
@@ -213,15 +220,24 @@
 </main>
 
 <script>
-  function scrollToMainContent() {
+  function revealMainContent() {
+  const mainContent = document.getElementById('main-content');
+  const landingHeader = document.getElementById('landingHeader');
+
+  mainContent.classList.add('visible');
+  landingHeader.style.display = 'none';
+
+  // Delay the first link click until content is visible
+  setTimeout(() => {
     const firstLink = document.querySelector('.nav-links a');
     if (firstLink) firstLink.click();
 
     window.scrollTo({
-      top: document.getElementById('main-content').offsetTop,
+      top: mainContent.offsetTop,
       behavior: 'smooth'
     });
-  }
+  }, 100);
+}
 
   function showSection(id, link) {
     document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
@@ -247,13 +263,8 @@
       stickyHeader.style.display = 'none';
     }
   });
-
-  // Auto-activate first section on load
-  window.addEventListener('DOMContentLoaded', () => {
-    const firstLink = document.querySelector('.nav-links a');
-    if (firstLink) firstLink.click();
-  });
 </script>
+
 
 </body>
 </html>
