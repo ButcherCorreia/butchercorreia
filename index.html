@@ -11,15 +11,16 @@
       font-family: Georgia, serif;
       color: #000;
       scroll-behavior: smooth;
+      background-color: #fff; /* Ensure body has a background */
     }
 
     /* --- Landing Section --- */
+    /* This section simply acts as a 100vh spacer at the top of the page. */
     .landing-section {
       position: relative;
       height: 100vh;
       width: 100%;
       overflow: hidden;
-      cursor: pointer;
     }
 
     .landing-image {
@@ -29,11 +30,13 @@
       display: block;
     }
 
-    /* --- SOLUTION 1: A SINGLE, UNIFIED HEADER --- */
+    /* --- THE UNIFIED HEADER (The Core of the Solution) --- */
     #site-header {
-      position: absolute; /* Starts at the bottom of the landing section */
+      /* Starts as absolute, positioned at the bottom of the initial viewport */
+      position: absolute;
       bottom: 0;
       left: 0;
+      
       width: 100%;
       height: 60px;
       background: #fff;
@@ -46,38 +49,36 @@
       font-size: 1.5rem;
       font-weight: bold;
       z-index: 1000;
-      transition: all 0.3s ease-in-out; /* Smooth transition */
+      transition: transform 0.3s ease-in-out; /* Use transform for smooth transition */
     }
 
-    /* This class will be added via JS to make the header sticky */
+    /* This class is added by JavaScript when you scroll down */
     #site-header.sticky {
-      position: fixed; /* Becomes fixed to the top */
+      /* Becomes fixed to the top of the viewport */
+      position: fixed;
       top: 0;
-      bottom: auto;
+      bottom: auto; /* Overrides the 'bottom: 0' */
     }
 
     /* --- Main Content Layout --- */
+    /* The main content is ALWAYS displayed, allowing the page to have a scrollbar immediately. */
     #main-content {
-      display: none; /* Stays hidden initially */
+      display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
-    }
-
-    #main-content.visible {
-      display: flex; /* Becomes a flex container when visible */
+      position: relative; /* Creates a new stacking context */
+      background-color: #fff;
     }
     
-    /* --- SOLUTION 3: SIMPLIFIED LAYOUT FOR NATURAL SCROLLING --- */
     .nav-column {
       width: 300px;
       padding: 2rem 1rem;
       box-sizing: border-box;
       border-right: 5px dashed #ff4000;
-      position: sticky; /* Will stick to the top of the viewport when scrolling */
-      top: 60px; /* Aligns below the sticky header */
-      height: calc(100vh - 60px); /* Ensures nav is full height */
-      display: flex;
-      flex-direction: column;
+      
+      /* Sticks to the top of the viewport, under the header */
+      position: sticky;
+      top: 60px; /* Space for the 60px sticky header */
+      height: calc(100vh - 60px); /* Ensures nav is full-height relative to the viewport */
     }
 
     .nav-links a {
@@ -96,22 +97,20 @@
     .content-wrapper {
       display: flex;
       flex: 1;
-      /* SOLUTION 4: Align columns to the top */
-      align-items: flex-start;
+      align-items: flex-start; /* Aligns columns to the top */
     }
     
-    /* No more fixed heights or overflow properties on columns */
     .content-column, .credits-column {
       padding: 2rem;
       box-sizing: border-box;
     }
 
     .content-column {
-      flex: 2; /* Takes up 2/3 of the space */
+      flex: 2;
     }
 
     .credits-column {
-      flex: 1; /* Takes up 1/3 of the space */
+      flex: 1;
     }
 
     .content-section, .credits-section {
@@ -125,18 +124,19 @@
 </head>
 <body>
 
-<!-- The landing section remains, but without its own header -->
+<!-- The landing section is now just a visual element -->
 <div class="landing-section" id="landing-section">
   <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
 </div>
 
-<!-- SOLUTION 1: This is now the ONLY header -->
+<!-- The single, persistent header -->
 <header id="site-header">
   <div>BUTCHER</div>
   <div>&</div>
   <div>CORREIA</div>
 </header>
 
+<!-- Main content is now part of the initial document flow -->
 <main id="main-content">
   <div class="nav-column">
     <div class="nav-links">
@@ -154,49 +154,40 @@
         <p>Performance, 60 min.<br>Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
         <p>The Sound of Things is a collaborative, interdisciplinary performance...</p>
       </section>
-      <!-- ... other content sections ... -->
-       <section id="content-just-this" class="content-section">
+      <section id="content-just-this" class="content-section">
         <p>2.01.2024–on going</p>
         <p>Just This and Only That is a deliberately slow and participatory performative project...</p>
       </section>
-
       <section id="content-taste-of-sound" class="content-section">
         <p>Performance, 60 min.<br>KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
         <p>Taste of Sound explores the possibilities of multisensory input...</p>
       </section>
-
       <section id="content-performance-vista" class="content-section">
         <p>Performance, crane, safety gear, variable dimensions.</p>
         <p>Performance Vista is a pleasing sight between a long narrow row of trees...</p>
       </section>
-
       <section id="content-about" class="content-section">
         <p>we are Katherine BUTCHER & Carlos A. CORREIA<br>studio [at] butchercorreia.com</p>
         <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes...</p>
       </section>
     </div>
-
     <div class="credits-column">
       <section id="credits-sound-of-things" class="credits-section">
         <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm</p>
         <p>Supported by: Trondheim kommune, Nettle T.O.C.</p>
       </section>
-      <!-- ... other credits sections ... -->
-       <section id="credits-just-this" class="credits-section">
+      <section id="credits-just-this" class="credits-section">
         <a href="https://justthisandonlythat.com">justthisandonlythat.com</a>
         <p>Supported by: Kulturdirektoratet</p>
       </section>
-
       <section id="credits-taste-of-sound" class="credits-section">
         <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm</p>
         <p>Supported by: Rotvoll Kunstnerkollektiv, Norsk jazzforum</p>
       </section>
-
       <section id="credits-performance-vista" class="credits-section">
         <a href="https://performancevista.com">performancevista.com</a><br>
         <a href="https://instagram.com/performancevista">@performancevista</a>
       </section>
-
       <section id="credits-about" class="credits-section">
         <img src="BCportrait.jpg" alt="Polaroid" width="300" />
       </section>
@@ -205,54 +196,38 @@
 </main>
 
 <script>
-  // A flag to ensure the reveal function only runs once
-  let isContentRevealed = false;
-
-  function revealMainContent() {
-    // If content is already shown, do nothing
-    if (isContentRevealed) return;
-    isContentRevealed = true;
-
-    const mainContent = document.getElementById('main-content');
-    const header = document.getElementById('site-header');
-    const landingSection = document.getElementById('landing-section');
-    
-    // Make the header sticky and the main content visible
-    header.classList.add('sticky');
-    mainContent.classList.add('visible');
-    
-    // Hide the landing section completely to allow the page to reflow
-    // This makes the main content the new top of the page
-    landingSection.style.display = 'none';
-
-    // Activate the first project automatically after a brief delay
-    setTimeout(() => {
-      const firstLink = document.querySelector('.nav-links a');
-      if (firstLink) {
-        firstLink.click();
-      }
-    }, 100);
-  }
-
   function showSection(id, link) {
-    // Hide all content/credits sections
     document.querySelectorAll('.content-section, .credits-section').forEach(el => el.classList.remove('active'));
-
-    // Show the relevant content/credits sections
     const content = document.getElementById('content-' + id);
     const credits = document.getElementById('credits-' + id);
     if (content) content.classList.add('active');
     if (credits) credits.classList.add('active');
-
-    // Update the active link style in the navigation
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active-link'));
     if (link) link.classList.add('active-link');
   }
 
-  /* --- SOLUTION 2: REVEAL CONTENT ON SCROLL, TOUCH, OR CLICK --- */
-  document.getElementById('landing-section').addEventListener('click', revealMainContent);
-  window.addEventListener('wheel', revealMainContent);
-  window.addEventListener('touchstart', revealMainContent);
+  // Activate the first section when the page is fully loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const firstLink = document.querySelector('.nav-links a');
+    if (firstLink) {
+      firstLink.click();
+    }
+  });
+
+  // --- THE HEADER TRANSITION LOGIC ---
+  const header = document.getElementById('site-header');
+  // The point at which the header should become sticky is the top of the main content area.
+  const stickyThreshold = document.getElementById('main-content').offsetTop;
+
+  window.addEventListener('scroll', () => {
+    // When the user scrolls past the threshold, add the .sticky class.
+    // Otherwise, remove it.
+    if (window.scrollY >= stickyThreshold) {
+      header.classList.add('sticky');
+    } else {
+      header.classList.remove('sticky');
+    }
+  });
 </script>
 
 </body>
