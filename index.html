@@ -115,9 +115,19 @@
     }
 
     .credits-column {
-      flex: 1;
-      /* CHANGE: Added border to credits column */
-      border-left: 6px dashed #ff4000;
+        /* CHANGE: Width shortened */
+      width: 250px;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      /* CHANGE: Border thickened */
+      border-right: 6px dashed #ff4000;
+      position: sticky;
+      top: 60px;
+      height: calc(100vh - 60px);
+      /* CHANGE: Aligns nav links to the bottom */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
     }
 
     .content-section, .credits-section {
