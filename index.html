@@ -46,7 +46,7 @@
       box-sizing: border-box;
       font-size: 1.5rem;
       font-weight: bold;
-      z-index: 1000;
+      z-index: 1000; /* High z-index to stay on top */
       transition: transform 0.3s ease-in-out;
     }
 
@@ -62,8 +62,11 @@
       flex-direction: row;
       position: relative;
       background-color: #fff;
-      /* Ensures content columns stretch to match the nav column's height */
-      align-items: stretch; 
+      align-items: stretch;
+      /* FIX 2: Ensure main content is at least 100vh tall to push footer down */
+      min-height: 100vh;
+      /* FIX 4: Set a z-index lower than the header to prevent glitches */
+      z-index: 1;
     }
     
     .nav-column {
@@ -71,14 +74,13 @@
       padding: 2rem 1rem;
       box-sizing: border-box;
       border-right: 6px dashed #ff4000;
-      /* CHANGE: Added bottom border */
       border-bottom: 6px dashed #ff4000;
       position: sticky;
       top: 60px;
       height: calc(100vh - 60px);
       display: flex;
       flex-direction: column;
-      /* CHANGE: Content aligned to top */
+      /* FIX 3: Content aligned to top */
       justify-content: flex-start;
     }
 
@@ -106,9 +108,8 @@
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      /* CHANGE: Content aligned to top */
-      justify-content: flex-start; 
-      /* CHANGE: Added bottom border */
+      /* FIX 3: Content aligned to top */
+      justify-content: flex-start;
       border-bottom: 6px dashed #ff4000;
     }
 
@@ -129,12 +130,12 @@
       display: block;
     }
 
-    /* CHANGE: Added footer styles */
     .site-footer {
       padding: 2rem;
       text-align: center;
       font-family: Georgia, serif;
       color: #000;
+      background-color: #fff;
     }
   </style>
 </head>
@@ -142,6 +143,7 @@
 
 <!-- The landing section is now just a visual element -->
 <div class="landing-section" id="landing-section">
+  <!-- FIX 1: Corrected image name -->
   <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
 </div>
 
@@ -211,7 +213,7 @@
   </div>
 </main>
 
-<!-- CHANGE: Added footer element -->
+<!-- This footer will now only be visible after scrolling down -->
 <footer class="site-footer">
   BUTCHER & CORREIA © 2024
 </footer>
