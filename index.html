@@ -71,6 +71,8 @@
     #main-content.visible {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap; /* optional, for better responsiveness */
+      min-height: 100vh; /* or remove height restriction altogether */
     }
 
     .nav-column {
@@ -100,10 +102,11 @@
     }
 
        .content-wrapper {
+    .content-wrapper {
       display: flex;
       flex: 1;
-      height: calc(100vh - 60px);
-      overflow: hidden;
+      min-height: calc(100vh - 60px); /* allow it to grow beyond viewport */
+      overflow: visible; /* or remove entirely */
     }
     
     .content-column, .credits-column {
