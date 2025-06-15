@@ -131,6 +131,14 @@
   <button class="plus-btn" onclick="handlePlusClick()">+</button>
 </div>
 
+ <div id="secondPopup" class="popup" style="display:none;">
+  <button class="close-btn" onclick="closeSecondPopup()">X</button>
+  <div id="secondPopupContent">
+    <strong>Extra Information</strong><br>
+    This is some extended content revealed by the plus button.
+  </div>
+</div>
+
 <script>
   const contentData = {
     "sound-of-things": `
@@ -196,6 +204,19 @@
       document.querySelectorAll('.nav-column a').forEach(link => {
         link.classList.remove('active');
       });
+    }
+
+      function handlePlusClick() {
+      document.getElementById('secondPopup').style.display = 'block';
+    }
+    
+    function closeSecondPopup() {
+      document.getElementById('secondPopup').style.display = 'none';
+    }
+    
+    function closePopup() {
+      document.getElementById('popupContainer').style.display = 'none';
+      closeSecondPopup(); // Ensure second popup closes too
     }
 </script>
 
