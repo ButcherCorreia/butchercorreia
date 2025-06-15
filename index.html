@@ -65,9 +65,9 @@
 
     .popup {
       position: fixed;
-      top: 50%;
+      top: 20px; /* align with site header/nav */
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateX(-50%); /* center horizontally only */
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
@@ -76,6 +76,7 @@
       box-shadow: 10px 10px 0 #ff4000;
       z-index: 200;
     }
+
 
     .popup .close-btn {
       position: absolute;
