@@ -7,12 +7,24 @@
   <style>
     html, body {
       margin: 0;
-      padding: 0;
-      height: 100%;
       font-family: Georgia, serif;
-      background: url('landingimage2.jpg') no-repeat center center fixed;
-      background-size: cover;
-      overflow: hidden;
+      height: 100%;
+      overflow-x: hidden;
+      background-color: #fff;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 40%;
+      height: auto;
+      background-image: url('landingimage2.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: bottom left;
+      z-index: -1;
     }
 
     .site-title {
@@ -21,11 +33,10 @@
       right: 20px;
       font-size: 1.5rem;
       font-weight: bold;
-      color: black;
-      z-index: 100;
-      background: white;
+      background-color: #fff;
+      border-bottom: 4px dashed #ff4000;
       padding: 0.5rem 1rem;
-      border: 3px dashed #ff4000;
+      z-index: 100;
     }
 
     .nav-column {
@@ -34,132 +45,126 @@
       left: 20px;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem; /* reduced gap */
-      background: transparent; /* fully transparent */
+      gap: 0.5rem;
+      background: transparent;
       z-index: 100;
     }
 
     .nav-column a {
-      color: black;
+      color: #000;
       text-decoration: none;
       font-size: 1.1rem;
       cursor: pointer;
-      background: none;
-      padding: 0.2rem 0.4rem;
     }
 
-    .popup-box {
+    .popup {
       position: fixed;
-      top: 50%;
+      top: 100px;
       left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border: 4px dashed #ff4000;
+      transform: translateX(-50%);
+      background-color: #fff;
+      border: 3px dashed #ff4000;
       padding: 2rem;
-      width: 60%;
-      max-height: 70%;
-      overflow-y: auto;
-      display: none;
-      z-index: 999;
+      width: 500px;
+      max-width: 90%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 200;
     }
 
-    .popup-box.active {
-      display: block;
+    .popup .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: #000;
     }
 
     .footnote {
       position: fixed;
-      top: 20px;
-      right: -80px;
-      transform: rotate(180deg);
+      bottom: 20px;
+      right: 20px;
+      transform: rotate(-90deg);
+      transform-origin: right bottom;
       font-size: 0.9rem;
-      color: black;
-      background: rgba(255, 255, 255, 0.6);
-      padding: 0.3rem 1rem;
       z-index: 100;
-      transform-origin: right top;
     }
   </style>
 </head>
 <body>
 
-  <div class="site-title">BUTCHER & CORREIA</div>
+<div class="site-title">BUTCHER & CORREIA</div>
 
-  <div class="nav-column">
-    <a onclick="showPopup('sound-of-things')">The Sound of Things</a>
-    <a onclick="showPopup('just-this')">Just This And Only That</a>
-    <a onclick="showPopup('taste-of-sound')">Taste of Sound</a>
-    <a onclick="showPopup('performance-vista')">Performance Vista</a>
-    <a onclick="showPopup('about')">About</a>
-  </div>
+<div class="nav-column">
+  <a onclick="showPopup('sound-of-things')">The Sound of Things</a>
+  <a onclick="showPopup('just-this')">Just This And Only That</a>
+  <a onclick="showPopup('taste-of-sound')">Taste of Sound</a>
+  <a onclick="showPopup('performance-vista')">Performance Vista</a>
+  <a onclick="showPopup('about')">About</a>
+</div>
 
-  <div class="footnote">studio [at] butchercorreia.com</div>
+<div class="footnote">© BUTCHER & CORREIA 2025</div>
 
-  <div id="popup" class="popup-box"></div>
+<!-- POPUP CONTAINER -->
+<div id="popupContainer" class="popup" style="display:none;">
+  <button class="close-btn" onclick="closePopup()">X</button>
+  <div id="popupContent"></div>
+</div>
 
-  <script>
-    const contentData = {
-      'sound-of-things': {
-        main: `
-          <p><strong>Performance, 60 min.</strong><br>Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
-          <p>The Sound of Things is a collaborative, interdisciplinary performance...</p>`,
-        credits: `
-          <p><strong>Concept:</strong> Katherine Butcher and Klaus Ellerhusen Holm</p>
-          <p><strong>Supported by:</strong> Trondheim kommune, Nettle T.O.C.</p>`
-      },
-      'just-this': {
-        main: `
-          <p>2.01.2024–on going</p>
-          <p>Just This and Only That is a deliberately slow and participatory performative project...</p>`,
-        credits: `
-          <a href="https://justthisandonlythat.com">justthisandonlythat.com</a>
-          <p><strong>Supported by:</strong> Kulturdirektoratet</p>`
-      },
-      'taste-of-sound': {
-        main: `
-          <p><strong>Performance, 60 min.</strong><br>KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
-          <p>Taste of Sound explores the possibilities of multisensory input...</p>`,
-        credits: `
-          <p><strong>Concept:</strong> Katherine Butcher and Klaus Ellerhusen Holm</p>
-          <p><strong>Supported by:</strong> Rotvoll Kunstnerkollektiv, Norsk jazzforum</p>`
-      },
-      'performance-vista': {
-        main: `
-          <p><strong>Performance, crane, safety gear, variable dimensions.</strong></p>
-          <p>Performance Vista is a pleasing sight between a long narrow row of trees...</p>`,
-        credits: `
-          <a href="https://performancevista.com">performancevista.com</a><br>
-          <a href="https://instagram.com/performancevista">@performancevista</a>`
-      },
-      'about': {
-        main: `
-          <p>we are Katherine BUTCHER & Carlos A. CORREIA</p>
-          <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes...</p>`,
-        credits: `<img src="BCportrait.jpg" alt="Polaroid" width="300" />`
-      }
-    };
+<script>
+  const contentData = {
+    "sound-of-things": `
+      <strong>The Sound of Things</strong><br>
+      Performance, 60 min.<br>
+      Only Connect 2025, Rosendal Teater - Trondheim, 2025<br><br>
+      The Sound of Things is a collaborative, interdisciplinary performance...<br><br>
+      <em>Concept: Katherine Butcher and Klaus Ellerhusen Holm</em><br>
+      <em>Supported by: Trondheim kommune, Nettle T.O.C.</em>
+    `,
+    "just-this": `
+      <strong>Just This And Only That</strong><br>
+      2.01.2024–on going<br><br>
+      Just This and Only That is a deliberately slow and participatory performative project...<br><br>
+      <a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
+      <em>Supported by: Kulturdirektoratet</em>
+    `,
+    "taste-of-sound": `
+      <strong>Taste of Sound</strong><br>
+      Performance, 60 min.<br>
+      KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023<br><br>
+      Taste of Sound explores the possibilities of multisensory input...<br><br>
+      <em>Concept: Katherine Butcher and Klaus Ellerhusen Holm</em><br>
+      <em>Supported by: Rotvoll Kunstnerkollektiv, Norsk jazzforum</em>
+    `,
+    "performance-vista": `
+      <strong>Performance Vista</strong><br>
+      Performance, crane, safety gear, variable dimensions.<br><br>
+      Performance Vista is a pleasing sight between a long narrow row of trees...<br><br>
+      <a href="https://performancevista.com">performancevista.com</a><br>
+      <a href="https://instagram.com/performancevista">@performancevista</a>
+    `,
+    "about": `
+      <strong>About</strong><br>
+      we are Katherine BUTCHER & Carlos A. CORREIA<br>
+      studio [at] butchercorreia.com<br><br>
+      BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes...<br><br>
+      <img src="BCportrait.jpg" alt="Polaroid" width="200">
+    `
+  };
 
-    function showPopup(key) {
-      const popup = document.getElementById('popup');
-      if (contentData[key]) {
-        popup.innerHTML = `
-          <div>${contentData[key].main}</div>
-          <hr />
-          <div>${contentData[key].credits}</div>`;
-        popup.classList.add('active');
-      }
-    }
+  function showPopup(id) {
+    const popup = document.getElementById('popupContainer');
+    const content = document.getElementById('popupContent');
+    content.innerHTML = contentData[id] || 'No content found.';
+    popup.style.display = 'block';
+  }
 
-    // Close popup when clicking outside it
-    document.addEventListener('click', function (e) {
-      const popup = document.getElementById('popup');
-      const nav = document.querySelector('.nav-column');
-      if (!popup.contains(e.target) && !nav.contains(e.target)) {
-        popup.classList.remove('active');
-      }
-    });
-  </script>
+  function closePopup() {
+    document.getElementById('popupContainer').style.display = 'none';
+  }
+</script>
 
 </body>
 </html>
-
