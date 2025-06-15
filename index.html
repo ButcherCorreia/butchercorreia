@@ -63,9 +63,8 @@
       position: relative;
       background-color: #fff;
       align-items: stretch;
-      /* FIX 2: Ensure main content is at least 100vh tall to push footer down */
-      min-height: 100vh;
-      /* FIX 4: Set a z-index lower than the header to prevent glitches */
+      min-height: 100vh; /* Ensures footer is always pushed down */
+      /* FIX 2: Set z-index to prevent column borders from overlapping header */
       z-index: 1;
     }
     
@@ -80,7 +79,6 @@
       height: calc(100vh - 60px);
       display: flex;
       flex-direction: column;
-      /* FIX 3: Content aligned to top */
       justify-content: flex-start;
     }
 
@@ -108,9 +106,12 @@
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      /* FIX 3: Content aligned to top */
       justify-content: flex-start;
       border-bottom: 6px dashed #ff4000;
+      
+      /* FIX 1: Enable internal scrolling */
+      height: calc(100vh - 60px);
+      overflow-y: auto;
     }
 
     .content-column {
@@ -126,16 +127,24 @@
       display: none;
     }
 
+    /* FIX 4: Align text from top by removing default margin on the first element */
+    .content-section > *:first-child,
+    .credits-section > *:first-child {
+      margin-top: 0;
+    }
+
     .active {
       display: block;
     }
 
     .site-footer {
       padding: 2rem;
-      text-align: center;
       font-family: Georgia, serif;
       color: #000;
       background-color: #fff;
+      /* FIX 3: Smaller font and right-aligned */
+      font-size: 0.9rem;
+      text-align: right;
     }
   </style>
 </head>
@@ -143,7 +152,6 @@
 
 <!-- The landing section is now just a visual element -->
 <div class="landing-section" id="landing-section">
-  <!-- FIX 1: Corrected image name -->
   <img src="landingimage2.jpg" alt="Landing Image" class="landing-image" />
 </div>
 
