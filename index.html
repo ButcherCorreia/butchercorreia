@@ -4,281 +4,163 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BUTCHER & CORREIA</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@400&display=swap" rel="stylesheet">
   <style>
-    /* --- NEW LAYOUT & DESIGN --- */
-
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      color: #fff;
-      /* FIX: Background image is fixed and covers the entire page */
+      font-family: Georgia, serif;
+      color: #000;
       background: url('imagelanding2.jpg') no-repeat center center fixed;
       background-size: cover;
-      overflow: hidden; /* Prevent scrolling on the main page */
+      overflow: hidden;
     }
 
-    /* Add a subtle shadow to all text for better readability against the image */
-    body * {
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    }
-
-    /* --- ON-PAGE ELEMENTS --- */
-
-    .site-header {
+    .site-title {
       position: fixed;
-      top: 2rem;
-      left: 2rem;
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      z-index: 10;
-    }
-
-    .site-nav {
-      position: fixed;
-      top: 6rem; /* Positioned below the header */
-      left: 2rem;
-      z-index: 10;
-    }
-
-    .site-nav a {
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .site-nav a:hover {
-      transform: translateX(5px); /* Slight movement on hover */
-    }
-
-    .site-footer {
-      position: fixed;
-      bottom: 2rem;
-      right: -1.5rem; /* Adjust positioning for rotation */
-      font-size: 0.9rem;
-      /* FIX: Rotates the text and sets origin point */
-      transform: rotate(-90deg);
-      transform-origin: bottom right;
-      z-index: 10;
-    }
-    
-    /* --- POP-UP MODAL STYLES --- */
-    
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.75); /* Darker overlay */
-      display: none; /* Hidden by default */
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0; /* For fade-in effect */
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-overlay.visible {
-      display: flex;
-      opacity: 1;
-    }
-
-    .modal-box {
-      background: #fff;
-      color: #333; /* Dark text for readability on white */
-      text-shadow: none; /* Remove text-shadow inside the box */
-      /* FIX: Dashed orange border as requested */
-      border: 5px dashed #ff4000;
-      padding: 2.5rem;
-      max-width: 800px;
-      width: 90%;
-      max-height: 85vh;
-      overflow-y: auto; /* Scroll if content is too long */
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      transform: scale(0.95);
-      transition: transform 0.3s ease;
-    }
-    
-    .modal-overlay.visible .modal-box {
-        transform: scale(1);
-    }
-    
-    .modal-box * {
-        text-shadow: none;
-    }
-
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      font-size: 2rem;
+      top: 1rem;
+      left: 1rem;
+      font-size: 1.8rem;
       font-weight: bold;
-      color: #aaa;
+      background: white;
+      padding: 0.5rem 1rem;
+      z-index: 100;
+    }
+
+    .nav-column {
+      position: fixed;
+      top: 4rem;
+      left: 1rem;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .nav-column a {
+      margin: 0.5rem 0;
+      color: black;
+      text-decoration: none;
+      font-size: 1rem;
+      background: white;
+      padding: 0.3rem 0.6rem;
+      border-left: 4px dashed #ff4000;
+      transition: background 0.2s;
       cursor: pointer;
-      transition: color 0.2s ease;
     }
 
-    .close-button:hover {
-      color: #333;
-    }
-    
-    /* Typography inside the modal */
-    .modal-content p, .modal-content a {
-        font-family: 'Lora', serif;
-        font-size: 1.1rem;
-        line-height: 1.7;
-    }
-    .modal-content a {
-        color: #ff4000;
+    .nav-column a:hover {
+      background: #ffe5d6;
     }
 
-    /* This container holds the original content, but is never shown */
-    .hidden-content {
+    .footnote {
+      position: fixed;
+      bottom: 1rem;
+      right: -2rem;
+      transform: rotate(-90deg);
+      transform-origin: right bottom;
+      font-size: 0.9rem;
+      background: white;
+      padding: 0.3rem 0.8rem;
+    }
+
+    .popup-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 60%;
+      max-width: 600px;
+      background: white;
+      border: 5px dashed #ff4000;
+      padding: 2rem;
+      transform: translate(-50%, -50%);
+      z-index: 200;
       display: none;
+      overflow-y: auto;
+      max-height: 80vh;
     }
 
+    .popup-box.active {
+      display: block;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.8rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-<header class="site-header">
-  BUTCHER & CORREIA
-</header>
+<div class="site-title">BUTCHER & CORREIA</div>
 
-<nav class="site-nav">
-  <!-- Use data-attributes to link to the content -->
-  <a data-target="sound-of-things">The Sound of Things</a>
-  <a data-target="just-this">Just This And Only That</a>
-  <a data-target="taste-of-sound">Taste of Sound</a>
-  <a data-target="performance-vista">Performance Vista</a>
-  <a data-target="about">About</a>
+<nav class="nav-column">
+  <a onclick="showPopup('sound-of-things')">The Sound of Things</a>
+  <a onclick="showPopup('just-this')">Just This And Only That</a>
+  <a onclick="showPopup('taste-of-sound')">Taste of Sound</a>
+  <a onclick="showPopup('performance-vista')">Performance Vista</a>
+  <a onclick="showPopup('about')">About</a>
 </nav>
 
-<footer class="site-footer">
-  BUTCHER & CORREIA © 2024
-</footer>
+<div class="footnote">studio [at] butchercorreia.com</div>
 
-<!-- MODAL (POP-UP) STRUCTURE -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal-box">
-    <button class="close-button" id="close-button">×</button>
-    <div class="modal-content" id="modal-content">
-      <!-- Content will be injected here by JavaScript -->
-    </div>
-  </div>
-</div>
-
-<!-- HIDDEN CONTENT SOURCE -->
-<!-- This data is on the page but invisible. JS will read from here. -->
-<div class="hidden-content">
-  <div id="content-sound-of-things">
-    <p>Performance, 60 min.<br>Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
-    <p>The Sound of Things is a collaborative, interdisciplinary performance...</p>
-  </div>
-  <div id="credits-sound-of-things">
-    <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm</p>
-    <p>Supported by: Trondheim kommune, Nettle T.O.C.</p>
-  </div>
-
-  <div id="content-just-this">
-    <p>2.01.2024–on going</p>
-    <p>Just This and Only That is a deliberately slow and participatory performative project...</p>
-  </div>
-  <div id="credits-just-this">
-    <p><a href="https://justthisandonlythat.com">justthisandonlythat.com</a></p>
-    <p>Supported by: Kulturdirektoratet</p>
-  </div>
-  
-  <div id="content-taste-of-sound">
-    <p>Performance, 60 min.<br>KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
-    <p>Taste of Sound explores the possibilities of multisensory input...</p>
-  </div>
-  <div id="credits-taste-of-sound">
-    <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm</p>
-    <p>Supported by: Rotvoll Kunstnerkollektiv, Norsk jazzforum</p>
-  </div>
-
-  <div id="content-performance-vista">
-    <p>Performance, crane, safety gear, variable dimensions.</p>
-    <p>Performance Vista is a pleasing sight between a long narrow row of trees...</p>
-  </div>
-  <div id="credits-performance-vista">
-    <p><a href="https://performancevista.com">performancevista.com</a><br>
-    <a href="https://instagram.com/performancevista">@performancevista</a></p>
-  </div>
-
-  <div id="content-about">
-    <p>we are Katherine BUTCHER & Carlos A. CORREIA<br>studio [at] butchercorreia.com</p>
-    <p>Their artistic practice critically engages with the intricate tapestry of local and global political and social landscapes, unraveling the structures shaping contemporary society. Through performance, immersive environments, and physical objects, their work serves as both articulation and critique, addressing themes of labor, hierarchy, and social norms. This collaboration is an open-ended dialogue, continuously unfolding through critical engagement and creative experimentation. Their distinct methodologies intersect within this framework, fostering a dynamic space for interrogation, expansion, and reimagining of artistic practice. Rather than a finite endeavor, it remains an evolving exploration of systemic structures and their implications.</p>
-  </div>
-  <div id="credits-about">
-    <img src="BCportrait.jpg" alt="Polaroid" width="200" style="margin-top: 1rem;"/>
-  </div>
+<div id="popup" class="popup-box">
+  <div class="popup-close" onclick="closePopup()">×</div>
+  <div id="popup-content"></div>
 </div>
 
 <script>
-  // Get references to all the necessary elements
-  const navLinks = document.querySelectorAll('.site-nav a');
-  const modalOverlay = document.getElementById('modal-overlay');
-  const modalContent = document.getElementById('modal-content');
-  const closeButton = document.getElementById('close-button');
+  const data = {
+    "sound-of-things": `
+      <p><strong>Performance, 60 min.</strong><br>Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
+      <p>The Sound of Things is a collaborative, interdisciplinary performance...</p>
+      <hr>
+      <p><strong>Concept:</strong> Katherine Butcher and Klaus Ellerhusen Holm<br>
+      <strong>Supported by:</strong> Trondheim kommune, Nettle T.O.C.</p>
+    `,
+    "just-this": `
+      <p><strong>2.01.2024–on going</strong></p>
+      <p>Just This and Only That is a deliberately slow and participatory performative project...</p>
+      <hr>
+      <p><a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
+      <strong>Supported by:</strong> Kulturdirektoratet</p>
+    `,
+    "taste-of-sound": `
+      <p><strong>Performance, 60 min.</strong><br>KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023</p>
+      <p>Taste of Sound explores the possibilities of multisensory input...</p>
+      <hr>
+      <p><strong>Concept:</strong> Katherine Butcher and Klaus Ellerhusen Holm<br>
+      <strong>Supported by:</strong> Rotvoll Kunstnerkollektiv, Norsk jazzforum</p>
+    `,
+    "performance-vista": `
+      <p><strong>Performance, crane, safety gear, variable dimensions.</strong></p>
+      <p>Performance Vista is a pleasing sight between a long narrow row of trees...</p>
+      <hr>
+      <p><a href="https://performancevista.com">performancevista.com</a><br>
+      <a href="https://instagram.com/performancevista">@performancevista</a></p>
+    `,
+    "about": `
+      <p>We are Katherine BUTCHER & Carlos A. CORREIA</p>
+      <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes...</p>
+      <hr>
+      <img src="BCportrait.jpg" alt="Polaroid" width="100%" />
+    `
+  };
 
-  // Function to show the modal with the correct content
-  function showModal(targetId) {
-    const contentEl = document.getElementById(`content-${targetId}`);
-    const creditsEl = document.getElementById(`credits-${targetId}`);
-
-    // Combine the content from both sources
-    if (contentEl && creditsEl) {
-      modalContent.innerHTML = contentEl.innerHTML + '<hr style="border: 0; border-top: 1px solid #ddd; margin: 2rem 0;">' + creditsEl.innerHTML;
-      modalOverlay.classList.add('visible');
-    }
+  function showPopup(key) {
+    const content = data[key];
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
+    popupContent.innerHTML = content;
+    popup.classList.add('active');
   }
 
-  // Function to hide the modal
-  function hideModal() {
-    modalOverlay.classList.remove('visible');
+  function closePopup() {
+    document.getElementById('popup').classList.remove('active');
   }
-
-  // Add a click event listener to each navigation link
-  navLinks.forEach(link => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault(); // Stop the link from trying to navigate
-      const targetId = link.dataset.target; // Get the ID from the data-target attribute
-      showModal(targetId);
-    });
-  });
-
-  // Event listeners for closing the modal
-  closeButton.addEventListener('click', hideModal);
-  
-  // Close the modal if the user clicks on the dark overlay area
-  modalOverlay.addEventListener('click', (event) => {
-    if (event.target === modalOverlay) {
-      hideModal();
-    }
-  });
-  
-  // Close the modal if the user presses the 'Escape' key
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && modalOverlay.classList.contains('visible')) {
-      hideModal();
-    }
-  });
-
 </script>
 
 </body>
