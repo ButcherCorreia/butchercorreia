@@ -88,6 +88,17 @@
       color: #ff4000;
     }
 
+    .popup .plus-btn {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: #ff4000;
+    }    
+
     .footnote {
       position: fixed;
       bottom: 20px;
@@ -117,6 +128,7 @@
 <div id="popupContainer" class="popup" style="display:none;">
   <button class="close-btn" onclick="closePopup()">x</button>
   <div id="popupContent"></div>
+  <button class="plus-btn" onclick="handlePlusClick()">+</button>
 </div>
 
 <script>
