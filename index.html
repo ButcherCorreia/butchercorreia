@@ -104,11 +104,11 @@
 <div class="site-title">BUTCHER & CORREIA</div>
 
 <div class="nav-column">
-  <a onclick="showPopup('sound-of-things')">The Sound of Things</a>
-  <a onclick="showPopup('just-this')">Just This And Only That</a>
-  <a onclick="showPopup('taste-of-sound')">Taste of Sound</a>
-  <a onclick="showPopup('performance-vista')">Performance Vista</a>
-  <a onclick="showPopup('about')">About</a>
+  <a onclick="showPopup('sound-of-things', this)">The Sound of Things</a>
+  <a onclick="showPopup('just-this', this)">Just This And Only That</a>
+  <a onclick="showPopup('taste-of-sound', this)">Taste of Sound</a>
+  <a onclick="showPopup('performance-vista', this)">Performance Vista</a>
+  <a onclick="showPopup('about', this)">About</a>
 </div>
 
 <div class="footnote">© BUTCHER & CORREIA 2025</div>
@@ -160,16 +160,31 @@
     `
   };
 
-  function showPopup(id) {
-    const popup = document.getElementById('popupContainer');
-    const content = document.getElementById('popupContent');
-    content.innerHTML = contentData[id] || 'No content found.';
-    popup.style.display = 'block';
-  }
-
-  function closePopup() {
-    document.getElementById('popupContainer').style.display = 'none';
-  }
+    function showPopup(id, element) {
+      const popup = document.getElementById('popupContainer');
+      const content = document.getElementById('popupContent');
+      content.innerHTML = contentData[id] || 'No content found.';
+      popup.style.display = 'block';
+    
+      // Remove 'active' class from all nav links
+      document.querySelectorAll('.nav-column a').forEach(link => {
+        link.classList.remove('active');
+      });
+    
+      // Add 'active' class to the clicked link
+      if (element) {
+        element.classList.add('active');
+      }
+    }
+    
+    function closePopup() {
+      document.getElementById('popupContainer').style.display = 'none';
+    
+      // Optionally remove 'active' class on close
+      document.querySelectorAll('.nav-column a').forEach(link => {
+        link.classList.remove('active');
+      });
+    }
 </script>
 
 </body>
