@@ -4,27 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BUTCHER & CORREIA</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* --- POLISHED & PROFESSIONAL STYLES --- */
-
-    /* --- General & Typographic Reset --- */
+    /* --- General Styles --- */
     html, body {
       margin: 0;
-      /* Using a modern sans-serif for UI and a classic serif for content */
-      font-family: 'Lora', Georgia, serif; 
-      color: #333; /* Softer than pure black */
+      font-family: Georgia, serif;
+      color: #000;
       scroll-behavior: smooth;
-      background-color: #f8f8f8; /* Subtle off-white background */
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Helper class for UI fonts */
-    .ui-font {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #fff;
     }
 
     /* --- Landing Section --- */
@@ -51,27 +38,22 @@
       width: 100%;
       height: 60px;
       background: #fff;
-      /* Replaced dashed border with a subtle, solid one */
-      border-bottom: 2px solid #ff4000;
+      border-bottom: 6px dashed #ff4000;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2rem;
+      padding: 0 1rem;
       box-sizing: border-box;
-      font-size: 1.25rem; /* Slightly smaller for refinement */
-      font-weight: 700;
-      letter-spacing: 0.05em; /* Add some air between letters */
-      z-index: 1000;
-      transition: all 0.3s ease-in-out;
+      font-size: 1.5rem;
+      font-weight: bold;
+      z-index: 1000; /* High z-index to stay on top */
+      transition: transform 0.3s ease-in-out;
     }
 
     #site-header.sticky {
       position: fixed;
       top: 0;
       bottom: auto;
-      /* Add a shadow for depth when it's sticky */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      border-bottom: 2px solid transparent; /* Hide border when sticky */
     }
 
     /* --- Main Content Layout --- */
@@ -80,16 +62,18 @@
       flex-direction: row;
       position: relative;
       background-color: #fff;
-      min-height: 100vh;
-      z-index: 1; /* Keep it below the sticky header */
+      align-items: stretch;
+      min-height: 100vh; /* Ensures footer is always pushed down */
+      /* FIX 2: Set z-index to prevent column borders from overlapping header */
+      z-index: 1;
     }
     
     .nav-column {
       width: 250px;
-      padding: 2rem;
+      padding: 2rem 1rem;
       box-sizing: border-box;
-      /* Replaced dashed border */
-      border-right: 1px solid #e0e0e0;
+      border-right: 6px dashed #ff4000;
+      border-bottom: 6px dashed #ff4000;
       position: sticky;
       top: 60px;
       height: calc(100vh - 60px);
@@ -100,23 +84,15 @@
 
     .nav-links a {
       display: block;
-      color: #555; /* Lighter color for inactive links */
+      color: #000;
       text-decoration: none;
-      margin-bottom: 1.25rem;
-      font-size: 1rem;
-      font-weight: 400;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: color 0.2s ease;
     }
 
-    .nav-links a:hover {
-      color: #ff4000; /* Brand color on hover */
-    }
-
-    /* Active link is now styled with color, not an underline */
     .nav-links a.active-link {
-      color: #ff4000;
-      font-weight: 700;
+      text-decoration: underline;
     }
     
     .content-wrapper {
@@ -131,34 +107,30 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      border-bottom: 6px dashed #ff4000;
+      
+      /* FIX 1: Enable internal scrolling */
       height: calc(100vh - 60px);
       overflow-y: auto;
     }
 
     .content-column {
       flex: 2;
-      padding-left: 3rem; /* More space for the main content */
     }
 
     .credits-column {
       flex: 1;
-      /* Replaced dashed border */
-      border-left: 1px solid #e0e0e0;
-    }
-    
-    /* Improved content typography */
-    .content-section p, .credits-section p, .credits-section a {
-        font-size: 1.1rem;
-        line-height: 1.7; /* Better readability */
-    }
-    
-    .content-section > *:first-child,
-    .credits-section > *:first-child {
-      margin-top: 0;
+      border-left: 6px dashed #ff4000;
     }
 
     .content-section, .credits-section {
       display: none;
+    }
+
+    /* FIX 4: Align text from top by removing default margin on the first element */
+    .content-section > *:first-child,
+    .credits-section > *:first-child {
+      margin-top: 0;
     }
 
     .active {
@@ -167,28 +139,32 @@
 
     .site-footer {
       padding: 2rem;
-      font-family: 'Inter', system-ui, sans-serif;
-      background-color: #f8f8f8;
-      font-size: 0.85rem;
+      font-family: Georgia, serif;
+      color: #000;
+      background-color: #fff;
+      /* FIX 3: Smaller font and right-aligned */
+      font-size: 0.9rem;
       text-align: right;
-      color: #888; /* Muted color for footer text */
     }
   </style>
 </head>
 <body>
 
+<!-- The landing section is now just a visual element -->
 <div class="landing-section" id="landing-section">
   <img src="landingimage.jpg" alt="Landing Image" class="landing-image" />
 </div>
 
-<header id="site-header" class="ui-font">
+<!-- The single, persistent header -->
+<header id="site-header">
   <div>BUTCHER</div>
   <div>&</div>
   <div>CORREIA</div>
 </header>
 
+<!-- Main content is now part of the initial document flow -->
 <main id="main-content">
-  <div class="nav-column ui-font">
+  <div class="nav-column">
     <div class="nav-links">
       <a onclick="showSection('sound-of-things', this)">The Sound of Things</a>
       <a onclick="showSection('just-this', this)">Just This And Only That</a>
@@ -245,6 +221,7 @@
   </div>
 </main>
 
+<!-- This footer will now only be visible after scrolling down -->
 <footer class="site-footer">
   BUTCHER & CORREIA © 2024
 </footer>
@@ -260,20 +237,30 @@
     if (link) link.classList.add('active-link');
   }
 
+  // Define DOM elements
   const header = document.getElementById('site-header');
   const mainContent = document.getElementById('main-content');
   const landingSection = document.getElementById('landing-section');
   const stickyThreshold = mainContent.offsetTop;
 
+  // Activate the first section when the page is fully loaded
   document.addEventListener('DOMContentLoaded', () => {
     const firstLink = document.querySelector('.nav-links a');
-    if (firstLink) firstLink.click();
+    if (firstLink) {
+      firstLink.click();
+    }
   });
 
+  // Handle header stickiness on scroll
   window.addEventListener('scroll', () => {
-    header.classList.toggle('sticky', window.scrollY >= stickyThreshold);
+    if (window.scrollY >= stickyThreshold) {
+      header.classList.add('sticky');
+    } else {
+      header.classList.remove('sticky');
+    }
   });
 
+  // Added click event to scroll down
   landingSection.addEventListener('click', () => {
     mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
