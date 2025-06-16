@@ -37,7 +37,7 @@
       font-weight: bold;
       background-color: #fff;
       border-bottom: 4px dashed #ff4000;
-      padding: 0rem; 0rem;
+      padding: 0rem 0rem;
       z-index: 100;
     }
 
@@ -81,8 +81,7 @@
     .popup-secondary {
       position: fixed;
       top: 150px; /* align with site header/nav */
-      right: 100px
-      transform: translateX(-50%); /* center horizontally only */
+      right: 100px;  /* <-- missing semicolon fixed */
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
@@ -90,7 +89,8 @@
       max-width: 90%;
       min-height: 400px; 
       box-shadow: 10px 10px 0 #ff4000;
-      z-index: 200;
+      z-index: 300; /* higher than main popup */
+      display: none; /* hidden by default */
     }
     
     .popup .close-btn,
@@ -185,8 +185,10 @@
 </div>
 
 <script>
+  let currentPopupId = null;
+
   const contentData = {
-    "sound-of-things": 
+    "sound-of-things": `
       <strong>The Sound of Things</strong><br>
       Performance, 60 min.<br>
       Only Connect 2025, Rosendal Teater - Trondheim, 2025<br>
@@ -197,15 +199,15 @@
       Visuals & Dramaturgy: BUTCHER & CORREIA<br>
       Sound: Aksiom Ensemble<br>
       Food: Ieva Grigelionyte
-    ,
-    "just-this": 
+    `,
+    "just-this": `
       <strong>Just This And Only That</strong><br>
       2.01.2024–on going<br><br>
       "Just This and Only That” is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.<br><br>
       <a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
       Supported by: Kulturdirektoratet
-    ,
-    "taste-of-sound": 
+    `,
+    "taste-of-sound": `
       <strong>Taste of Sound</strong><br>
       Performance, 60 min.<br>
       KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023<br><br>
@@ -216,15 +218,15 @@
       Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
       Food: Martin Moen Mosti and Even Østby<br>
       Event supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum and Norsk Komponistforening
-    ,
-    "performance-vista": 
+    `,
+    "performance-vista": `
       <strong>Performance Vista</strong><br>
       Performance, anemometer, support jacks, lifting straps, construction helmets, reflective vests, and HOEFLON C10 crane. Variable dimensions.<br>
       Performance Vista is a pleasing sight between a long narrow row of trees; a succession of anticipated events, a vision, a view of a series of actions in the mind, a performance vista played out, unfolding retrospectively and prospectively.<br>
       <a href="https://performancevista.com">performancevista.com</a><br>
       <a href="https://instagram.com/performancevista">@performancevista</a>
-    ,
-    "about": 
+    `,
+    "about": `
       <strong>About</strong><br>
       we are Katherine BUTCHER & Carlos A. CORREIA<br>
       studio [at] butchercorreia.com<br><br>
@@ -236,85 +238,103 @@
       2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br>
       <p>BUTCHER & CORREIA (Katherine & Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.<br><br>
       <img src="BCportrait.jpg" alt="Polaroid" width="200">
-    
+    `
   };
 
-    function showPopup(id, element) {
-      const popup = document.getElementById('popupContainer');
-      const content = document.getElementById('popupContent');
-      content.innerHTML = contentData[id] || 'No content found.';
-      popup.style.display = 'block';
-    
-      // Remove 'active' class from all nav links
-      document.querySelectorAll('.nav-column a').forEach(link => {
-        link.classList.remove('active');
-      });
-    
-      // Add 'active' class to the clicked link
-      if (element) {
-        element.classList.add('active');
-      }
+  function showPopup(id, element) {
+    const popup = document.getElementById('popupContainer');
+    const content = document.getElementById('popupContent');
+
+    currentPopupId = id; // store current popup id for secondary popup
+
+    content.innerHTML = contentData[id] || 'No content found.';
+    popup.style.display = 'block';
+
+    // Hide all secondary popups when opening main popup
+    document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+
+    // Remove 'active' class from all nav links
+    document.querySelectorAll('.nav-column a').forEach(link => {
+      link.classList.remove('active');
+    });
+
+    // Add 'active' class to the clicked link
+    if (element) {
+      element.classList.add('active');
+    }
+  }
+
+  function handlePlusClick() {
+    if (!currentPopupId) return;
+    const secondPopup = document.getElementById('secondPopup-' + currentPopupId);
+    if (secondPopup) {
+      secondPopup.style.display = 'block';
+      // Bring secondary popup to front (optional)
+      secondPopup.style.zIndex = 300;
+    }
+  }
+
+  function closeSecondPopup(id) {
+    if (!id) return;
+    const secondPopup = document.getElementById('secondPopup-' + id);
+    if (secondPopup) {
+      secondPopup.style.display = 'none';
+    }
+  }
+
+  function closePopup() {
+    document.getElementById('popupContainer').style.display = 'none';
+
+    // Also close any secondary popup open
+    if (currentPopupId) {
+      closeSecondPopup(currentPopupId);
     }
 
+    // Remove active nav links highlight
+    document.querySelectorAll('.nav-column a').forEach(link => {
+      link.classList.remove('active');
+    });
+
+    currentPopupId = null;
+  }
+
+  // Draggable functionality
   function makeDraggable(el) {
-  let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
-  
-  el.onmousedown = dragMouseDown;
+    let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
 
-  function dragMouseDown(e) {
-    e.preventDefault();
-    startX = e.clientX;
-    startY = e.clientY;
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
+    el.onmousedown = dragMouseDown;
+
+    function dragMouseDown(e) {
+      e.preventDefault();
+      startX = e.clientX;
+      startY = e.clientY;
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e.preventDefault();
+      offsetX = startX - e.clientX;
+      offsetY = startY - e.clientY;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      el.style.top = (el.offsetTop - offsetY) + "px";
+      el.style.left = (el.offsetLeft - offsetX) + "px";
+    }
+
+    function closeDragElement() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
   }
 
-  function elementDrag(e) {
-    e.preventDefault();
-    offsetX = startX - e.clientX;
-    offsetY = startY - e.clientY;
-    startX = e.clientX;
-    startY = e.clientY;
-
-    el.style.top = (el.offsetTop - offsetY) + "px";
-    el.style.left = (el.offsetLeft - offsetX) + "px";
-  }
-
-  function closeDragElement() {
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-
-// Apply to all popups with class 'draggable'
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('.draggable').forEach(makeDraggable);
-});
-
-    
-    function closePopup() {
-      document.getElementById('popupContainer').style.display = 'none';
-    
-      // Optionally remove 'active' class on close
-      document.querySelectorAll('.nav-column a').forEach(link => {
-        link.classList.remove('active');
-      });
-    }
-
-      function handlePlusClick() {
-      document.getElementById('secondPopup').style.display = 'block';
-    }
-    
-    function closeSecondPopup() {
-      document.getElementById('secondPopup').style.display = 'none';
-    }
-    
-    function closePopup() {
-      document.getElementById('popupContainer').style.display = 'none';
-      closeSecondPopup(); // Ensure second popup closes too
-    }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.draggable').forEach(makeDraggable);
+  });
 </script>
 
 </body>
 </html>
+
 
