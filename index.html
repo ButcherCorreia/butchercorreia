@@ -91,6 +91,9 @@
       box-shadow: 10px 10px 0 #ff4000;
       z-index: 300; /* higher than main popup */
       display: none; /* hidden by default */
+      resize: both;
+      overflow: auto;
+
     }
     
     .popup .close-btn,
@@ -151,7 +154,7 @@
   <a onclick="showPopup('about', this)">About</a>
 </div>
 
-<div class="footnote">BUTCHER & CORREIA © 2025</div>
+<div class="footnote draggable">BUTCHER & CORREIA © 2025</div>
 
 <!-- POPUP CONTAINER -->
 <div id="popupContainer" class="popup draggable" style="display:none;">
