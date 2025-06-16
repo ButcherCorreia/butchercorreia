@@ -93,28 +93,37 @@
       z-index: 200;
     }
     
-    .popup .close-btn
-    .popup-secondary .close-btn {
+    .popup .close-btn,
+    .popup .plus-btn,
+    .popup-secondary .close-btn,
+    .popup-secondary .plus-btn {
       position: absolute;
-      top: 5px;
-      right: 5px;
       font-size: 1.4rem;
       cursor: pointer;
       border: none;
       background: none;
       color: #ff4000;
     }
-
+    
+    .popup .close-btn {
+      top: 5px;
+      right: 5px;
+    }
+    
     .popup .plus-btn {
-      position: absolute;
       bottom: 5px;
       right: 5px;
-      font-size: 1.4rem;
-      cursor: pointer;
-      border: none;
-      background: none;
-      color: #ff4000;
-    }    
+    }
+    
+    .popup-secondary .close-btn {
+      top: 5px;
+      right: 5px;
+    }
+    
+    .popup-secondary .plus-btn {
+      bottom: 5px;
+      right: 5px;
+    }
 
     .footnote {
       position: fixed;
