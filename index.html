@@ -38,12 +38,14 @@
       font-weight: bold;
       background-color: #fff;
       border-bottom: 4px dashed #ff4000;
-      padding: 0.5rem 1rem;          /* adds shape and spacing */
-      display: inline-block;         /* prevents stretching of border */
+      padding: 0.5rem 1rem;
+      display: inline-block;
+      box-sizing: border-box;
       z-index: 100;
-      cursor: move;                  /* optional: gives drag feedback */
+      cursor: move;
+      white-space: nowrap;
     }
-
+    
     .nav-column {
       position: fixed;
       top: 20px;
@@ -70,7 +72,7 @@
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translateX(-65%, -50%);
+      transform: translate(-65%, -50%);
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
@@ -135,9 +137,9 @@
     }
 
     .enlarge-button {
-      position: fixed;
-      bottom: 80px;
-      right: 40px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
       padding: 0.5rem;
       background: white;
       cursor: pointer;
