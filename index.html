@@ -2,233 +2,319 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BUTCHER & CORREIA</title>
   <style>
-    body, html {
+    html, body {
       margin: 0;
-      padding: 0;
+      font-family: Georgia, serif;
       height: 100%;
-      width: 100%;
-      font-family: Arial, sans-serif;
-      background-image: url('imagelanding2.jpg');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
+      background-color: transparent;
     }
 
-    h1.site-title {
-      position: absolute;
-      top: 0;
-      left: 0;
-      margin: 0;
-      padding: 1rem;
-      font-size: 2rem;
-      background: rgba(255, 255, 255, 0.7);
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 30%;
+      height: 30%;
+      transform: translate(-50%, -50%);
+      background-image: url('landingimage2.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .site-title {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: #fff;
+      border-bottom: 4px dashed #ff4000;
+      padding: 0rem; 0rem;
+      z-index: 100;
     }
 
     .nav-column {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 200px;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.8);
+      position: fixed;
+      top: 20px;
+      left: 20px;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      padding-top: 3rem;
-      z-index: 10;
+      gap: 0.3rem;
+      background: transparent;
+      z-index: 100;
     }
 
     .nav-column a {
-      margin: 0.5rem 1rem;
+      color: #000;
       text-decoration: none;
-      color: #333;
-      font-weight: bold;
+      font-size: 1.1rem;
       cursor: pointer;
     }
-
+    
     .nav-column a.active {
-      color: #ff4000;
+      font-weight: bold;
     }
 
-    .footnote {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
-      z-index: 10;
-    }
-
-    .popup-container, .popup-secondary {
+    .popup {
       position: fixed;
-      top: 100px;
-      left: 300px;
+      top: 20px; /* align with site header/nav */
+      left: 50%;
+      transform: translateX(-50%); /* center horizontally only */
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
       width: 400px;
       max-width: 90%;
-      min-height: 400px;
+      min-height: 400px; 
       box-shadow: 10px 10px 0 #ff4000;
-      display: none;
-      z-index: 100;
-    }
-
-    .popup-secondary {
-      left: auto;
-      right: 100px;
-      top: 150px;
       z-index: 200;
     }
 
-    .close-btn, .plus-btn {
+    .popup-secondary {
+      position: fixed;
+      top: 150px; /* align with site header/nav */
+      right: 100px
+      transform: translateX(-50%); /* center horizontally only */
+      background-color: #fff;
+      border: 4px dashed #ff4000;
+      padding: 2rem;
+      width: 300px;
+      max-width: 90%;
+      min-height: 400px; 
+      box-shadow: 10px 10px 0 #ff4000;
+      z-index: 200;
+    }
+    
+    .popup .close-btn,
+    .popup .plus-btn,
+    .popup-secondary .close-btn,
+    .popup-secondary .plus-btn {
       position: absolute;
-      background-color: #ff4000;
-      color: #fff;
-      border: none;
+      font-size: 1.4rem;
       cursor: pointer;
-      font-size: 1rem;
-      padding: 0.2rem 0.5rem;
+      border: none;
+      background: none;
+      color: #ff4000;
+    }
+    
+    .popup .close-btn {
+      top: 5px;
+      right: 5px;
+    }
+    
+    .popup .plus-btn {
+      bottom: 5px;
+      right: 5px;
+    }
+    
+    .popup-secondary .close-btn {
+      top: 5px;
+      right: 5px;
+    }
+    
+    .popup-secondary .plus-btn {
+      bottom: 5px;
+      right: 5px;
     }
 
-    .close-btn {
-      top: 0.5rem;
-      right: 0.5rem;
-    }
-
-    .plus-btn {
-      top: 0.5rem;
-      left: 0.5rem;
-    }
-
-    .draggable {
-      cursor: move;
+    .footnote {
+      position: fixed;
+      bottom: 100px;
+      left: 5px;
+      transform: rotate(270deg);
+      transform-origin: right bottom;
+      font-size: 0.9rem;
+      z-index: 100;
     }
   </style>
 </head>
 <body>
-  <h1 class="site-title">BUTCHER & CORREIA</h1>
-  <div class="nav-column">
-    <a onclick="showPopup('sound-of-things', this)">THE SOUND OF THINGS</a>
-    <a onclick="showPopup('just-this', this)">JUST THIS AND ONLY THAT</a>
-    <a onclick="showPopup('instrumentalizing', this)">INSTRUMENTALIZING</a>
-    <a onclick="showPopup('late-flowers', this)">LATE FLOWERS</a>
-    <a onclick="showPopup('cosmic-dust', this)">COSMIC DUST</a>
-  </div>
 
-  <div class="footnote">Artist Duo Working With Sound, Space, and Everything In Between</div>
+<div class="site-title">BUTCHER & CORREIA</div>
 
-  <!-- PRIMARY POPUP CONTAINER -->
-  <div id="popupContainer" class="popup-container draggable">
-    <button class="close-btn" onclick="closePopup()">x</button>
-    <button class="plus-btn" onclick="handlePlusClick()">+</button>
-    <div id="popupContent"></div>
-  </div>
+<div class="nav-column">
+  <a onclick="showPopup('sound-of-things', this)">The Sound of Things</a>
+  <a onclick="showPopup('just-this', this)">Just This And Only That</a>
+  <a onclick="showPopup('taste-of-sound', this)">Taste of Sound</a>
+  <a onclick="showPopup('performance-vista', this)">Performance Vista</a>
+  <a onclick="showPopup('about', this)">About</a>
+</div>
 
-  <!-- SECONDARY POPUP CONTAINER -->
-  <div id="secondPopup" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup()">x</button>
-    <div id="secondPopupContent"></div>
-  </div>
+<div class="footnote">BUTCHER & CORREIA © 2025</div>
 
-  <script>
-    const contentData = {
-      "sound-of-things": {
-        primary: `
-          <strong>The Sound of Things</strong><br>
-          Performance, 60 min.<br>
-          Only Connect 2025, Rosendal Teater - Trondheim, 2025<br>
-          Staging the inaudible everyday through custom-built instruments and whispered fragments.`,
-        secondary: `
-          <strong>Details on Sound of Things</strong><br>
-          Collaboration with Rosendal Teater’s sound lab. Microphone arrays. Glass percussion. Soft electronics.
-        `
-      },
-      "just-this": {
-        primary: `
-          <strong>Just This And Only That</strong><br>
-          Sound installation, 15 min loop<br>
-          Bergen Kjøtt, 2024<br>
-          Fragments from textile workshops remixed with stories of material memory.`,
-        secondary: `
-          <strong>More on Just This</strong><br>
-          Audio sourced from recycled textile processes. Voices of Bergen-based craftspeople.
-        `
-      },
-      "instrumentalizing": {
-        primary: `
-          <strong>Instrumentalizing</strong><br>
-          Ongoing workshop series, 2023–<br>
-          Designing instruments from discarded domestic materials. Hosted in schools and community centres.`,
-        secondary: `
-          <strong>Workshop Approach</strong><br>
-          Includes modular synths from washing machine parts. Sonic recycling as pedagogy.
-        `
-      },
-      "late-flowers": {
-        primary: `
-          <strong>Late Flowers</strong><br>
-          Immersive soundwalk & installation<br>
-          SHORES residency, Funchal, 2025<br>
-          Mapping nocturnal flora through geophones and underwater microphones.`,
-        secondary: `
-          <strong>Night Studies</strong><br>
-          Includes collaboration with botanists. Focus on sonic rhythms of pollination.
-        `
-      },
-      "cosmic-dust": {
-        primary: `
-          <strong>Cosmic Dust</strong><br>
-          Multichannel audio + performance<br>
-          Tou Scene, Stavanger, 2023<br>
-          Interstellar frequencies collapsed into domestic choreographies.`,
-        secondary: `
-          <strong>Space Meets Kitchen</strong><br>
-          Sonic interpretations of dust collected from homes + archives of deep-space signals.
-        `
-      }
-    };
+<!-- POPUP CONTAINER -->
+<div id="popupContainer" class="popup draggable" style="display:none;">
+  <button class="close-btn" onclick="closePopup()">x</button>
+  <div id="popupContent"></div>
+  <button class="plus-btn" onclick="handlePlusClick()">+</button>
+</div>
 
-    let currentPopupId = null;
+<!-- SECONDARY POPUPS -->
+
+<div id="secondPopup-sound-of-things" class="popup-secondary draggable">
+  <button class="close-btn" onclick="closeSecondPopup('sound-of-things')">x</button>
+  <div><strong>Secondary popup for The Sound of Things</strong><br>Additional content goes here.</div>
+</div>
+
+<div id="secondPopup-just-this" class="popup-secondary draggable">
+  <button class="close-btn" onclick="closeSecondPopup('just-this')">x</button>
+  <div><strong>Secondary popup for Just This And Only That</strong><br>More info here.</div>
+</div>
+
+<div id="secondPopup-taste-of-sound" class="popup-secondary draggable">
+  <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')">x</button>
+  <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
+</div>
+
+<div id="secondPopup-performance-vista" class="popup-secondary draggable">
+  <button class="close-btn" onclick="closeSecondPopup('performance-vista')">x</button>
+  <div><strong>Secondary popup for Performance Vista</strong><br>Details here.</div>
+</div>
+
+<div id="secondPopup-about" class="popup-secondary draggable">
+  <button class="close-btn" onclick="closeSecondPopup('about')">x</button>
+  <div><strong>Secondary popup for About</strong><br>Contact info and more.</div>
+</div>
+
+<script>
+  const contentData = {
+    "sound-of-things": 
+      <strong>The Sound of Things</strong><br>
+      Performance, 60 min.<br>
+      Only Connect 2025, Rosendal Teater - Trondheim, 2025<br>
+      The Sound of Things is a collaborative, interdisciplinary performance conceived by Klaus Ellerhusen Holm (NO) and Katherine Butcher (AU), developed with Carlos A. Correia (PT), and featuring interdisciplinary artist in taste Ieva Grigelionyte (LT/UK). Aksiom Ensemble performs the sound composition.<br>
+      Supported by: Trondheim kommune, Nettle T.O.C.<br>
+      <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm</p>
+      Sound Composition: Klaus E. Holm<br>
+      Visuals & Dramaturgy: BUTCHER & CORREIA<br>
+      Sound: Aksiom Ensemble<br>
+      Food: Ieva Grigelionyte
+    ,
+    "just-this": 
+      <strong>Just This And Only That</strong><br>
+      2.01.2024–on going<br><br>
+      "Just This and Only That” is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.<br><br>
+      <a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
+      Supported by: Kulturdirektoratet
+    ,
+    "taste-of-sound": 
+      <strong>Taste of Sound</strong><br>
+      Performance, 60 min.<br>
+      KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023<br><br>
+      <p>Layers of plasticity: elements such as background music, tableware, packaging design, lighting hues, and even menu item names have been recognized as significant factors that shape our perception of taste.</p>
+      <p>"Taste of Sound" explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously can provide new and curious personal imagery. The performance interweaves sound, flavor, and visual impressions. Through manipulation of these elements, our gestures aim to challenge your sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food. This event serves as a scaled-down preview of our comprehensive showcase scheduled for 2024.</p>
+      <p>Concept: Katherine Butcher and Klaus Ellerhusen Holm with Carlos A. Correia</p>
+      Visuals & Choreography: BUTCHER & CORREIA<br>
+      Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
+      Food: Martin Moen Mosti and Even Østby<br>
+      Event supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum and Norsk Komponistforening
+    ,
+    "performance-vista": 
+      <strong>Performance Vista</strong><br>
+      Performance, anemometer, support jacks, lifting straps, construction helmets, reflective vests, and HOEFLON C10 crane. Variable dimensions.<br>
+      Performance Vista is a pleasing sight between a long narrow row of trees; a succession of anticipated events, a vision, a view of a series of actions in the mind, a performance vista played out, unfolding retrospectively and prospectively.<br>
+      <a href="https://performancevista.com">performancevista.com</a><br>
+      <a href="https://instagram.com/performancevista">@performancevista</a>
+    ,
+    "about": 
+      <strong>About</strong><br>
+      we are Katherine BUTCHER & Carlos A. CORREIA<br>
+      studio [at] butchercorreia.com<br><br>
+      2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)<br>
+      2025    The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
+      2024    Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
+      2023    Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
+      2023    net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
+      2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br>
+      <p>BUTCHER & CORREIA (Katherine & Carlos) ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.<br><br>
+      <img src="BCportrait.jpg" alt="Polaroid" width="200">
+    
+  };
 
     function showPopup(id, element) {
-      currentPopupId = id;
       const popup = document.getElementById('popupContainer');
       const content = document.getElementById('popupContent');
-      content.innerHTML = contentData[id]?.primary || 'No content found.';
+      content.innerHTML = contentData[id] || 'No content found.';
       popup.style.display = 'block';
-
+    
+      // Remove 'active' class from all nav links
       document.querySelectorAll('.nav-column a').forEach(link => {
         link.classList.remove('active');
       });
-      if (element) element.classList.add('active');
+    
+      // Add 'active' class to the clicked link
+      if (element) {
+        element.classList.add('active');
+      }
     }
 
+  function makeDraggable(el) {
+  let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
+  
+  el.onmousedown = dragMouseDown;
+
+  function dragMouseDown(e) {
+    e.preventDefault();
+    startX = e.clientX;
+    startY = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e.preventDefault();
+    offsetX = startX - e.clientX;
+    offsetY = startY - e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    el.style.top = (el.offsetTop - offsetY) + "px";
+    el.style.left = (el.offsetLeft - offsetX) + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+// Apply to all popups with class 'draggable'
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.draggable').forEach(makeDraggable);
+});
+
+    
     function closePopup() {
       document.getElementById('popupContainer').style.display = 'none';
-      document.getElementById('secondPopup').style.display = 'none';
+    
+      // Optionally remove 'active' class on close
       document.querySelectorAll('.nav-column a').forEach(link => {
         link.classList.remove('active');
       });
     }
 
-    function handlePlusClick() {
-      const secondPopup = document.getElementById('secondPopup');
-      const content = document.getElementById('secondPopupContent');
-      content.innerHTML = contentData[currentPopupId]?.secondary || 'More details not available.';
-      secondPopup.style.display = 'block';
+      function handlePlusClick() {
+      document.getElementById('secondPopup').style.display = 'block';
     }
-
+    
     function closeSecondPopup() {
       document.getElementById('secondPopup').style.display = 'none';
     }
-  </script>
+    
+    function closePopup() {
+      document.getElementById('popupContainer').style.display = 'none';
+      closeSecondPopup(); // Ensure second popup closes too
+    }
+</script>
+
 </body>
 </html>
+
