@@ -68,9 +68,9 @@
 
     .popup {
       position: fixed;
-      top: 20px; /* align with site header/nav */
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%); /* center horizontally only */
+      transform: translateX(-35%); /* center horizontally only */
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
@@ -299,10 +299,8 @@
   function handlePlusClick() {
     if (!currentPopupId) return;
     const secondPopup = document.getElementById('secondPopup-' + currentPopupId);
-    if (secondPopup) {
-      secondPopup.style.display = 'block';
-      // Bring secondary popup to front (optional)
-      secondPopup.style.zIndex = 300;
+    if (currentPopupId) {
+      openSecondPopup(currentPopupId);
     }
   }
 
