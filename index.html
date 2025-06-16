@@ -78,7 +78,22 @@
       z-index: 200;
     }
 
-
+        .popup-secondary {
+      position: fixed;
+      top: 150px; /* align with site header/nav */
+      right: 100px
+      left: 50%;
+      transform: translateX(-50%); /* center horizontally only */
+      background-color: #fff;
+      border: 4px dashed #ff4000;
+      padding: 2rem;
+      width: 300px;
+      max-width: 90%;
+      min-height: 400px; 
+      box-shadow: 10px 10px 0 #ff4000;
+      z-index: 200;
+    }
+    
     .popup .close-btn {
       position: absolute;
       top: 5px;
@@ -133,7 +148,7 @@
   <button class="plus-btn" onclick="handlePlusClick()">+</button>
 </div>
 
- <div id="secondPopup" class="popup" style="display:none;">
+  <div id="secondPopup" class="popup-secondary" style="display:none;">
   <button class="close-btn" onclick="closeSecondPopup()">X</button>
   <div id="secondPopupContent">
     <strong>Extra Information</strong><br>
