@@ -141,13 +141,13 @@
 <div class="footnote">BUTCHER & CORREIA © 2025</div>
 
 <!-- POPUP CONTAINER -->
-<div id="popupContainer" class="popup" style="display:none;">
+<div id="popupContainer" class="popup draggable" style="display:none;">
   <button class="close-btn" onclick="closePopup()">x</button>
   <div id="popupContent"></div>
   <button class="plus-btn" onclick="handlePlusClick()">+</button>
 </div>
 
-  <div id="secondPopup" class="popup-secondary" style="display:none;">
+<div id="secondPopup" class="popup-secondary draggable" style="display:none;">
   <button class="close-btn" onclick="closeSecondPopup()">X</button>
   <div id="secondPopupContent">
     <strong>Extra Information</strong><br>
@@ -226,6 +226,42 @@
         element.classList.add('active');
       }
     }
+
+  function makeDraggable(el) {
+  let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
+  
+  el.onmousedown = dragMouseDown;
+
+  function dragMouseDown(e) {
+    e.preventDefault();
+    startX = e.clientX;
+    startY = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e.preventDefault();
+    offsetX = startX - e.clientX;
+    offsetY = startY - e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    el.style.top = (el.offsetTop - offsetY) + "px";
+    el.style.left = (el.offsetLeft - offsetX) + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+// Apply to all popups with class 'draggable'
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.draggable').forEach(makeDraggable);
+});
+
     
     function closePopup() {
       document.getElementById('popupContainer').style.display = 'none';
