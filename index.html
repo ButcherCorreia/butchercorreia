@@ -30,14 +30,22 @@
     }
 
     #draggable-box {
-      position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 30vw;
+      width: 200px;
       height: auto;
+      background: transparent;
       cursor: grab;
       z-index: 1000;
+      user-select: none;
+    }
+
+    #draggable-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none;
     }
     
     .site-title {
@@ -432,6 +440,32 @@
         document.onmousemove = null;
       }
     }
+
+      const box = document.getElementById('draggable-box');
+    
+    let isDragging = false;
+    let startX, startY;
+    let currentX = 0;
+    let currentY = 0;
+    
+    box.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.clientX - currentX;
+      startY = e.clientY - currentY;
+      box.style.cursor = 'grabbing';
+    });
+    
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      box.style.cursor = 'grab';
+    });
+    
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      currentX = e.clientX - startX;
+      currentY = e.clientY - startY;
+      box.style.transform = `translate(calc(-50% + ${currentX}px), ${currentY}px)`;
+    });
     
     // Apply draggable to all elements with class="draggable"
     window.onload = function () {
