@@ -390,36 +390,44 @@
     }
   }
 
-  // Draggable functionality
-  function makeDraggable(el) {
-    let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
-
-    el.onmousedown = dragMouseDown;
-
-    function dragMouseDown(e) {
-      e.preventDefault();
-      startX = e.clientX;
-      startY = e.clientY;
-      document.onmouseup = closeDragElement;
-      document.onmousemove = elementDrag;
+    // Draggable functionality
+    function makeDraggable(el) {
+      let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
+    
+      el.onmousedown = dragMouseDown;
+    
+      function dragMouseDown(e) {
+        e.preventDefault();
+        startX = e.clientX;
+        startY = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+      }
+    
+      function elementDrag(e) {
+        e.preventDefault();
+        offsetX = startX - e.clientX;
+        offsetY = startY - e.clientY;
+        startX = e.clientX;
+        startY = e.clientY;
+    
+        el.style.top = (el.offsetTop - offsetY) + "px";
+        el.style.left = (el.offsetLeft - offsetX) + "px";
+      }
+    
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
     }
+    
+    // Apply draggable to all elements with class="draggable"
+    window.onload = function () {
+      document.querySelectorAll('.draggable').forEach(el => {
+        makeDraggable(el);
+      });
+    };
 
-    function elementDrag(e) {
-      e.preventDefault();
-      offsetX = startX - e.clientX;
-      offsetY = startY - e.clientY;
-      startX = e.clientX;
-      startY = e.clientY;
-
-      el.style.top = (el.offsetTop - offsetY) + "px";
-      el.style.left = (el.offsetLeft - offsetX) + "px";
-    }
-
-    function closeDragElement() {
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-  }
 
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.draggable').forEach(makeDraggable);
