@@ -50,22 +50,22 @@
       z-index: 100;
       cursor: move;
       background: transparent;
-      padding: 0 0 0 0; /* no side padding for equal spacing */
-      min-width: 0;   /* allow shrink-to-fit */
-      width: auto;    /* allow box to fit content */
+      padding: 0 0 0 0;
+      min-width: 0;
+      width: auto;
       max-width: 90vw;
       display: flex;
       align-items: center;
       justify-content: center;
       white-space: nowrap;
     }
-    
+
     .site-title-underline {
       display: inline-block;
       border-bottom: 4px dashed #ff4000;
-      padding-bottom: 2px; /* Controls space between text and dash */
+      padding-bottom: 2px;
     }
-    
+
     .site-title {
       font-size: 1.5rem; font-weight: bold; background: transparent;
       color: #000; border: none; margin: 0; padding: 0;
@@ -73,12 +73,11 @@
       white-space: nowrap; pointer-events: none; user-select: none;
       display: block; text-align: center;
     }
-   
+
     .nav-column {
       position: fixed; top: 20px; left: 20px;
       display: flex; flex-direction: column; gap: 0.3rem;
       background: transparent; cursor: move; z-index: 100;
-      /* No padding so text aligns with window edge like site-title-box */
     }
     .nav-column a { color: #000; text-decoration: none; font-size: 1.1rem; cursor: pointer; }
     .nav-column a.active { font-weight: bold; }
@@ -91,7 +90,8 @@
       padding: 2rem;
       width: 400px; max-width: 90%; min-height: 440px;
       box-shadow: 10px 10px 0 #ff4000;
-      z-index: 1100; /* Above overlay */
+      z-index: 1100;
+      display: none;
     }
     .popup-secondary {
       position: fixed;
@@ -102,7 +102,7 @@
       width: 300px; max-width: 90%; min-height: 400px;
       min-width: 300px; max-width: 70vw; max-height: 85vh;
       box-shadow: 10px 10px 0 #ff4000;
-      z-index: 1200; /* Above main popup and overlay */
+      z-index: 1200;
       display: none;
       resize: both; overflow: auto;
     }
@@ -134,7 +134,7 @@
     }
     .footnote {
       transform: rotate(-90deg); transform-origin: left bottom;
-      font-size: 0.9rem; background: transparent
+      font-size: 0.9rem; background: transparent;
       padding: 2px 8px; color: #333; display: block;
     }
   </style>
@@ -160,7 +160,7 @@
     <a onclick="showPopup('about', this)">About</a>
   </div>
 
-  <div id="popupContainer" class="popup draggable" style="display:none;">
+  <div id="popupContainer" class="popup draggable">
     <button class="close-btn" onclick="closePopup()">x</button>
     <div id="popupContent"></div>
     <button class="plus-btn" onclick="handlePlusClick()">+</button>
@@ -172,7 +172,6 @@
       <div style="padding:56.25% 0 0 0;position:relative;">
         <iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe>
       </div>
-      <script src="https://player.vimeo.com/api/player.js"></script>
     </div>
   </div>
   <div id="secondPopup-just-this" class="popup-secondary draggable">
@@ -207,154 +206,165 @@
   </div>
 
 <script>
-  let currentPopupId = null;
+let currentPopupId = null;
 
-  const contentData = {
-    "sound-of-things": `
-      Performance, 60 min.<br>
-      Only Connect 2025, Rosendal Teater - Trondheim, 2025<br>
-      <p><strong>The Sound of Things</strong> is a collaborative, interdisciplinary performance conceived by Klaus Ellerhusen Holm (NO) and Katherine Butcher (AU), developed with Carlos A. Correia (PT), and featuring interdisciplinary artist in taste Ieva Grigelionyte (LT/UK). Aksiom Ensemble performs the sound composition.</p>
-      Concept: Katherine Butcher and Klaus Ellerhusen Holm, developed with Carlos A. Correia<br>
-      Sound Composition: Klaus E. Holm<br>
-      Visuals & Dramaturgy: BUTCHER & CORREIA<br>
-      Sound: Aksiom Ensemble<br>
-      Food: Ieva Grigelionyte<br>
-      Light design: Abigail Nava<br>
-      Light tecnhician: Torbjørn Benjaminsen<br>
-      Supported by: Trondheim kommune, Nettle T.O.C., Culligan
-    `,
-    "just-this": `
-      2.01.2024–on going<br>
-      <p><strong>Just This and Only That</strong> is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.</p>
-      <a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
-      Supported by: Kulturdirektoratet
-    `,
-    "taste-of-sound": `
-      Performance, 60 min.<br>
-      KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023<br><br>
-      <p>Layers of plasticity: elements such as background music, tableware, packaging design, lighting hues, and even menu item names have been recognized as significant factors that shape our perception of taste.</p>
-      <p><strong>Taste of Sound</strong> explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously can provide new and curious personal imagery. The performance interweaves sound, flavor, and visual impressions. Through manipulation of these elements, our gestures aim to challenge your sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food. This event serves as a scaled-down preview of our comprehensive showcase scheduled for 2024.</p>
-      Concept: Katherine Butcher and Klaus Ellerhusen Holm, developed with Carlos A. Correia<br>
-      Visuals & Choreography: BUTCHER & CORREIA<br>
-      Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
-      Food: Martin Moen Mosti and Even Østby<br>
-      Event supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum and Norsk Komponistforening
-    `,
-    "performance-vista": `
-      Performance, anemometer, support jacks, lifting straps, construction helmets, reflective vests, and HOEFLON C10 crane. Variable dimensions.<br>
-      Group exhibition <strong>Unlikely the same as yesterday</strong>, GRENSELØS, Norway
-      <p><strong>Performance Vista</strong> is a pleasing sight between a long narrow row of trees; a succession of anticipated events, a vision, a view of a series of actions in the mind, a performance vista played out, unfolding retrospectively and prospectively.</p>
-      <a href="https://performancevista.com">performancevista.com</a><br>
-      <a href="https://instagram.com/performancevista">@performancevista</a>
-    `,
-    "about": `
-      we are Katherine BUTCHER & Carlos A. CORREIA<br>
-      studio [at] butchercorreia.com<br><br>
-      <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.<br><br>
-      <img src="BCportrait.jpg" alt="Polaroid" width="200">
-    `
-  };
+const contentData = {
+  "sound-of-things": `
+    Performance, 60 min.<br>
+    Only Connect 2025, Rosendal Teater - Trondheim, 2025<br>
+    <p><strong>The Sound of Things</strong> is a collaborative, interdisciplinary performance conceived by Klaus Ellerhusen Holm (NO) and Katherine Butcher (AU), developed with Carlos A. Correia (PT), and featuring interdisciplinary artist in taste Ieva Grigelionyte (LT/UK). Aksiom Ensemble performs the sound composition.</p>
+    Concept: Katherine Butcher and Klaus Ellerhusen Holm, developed with Carlos A. Correia<br>
+    Sound Composition: Klaus E. Holm<br>
+    Visuals & Dramaturgy: BUTCHER & CORREIA<br>
+    Sound: Aksiom Ensemble<br>
+    Food: Ieva Grigelionyte<br>
+    Light design: Abigail Nava<br>
+    Light tecnhician: Torbjørn Benjaminsen<br>
+    Supported by: Trondheim kommune, Nettle T.O.C., Culligan
+  `,
+  "just-this": `
+    2.01.2024–on going<br>
+    <p><strong>Just This and Only That</strong> is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.</p>
+    <a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
+    Supported by: Kulturdirektoratet
+  `,
+  "taste-of-sound": `
+    Performance, 60 min.<br>
+    KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023<br><br>
+    <p>Layers of plasticity: elements such as background music, tableware, packaging design, lighting hues, and even menu item names have been recognized as significant factors that shape our perception of taste.</p>
+    <p><strong>Taste of Sound</strong> explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously can provide new and curious personal imagery. The performance interweaves sound, flavor, and visual impressions. Through manipulation of these elements, our gestures aim to challenge your sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food. This event serves as a scaled-down preview of our comprehensive showcase scheduled for 2024.</p>
+    Concept: Katherine Butcher and Klaus Ellerhusen Holm, developed with Carlos A. Correia<br>
+    Visuals & Choreography: BUTCHER & CORREIA<br>
+    Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
+    Food: Martin Moen Mosti and Even Østby<br>
+    Event supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum and Norsk Komponistforening
+  `,
+  "performance-vista": `
+    Performance, anemometer, support jacks, lifting straps, construction helmets, reflective vests, and HOEFLON C10 crane. Variable dimensions.<br>
+    Group exhibition <strong>Unlikely the same as yesterday</strong>, GRENSELØS, Norway
+    <p><strong>Performance Vista</strong> is a pleasing sight between a long narrow row of trees; a succession of anticipated events, a vision, a view of a series of actions in the mind, a performance vista played out, unfolding retrospectively and prospectively.</p>
+    <a href="https://performancevista.com">performancevista.com</a><br>
+    <a href="https://instagram.com/performancevista">@performancevista</a>
+  `,
+  "about": `
+    we are Katherine BUTCHER & Carlos A. CORREIA<br>
+    studio [at] butchercorreia.com<br><br>
+    <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.<br><br>
+    <img src="BCportrait.jpg" alt="Polaroid" width="200">
+  `
+};
 
-  function showPopup(id, element) {
-    // Always close ALL popups first
-    document.getElementById('popupContainer').style.display = 'none';
-    document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-  
-    // Force a short delay to guarantee popups are closed before opening a new one
-    setTimeout(function() {
-      const popup = document.getElementById('popupContainer');
-      const content = document.getElementById('popupContent');
-      currentPopupId = id;
-      content.innerHTML = contentData[id] || 'No content found.';
-      popup.style.display = 'block';
-      if (element) element.classList.add('active');
-      setOverlayVisibility();
-    }, 10); // 10ms delay ensures the browser processes the close before open
-  }
+function showPopup(id, element) {
+  // Close all popups and remove active state
+  document.getElementById('popupContainer').style.display = 'none';
+  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+  document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
+  currentPopupId = null;
+  setOverlayVisibility();
 
-  function handlePlusClick() {
-    if (!currentPopupId) return;
-    openSecondPopup(currentPopupId);
-  }
+  // Now, immediately open the new popup for the nav link
+  const popup = document.getElementById('popupContainer');
+  const content = document.getElementById('popupContent');
+  currentPopupId = id;
+  content.innerHTML = contentData[id] || 'No content found.';
+  popup.style.display = 'block';
+  if (element) element.classList.add('active');
+  setOverlayVisibility();
+}
 
-  function closeSecondPopup(id) {
-    if (!id) return;
-    const secondPopup = document.getElementById('secondPopup-' + id);
-    if (secondPopup) {
-      secondPopup.style.display = 'none';
-      setOverlayVisibility();
-    }
-  }
+function handlePlusClick() {
+  if (!currentPopupId) return;
+  openSecondPopup(currentPopupId);
+}
 
-  function closePopup() {
-    document.getElementById('popupContainer').style.display = 'none';
-    document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-    currentPopupId = null;
+function closeSecondPopup(id) {
+  if (!id) return;
+  const secondPopup = document.getElementById('secondPopup-' + id);
+  if (secondPopup) {
+    secondPopup.style.display = 'none';
     setOverlayVisibility();
   }
+}
 
-  function openSecondPopup(id) {
-    // Close all other secondary popups
-    document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-    const popup = document.getElementById(`secondPopup-${id}`);
-    if (!popup) return;
-    popup.style.display = 'block';
-    setOverlayVisibility();
-    if (!popup.querySelector('.resize-button')) {
-      const button = document.createElement('div');
-      button.className = 'resize-button';
-      button.setAttribute('aria-label', 'resize');
-      button.innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="#ff4000" stroke-width="2" 
-             stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="4 8 4 4 8 4" />
-          <line x1="4" y1="4" x2="10" y2="10" />
-          <polyline points="20 16 20 20 16 20" />
-          <line x1="20" y1="20" x2="14" y2="14" />
-        </svg>
-      `;
-      let isResizing = false;
-      let startX, startY, startWidth, startHeight;
-      button.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        isResizing = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
-        startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
-        document.documentElement.addEventListener('mousemove', doResize);
-        document.documentElement.addEventListener('mouseup', stopResize);
-      });
-      function doResize(e) {
-        if (!isResizing) return;
-        popup.style.width = (startWidth + e.clientX - startX) + 'px';
-        popup.style.height = (startHeight + e.clientY - startY) + 'px';
-      }
-      function stopResize() {
-        isResizing = false;
-        document.documentElement.removeEventListener('mousemove', doResize);
-        document.documentElement.removeEventListener('mouseup', stopResize);
-      }
-      popup.appendChild(button);
+function closePopup() {
+  document.getElementById('popupContainer').style.display = 'none';
+  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+  document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
+  currentPopupId = null;
+  setOverlayVisibility();
+}
+
+function openSecondPopup(id) {
+  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+  const popup = document.getElementById(`secondPopup-${id}`);
+  if (!popup) return;
+  popup.style.display = 'block';
+  setOverlayVisibility();
+  if (!popup.querySelector('.resize-button')) {
+    const button = document.createElement('div');
+    button.className = 'resize-button';
+    button.setAttribute('aria-label', 'resize');
+    button.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" 
+           fill="none" stroke="#ff4000" stroke-width="2" 
+           stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="4 8 4 4 8 4" />
+        <line x1="4" y1="4" x2="10" y2="10" />
+        <polyline points="20 16 20 20 16 20" />
+        <line x1="20" y1="20" x2="14" y2="14" />
+      </svg>
+    `;
+    let isResizing = false;
+    let startX, startY, startWidth, startHeight;
+    button.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      isResizing = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
+      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
+      document.documentElement.addEventListener('mousemove', doResize);
+      document.documentElement.addEventListener('mouseup', stopResize);
+    });
+    function doResize(e) {
+      if (!isResizing) return;
+      popup.style.width = (startWidth + e.clientX - startX) + 'px';
+      popup.style.height = (startHeight + e.clientY - startY) + 'px';
     }
+    function stopResize() {
+      isResizing = false;
+      document.documentElement.removeEventListener('mousemove', doResize);
+      document.documentElement.removeEventListener('mouseup', stopResize);
+    }
+    popup.appendChild(button);
   }
+}
 
-  // Overlay show/hide logic
-  function setOverlayVisibility() {
-    const mainPopup = document.getElementById("popupContainer");
-    const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-    const anyMainVisible = mainPopup && mainPopup.style.display !== "none";
-    const anySecondaryVisible = allSecondPopups.some(el => el.style.display !== "none");
-    const overlay = document.getElementById("modal-overlay");
-    overlay.style.display = (anyMainVisible || anySecondaryVisible) ? "block" : "none";
+function setOverlayVisibility() {
+  const mainPopup = document.getElementById("popupContainer");
+  const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
+  const anyMainVisible = mainPopup && mainPopup.style.display !== "none";
+  const anySecondaryVisible = allSecondPopups.some(el => el.style.display !== "none");
+  const overlay = document.getElementById("modal-overlay");
+  overlay.style.display = (anyMainVisible || anySecondaryVisible) ? "block" : "none";
+}
+
+document.getElementById('modal-overlay').addEventListener('mousedown', function(e) {
+  if (e.target !== this) return;
+  const mainPopup = document.getElementById("popupContainer");
+  const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
+  const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none");
+  if (visibleSecondPopup) {
+    visibleSecondPopup.style.display = "none";
+    setOverlayVisibility();
+  } else if (mainPopup && mainPopup.style.display !== "none") {
+    closePopup();
+    setOverlayVisibility();
   }
+});
 
-  // Overlay click closes only the topmost popup
-  document.getElementById('modal-overlay').addEventListener('mousedown', function(e) {
-    if (e.target !== this) return;
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape' || e.key === 'Esc') {
     const mainPopup = document.getElementById("popupContainer");
     const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
     const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none");
@@ -365,66 +375,50 @@
       closePopup();
       setOverlayVisibility();
     }
-  });
-
-  // ESC closes topmost popup
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' || e.key === 'Esc') {
-      const mainPopup = document.getElementById("popupContainer");
-      const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-      const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none");
-      if (visibleSecondPopup) {
-        visibleSecondPopup.style.display = "none";
-        setOverlayVisibility();
-      } else if (mainPopup && mainPopup.style.display !== "none") {
-        closePopup();
-        setOverlayVisibility();
-      }
-    }
-  });
-
-  // Draggable (unchanged)
-  function makeDraggable(el) {
-    let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
-    let isDragging = false;
-    let origZ = '';
-    el.onmousedown = dragMouseDown;
-    function dragMouseDown(e) {
-      if (e.button !== 0) return;
-      e.preventDefault();
-      isDragging = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      origZ = el.style.zIndex;
-      el.style.zIndex = 2000;
-      document.onmouseup = closeDragElement;
-      document.onmousemove = elementDrag;
-    }
-    function elementDrag(e) {
-      if (!isDragging) return;
-      e.preventDefault();
-      offsetX = startX - e.clientX;
-      offsetY = startY - e.clientY;
-      startX = e.clientX;
-      startY = e.clientY;
-      el.style.top = (el.offsetTop - offsetY) + "px";
-      el.style.left = (el.offsetLeft - offsetX) + "px";
-    }
-    function closeDragElement() {
-      isDragging = false;
-      el.style.zIndex = origZ;
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
   }
-  window.onload = function () {
-    document.querySelectorAll('.draggable').forEach(el => {
-      makeDraggable(el);
-    });
-  };
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.draggable').forEach(makeDraggable);
+});
+
+function makeDraggable(el) {
+  let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
+  let isDragging = false;
+  let origZ = '';
+  el.onmousedown = dragMouseDown;
+  function dragMouseDown(e) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    origZ = el.style.zIndex;
+    el.style.zIndex = 2000;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+  function elementDrag(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    offsetX = startX - e.clientX;
+    offsetY = startY - e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
+    el.style.top = (el.offsetTop - offsetY) + "px";
+    el.style.left = (el.offsetLeft - offsetX) + "px";
+  }
+  function closeDragElement() {
+    isDragging = false;
+    el.style.zIndex = origZ;
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+window.onload = function () {
+  document.querySelectorAll('.draggable').forEach(el => {
+    makeDraggable(el);
   });
+};
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('.draggable').forEach(makeDraggable);
+});
 </script>
 </body>
 </html>
