@@ -20,42 +20,37 @@
       position: relative;
     }
 
-    /* 1. Background image as the true bottom object */
-    .background-image {
+    /* Draggable background image, half previous size, always bottom */
+    #draggable-bg {
       position: fixed;
       z-index: 0;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      background: url('landingimage2.jpg') center center no-repeat;
-      background-size: contain;
-      background-position: center bottom;
-    }
-
-    /* Remove #draggable-box for background image, make it for other visuals if needed */
-    #draggable-box {
-      position: fixed;
-      bottom: 50%;
+      top: 50%;
       left: 50%;
-      width: 200px;
+      width: 15vw;   /* half of previous 30vw */
+      min-width: 180px; /* keep it visible on small screens */
+      max-width: 540px;
       height: auto;
-      background: transparent;
-      cursor: move;
-      z-index: 1000;
-      user-select: none;
       pointer-events: auto;
-      transform: translate(-50%, 50%); /* Centered vertically, offset as before */
+      transform: translate(-50%, -50%);
+      user-select: none;
+      cursor: move;
+      opacity: 1;
     }
 
-    #draggable-box img {
+    #draggable-bg img {
       width: 100%;
       height: auto;
       display: block;
       pointer-events: none;
+      user-drag: none;
+      user-select: none;
+    }
+
+    #draggable-box {
+      display: none; /* hide old draggable-box if not needed */
     }
     
+    /* Fix: Title header, transparent background, no border stretch */
     .site-title {
       position: fixed;
       top: 20px;
@@ -63,19 +58,18 @@
       font-size: 1.5rem;
       font-weight: bold;
       border-bottom: 4px dashed #ff4000;
-      padding: 0rem 0rem;
+      padding: 0;
       display: inline-block;
       box-sizing: border-box;
       z-index: 100;
       cursor: move;
       white-space: nowrap;
-      /* Prevent border stretching when dragging */
+      background: transparent !important; /* force transparent */
       width: auto;
       min-width: 0;
       max-width: 100vw;
-      background: white;
-      /* Optionally: */
-      /* border-image: initial; */
+      border-image: none;
+      line-height: 1.2;
     }
     
     .nav-column {
@@ -131,8 +125,8 @@
       max-width: 70vw;
       max-height: 85vh;
       box-shadow: 10px 10px 0 #ff4000;
-      z-index: 300; /* higher than main popup */
-      display: none; /* hidden by default */
+      z-index: 300;
+      display: none;
       resize: both;
       overflow: auto;
     }
@@ -187,12 +181,11 @@
       height: 24px;
     }
     
-    /* 2. Footnote: fix stacking & visibility */
     .footnote-wrapper {
       position: fixed;
       bottom: 20px;
       left: 40px;
-      z-index: 500; /* Make sure it's above almost everything */
+      z-index: 500;
       background: transparent;
       cursor: move;
       white-space: nowrap;
@@ -213,8 +206,10 @@
   </style>
 </head>
 <body>
-  <!-- 1. Background image as a true bottom layer -->
-  <div class="background-image"></div>
+  <!-- 1. Draggable background image, half size -->
+  <div id="draggable-bg" class="draggable">
+    <img src="landingimage2.jpg" alt="Landing Image" draggable="false" />
+  </div>
 
   <div class="site-title draggable">BUTCHER & CORREIA</div>
 
@@ -226,11 +221,6 @@
     <a onclick="showPopup('about', this)">About</a>
   </div>
 
-  <!-- If you want a draggable visual box, keep this, otherwise remove -->
-  <!-- <div id="draggable-box">
-    <img src="landingimage2.jpg" alt="Landing Image" />
-  </div> -->
-
   <!-- POPUP CONTAINER -->
   <div id="popupContainer" class="popup draggable" style="display:none;">
     <button class="close-btn" onclick="closePopup()">x</button>
@@ -239,7 +229,6 @@
   </div>
 
   <!-- SECONDARY POPUPS -->
-
   <div id="secondPopup-sound-of-things" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('sound-of-things')">x</button>
     <div><div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script></div>
@@ -275,7 +264,6 @@
       2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br></div>
   </div>
 
-  <!-- 2. Footnote: add after popups for stacking -->
   <div class="footnote-wrapper draggable" id="footnote">
     <div class="footnote">© 2025 BUTCHER & CORREIA</div>
   </div>
@@ -333,20 +321,17 @@
     const popup = document.getElementById('popupContainer');
     const content = document.getElementById('popupContent');
 
-    currentPopupId = id; // store current popup id for secondary popup
+    currentPopupId = id;
 
     content.innerHTML = contentData[id] || 'No content found.';
     popup.style.display = 'block';
 
-    // Hide all secondary popups when opening main popup
     document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
 
-    // Remove 'active' class from all nav links
     document.querySelectorAll('.nav-column a').forEach(link => {
       link.classList.remove('active');
     });
 
-    // Add 'active' class to the clicked link
     if (element) {
       element.classList.add('active');
     }
@@ -354,10 +339,7 @@
 
   function handlePlusClick() {
     if (!currentPopupId) return;
-    const secondPopup = document.getElementById('secondPopup-' + currentPopupId);
-    if (currentPopupId) {
-      openSecondPopup(currentPopupId);
-    }
+    openSecondPopup(currentPopupId);
   }
 
   function closeSecondPopup(id) {
@@ -371,12 +353,9 @@
   function closePopup() {
     document.getElementById('popupContainer').style.display = 'none';
 
-    // Also close any secondary popup open
     if (currentPopupId) {
       closeSecondPopup(currentPopupId);
     }
-
-    // Remove active nav links highlight
     document.querySelectorAll('.nav-column a').forEach(link => {
       link.classList.remove('active');
     });
@@ -390,7 +369,6 @@
   
     popup.style.display = 'block';
   
-    // Add resize button if not already present
     if (!popup.querySelector('.resize-button')) {
       const button = document.createElement('div');
       button.className = 'resize-button';
@@ -406,19 +384,16 @@
         </svg>
       `;
   
-      // Drag-to-resize behavior
       let isResizing = false;
       let startX, startY, startWidth, startHeight;
   
       button.addEventListener('mousedown', (e) => {
         e.preventDefault();
         isResizing = true;
-  
         startX = e.clientX;
         startY = e.clientY;
         startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
         startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
-  
         document.documentElement.addEventListener('mousemove', doResize);
         document.documentElement.addEventListener('mouseup', stopResize);
       });
@@ -439,58 +414,55 @@
     }
   }
 
-    // Draggable functionality
-    function makeDraggable(el) {
-      let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
-      let isDragging = false;
-      let origZ = '';
+  // Draggable functionality for all .draggable elements
+  function makeDraggable(el) {
+    let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
+    let isDragging = false;
+    let origZ = '';
 
-      el.onmousedown = dragMouseDown;
+    el.onmousedown = dragMouseDown;
 
-      function dragMouseDown(e) {
-        // Only allow dragging on left mouse button
-        if (e.button !== 0) return;
-        e.preventDefault();
-        isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        // bring element to front while dragging
-        origZ = el.style.zIndex;
-        el.style.zIndex = 9999;
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
-      }
-
-      function elementDrag(e) {
-        if (!isDragging) return;
-        e.preventDefault();
-        offsetX = startX - e.clientX;
-        offsetY = startY - e.clientY;
-        startX = e.clientX;
-        startY = e.clientY;
-
-        el.style.top = (el.offsetTop - offsetY) + "px";
-        el.style.left = (el.offsetLeft - offsetX) + "px";
-      }
-
-      function closeDragElement() {
-        isDragging = false;
-        el.style.zIndex = origZ;
-        document.onmouseup = null;
-        document.onmousemove = null;
-      }
+    function dragMouseDown(e) {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      origZ = el.style.zIndex;
+      el.style.zIndex = 9999;
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
     }
 
-    // Apply draggable to all elements with class="draggable"
-    window.onload = function () {
-      document.querySelectorAll('.draggable').forEach(el => {
-        makeDraggable(el);
-      });
-    };
+    function elementDrag(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      offsetX = startX - e.clientX;
+      offsetY = startY - e.clientY;
+      startX = e.clientX;
+      startY = e.clientY;
+      el.style.top = (el.offsetTop - offsetY) + "px";
+      el.style.left = (el.offsetLeft - offsetX) + "px";
+    }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll('.draggable').forEach(makeDraggable);
+    function closeDragElement() {
+      isDragging = false;
+      el.style.zIndex = origZ;
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+
+  // Apply draggable to all elements with class="draggable"
+  window.onload = function () {
+    document.querySelectorAll('.draggable').forEach(el => {
+      makeDraggable(el);
     });
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.draggable').forEach(makeDraggable);
+  });
 </script>
 
 </body>
