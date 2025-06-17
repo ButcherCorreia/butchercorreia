@@ -46,12 +46,19 @@
     .site-title-box {
       position: fixed; top: 20px; right: 20px; z-index: 100;
       cursor: move; background: transparent;
-      border-bottom: 4px dashed #ff4000;
-      padding: 12px 32px 10px 32px; box-sizing: border-box;
+      /* Remove border-bottom here */
+      padding: 12px 32px 0px 32px; /* Remove bottom padding */
       min-width: 260px; max-width: 90vw; width: 320px;
       display: flex; align-items: center; justify-content: center;
       white-space: nowrap;
     }
+    
+    .site-title-underline {
+      display: inline-block;
+      border-bottom: 4px dashed #ff4000;
+      padding-bottom: 2px; /* Controls space between text and dash */
+    }
+    
     .site-title {
       font-size: 1.5rem; font-weight: bold; background: transparent;
       color: #000; border: none; margin: 0; padding: 0;
@@ -59,6 +66,7 @@
       white-space: nowrap; pointer-events: none; user-select: none;
       display: block; text-align: center; width: 100%;
     }
+   
     .nav-column {
       position: fixed; top: 20px; left: 20px;
       display: flex; flex-direction: column; gap: 0.3rem;
@@ -130,18 +138,11 @@
 
   <div id="modal-overlay"></div>
 
-  <div class="site-title-box draggable">
+ <div class="site-title-box draggable">
+  <span class="site-title-underline">
     <span class="site-title">BUTCHER & CORREIA</span>
-  </div>
-
-<div style="padding:40px">
-  <div style="display:flex;justify-content:center;">
-    <span style="display:inline-block;border-bottom:4px dashed orange;padding-bottom:3px;">
-      <span style="font-size:2rem;font-weight:bold;">EXACT UNDERLINE</span>
-    </span>
-  </div>
+  </span>
 </div>
-
 
   <div class="nav-column draggable">
     <a onclick="showPopup('sound-of-things', this)">The Sound of Things</a>
