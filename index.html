@@ -255,28 +255,18 @@
     `
   };
 
-  function closeAllPopups() {
-    // Close main popup
-    document.getElementById('popupContainer').style.display = 'none';
-    // Close all secondary popups
-    document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-    // Remove active state from nav links
-    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-    currentPopupId = null;
-    setOverlayVisibility();
-  }
-
   function showPopup(id, element) {
-    // Hide all secondary popups ONLY (don't close main popup here)
+    // Hide everything: main and secondary popups, reset nav
+    document.getElementById('popupContainer').style.display = 'none';
     document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-    // Show main popup with new content
+    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
+
+    // Show main popup with new content, activate nav link
     const popup = document.getElementById('popupContainer');
     const content = document.getElementById('popupContent');
     currentPopupId = id;
     content.innerHTML = contentData[id] || 'No content found.';
     popup.style.display = 'block';
-    // Set nav active state
-    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
     if (element) element.classList.add('active');
     setOverlayVisibility();
   }
@@ -297,14 +287,14 @@
 
   function closePopup() {
     document.getElementById('popupContainer').style.display = 'none';
-    if (currentPopupId) { closeSecondPopup(currentPopupId); }
+    document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
     document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
     currentPopupId = null;
     setOverlayVisibility();
   }
 
   function openSecondPopup(id) {
-    // Hide all secondary popups (but NOT main popup)
+    // Close all other secondary popups
     document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
     const popup = document.getElementById(`secondPopup-${id}`);
     if (!popup) return;
