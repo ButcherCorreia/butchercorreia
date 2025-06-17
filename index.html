@@ -47,7 +47,6 @@
       display: none;
     }
 
-    /* Draggable header box */
     .site-title-box {
       position: fixed;
       top: 20px;
@@ -74,7 +73,7 @@
       box-sizing: border-box;
       line-height: 1.2;
       white-space: nowrap;
-      pointer-events: none; /* only the box is draggable */
+      pointer-events: none;
       user-select: none;
       display: inline-block;
     }
@@ -375,9 +374,7 @@
   function openSecondPopup(id) {
     const popup = document.getElementById(`secondPopup-${id}`);
     if (!popup) return;
-  
     popup.style.display = 'block';
-  
     if (!popup.querySelector('.resize-button')) {
       const button = document.createElement('div');
       button.className = 'resize-button';
@@ -392,10 +389,8 @@
           <line x1="20" y1="20" x2="14" y2="14" />
         </svg>
       `;
-  
       let isResizing = false;
       let startX, startY, startWidth, startHeight;
-  
       button.addEventListener('mousedown', (e) => {
         e.preventDefault();
         isResizing = true;
@@ -406,19 +401,16 @@
         document.documentElement.addEventListener('mousemove', doResize);
         document.documentElement.addEventListener('mouseup', stopResize);
       });
-  
       function doResize(e) {
         if (!isResizing) return;
         popup.style.width = (startWidth + e.clientX - startX) + 'px';
         popup.style.height = (startHeight + e.clientY - startY) + 'px';
       }
-  
       function stopResize() {
         isResizing = false;
         document.documentElement.removeEventListener('mousemove', doResize);
         document.documentElement.removeEventListener('mouseup', stopResize);
       }
-  
       popup.appendChild(button);
     }
   }
@@ -428,9 +420,7 @@
     let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
     let isDragging = false;
     let origZ = '';
-
     el.onmousedown = dragMouseDown;
-
     function dragMouseDown(e) {
       if (e.button !== 0) return;
       e.preventDefault();
@@ -442,7 +432,6 @@
       document.onmouseup = closeDragElement;
       document.onmousemove = elementDrag;
     }
-
     function elementDrag(e) {
       if (!isDragging) return;
       e.preventDefault();
@@ -453,7 +442,6 @@
       el.style.top = (el.offsetTop - offsetY) + "px";
       el.style.left = (el.offsetLeft - offsetX) + "px";
     }
-
     function closeDragElement() {
       isDragging = false;
       el.style.zIndex = origZ;
@@ -461,6 +449,39 @@
       document.onmousemove = null;
     }
   }
+
+  // Popup close on outside click
+  function isVisible(el) {
+    return el && el.style.display !== "none" && el.offsetParent !== null;
+  }
+
+  document.addEventListener("mousedown", function (event) {
+    const mainPopup = document.getElementById("popupContainer");
+    const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
+    const visibleSecondPopup = allSecondPopups.find(isVisible);
+
+    // If any secondary popup is open
+    if (visibleSecondPopup) {
+      // If click outside the visible secondary popup (and not on close/plus button)
+      if (
+        !visibleSecondPopup.contains(event.target) &&
+        // Also allow clicking popup close/plus btns inside main popup
+        (!mainPopup.contains(event.target) || event.target.classList.contains('close-btn') || event.target.classList.contains('plus-btn'))
+      ) {
+        visibleSecondPopup.style.display = "none";
+      }
+      // Always prevent click from closing main popup if secondary popup is open
+      return;
+    }
+
+    // If only the main popup is open
+    if (isVisible(mainPopup)) {
+      // If click outside main popup
+      if (!mainPopup.contains(event.target)) {
+        closePopup();
+      }
+    }
+  });
 
   // Apply draggable to all elements with class="draggable"
   window.onload = function () {
