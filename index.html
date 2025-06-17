@@ -13,10 +13,7 @@
       background-color: transparent;
       min-height: 100vh;
     }
-    body {
-      min-height: 100vh;
-      position: relative;
-    }
+    body { min-height: 100vh; position: relative; }
 
     #draggable-bg {
       position: fixed;
@@ -34,107 +31,66 @@
       opacity: 1;
     }
     #draggable-bg img {
-      width: 100%;
-      height: auto;
-      display: block;
-      pointer-events: none;
-      user-drag: none;
-      user-select: none;
+      width: 100%; height: auto; display: block;
+      pointer-events: none; user-drag: none; user-select: none;
+    }
+
+    /* Overlay for popups */
+    #modal-overlay {
+      display: none;
+      position: fixed;
+      z-index: 150;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.04);
+      cursor: pointer;
     }
 
     .site-title-box {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      cursor: move;
-      background: transparent;
+      position: fixed; top: 20px; right: 20px; z-index: 100;
+      cursor: move; background: transparent;
       border-bottom: 4px dashed #ff4000;
-      /* Only bottom border */
-      padding: 12px 32px 10px 32px;
-      box-sizing: border-box;
-      min-width: 260px;
-      max-width: 90vw;
-      width: 320px;         /* Fixed width for non-stretch */
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 12px 32px 10px 32px; box-sizing: border-box;
+      min-width: 260px; max-width: 90vw; width: 320px;
+      display: flex; align-items: center; justify-content: center;
       white-space: nowrap;
-      /* Optional: for visual clarity */
-      /* box-shadow: 0 4px 16px rgba(255,64,0,0.07); */
     }
     .site-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      background: transparent;
-      color: #000;
-      border: none;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      line-height: 1.2;
-      white-space: nowrap;
-      pointer-events: none; /* only box is draggable */
-      user-select: none;
-      display: block;
-      text-align: center;
-      width: 100%;
+      font-size: 1.5rem; font-weight: bold; background: transparent;
+      color: #000; border: none; margin: 0; padding: 0;
+      box-sizing: border-box; line-height: 1.2;
+      white-space: nowrap; pointer-events: none; user-select: none;
+      display: block; text-align: center; width: 100%;
     }
-    /* ... all other styles unchanged ... */
     .nav-column {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      background: transparent;
-      cursor: move;
-      z-index: 100;
+      position: fixed; top: 20px; left: 20px;
+      display: flex; flex-direction: column; gap: 0.3rem;
+      background: transparent; cursor: move; z-index: 100;
     }
+    .nav-column a { color: #000; text-decoration: none; font-size: 1.1rem; cursor: pointer; }
+    .nav-column a.active { font-weight: bold; }
 
-    .nav-column a {
-      color: #000;
-      text-decoration: none;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-    .nav-column a.active {
-      font-weight: bold;
-    }
     .popup {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-75%, -50%);
+      top: 50%; left: 50%; transform: translate(-75%, -50%);
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
-      width: 400px;
-      max-width: 90%;
-      min-height: 440px; 
+      width: 400px; max-width: 90%; min-height: 440px;
       box-shadow: 10px 10px 0 #ff4000;
-      z-index: 200;
+      z-index: 201;
     }
     .popup-secondary {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
-      width: 300px;
-      max-width: 90%;
-      min-height: 400px; 
-      min-width: 300px;
-      max-width: 70vw;
-      max-height: 85vh;
+      width: 300px; max-width: 90%; min-height: 400px;
+      min-width: 300px; max-width: 70vw; max-height: 85vh;
       box-shadow: 10px 10px 0 #ff4000;
-      z-index: 300;
+      z-index: 202;
       display: none;
-      resize: both;
-      overflow: auto;
+      resize: both; overflow: auto;
     }
     .popup .close-btn,
     .popup .plus-btn,
@@ -152,40 +108,20 @@
     .popup-secondary .close-btn { top: 5px; right: 5px; }
     .popup-secondary .plus-btn { bottom: 5px; right: 5px; }
     .resize-button {
-      position: absolute;
-      bottom: 0px;
-      right: 0px;
-      padding: 0.5rem;
-      width: 24px;
-      height: 24px;
-      background: white;
-      cursor: nwse-resize; 
-      cursor: pointer;
-      z-index: 400;
+      position: absolute; bottom: 0px; right: 0px;
+      padding: 0.5rem; width: 24px; height: 24px;
+      background: white; cursor: nwse-resize; z-index: 400;
     }
-    .resize-button svg {
-      width: 24px;
-      height: 24px;
-    }
+    .resize-button svg { width: 24px; height: 24px; }
     .footnote-wrapper {
-      position: fixed;
-      bottom: 20px;
-      left: 40px;
-      z-index: 500;
-      background: transparent;
-      cursor: move;
-      white-space: nowrap;
-      pointer-events: auto;
-      display: block !important;
+      position: fixed; bottom: 20px; left: 40px; z-index: 500;
+      background: transparent; cursor: move; white-space: nowrap;
+      pointer-events: auto; display: block !important;
     }
     .footnote {
-      transform: rotate(-90deg);
-      transform-origin: left bottom;
-      font-size: 0.9rem;
-      background: rgba(255,255,255,0.8);
-      padding: 2px 8px;
-      color: #333;
-      display: block;
+      transform: rotate(-90deg); transform-origin: left bottom;
+      font-size: 0.9rem; background: rgba(255,255,255,0.8);
+      padding: 2px 8px; color: #333; display: block;
     }
   </style>
 </head>
@@ -194,6 +130,9 @@
   <div id="draggable-bg" class="draggable">
     <img src="landingimage2.jpg" alt="Landing Image" draggable="false" />
   </div>
+
+  <!-- Overlay for popups, sits above bg but below popups -->
+  <div id="modal-overlay"></div>
 
   <!-- Draggable transparent box for site title, fixed width, bottom border only -->
   <div class="site-title-box draggable">
@@ -220,30 +159,26 @@
     <button class="close-btn" onclick="closeSecondPopup('sound-of-things')">x</button>
     <div><div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script></div>
   </div>
-
   <div id="secondPopup-just-this" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('just-this')">x</button>
     <div><iframe src="https://justthisandonlythat.com" width="600" height="400"></iframe></div>
   </div>
-
   <div id="secondPopup-taste-of-sound" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')">x</button>
     <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
   </div>
-
   <div id="secondPopup-performance-vista" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('performance-vista')">x</button>
     <img src="images/performancevista.jpg" alt="map" width="400">
     <img src="images/performancevista2.jpeg" alt="sketch" width="400">
     <a href="images/performance vista_leaflet.pdf" target="_blank">Performance Vista leaflet</a>
   </div>
-
   <div id="secondPopup-about" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('about')">x</button>
     <div><strong>cv</strong><br>
       2026/2027  Norsk billedhoggerforening, Oslo (NO)<br>
-      2026    Group show — Trondheimsbiennalen (NO)  
-      <p>2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)</p> 
+      2026    Group show — Trondheimsbiennalen (NO)<br>
+      <p>2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)</p>
       2025    The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
       2024    Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
       2023    Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
@@ -307,21 +242,13 @@
   function showPopup(id, element) {
     const popup = document.getElementById('popupContainer');
     const content = document.getElementById('popupContent');
-
     currentPopupId = id;
-
     content.innerHTML = contentData[id] || 'No content found.';
     popup.style.display = 'block';
-
     document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-
-    document.querySelectorAll('.nav-column a').forEach(link => {
-      link.classList.remove('active');
-    });
-
-    if (element) {
-      element.classList.add('active');
-    }
+    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
+    if (element) element.classList.add('active');
+    setOverlayVisibility();
   }
 
   function handlePlusClick() {
@@ -334,26 +261,23 @@
     const secondPopup = document.getElementById('secondPopup-' + id);
     if (secondPopup) {
       secondPopup.style.display = 'none';
+      setOverlayVisibility();
     }
   }
 
   function closePopup() {
     document.getElementById('popupContainer').style.display = 'none';
-
-    if (currentPopupId) {
-      closeSecondPopup(currentPopupId);
-    }
-    document.querySelectorAll('.nav-column a').forEach(link => {
-      link.classList.remove('active');
-    });
-
+    if (currentPopupId) { closeSecondPopup(currentPopupId); }
+    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
     currentPopupId = null;
+    setOverlayVisibility();
   }
 
   function openSecondPopup(id) {
     const popup = document.getElementById(`secondPopup-${id}`);
     if (!popup) return;
     popup.style.display = 'block';
+    setOverlayVisibility();
     if (!popup.querySelector('.resize-button')) {
       const button = document.createElement('div');
       button.className = 'resize-button';
@@ -394,7 +318,47 @@
     }
   }
 
-  // Draggable functionality for all .draggable elements
+  // Overlay handling
+  function setOverlayVisibility() {
+    const mainPopup = document.getElementById("popupContainer");
+    const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
+    const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none" && el.offsetParent !== null);
+    const overlay = document.getElementById("modal-overlay");
+    overlay.style.display = (visibleSecondPopup || (mainPopup && mainPopup.style.display !== "none" && mainPopup.offsetParent !== null)) ? "block" : "none";
+    overlay.style.zIndex = visibleSecondPopup ? "201" : "200";
+  }
+
+  // Overlay click closes popups as per your spec
+  document.getElementById('modal-overlay').addEventListener('mousedown', function() {
+    const mainPopup = document.getElementById("popupContainer");
+    const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
+    const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none" && el.offsetParent !== null);
+    if (visibleSecondPopup) {
+      visibleSecondPopup.style.display = "none";
+      setOverlayVisibility();
+    } else if (mainPopup && mainPopup.style.display !== "none" && mainPopup.offsetParent !== null) {
+      closePopup();
+      setOverlayVisibility();
+    }
+  });
+
+  // ESC key closes popup/secondary popup
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const mainPopup = document.getElementById("popupContainer");
+      const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
+      const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none" && el.offsetParent !== null);
+      if (visibleSecondPopup) {
+        visibleSecondPopup.style.display = "none";
+        setOverlayVisibility();
+      } else if (mainPopup && mainPopup.style.display !== "none" && mainPopup.offsetParent !== null) {
+        closePopup();
+        setOverlayVisibility();
+      }
+    }
+  });
+
+  // Draggable functionality
   function makeDraggable(el) {
     let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
     let isDragging = false;
@@ -428,38 +392,6 @@
       document.onmousemove = null;
     }
   }
-
-  // Popup close on outside click
-  function isVisible(el) {
-    return el && el.style.display !== "none" && el.offsetParent !== null;
-  }
-
-  document.addEventListener("mousedown", function (event) {
-    const mainPopup = document.getElementById("popupContainer");
-    const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-    const visibleSecondPopup = allSecondPopups.find(isVisible);
-
-    // If any secondary popup is open
-    if (visibleSecondPopup) {
-      // If click outside the visible secondary popup (and not on close/plus button)
-      if (
-        !visibleSecondPopup.contains(event.target) &&
-        (!mainPopup.contains(event.target) || event.target.classList.contains('close-btn') || event.target.classList.contains('plus-btn'))
-      ) {
-        visibleSecondPopup.style.display = "none";
-      }
-      // Always prevent click from closing main popup if secondary popup is open
-      return;
-    }
-
-    // If only the main popup is open
-    if (isVisible(mainPopup)) {
-      // If click outside main popup
-      if (!mainPopup.contains(event.target)) {
-        closePopup();
-      }
-    }
-  });
 
   // Apply draggable to all elements with class="draggable"
   window.onload = function () {
