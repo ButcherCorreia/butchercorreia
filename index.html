@@ -44,12 +44,19 @@
     }
 
     .site-title-box {
-      position: fixed; top: 20px; right: 20px; z-index: 100;
-      cursor: move; background: transparent;
-      /* Remove border-bottom here */
-      padding: 12px 32px 0px 32px; /* Remove bottom padding */
-      min-width: 260px; max-width: 90vw; width: 320px;
-      display: flex; align-items: center; justify-content: center;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      cursor: move;
+      background: transparent;
+      padding: 12px 20px 0 20px; /* matches nav-column side spacing */
+      min-width: 0;   /* allow shrink-to-fit */
+      width: auto;    /* allow box to fit content */
+      max-width: 90vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       white-space: nowrap;
     }
     
