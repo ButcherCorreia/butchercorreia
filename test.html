@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .popup, .popup-secondary { display: none; border: 1px solid #f00; background: #fff; position: fixed; top: 30%; left: 30%; z-index: 10; padding: 2em; }
+    .popup-secondary { left: 50%; z-index: 20; }
+    #modal-overlay { display: none; position: fixed; top: 0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.2); z-index: 5; }
+    .nav-column a.active { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="nav-column">
+    <a href="#" onclick="showPopup('one', this); return false;">Popup 1</a>
+    <a href="#" onclick="showPopup('two', this); return false;">Popup 2</a>
+  </div>
+  <div id="popupContainer" class="popup">
+    <div id="popupContent"></div>
+    <button onclick="openSecondPopup('one')">Secondary</button>
+    <button onclick="closePopup()">Close</button>
+  </div>
+  <div id="secondPopup-one" class="popup-secondary">
+    Secondary Popup 1 <button onclick="closeSecondPopup('one')">Close</button>
+  </div>
+  <div id="secondPopup-two" class="popup-secondary">
+    Secondary Popup 2 <button onclick="closeSecondPopup('two')">Close</button>
+  </div>
+  <div id="modal-overlay"></div>
+<script>
+const contentData = {
+  one: "Popup 1 Content",
+  two: "Popup 2 Content"
+};
+let currentPopupId = null;
+
+function showPopup(id, element) {
+  // Close all
+  document.getElementById('popupContainer').style.display = 'none';
+  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+  document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
+  currentPopupId = null;
+  setOverlayVisibility();
+  // Open new
+  const popup = document.getElementById('popupContainer');
+  const content = document.getElementById('popupContent');
+  currentPopupId = id;
+  content.innerHTML = contentData[id] || 'No content';
+  popup.style.display = 'block';
+  if (element) element.classList.add('active');
+  setOverlayVisibility();
+}
+function openSecondPopup(id) {
+  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+  document.getElementById('secondPopup-'+id).style.display = 'block';
+  setOverlayVisibility();
+}
+function closeSecondPopup(id) {
+  document.getElementById('secondPopup-'+id).style.display = 'none';
+  setOverlayVisibility();
+}
+function closePopup() {
+  document.getElementById('popupContainer').style.display = 'none';
+  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+  document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
+  currentPopupId = null;
+  setOverlayVisibility();
+}
+function setOverlayVisibility() {
+  const main = document.getElementById('popupContainer').style.display !== 'none';
+  const second = Array.from(document.querySelectorAll('.popup-secondary')).some(el=>el.style.display!=='none');
+  document.getElementById('modal-overlay').style.display = (main || second) ? "block" : "none";
+}
+</script>
+</body>
+</html>
