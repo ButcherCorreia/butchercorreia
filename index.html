@@ -256,19 +256,21 @@
   };
 
   function showPopup(id, element) {
-    // Hide everything: main and secondary popups, reset nav
+    // Always close ALL popups first
     document.getElementById('popupContainer').style.display = 'none';
     document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
     document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-
-    // Show main popup with new content, activate nav link
-    const popup = document.getElementById('popupContainer');
-    const content = document.getElementById('popupContent');
-    currentPopupId = id;
-    content.innerHTML = contentData[id] || 'No content found.';
-    popup.style.display = 'block';
-    if (element) element.classList.add('active');
-    setOverlayVisibility();
+  
+    // Force a short delay to guarantee popups are closed before opening a new one
+    setTimeout(function() {
+      const popup = document.getElementById('popupContainer');
+      const content = document.getElementById('popupContent');
+      currentPopupId = id;
+      content.innerHTML = contentData[id] || 'No content found.';
+      popup.style.display = 'block';
+      if (element) element.classList.add('active');
+      setOverlayVisibility();
+    }, 10); // 10ms delay ensures the browser processes the close before open
   }
 
   function handlePlusClick() {
