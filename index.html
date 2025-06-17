@@ -267,12 +267,16 @@
   }
 
   function showPopup(id, element) {
-    closeAllPopups();
+    // Hide all secondary popups ONLY (don't close main popup here)
+    document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+    // Show main popup with new content
     const popup = document.getElementById('popupContainer');
     const content = document.getElementById('popupContent');
     currentPopupId = id;
     content.innerHTML = contentData[id] || 'No content found.';
     popup.style.display = 'block';
+    // Set nav active state
+    document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
     if (element) element.classList.add('active');
     setOverlayVisibility();
   }
@@ -300,7 +304,7 @@
   }
 
   function openSecondPopup(id) {
-    // Close all other secondary popups first
+    // Hide all secondary popups (but NOT main popup)
     document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
     const popup = document.getElementById(`secondPopup-${id}`);
     if (!popup) return;
@@ -387,7 +391,7 @@
     }
   });
 
-  // Draggable
+  // Draggable (unchanged)
   function makeDraggable(el) {
     let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
     let isDragging = false;
