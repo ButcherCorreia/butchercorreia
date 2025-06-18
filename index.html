@@ -81,6 +81,16 @@
       background: transparent; cursor: move; z-index: 2000;
     }
     
+    .nav-column-2 {
+      position: fixed;
+      top: 20px;
+      right: 100px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.3rem;
+      background: transparent; cursor: move; z-index: 2000;
+    }
+    
     .nav-column a { color: #000; text-decoration: none; font-size: 1.1rem; cursor: pointer; }
     .nav-column a.active { font-weight: bold; }
 
@@ -159,7 +169,11 @@
     <a onclick="showPopup('just-this', this)">Just This And Only That</a>
     <a onclick="showPopup('taste-of-sound', this)">Taste of Sound</a>
     <a onclick="showPopup('performance-vista', this)">Performance Vista</a>
+  </div>
+
+  <div class="nav-column nav-column-2nd draggable">
     <a onclick="showPopup('about', this)">About</a>
+    <a onclick="showPopup('imagery', this)">Imagery</a>
   </div>
 
   <div id="popupContainer" class="popup draggable">
