@@ -41,6 +41,7 @@
       top: 0; left: 0; width: 100vw; height: 100vh;
       background: transparent; /* Invisible but still captures clicks */
       pointer-events: auto;
+      
     }
 
     .site-title-box {
@@ -77,8 +78,9 @@
     .nav-column {
       position: fixed; top: 20px; left: 20px;
       display: flex; flex-direction: column; gap: 0.3rem;
-      background: transparent; cursor: move; z-index: 100;
+      background: transparent; cursor: move; z-index: 2000;
     }
+    
     .nav-column a { color: #000; text-decoration: none; font-size: 1.1rem; cursor: pointer; }
     .nav-column a.active { font-weight: bold; }
 
