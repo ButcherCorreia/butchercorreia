@@ -77,7 +77,7 @@
 
     .nav-column {
       position: fixed; top: 20px; left: 20px;
-      display: flex; flex-direction: column; gap: 0.3rem;
+      display: flex; flex-direction: row; gap: 0.8rem;
       background: transparent; cursor: move; z-index: 2000;
     }
     
@@ -156,10 +156,10 @@
 
   <div class="nav-column draggable">
     <a onclick="showPopup('sound-of-things', this)">The Sound of Things</a>
+    <a onclick="showPopup('about', this)">About</a>
     <a onclick="showPopup('just-this', this)">Just This And Only That</a>
     <a onclick="showPopup('taste-of-sound', this)">Taste of Sound</a>
     <a onclick="showPopup('performance-vista', this)">Performance Vista</a>
-    <a onclick="showPopup('about', this)">About</a>
   </div>
 
   <div id="popupContainer" class="popup draggable">
