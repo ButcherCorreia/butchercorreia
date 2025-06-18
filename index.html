@@ -320,6 +320,7 @@ function openSecondPopup(id) {
     let startX, startY, startWidth, startHeight;
     button.addEventListener('mousedown', (e) => {
       e.preventDefault();
+      e.stopPropagation(); // Prevent native browser actions and event bubbling
       isResizing = true;
       startX = e.clientX;
       startY = e.clientY;
@@ -328,6 +329,8 @@ function openSecondPopup(id) {
       document.documentElement.addEventListener('mousemove', doResize);
       document.documentElement.addEventListener('mouseup', stopResize);
     });
+    // Prevent click event propagation as well
+    button.addEventListener('click', e => e.stopPropagation());
     function doResize(e) {
       if (!isResizing) return;
       popup.style.width = (startWidth + e.clientX - startX) + 'px';
