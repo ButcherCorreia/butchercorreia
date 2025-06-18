@@ -308,6 +308,47 @@ function showPopup(id, element) {
   popup.style.display = 'block';
   if (element) element.classList.add('active');
   setOverlayVisibility();
+  // Add resize button to main popup if not present
+  if (!popup.querySelector('.resize-button')) {
+    const button = document.createElement('div');
+    button.className = 'resize-button';
+    button.setAttribute('aria-label', 'resize');
+    button.setAttribute('tabindex', '-1');
+    button.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" 
+           fill="none" stroke="#ff4000" stroke-width="2" 
+           stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="4 8 4 4 8 4" />
+        <line x1="4" y1="4" x2="10" y2="10" />
+        <polyline points="20 16 20 20 16 20" />
+        <line x1="20" y1="20" x2="14" y2="14" />
+      </svg>
+    `;
+    let isResizing = false;
+    let startX, startY, startWidth, startHeight;
+    button.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      isResizing = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
+      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
+      document.documentElement.addEventListener('mousemove', doResize);
+      document.documentElement.addEventListener('mouseup', stopResize);
+    });
+    function doResize(e) {
+      if (!isResizing) return;
+      popup.style.width = (startWidth + e.clientX - startX) + 'px';
+      popup.style.height = (startHeight + e.clientY - startY) + 'px';
+    }
+    function stopResize() {
+      isResizing = false;
+      document.documentElement.removeEventListener('mousemove', doResize);
+      document.documentElement.removeEventListener('mouseup', stopResize);
+    }
+    popup.appendChild(button);
+  }
 }
 
 function handlePlusClick() {
