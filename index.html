@@ -114,11 +114,39 @@
       resize: both; overflow: auto;
     }
     .popup .close-btn,
+    .popup .plus-btn,
+    .popup-secondary .close-btn,
+    .popup-secondary .plus-btn {
+      position: absolute;
+      font-size: 1.4rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: #ff4000;
+    }
+    .popup .close-btn {
+      top: 5px;
+      right: 40px;
+    }
+    .popup .plus-btn { bottom: 5px; right: 5px; }
     .popup-secondary .close-btn {
       top: 5px;
-      right: 40px; /* Move close button a bit to the left */
+      right: 40px;
     }
-    .popup .resize-button,
+    .popup-secondary .plus-btn { bottom: 5px; right: 5px; }
+    .popup .resize-button {
+      top: 5px;
+      right: 5px;
+      left: unset;
+      bottom: unset;
+      position: absolute;
+      padding: 0.5rem;
+      width: 24px;
+      height: 24px;
+      background: white;
+      cursor: nwse-resize;
+      z-index: 400;
+    }
     .popup-secondary .resize-button {
       top: 5px;
       right: 5px;
