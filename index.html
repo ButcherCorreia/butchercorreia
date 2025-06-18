@@ -306,6 +306,7 @@ function openSecondPopup(id) {
     const button = document.createElement('div');
     button.className = 'resize-button';
     button.setAttribute('aria-label', 'resize');
+    button.setAttribute('tabindex', '-1');
     button.innerHTML = `
       <svg width="24" height="24" viewBox="0 0 24 24" 
            fill="none" stroke="#ff4000" stroke-width="2" 
@@ -318,9 +319,15 @@ function openSecondPopup(id) {
     `;
     let isResizing = false;
     let startX, startY, startWidth, startHeight;
+    // Prevent all native actions and propagation on relevant events
+    ['mousedown', 'mouseup', 'click', 'dblclick', 'contextmenu', 'dragstart'].forEach(eventType => {
+      button.addEventListener(eventType, e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      });
+    });
     button.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      e.stopPropagation(); // Prevent native browser actions and event bubbling
       isResizing = true;
       startX = e.clientX;
       startY = e.clientY;
@@ -329,8 +336,6 @@ function openSecondPopup(id) {
       document.documentElement.addEventListener('mousemove', doResize);
       document.documentElement.addEventListener('mouseup', stopResize);
     });
-    // Prevent click event propagation as well
-    button.addEventListener('click', e => e.stopPropagation());
     function doResize(e) {
       if (!isResizing) return;
       popup.style.width = (startWidth + e.clientX - startX) + 'px';
@@ -345,50 +350,15 @@ function openSecondPopup(id) {
   }
 }
 
-function setOverlayVisibility() {
-  const mainPopup = document.getElementById("popupContainer");
-  const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-  const anyMainVisible = mainPopup && mainPopup.style.display !== "none";
-  const anySecondaryVisible = allSecondPopups.some(el => el.style.display !== "none");
-  const overlay = document.getElementById("modal-overlay");
-  overlay.style.display = (anyMainVisible || anySecondaryVisible) ? "block" : "none";
-}
-
-document.getElementById('modal-overlay').addEventListener('mousedown', function(e) {
-  if (e.target !== this) return;
-  const mainPopup = document.getElementById("popupContainer");
-  const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-  const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none");
-  if (visibleSecondPopup) {
-    visibleSecondPopup.style.display = "none";
-    setOverlayVisibility();
-  } else if (mainPopup && mainPopup.style.display !== "none") {
-    closePopup();
-    setOverlayVisibility();
-  }
-});
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' || e.key === 'Esc') {
-    const mainPopup = document.getElementById("popupContainer");
-    const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-    const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none");
-    if (visibleSecondPopup) {
-      visibleSecondPopup.style.display = "none";
-      setOverlayVisibility();
-    } else if (mainPopup && mainPopup.style.display !== "none") {
-      closePopup();
-      setOverlayVisibility();
-    }
-  }
-});
-
+// Patch makeDraggable to ignore resize button
 function makeDraggable(el) {
   let offsetX = 0, offsetY = 0, startX = 0, startY = 0;
   let isDragging = false;
   let origZ = '';
   el.onmousedown = dragMouseDown;
   function dragMouseDown(e) {
+    // Ignore if the target is the resize button or inside it
+    if (e.target.closest('.resize-button')) return;
     if (e.button !== 0) return;
     e.preventDefault();
     isDragging = true;
