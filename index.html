@@ -320,10 +320,11 @@ function openSecondPopup(id) {
     let isResizing = false;
     let startX, startY, startWidth, startHeight;
     // Prevent all native actions and propagation on relevant events
-    ['mousedown', 'mouseup', 'click', 'dblclick', 'contextmenu'].forEach(eventType => {
+    ['mousedown', 'mouseup', 'click', 'dblclick', 'contextmenu', 'dragstart'].forEach(eventType => {
       button.addEventListener(eventType, e => {
         e.preventDefault();
         e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
       });
     });
     button.addEventListener('mousedown', (e) => {
@@ -393,6 +394,8 @@ function makeDraggable(el) {
   let origZ = '';
   el.onmousedown = dragMouseDown;
   function dragMouseDown(e) {
+    // Ignore if the target is the resize button or inside it
+    if (e.target.closest('.resize-button')) return;
     if (e.button !== 0) return;
     e.preventDefault();
     isDragging = true;
