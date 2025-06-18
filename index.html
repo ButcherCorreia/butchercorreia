@@ -319,14 +319,19 @@ function openSecondPopup(id) {
     `;
     let isResizing = false;
     let startX, startY, startWidth, startHeight;
-    // Prevent all native actions and propagation on relevant events
-    ['mousedown', 'mouseup', 'click', 'dblclick', 'contextmenu', 'dragstart'].forEach(eventType => {
-      button.addEventListener(eventType, e => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-      });
+    
+     button.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      isResizing = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
+      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
+      document.documentElement.addEventListener('mousemove', doResize);
+      document.documentElement.addEventListener('mouseup', stopResize);
     });
+    
     button.addEventListener('mousedown', (e) => {
       isResizing = true;
       startX = e.clientX;
