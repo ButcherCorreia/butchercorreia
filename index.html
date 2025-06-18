@@ -134,27 +134,33 @@
       right: 40px;
     }
     .popup-secondary .plus-btn { bottom: 5px; right: 5px; }
-    .popup .resize-button,
+    .popup .resize-button {
+      top: 5px;
+      right: 5px;
+      left: unset;
+      bottom: unset;
+      position: absolute;
+      padding: 0.5rem;
+      width: 24px;
+      height: 24px;
+      background: transparent
+      cursor: nwse-resize;
+      z-index: 400;
+    }
     .popup-secondary .resize-button {
       top: 5px;
       right: 5px;
       left: unset;
       bottom: unset;
       position: absolute;
-      padding: 0.2rem;
-      width: 28px;
-      height: 28px;
-      background: transparent;
+      padding: 0.5rem;
+      width: 24px;
+      height: 24px;
+      background: transparent
       cursor: nwse-resize;
       z-index: 400;
-      opacity: 0.7;
-      transition: opacity 0.2s;
     }
-    .popup .resize-button:hover,
-    .popup-secondary .resize-button:hover {
-      opacity: 1;
-    }
-    .resize-button svg { width: 20px; height: 20px; }
+    .resize-button svg { width: 24px; height: 24px; }
     .footnote-wrapper {
       position: fixed; bottom: 20px; left: 40px; z-index: 500;
       background: transparent; cursor: move; white-space: nowrap;
