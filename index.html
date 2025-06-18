@@ -306,6 +306,7 @@ function openSecondPopup(id) {
     const button = document.createElement('div');
     button.className = 'resize-button';
     button.setAttribute('aria-label', 'resize');
+    button.setAttribute('tabindex', '-1');
     button.innerHTML = `
       <svg width="24" height="24" viewBox="0 0 24 24" 
            fill="none" stroke="#ff4000" stroke-width="2" 
@@ -318,9 +319,14 @@ function openSecondPopup(id) {
     `;
     let isResizing = false;
     let startX, startY, startWidth, startHeight;
+    // Prevent all native actions and propagation on relevant events
+    ['mousedown', 'mouseup', 'click', 'dblclick', 'contextmenu'].forEach(eventType => {
+      button.addEventListener(eventType, e => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
     button.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      e.stopPropagation(); // Prevent native browser actions and event bubbling
       isResizing = true;
       startX = e.clientX;
       startY = e.clientY;
@@ -329,8 +335,6 @@ function openSecondPopup(id) {
       document.documentElement.addEventListener('mousemove', doResize);
       document.documentElement.addEventListener('mouseup', stopResize);
     });
-    // Prevent click event propagation as well
-    button.addEventListener('click', e => e.stopPropagation());
     function doResize(e) {
       if (!isResizing) return;
       popup.style.width = (startWidth + e.clientX - startX) + 'px';
@@ -427,4 +431,3 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
-
