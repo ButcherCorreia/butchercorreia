@@ -111,7 +111,8 @@
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
-      width: 400px; max-width: 90%; min-height: 440px;
+      width: 400px; min-width: 250px; max-width: 90%; 
+      height: 500px; min-height: 440px; max-height: 90%;
       box-shadow: 10px 10px 0 #ff4000;
       z-index: 1100;
       display: none;
@@ -143,22 +144,21 @@
     .popup-secondary .close-btn,
     .popup-secondary .plus-btn {
       position: absolute;
-      font-size: 1.4rem;
       cursor: pointer;
       border: none;
       background: none;
       color: #ff4000;
     }
     .popup .close-btn {
-      top: 5px;
-      right: 40px;
+      top: 30px;
+      right: 5px;
     }
-    .popup .plus-btn { bottom: 5px; right: 5px; }
+    .popup .plus-btn { bottom: 30px; right: 5px; }
     .popup-secondary .close-btn {
-      top: 5px;
-      right: 40px;
+      top: 30px;
+      right: 5px;
     }
-    .popup-secondary .plus-btn { bottom: 5px; right: 5px; }
+    .popup-secondary .plus-btn { bottom: 30px; right: 5px; }
     .popup .resize-button,
     .popup-secondary .resize-button {
       top: 5px;
@@ -334,10 +334,13 @@
     <button class="close-btn" onclick="closePopup()"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
     <div id="popupContent"></div>
     <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/signs-link.jpg" alt="Link" style="width:20px;height:20px;"></button>
   </div>
 
   <div id="secondPopup-sound-of-things" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('sound-of-things')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/signs-link.jpg" alt="Link" style="width:20px;height:20px;"></button>
     <div>
       <div style="padding:56.25% 0 0 0;position:relative;">
         <iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe>
@@ -346,20 +349,28 @@
   </div>
   <div id="secondPopup-just-this" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('just-this')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/signs-link.jpg" alt="Link" style="width:20px;height:20px;"></button>
     <div><iframe src="https://justthisandonlythat.com" width="600" height="400"></iframe></div>
   </div>
   <div id="secondPopup-taste-of-sound" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/signs-link.jpg" alt="Link" style="width:20px;height:20px;"></button>
     <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
   </div>
   <div id="secondPopup-performance-vista" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('performance-vista')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/signs-link.jpg" alt="Link" style="width:20px;height:20px;"></button>
     <img src="images/performancevista.jpg" alt="map" width="400">
     <img src="images/performancevista2.jpeg" alt="sketch" width="400">
     <a href="images/performance vista_leaflet.pdf" target="_blank">Performance Vista leaflet</a>
   </div>
   <div id="secondPopup-about" class="popup-secondary draggable">
     <button class="close-btn" onclick="closeSecondPopup('about')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/signs-link.jpg" alt="Link" style="width:20px;height:20px;"></button>
     <div><strong>cv</strong><br>
       2026/2027  Norsk billedhoggerforening, Oslo (NO)<br>
       2026    Group show — Trondheimsbiennalen (NO)<br>
@@ -687,6 +698,10 @@ function disableDraggableOnMobile() {
 }
 window.addEventListener('resize', disableDraggableOnMobile);
 document.addEventListener('DOMContentLoaded', disableDraggableOnMobile);
+
+function handleLinkClick() {
+  alert('Link button clicked! (placeholder)');
+}
 </script>
 </body>
 </html>
