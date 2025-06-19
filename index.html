@@ -107,11 +107,11 @@
 
     .popup {
       position: fixed;
-      top: 50%; left: 40%; transform: translate(-50%, -50%);
+      top: 50%; left: 45%; transform: translate(-50%, -50%);
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
-      width: 400px; min-width: 300px; max-width: 90%; 
+      width: 400px; min-width: 350px; max-width: 90%; 
       height: 500px; min-height: 440px; max-height: 90%;
       box-shadow: 10px 10px 0 #ff4000;
       z-index: 1100;
@@ -131,7 +131,7 @@
       width: auto;
       max-width: 90%;
       min-width: 300px;
-      min-height: 350;
+      min-height: 350px;
       max-width: 70vw;
       max-height: 80vh;
       box-shadow: 10px 10px 0 #ff4000;
@@ -147,33 +147,11 @@
     .popup .plus-btn,
     .popup-secondary .plus-btn,
     .popup .link-btn,
-    .popup-secondary .link-btn {
-      right: 5px;
-      left: unset;
-      position: absolute;
-      z-index: 401;
-      border: none;
-      background: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .popup-secondary .link-btn,
     .popup .resize-button,
     .popup-secondary .resize-button {
-      top: 5px;
-      right: 5px;
-      width: 20px;
-      height: 20px;
-      background: transparent;
-      cursor: nwse-resize;
-      z-index: 400;
-      padding: 0;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      right: 8px;
+      /* ...existing code... */
     }
     .popup .close-btn,
     .popup-secondary .close-btn { top: 30px; }
