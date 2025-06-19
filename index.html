@@ -170,6 +170,92 @@
       font-size: 0.9rem; background: transparent;
       padding: 2px 8px; color: #333; display: block;
     }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+      }
+      .site-title-box {
+        position: static;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        z-index: 3000;
+        margin: 0;
+        padding: 1.2em 0 0.5em 0;
+      }
+      .site-title-underline {
+        border-bottom: 3px dashed #ff4000;
+        width: 100%;
+        text-align: center;
+      }
+      .nav-column, .nav-column-2nd {
+        display: none !important;
+      }
+      .burger-menu {
+        display: block;
+        position: fixed;
+        top: 1.2em;
+        right: 1.2em;
+        z-index: 4000;
+        background: none;
+        border: none;
+        font-size: 2.2em;
+        color: #ff4000;
+        cursor: pointer;
+      }
+      #mobileNavPopup {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(255,255,255,0.98);
+        z-index: 5000;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #mobileNavPopup.active {
+        display: flex;
+      }
+      #mobileNavPopup .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        align-items: center;
+      }
+      #mobileNavPopup .close-mobile-nav {
+        position: absolute;
+        top: 1.2em;
+        right: 1.2em;
+        font-size: 2.2em;
+        background: none;
+        border: none;
+        color: #ff4000;
+        cursor: pointer;
+      }
+      .footnote-wrapper {
+        position: fixed;
+        left: 0.7em;
+        bottom: 0.7em;
+        z-index: 6000;
+        background: transparent;
+        pointer-events: auto;
+        display: block !important;
+        transform: none;
+      }
+      .footnote {
+        transform: none;
+        font-size: 1em;
+        color: #333;
+        background: transparent;
+        padding: 2px 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -240,6 +326,20 @@
 
   <div class="footnote-wrapper draggable" id="footnote">
     <div class="footnote">© 2025 BUTCHER & CORREIA</div>
+  </div>
+
+<!-- Add burger menu button and mobile nav popup -->
+  <button class="burger-menu" id="burgerMenuBtn" aria-label="Open navigation" style="display:none;">&#9776;</button>
+  <div id="mobileNavPopup">
+    <button class="close-mobile-nav" aria-label="Close navigation">&times;</button>
+    <div class="mobile-nav-links">
+      <a onclick="showPopup('sound-of-things', this); closeMobileNav();">The Sound of Things</a>
+      <a onclick="showPopup('just-this', this); closeMobileNav();">Just This And Only That</a>
+      <a onclick="showPopup('taste-of-sound', this); closeMobileNav();">Taste of Sound</a>
+      <a onclick="showPopup('performance-vista', this); closeMobileNav();">Performance Vista</a>
+      <a onclick="showPopup('about', this); closeMobileNav();">About</a>
+      <a onclick="showPopup('imagery', this); closeMobileNav();">Imagery</a>
+    </div>
   </div>
 
 <script>
@@ -512,6 +612,31 @@ window.onload = function () {
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.draggable').forEach(makeDraggable);
 });
+
+// Mobile burger menu logic
+function openMobileNav() {
+  document.getElementById('mobileNavPopup').classList.add('active');
+}
+function closeMobileNav() {
+  document.getElementById('mobileNavPopup').classList.remove('active');
+}
+const burgerBtn = document.getElementById('burgerMenuBtn');
+const mobileNavPopup = document.getElementById('mobileNavPopup');
+if (burgerBtn && mobileNavPopup) {
+  burgerBtn.addEventListener('click', openMobileNav);
+  mobileNavPopup.querySelector('.close-mobile-nav').addEventListener('click', closeMobileNav);
+}
+// Show/hide burger menu on resize
+function handleBurgerMenuDisplay() {
+  if (window.innerWidth <= 768) {
+    burgerBtn.style.display = 'block';
+  } else {
+    burgerBtn.style.display = 'none';
+    closeMobileNav();
+  }
+}
+window.addEventListener('resize', handleBurgerMenuDisplay);
+document.addEventListener('DOMContentLoaded', handleBurgerMenuDisplay);
 </script>
 </body>
 </html>
