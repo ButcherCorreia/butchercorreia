@@ -140,28 +140,11 @@
       box-sizing: border-box;
     }
     .popup .close-btn,
-    .popup .plus-btn,
     .popup-secondary .close-btn,
-    .popup-secondary .plus-btn {
-      position: absolute;
-      cursor: pointer;
-      border: none;
-      background: none;
-      color: #ff4000;
-    }
-    .popup .close-btn {
-      top: 30px;
-      right: 5px;
-    }
-    .popup .plus-btn { top: 55px; right: 5px; }
-    .popup-secondary .close-btn {
-      top: 30px;
-      right: 5px;
-    }
-    .popup-secondary .plus-btn { top: 55px; right: 5px; }
+    .popup .plus-btn,
+    .popup-secondary .plus-btn,
     .popup .link-btn,
     .popup-secondary .link-btn {
-      top: 80px;
       right: 5px;
       left: unset;
       position: absolute;
@@ -170,20 +153,40 @@
       background: none;
       cursor: pointer;
       padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .popup .resize-button,
     .popup-secondary .resize-button {
       top: 5px;
       right: 5px;
-      left: unset;
-      bottom: unset;
-      position: absolute;
       width: 20px;
       height: 20px;
       background: transparent;
       cursor: nwse-resize;
       z-index: 400;
       padding: 0;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup .close-btn,
+    .popup-secondary .close-btn { top: 30px; }
+    .popup .plus-btn,
+    .popup-secondary .plus-btn { top: 55px; }
+    .popup .link-btn,
+    .popup-secondary .link-btn { top: 80px; }
+    .popup .close-btn img,
+    .popup .plus-btn img,
+    .popup .link-btn img,
+    .popup-secondary .close-btn img,
+    .popup-secondary .plus-btn img,
+    .popup-secondary .link-btn img {
+      width: 20px;
+      height: 20px;
+      display: block;
     }
     .footnote-wrapper {
       position: fixed; bottom: 20px; left: 40px; z-index: 500;
