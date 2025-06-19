@@ -125,6 +125,10 @@
       height: auto;
       box-sizing: border-box;
     }
+    .popup.secondary-active {
+      border-color: #000;
+      box-shadow: 10px 10px 0 #000;
+    }
     .popup-secondary {
       position: fixed;
       top: 55%; left: 55%; transform: translate(-50%, -50%);
@@ -322,6 +326,22 @@
       .burger-menu, #mobileNavPopup {
         display: none !important;
       }
+    }
+
+    .popup,
+    .popup-secondary {
+      scrollbar-width: thin;              /* For Firefox */
+      scrollbar-color: #ff4000 #fff;      /* For Firefox */
+    }
+    .popup::-webkit-scrollbar,
+    .popup-secondary::-webkit-scrollbar {
+      width: 8px;
+      background: #fff;
+    }
+    .popup::-webkit-scrollbar-thumb,
+    .popup-secondary::-webkit-scrollbar-thumb {
+      background: #ff4000;
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -600,6 +620,13 @@ function setOverlayVisibility() {
   const anySecondaryVisible = allSecondPopups.some(el => el.style.display !== "none");
   const overlay = document.getElementById("modal-overlay");
   overlay.style.display = (anyMainVisible || anySecondaryVisible) ? "block" : "none";
+  if (mainPopup) {
+    if (anySecondaryVisible) {
+      mainPopup.classList.add('secondary-active');
+    } else {
+      mainPopup.classList.remove('secondary-active');
+    }
+  }
 }
 
 document.getElementById('modal-overlay').addEventListener('mousedown', function(e) {
