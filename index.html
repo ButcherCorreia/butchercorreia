@@ -147,11 +147,33 @@
     .popup .plus-btn,
     .popup-secondary .plus-btn,
     .popup .link-btn,
-    .popup-secondary .link-btn,
+    .popup-secondary .link-btn {
+      right: 8px;
+      left: unset;
+      position: absolute;
+      z-index: 401;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .popup .resize-button,
     .popup-secondary .resize-button {
+      top: 5px;
       right: 8px;
-      /* ...existing code... */
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      cursor: nwse-resize;
+      z-index: 400;
+      padding: 0;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .popup .close-btn,
     .popup-secondary .close-btn { top: 30px; }
@@ -297,22 +319,6 @@
       .burger-menu, #mobileNavPopup {
         display: none !important;
       }
-    }
-
-    .popup,
-    .popup-secondary {
-      scrollbar-width: thin;              /* For Firefox */
-      scrollbar-color: #ff4000 #fff;      /* For Firefox */
-    }
-    .popup::-webkit-scrollbar,
-    .popup-secondary::-webkit-scrollbar {
-      width: 8px;
-      background: #fff;
-    }
-    .popup::-webkit-scrollbar-thumb,
-    .popup-secondary::-webkit-scrollbar-thumb {
-      background: #ff4000;
-      border-radius: 4px;
     }
   </style>
 </head>
