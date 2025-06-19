@@ -107,11 +107,11 @@
 
     .popup {
       position: fixed;
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      top: 50%; left: 40%; transform: translate(-50%, -50%);
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
-      width: 400px; min-width: 250px; max-width: 90%; 
+      width: 400px; min-width: 300px; max-width: 90%; 
       height: 500px; min-height: 440px; max-height: 90%;
       box-shadow: 10px 10px 0 #ff4000;
       z-index: 1100;
@@ -124,14 +124,14 @@
     }
     .popup-secondary {
       position: fixed;
-      top: 55%; left: 52%; transform: translate(-50%, -50%);
+      top: 55%; left: 55%; transform: translate(-50%, -50%);
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
       width: auto;
       max-width: 90%;
-      min-width: unset;
-      min-height: unset;
+      min-width: 300px;
+      min-height: 350;
       max-width: 70vw;
       max-height: 80vh;
       box-shadow: 10px 10px 0 #ff4000;
@@ -319,6 +319,22 @@
       .burger-menu, #mobileNavPopup {
         display: none !important;
       }
+    }
+
+    .popup,
+    .popup-secondary {
+      scrollbar-width: thin;              /* For Firefox */
+      scrollbar-color: #ff4000 #fff;      /* For Firefox */
+    }
+    .popup::-webkit-scrollbar,
+    .popup-secondary::-webkit-scrollbar {
+      width: 8px;
+      background: #fff;
+    }
+    .popup::-webkit-scrollbar-thumb,
+    .popup-secondary::-webkit-scrollbar-thumb {
+      background: #ff4000;
+      border-radius: 4px;
     }
   </style>
 </head>
