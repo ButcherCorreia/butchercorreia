@@ -91,7 +91,9 @@
 
     .popup {
       position: fixed;
-      top: 50%; left: 50%; transform: translate(-75%, -50%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: #fff;
       border: 4px dashed #ff4000;
       padding: 2rem;
@@ -187,7 +189,7 @@
         background: #fff;
         z-index: 3000;
         margin: 0;
-        padding: 0.7em 0 0.3em 0.9em;
+        padding: 0em 0em 0em 0em;
         min-height: 48px;
       }
       .site-title-underline {
@@ -260,6 +262,37 @@
         color: #333;
         background: transparent;
         padding: 1px 5px;
+      }
+      .popup {
+        position: fixed;
+        top: 20em;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 96vw;
+        max-width: 96vw;
+        min-width: unset;
+        min-height: 200px;
+        max-height: 60vh;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 1em;
+        border-width: 3px;
+      }
+      .popup-secondary {
+        position: fixed;
+        top: 20em;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 96vw;
+        max-width: 96vw;
+        min-width: unset;
+        min-height: 200px;
+        max-height: 60vh;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 1em;
+        border-width: 3px;
+        resize: none;
       }
       /* Remove draggable on mobile */
       .draggable {
