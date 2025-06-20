@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
 
   <!-- SEO metadata -->
   <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo. Explore his portfolio, CV, and contact information." />
@@ -520,12 +521,10 @@ function handlePlusClick() {
 }
 
 function closeSecondPopup(id) {
-  if (!id) return;
-  const secondPopup = document.getElementById('secondPopup-' + id);
-  if (secondPopup) {
-    secondPopup.style.display = 'none';
-    setOverlayVisibility();
-  }
+  const secondaryPopup = document.getElementById('secondaryPopup');
+  secondaryPopup.innerHTML = '';
+  secondaryPopup.style.display = 'none';
+  setOverlayVisibility();
 }
 
 function closePopup() {
@@ -537,54 +536,66 @@ function closePopup() {
 }
 
 function openSecondPopup(id) {
-  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-  const popup = document.getElementById(`secondPopup-${id}`);
-  if (!popup) return;
-  popup.style.display = 'block';
-  setOverlayVisibility();
-  if (!popup.querySelector('.resize-button')) {
-    const button = document.createElement('div');
-    button.className = 'resize-button';
-    button.setAttribute('aria-label', 'resize');
-    button.setAttribute('tabindex', '-1');
-    button.innerHTML = `
-      <img src="icons/Signs_expand1.jpg" alt="Resize" style="width:20px;height:20px;">
+  // Hide any open secondary popup
+  const secondaryPopup = document.getElementById('secondaryPopup');
+  secondaryPopup.innerHTML = '';
+  secondaryPopup.style.display = 'none';
+
+  // Prevent infinite loop if plus button is clicked inside secondary popup
+  if (secondaryPopup.dataset.openFor === id) return;
+  secondaryPopup.dataset.openFor = id;
+
+  // Inject content based on id
+  let content = '';
+  if (id === 'sound-of-things') {
+    content = `
+      <button class="close-btn" onclick="closeSecondPopup('sound-of-things')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+      <div style="padding:56.25% 0 0 0;position:relative;">
+        <iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe>
+      </div>
     `;
-    let isResizing = false;
-    let startX, startY, startWidth, startHeight;
-    
-     button.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      isResizing = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
-      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
-      document.documentElement.addEventListener('mousemove', doResize);
-      document.documentElement.addEventListener('mouseup', stopResize);
-    });
-    
-    button.addEventListener('mousedown', (e) => {
-      isResizing = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
-      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
-      document.documentElement.addEventListener('mousemove', doResize);
-      document.documentElement.addEventListener('mouseup', stopResize);
-    });
-    function doResize(e) {
-      if (!isResizing) return;
-      popup.style.width = (startWidth + e.clientX - startX) + 'px';
-      popup.style.height = (startHeight + e.clientY - startY) + 'px';
-    }
-    function stopResize() {
-      isResizing = false;
-      document.documentElement.removeEventListener('mousemove', doResize);
-      document.documentElement.removeEventListener('mouseup', stopResize);
-    }
-    popup.appendChild(button);
+  } else if (id === 'just-this') {
+    content = `
+      <button class="close-btn" onclick="closeSecondPopup('just-this')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+      <div><iframe src="https://justthisandonlythat.com" width="600" height="400"></iframe></div>
+    `;
+  } else if (id === 'taste-of-sound') {
+    content = `
+      <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+      <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
+    `;
+  } else if (id === 'performance-vista') {
+    content = `
+      <button class="close-btn" onclick="closeSecondPopup('performance-vista')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+      <img src="images/performancevista.jpg" alt="map" width="400">
+      <img src="images/performancevista2.jpeg" alt="sketch" width="400">
+      <a href="images/performance vista_leaflet.pdf" target="_blank">Performance Vista leaflet</a>
+    `;
+  } else if (id === 'about') {
+    content = `
+      <button class="close-btn" onclick="closeSecondPopup('about')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+      <div><strong>cv</strong><br>
+        upcoming<br>
+        2026/2027  Norsk billedhoggerforening, Oslo (NO)<br>
+        2026    Group show — Trondheimsbiennalen (NO)<br>
+        2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)</p>
+         <p>2025    The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)</p>
+        2024    Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
+        2023    Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
+        2023    net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
+        2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br></div>
+    `;
+  }
+  if (content) {
+    secondaryPopup.innerHTML = content;
+    secondaryPopup.style.display = 'block';
+    setOverlayVisibility();
+    makeDraggable(secondaryPopup);
   }
 }
 
