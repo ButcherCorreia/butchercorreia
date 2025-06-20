@@ -391,54 +391,11 @@
     <button class="close-btn" onclick="closePopup()"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
     <div id="popupContent"></div>
     <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
   </div>
 
-  <div id="secondPopup-sound-of-things" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('sound-of-things')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div>
-      <div style="padding:56.25% 0 0 0;position:relative;">
-        <iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe>
-      </div>
-    </div>
-  </div>
-  <div id="secondPopup-just-this" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('just-this')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div><iframe src="https://justthisandonlythat.com" width="600" height="400"></iframe></div>
-  </div>
-  <div id="secondPopup-taste-of-sound" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
-  </div>
-  <div id="secondPopup-performance-vista" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('performance-vista')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <img src="images/performancevista.jpg" alt="map" width="400">
-    <img src="images/performancevista2.jpeg" alt="sketch" width="400">
-    <a href="images/performance vista_leaflet.pdf" target="_blank">Performance Vista leaflet</a>
-  </div>
-  <div id="secondPopup-about" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('about')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div><strong>cv</strong><br>
-      upcoming<br>
-      2026/2027  Norsk billedhoggerforening, Oslo (NO)<br>
-      2026    Group show — Trondheimsbiennalen (NO)<br>
-      2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)</p>
-       <p>2025    The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)</p>
-      2024    Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
-      2023    Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
-      2023    net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
-      2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br></div>
-  </div>
+  <!-- Dynamic secondary popup container -->
+  <div id="secondaryPopup" class="popup-secondary draggable" style="display:none;"></div>
 
   <div class="footnote-wrapper draggable" id="footnote">
     <div class="footnote">© 2025 BUTCHER & CORREIA</div>
