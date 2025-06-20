@@ -80,6 +80,14 @@
       display: inline-block;
       border-bottom: 4px dashed #ff4000;
       padding-bottom: 2px;
+      transition: background-position 0.4s cubic-bezier(.4,0,.2,1);
+      background-image: repeating-linear-gradient(90deg, #ff4000 0 8px, transparent 0 16px);
+      background-size: 16px 4px;
+      background-repeat: repeat-x;
+      background-position: 0 100%;
+    }
+    .site-title-box:hover .site-title-underline {
+      background-position: 16px 100%;
     }
 
     .site-title {
