@@ -167,13 +167,8 @@
     .popup .plus-btn,
     .popup-secondary .plus-btn,
     .popup .link-btn,
-    .popup-secondary .link-btn,
-    .popup .resize-button,
-    .popup-secondary .resize-button,
-    button,
-    .burger-menu,
-    .close-mobile-nav {
-      cursor: pointer !important;
+    .popup-secondary .link-btn {
+      cursor: pointer;
     }
     .popup .close-btn,
     .popup-secondary .close-btn { top: 30px; }
@@ -450,13 +445,12 @@ function showPopup(id, element) {
   document.getElementById('popupContainer').style.display = 'none';
   document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
   document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-  currentPopupId = null;
+  currentPopupId = id; // <-- ensure this is always set
   setOverlayVisibility();
 
   // Now, immediately open the new popup for the nav link
   const popup = document.getElementById('popupContainer');
   const content = document.getElementById('popupContent');
-  currentPopupId = id;
   content.innerHTML = contentData[id] || 'No content found.';
   popup.style.display = 'block';
   if (element) element.classList.add('active');
