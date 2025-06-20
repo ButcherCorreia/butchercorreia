@@ -167,33 +167,13 @@
     .popup .plus-btn,
     .popup-secondary .plus-btn,
     .popup .link-btn,
-    .popup-secondary .link-btn {
-      right: 10px;
-      left: unset;
-      position: absolute;
-      z-index: 401;
-      border: none;
-      background: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .popup-secondary .link-btn,
     .popup .resize-button,
-    .popup-secondary .resize-button {
-      top: 5px;
-      right: 10px;
-      width: 20px;
-      height: 20px;
-      background: transparent;
-      cursor: pointer;
-      z-index: 400;
-      padding: 0;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .popup-secondary .resize-button,
+    button,
+    .burger-menu,
+    .close-mobile-nav {
+      cursor: pointer !important;
     }
     .popup .close-btn,
     .popup-secondary .close-btn { top: 30px; }
@@ -517,7 +497,12 @@ function showPopup(id, element) {
 
 function handlePlusClick() {
   if (!currentPopupId) return;
-  openSecondPopup(currentPopupId);
+  // Defensive: ensure openSecondPopup is defined and callable
+  if (typeof openSecondPopup === 'function') {
+    openSecondPopup(currentPopupId);
+  } else {
+    console.error('openSecondPopup is not defined');
+  }
 }
 
 function closeSecondPopup(id) {
