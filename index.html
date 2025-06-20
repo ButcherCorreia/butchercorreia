@@ -79,21 +79,8 @@
 
     .site-title-underline {
       display: inline-block;
-      border-bottom: 4px dashed transparent;
+      border-bottom: 4px dashed #ff4000;
       padding-bottom: 2px;
-      background-image: repeating-linear-gradient(90deg, #ff4000 0 8px, transparent 0 16px);
-      background-size: 16px 4px;
-      background-repeat: repeat-x;
-      background-position: 0 100%;
-      animation: none;
-      transition: none;
-    }
-    .site-title-box:hover .site-title-underline {
-      animation: dash-move 0.6s linear infinite;
-    }
-    @keyframes dash-move {
-      0% { background-position: 0 100%; }
-      100% { background-position: 16px 100%; }
     }
 
     .site-title {
@@ -162,42 +149,54 @@
       height: auto;
       box-sizing: border-box;
     }
-    /* Stack all popup buttons vertically in the top right, no overlap, consistent z-index */
     .popup .close-btn,
-    .popup-secondary .close-btn {
-      position: absolute;
-      top: 5px;
-      right: 10px;
-      z-index: 410;
-    }
+    .popup-secondary .close-btn,
     .popup .plus-btn,
-    .popup-secondary .plus-btn {
-      position: absolute;
-      top: 35px;
-      right: 10px;
-      z-index: 410;
-    }
+    .popup-secondary .plus-btn,
     .popup .link-btn,
     .popup-secondary .link-btn {
-      position: absolute;
-      top: 65px;
       right: 10px;
-      z-index: 410;
+      left: unset;
+      position: absolute;
+      z-index: 401;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .popup .resize-button,
     .popup-secondary .resize-button {
-      position: absolute;
-      top: 95px;
+      top: 5px;
       right: 10px;
       width: 20px;
       height: 20px;
       background: transparent;
       cursor: pointer;
-      z-index: 410;
+      z-index: 400;
       padding: 0;
+      position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .popup .close-btn,
+    .popup-secondary .close-btn { top: 30px; }
+    .popup .plus-btn,
+    .popup-secondary .plus-btn { top: 55px; }
+    .popup .link-btn,
+    .popup-secondary .link-btn { top: 80px; }
+    .popup .close-btn img,
+    .popup .plus-btn img,
+    .popup .link-btn img,
+    .popup-secondary .close-btn img,
+    .popup-secondary .plus-btn img,
+    .popup-secondary .link-btn img {
+      width: 20px;
+      height: 20px;
+      display: block;
     }
     .footnote-wrapper {
       position: fixed; bottom: 20px; left: 40px; z-index: 500;
@@ -242,7 +241,7 @@
         background: #fff;
         z-index: 3000;
         margin: 0;
-        padding: 0 1.2em;
+        padding: 0em 0em 0em 0em;
         min-height: 48px;
       }
       .site-title-underline {
@@ -260,19 +259,15 @@
       }
       .burger-menu {
         display: block !important;
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
+        top: 0.5em;
+        right: 0.5em;
         z-index: 4000;
         background: none;
         border: none;
         font-size: 2em;
         color: #ff4000;
         cursor: pointer;
-        height: 48px;
-        padding: 0 1.2em;
-        display: flex;
-        align-items: center;
       }
       #mobileNavPopup {
         display: none;
@@ -335,7 +330,7 @@
         overflow-x: hidden;
         box-sizing: border-box;
         padding: 1em;
-        background: #fff;
+        background:#fff
         border-width: 3px;
         touch-action: auto;
         display: none;
@@ -348,22 +343,6 @@
       .burger-menu, #mobileNavPopup {
         display: none !important;
       }
-    }
-
-    .popup .resize-button,
-    .popup-secondary .resize-button {
-      position: absolute;
-      top: 95px;
-      right: 10px;
-      width: 20px;
-      height: 20px;
-      background: transparent;
-      cursor: pointer;
-      z-index: 410;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
   </style>
 </head>
@@ -388,8 +367,8 @@
   </div>
 
   <div class="nav-column nav-column-2nd draggable">
-    <a onclick="showPopup('imagery', this)">Orbits</a>
     <a onclick="showPopup('about', this)">About</a>
+    <a onclick="showPopup('imagery', this)">Imagery</a>
   </div>
 
   <div id="popupContainer" class="popup draggable">
@@ -399,8 +378,51 @@
     <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
   </div>
 
-  <!-- Dynamic secondary popup container -->
-  <div id="secondaryPopup" class="popup-secondary draggable" style="display:none;"></div>
+  <div id="secondPopup-sound-of-things" class="popup-secondary draggable">
+    <button class="close-btn" onclick="closeSecondPopup('sound-of-things')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+    <div>
+      <div style="padding:56.25% 0 0 0;position:relative;">
+        <iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe>
+      </div>
+    </div>
+  </div>
+  <div id="secondPopup-just-this" class="popup-secondary draggable">
+    <button class="close-btn" onclick="closeSecondPopup('just-this')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+    <div><iframe src="https://justthisandonlythat.com" width="600" height="400"></iframe></div>
+  </div>
+  <div id="secondPopup-taste-of-sound" class="popup-secondary draggable">
+    <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+    <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
+  </div>
+  <div id="secondPopup-performance-vista" class="popup-secondary draggable">
+    <button class="close-btn" onclick="closeSecondPopup('performance-vista')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+    <img src="images/performancevista.jpg" alt="map" width="400">
+    <img src="images/performancevista2.jpeg" alt="sketch" width="400">
+    <a href="images/performance vista_leaflet.pdf" target="_blank">Performance Vista leaflet</a>
+  </div>
+  <div id="secondPopup-about" class="popup-secondary draggable">
+    <button class="close-btn" onclick="closeSecondPopup('about')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
+    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
+    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
+    <div><strong>cv</strong><br>
+      upcoming<br>
+      2026/2027  Norsk billedhoggerforening, Oslo (NO)<br>
+      2026    Group show — Trondheimsbiennalen (NO)<br>
+      2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)</p>
+       <p>2025    The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)</p>
+      2024    Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
+      2023    Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
+      2023    net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
+      2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br></div>
+  </div>
 
   <div class="footnote-wrapper draggable" id="footnote">
     <div class="footnote">© 2025 BUTCHER & CORREIA</div>
@@ -415,8 +437,8 @@
       <a onclick="showPopup('just-this', this); closeMobileNav();">Just This And Only That</a>
       <a onclick="showPopup('taste-of-sound', this); closeMobileNav();">Taste of Sound</a>
       <a onclick="showPopup('performance-vista', this); closeMobileNav();">Performance Vista</a>
-      <a onclick="showPopup('imagery', this); closeMobileNav();">Orbits</a>
       <a onclick="showPopup('about', this); closeMobileNav();">About</a>
+      <a onclick="showPopup('imagery', this); closeMobileNav();">Imagery</a>
     </div>
   </div>
 
@@ -440,7 +462,7 @@ const contentData = {
   "just-this": `
     2.01.2024–on going<br>
     <p><strong>Just This and Only That</strong> is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.</p>
-    <a href="https://justthisandonlythat.com">
+    <a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
     Supported by: Kulturdirektoratet
   `,
   "taste-of-sound": `
@@ -474,12 +496,13 @@ function showPopup(id, element) {
   document.getElementById('popupContainer').style.display = 'none';
   document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
   document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-  currentPopupId = id; // <-- ensure this is always set
+  currentPopupId = null;
   setOverlayVisibility();
 
   // Now, immediately open the new popup for the nav link
   const popup = document.getElementById('popupContainer');
   const content = document.getElementById('popupContent');
+  currentPopupId = id;
   content.innerHTML = contentData[id] || 'No content found.';
   popup.style.display = 'block';
   if (element) element.classList.add('active');
@@ -520,19 +543,16 @@ function showPopup(id, element) {
 
 function handlePlusClick() {
   if (!currentPopupId) return;
-  // Defensive: ensure openSecondPopup is defined and callable
-  if (typeof openSecondPopup === 'function') {
-    openSecondPopup(currentPopupId);
-  } else {
-    console.error('openSecondPopup is not defined');
-  }
+  openSecondPopup(currentPopupId);
 }
 
 function closeSecondPopup(id) {
-  const secondaryPopup = document.getElementById('secondaryPopup');
-  secondaryPopup.innerHTML = '';
-  secondaryPopup.style.display = 'none';
-  setOverlayVisibility();
+  if (!id) return;
+  const secondPopup = document.getElementById('secondPopup-' + id);
+  if (secondPopup) {
+    secondPopup.style.display = 'none';
+    setOverlayVisibility();
+  }
 }
 
 function closePopup() {
@@ -544,66 +564,54 @@ function closePopup() {
 }
 
 function openSecondPopup(id) {
-  // Hide any open secondary popup
-  const secondaryPopup = document.getElementById('secondaryPopup');
-  secondaryPopup.innerHTML = '';
-  secondaryPopup.style.display = 'none';
-
-  // Prevent infinite loop if plus button is clicked inside secondary popup
-  if (secondaryPopup.dataset.openFor === id) return;
-  secondaryPopup.dataset.openFor = id;
-
-  // Inject content based on id
-  let content = '';
-  if (id === 'sound-of-things') {
-    content = `
-      <button class="close-btn" onclick="closeSecondPopup('sound-of-things')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-      <div style="padding:56.25% 0 0 0;position:relative;">
-        <iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe>
-      </div>
+  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
+  const popup = document.getElementById(`secondPopup-${id}`);
+  if (!popup) return;
+  popup.style.display = 'block';
+  setOverlayVisibility();
+  if (!popup.querySelector('.resize-button')) {
+    const button = document.createElement('div');
+    button.className = 'resize-button';
+    button.setAttribute('aria-label', 'resize');
+    button.setAttribute('tabindex', '-1');
+    button.innerHTML = `
+      <img src="icons/Signs_expand1.jpg" alt="Resize" style="width:20px;height:20px;">
     `;
-  } else if (id === 'just-this') {
-    content = `
-      <button class="close-btn" onclick="closeSecondPopup('just-this')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-      <div><iframe src="https://justthisandonlythat.com" width="600" height="400"></iframe></div>
-    `;
-  } else if (id === 'taste-of-sound') {
-    content = `
-      <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-      <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
-    `;
-  } else if (id === 'performance-vista') {
-    content = `
-      <button class="close-btn" onclick="closeSecondPopup('performance-vista')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-      <img src="images/performancevista.jpg" alt="map" width="400">
-      <img src="images/performancevista2.jpeg" alt="sketch" width="400">
-      <a href="images/performance vista_leaflet.pdf" target="_blank">Performance Vista leaflet</a>
-    `;
-  } else if (id === 'about') {
-    content = `
-      <button class="close-btn" onclick="closeSecondPopup('about')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-      <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-      <div><strong>cv</strong><br>
-        upcoming<br>
-        2026/2027  Norsk billedhoggerforening, Oslo (NO)<br>
-        2026    Group show — Trondheimsbiennalen (NO)<br>
-        2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)</p>
-         <p>2025    The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)</p>
-        2024    Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
-        2023    Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
-        2023    net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
-        2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br></div>
-    `;
-  }
-  if (content) {
-    secondaryPopup.innerHTML = content;
-    secondaryPopup.style.display = 'block';
-    setOverlayVisibility();
-    makeDraggable(secondaryPopup);
+    let isResizing = false;
+    let startX, startY, startWidth, startHeight;
+    
+     button.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      isResizing = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
+      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
+      document.documentElement.addEventListener('mousemove', doResize);
+      document.documentElement.addEventListener('mouseup', stopResize);
+    });
+    
+    button.addEventListener('mousedown', (e) => {
+      isResizing = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
+      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
+      document.documentElement.addEventListener('mousemove', doResize);
+      document.documentElement.addEventListener('mouseup', stopResize);
+    });
+    function doResize(e) {
+      if (!isResizing) return;
+      popup.style.width = (startWidth + e.clientX - startX) + 'px';
+      popup.style.height = (startHeight + e.clientY - startY) + 'px';
+    }
+    function stopResize() {
+      isResizing = false;
+      document.documentElement.removeEventListener('mousemove', doResize);
+      document.documentElement.removeEventListener('mouseup', stopResize);
+    }
+    popup.appendChild(button);
   }
 }
 
