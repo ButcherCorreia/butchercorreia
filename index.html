@@ -242,7 +242,7 @@
         padding: 0;
       }
       .site-title-box {
-        position: static;
+        position: fixed;
         width: 100vw;
         top: 0;
         left: 0;
@@ -280,6 +280,10 @@
         font-size: 2em;
         color: #ff4000;
         cursor: pointer;
+        padding: 0 0.8em 0 0.8em;
+        height: 48px;
+        display: flex;
+        align-items: center;
       }
       #mobileNavPopup {
         display: none;
@@ -335,7 +339,7 @@
         width: 96vw;
         max-width: 96vw;
         min-width: unset;
-        min-height: 200px;
+        min-height: 800px;
         max-height: 70vh;
         height: auto;
         overflow-y: auto !important;
@@ -379,8 +383,8 @@
   </div>
 
   <div class="nav-column nav-column-2nd draggable">
+    <a onclick="showPopup('imagery', this)">Orbits</a>
     <a onclick="showPopup('about', this)">About</a>
-    <a onclick="showPopup('imagery', this)">Imagery</a>
   </div>
 
   <div id="popupContainer" class="popup draggable">
@@ -448,8 +452,8 @@
       <a onclick="showPopup('just-this', this); closeMobileNav();">Just This And Only That</a>
       <a onclick="showPopup('taste-of-sound', this); closeMobileNav();">Taste of Sound</a>
       <a onclick="showPopup('performance-vista', this); closeMobileNav();">Performance Vista</a>
+      <a onclick="showPopup('imagery', this); closeMobileNav();">Orbits</a>
       <a onclick="showPopup('about', this); closeMobileNav();">About</a>
-      <a onclick="showPopup('imagery', this); closeMobileNav();">Imagery</a>
     </div>
   </div>
 
