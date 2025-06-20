@@ -162,43 +162,38 @@
       height: auto;
       box-sizing: border-box;
     }
+    /* Stack all popup buttons vertically in the top right, no overlap, consistent z-index */
     .popup .close-btn,
     .popup-secondary .close-btn {
       position: absolute;
-      top: 30px;
+      top: 5px;
       right: 10px;
-      z-index: 401;
-      border: none;
-      background: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      z-index: 410;
     }
     .popup .plus-btn,
     .popup-secondary .plus-btn {
       position: absolute;
-      top: 55px;
+      top: 35px;
       right: 10px;
-      z-index: 401;
-      border: none;
-      background: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      z-index: 410;
     }
     .popup .link-btn,
     .popup-secondary .link-btn {
       position: absolute;
-      top: 80px;
+      top: 65px;
       right: 10px;
-      z-index: 401;
-      border: none;
-      background: none;
+      z-index: 410;
+    }
+    .popup .resize-button,
+    .popup-secondary .resize-button {
+      position: absolute;
+      top: 95px;
+      right: 10px;
+      width: 20px;
+      height: 20px;
+      background: transparent;
       cursor: pointer;
+      z-index: 410;
       padding: 0;
       display: flex;
       align-items: center;
@@ -358,13 +353,13 @@
     .popup .resize-button,
     .popup-secondary .resize-button {
       position: absolute;
-      top: 5px;
+      top: 95px;
       right: 10px;
       width: 20px;
       height: 20px;
       background: transparent;
       cursor: pointer;
-      z-index: 400;
+      z-index: 410;
       padding: 0;
       display: flex;
       align-items: center;
