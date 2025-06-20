@@ -208,6 +208,22 @@
       padding: 2px 8px; color: #333; display: block;
     }
 
+    .popup,
+    .popup-secondary {
+      scrollbar-width: thin;              /* For Firefox */
+      scrollbar-color: #ff4000 #fff;      /* For Firefox */
+    }
+    .popup::-webkit-scrollbar,
+    .popup-secondary::-webkit-scrollbar {
+      width: 8px;
+      background: #fff;
+    }
+    .popup::-webkit-scrollbar-thumb,
+    .popup-secondary::-webkit-scrollbar-thumb {
+      background: #ff4000;
+      border-radius: 4px;
+    }
+
     @media (max-width: 768px) {
       body {
         padding: 0;
