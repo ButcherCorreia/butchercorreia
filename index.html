@@ -685,17 +685,24 @@ function makeDraggable(el) {
     if (e.button !== 0) return;
     e.preventDefault();
     isDragging = true;
-    // On first drag, switch from right to left for .site-title-box
+    // For .site-title-box, convert right to left so the right edge stays in place
     if (el.classList.contains('site-title-box')) {
       const rect = el.getBoundingClientRect();
-      el.style.left = rect.left + 'px';
+      // Calculate the distance from the mouse to the right edge of the element
+      const rightEdge = window.innerWidth - rect.right;
+      // Set left so the right edge stays at the same place
+      el.style.left = (window.innerWidth - rightEdge - rect.width) + 'px';
       el.style.top = rect.top + 'px';
       el.style.right = '';
       el.style.position = 'fixed';
+      // Calculate mouse offset from the new left/top
+      mouseOffsetX = e.clientX - (window.innerWidth - rightEdge - rect.width);
+      mouseOffsetY = e.clientY - rect.top;
+    } else {
+      const rect = el.getBoundingClientRect();
+      mouseOffsetX = e.clientX - rect.left;
+      mouseOffsetY = e.clientY - rect.top;
     }
-    const rect = el.getBoundingClientRect();
-    mouseOffsetX = e.clientX - rect.left;
-    mouseOffsetY = e.clientY - rect.top;
     origZ = el.style.zIndex;
     el.style.zIndex = 2000;
     document.onmouseup = closeDragElement;
