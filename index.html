@@ -79,20 +79,27 @@
 
     .site-title-underline {
       display: inline-block;
-      padding-bottom: 2px;
-      /* Replace border-bottom with animated dashed underline */
+      position: relative;
+      padding-bottom: 6px;
+    }
+    .site-title-underline::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 4px;
       background-image: repeating-linear-gradient(to right, #ff4000 0 8px, transparent 8px 16px);
       background-size: 32px 4px;
       background-repeat: repeat-x;
       background-position-x: 0;
-      background-position-y: 100%;
-      background-repeat: no-repeat;
+      pointer-events: none;
+      z-index: 1;
       transition: background-position-x 0.2s;
     }
-    .site-title-underline:hover {
-      animation: dash-move 1s linear infinite;
+    .site-title-underline:hover::after {
+      animation: dash-move-full 1s linear infinite;
     }
-    @keyframes dash-move {
+    @keyframes dash-move-full {
       0% { background-position-x: 0; }
       100% { background-position-x: 32px; }
     }
