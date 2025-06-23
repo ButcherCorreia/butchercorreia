@@ -79,8 +79,22 @@
 
     .site-title-underline {
       display: inline-block;
-      border-bottom: 4px dashed #ff4000;
       padding-bottom: 2px;
+      /* Replace border-bottom with animated dashed underline */
+      background-image: repeating-linear-gradient(to right, #ff4000 0 8px, transparent 8px 16px);
+      background-size: 32px 4px;
+      background-repeat: repeat-x;
+      background-position-x: 0;
+      background-position-y: 100%;
+      background-repeat: no-repeat;
+      transition: background-position-x 0.2s;
+    }
+    .site-title-underline:hover {
+      animation: dash-move 1s linear infinite;
+    }
+    @keyframes dash-move {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 32px; }
     }
 
     .site-title {
