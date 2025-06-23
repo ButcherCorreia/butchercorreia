@@ -64,7 +64,7 @@
       position: fixed;
       top: 20px;
       right: 20px;
-      /* Remove left: 20px; */
+      left: auto;
       z-index: 100;
       cursor: move;
       background: transparent;
@@ -676,21 +676,22 @@ document.addEventListener('keydown', function(e) {
 });
 
 function makeDraggable(el) {
-  let offsetX = 0, offsetY = 0, startX = 0, startY = 0, mouseOffsetX = 0, mouseOffsetY = 0;
   let isDragging = false;
   let origZ = '';
+  let mouseOffsetX = 0, mouseOffsetY = 0;
   el.onmousedown = dragMouseDown;
   function dragMouseDown(e) {
     if (e.target.closest('.resize-button')) return;
     if (e.button !== 0) return;
     e.preventDefault();
     isDragging = true;
-    // Special handling for site-title-box: switch from right to left on drag
-    if (el.classList.contains('site-title-box') && el.style.right) {
+    // On first drag, switch from right to left for .site-title-box
+    if (el.classList.contains('site-title-box')) {
       const rect = el.getBoundingClientRect();
       el.style.left = rect.left + 'px';
       el.style.top = rect.top + 'px';
       el.style.right = '';
+      el.style.position = 'fixed';
     }
     const rect = el.getBoundingClientRect();
     mouseOffsetX = e.clientX - rect.left;
