@@ -63,7 +63,7 @@
     .site-title-box {
       position: fixed;
       top: 20px;
-      left: auto;
+      left: 100vw;
       z-index: 100;
       cursor: move;
       background: transparent;
@@ -75,6 +75,7 @@
       align-items: center;
       justify-content: center;
       white-space: nowrap;
+      visibility: hidden;
     }
 
     .site-title-underline {
@@ -727,6 +728,7 @@ window.onload = function () {
     const boxWidth = titleBox.offsetWidth;
     titleBox.style.left = (window.innerWidth - boxWidth - 20) + 'px';
     titleBox.style.top = '20px';
+    titleBox.style.visibility = 'visible';
   }
   document.querySelectorAll('.draggable').forEach(el => {
     makeDraggable(el);
