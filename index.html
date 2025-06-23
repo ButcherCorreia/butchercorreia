@@ -63,7 +63,6 @@
     .site-title-box {
       position: fixed;
       top: 20px;
-      right: 20px;
       left: auto;
       z-index: 100;
       cursor: move;
@@ -722,6 +721,13 @@ function makeDraggable(el) {
   }
 }
 window.onload = function () {
+  // Place site-title-box at top-right using left
+  const titleBox = document.querySelector('.site-title-box');
+  if (titleBox) {
+    const boxWidth = titleBox.offsetWidth;
+    titleBox.style.left = (window.innerWidth - boxWidth - 20) + 'px';
+    titleBox.style.top = '20px';
+  }
   document.querySelectorAll('.draggable').forEach(el => {
     makeDraggable(el);
   });
