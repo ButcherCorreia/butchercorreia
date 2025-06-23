@@ -63,7 +63,8 @@
     .site-title-box {
       position: fixed;
       top: 20px;
-      left: 20px;
+      right: 20px;
+      /* Remove left: 20px; */
       z-index: 100;
       cursor: move;
       background: transparent;
@@ -689,6 +690,12 @@ function makeDraggable(el) {
     startY = e.clientY;
     origZ = el.style.zIndex;
     el.style.zIndex = 2000;
+    // Special handling for site-title-box: switch from right to left on drag
+    if (el.classList.contains('site-title-box') && el.style.right) {
+      const rect = el.getBoundingClientRect();
+      el.style.left = rect.left + 'px';
+      el.style.right = '';
+    }
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag;
   }
