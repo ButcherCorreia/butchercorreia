@@ -511,6 +511,22 @@ const contentData = {
     <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.<br><br>
     <img src="BCportrait.jpg" alt="Polaroid" width="200">
   `
+"imagery": `
+  <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
+  <script>
+    (function() {
+      const images = [
+        ${Array.from({length: 18}, (_, i) => `"sound-of-things/sound-of-things${i+1}.jpg"`).join(",\n        ")}
+      ];
+      const galleryDiv = document.getElementById('gallery');
+      if (galleryDiv) {
+        galleryDiv.innerHTML = images.map(src =>
+          '<img src="' + src + '" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000; border-radius: 6px;" alt="artwork">'
+        ).join('');
+      }
+    })();
+  <\/script>
+`,
 };
 
 function showPopup(id, element) {
