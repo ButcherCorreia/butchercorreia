@@ -721,7 +721,7 @@ function makeDraggable(el) {
     document.onmousemove = null;
   }
 }
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', function () {
   // Place site-title-box at top-right using left
   const titleBox = document.querySelector('.site-title-box');
   if (titleBox) {
@@ -733,7 +733,7 @@ window.onload = function () {
   document.querySelectorAll('.draggable').forEach(el => {
     makeDraggable(el);
   });
-};
+});
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.draggable').forEach(makeDraggable);
 });
