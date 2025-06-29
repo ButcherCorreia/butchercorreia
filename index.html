@@ -247,7 +247,7 @@
       border-radius: 4px;
     }
 
-    /* Custom filter checkbox styles - empty box with black outline when inactive, red box with white cross when active */
+    /* Custom filter checkbox styles - white cross goes to the edges */
     .img-filter {
       display: none;
     }
@@ -281,9 +281,9 @@
     .img-filter:checked + .filter-custom-box::after {
       content: '';
       position: absolute;
-      left: 5px;
-      top: 5px;
-      width: 10px;
+      left: 3px;
+      top: 9px;
+      width: 14px;
       height: 2px;
       background: #fff;
       border-radius: 1px;
