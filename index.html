@@ -247,6 +247,52 @@
       border-radius: 4px;
     }
 
+    /* Custom filter checkbox styles */
+    .img-filter {
+      display: none;
+    }
+    .filter-label {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      margin-right: 1.2em;
+      font-size: 1.1em;
+      color: #000;
+      user-select: none;
+    }
+    .filter-custom-box {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #000;
+      background: #000;
+      display: inline-block;
+      margin-right: 0.5em;
+      box-sizing: border-box;
+      vertical-align: middle;
+      border-radius: 0;
+      position: relative;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .img-filter:checked + .filter-custom-box {
+      border-color: #ff4000;
+      background: #ff4000;
+    }
+    .img-filter:checked + .filter-custom-box::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 7px;
+      height: 12px;
+      border: solid #fff;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+    .img-filter:checked ~ .filter-label-text {
+      color: #ff4000;
+    }
+
     @media (max-width: 768px) {
       body {
         padding: 0;
@@ -513,10 +559,10 @@ const contentData = {
   `,
   "imagery": `
     <div style="margin-bottom:1em;text-align:left;">
-      <label><input type="checkbox" class="img-filter" value="The Sound of Things"> The Sound of Things</label>
-      <label><input type="checkbox" class="img-filter" value="Taste of Sound"> Taste of Sound</label>
-      <label><input type="checkbox" class="img-filter" value="Just This And Only That"> Just This And Only That</label>
-      <label><input type="checkbox" class="img-filter" value="Performance Vista"> Performance Vista</label>
+      <label class="filter-label"><input type="checkbox" class="img-filter" value="The Sound of Things"><span class="filter-custom-box"></span><span class="filter-label-text">The Sound of Things</span></label>
+      <label class="filter-label"><input type="checkbox" class="img-filter" value="Taste of Sound"><span class="filter-custom-box"></span><span class="filter-label-text">Taste of Sound</span></label>
+      <label class="filter-label"><input type="checkbox" class="img-filter" value="Just This And Only That"><span class="filter-custom-box"></span><span class="filter-label-text">Just This And Only That</span></label>
+      <label class="filter-label"><input type="checkbox" class="img-filter" value="Performance Vista"><span class="filter-custom-box"></span><span class="filter-label-text">Performance Vista</span></label>
     </div>
     <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
     <div id="zoom-modal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;"><img id="zoom-img" style="max-width:90vw;max-height:90vh;box-shadow:0 0 20px #000;"></div>
