@@ -417,6 +417,25 @@
         display: none !important;
       }
     }
+
+    /* Make zoom modal appear above everything and update drop shadow to red */
+    #zoom-modal {
+      display: none;
+      position: fixed;
+      z-index: 99999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+    }
+    #zoom-img {
+      max-width: 90vw;
+      max-height: 90vh;
+      box-shadow: 0 0 40px 0 rgba(255,64,0,0.7);
+    }
   </style>
 </head>
 <body>
@@ -570,7 +589,7 @@ const contentData = {
       <label class="filter-label"><input type="checkbox" class="img-filter" value="Performance Vista"><span class="filter-custom-box"></span><span class="filter-label-text">Performance Vista</span></label>
     </div>
     <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
-    <div id="zoom-modal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;"><img id="zoom-img" style="max-width:90vw;max-height:90vh;box-shadow:0 0 20px #000;"></div>
+    <div id="zoom-modal" style="display:none;position:fixed;z-index:99999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;"><img id="zoom-img" style="max-width:90vw;max-height:90vh;box-shadow:0 0 40px 0 rgba(255,64,0,0.7);"></div>
   `
 };
 
