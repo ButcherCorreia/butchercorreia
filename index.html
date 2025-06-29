@@ -744,17 +744,20 @@ function makeDraggable(el) {
     if (e.button !== 0) return;
     e.preventDefault();
     isDragging = true;
-    // For .site-title-box, convert right to left so the right edge stays in place
+    // For popups: set left/top to current position and remove transform
+    if (el.classList.contains('popup') || el.classList.contains('popup-secondary')) {
+      const rect = el.getBoundingClientRect();
+      el.style.left = rect.left + 'px';
+      el.style.top = rect.top + 'px';
+      el.style.transform = '';
+    }
     if (el.classList.contains('site-title-box')) {
       const rect = el.getBoundingClientRect();
-      // Calculate the distance from the mouse to the right edge of the element
       const rightEdge = window.innerWidth - rect.right;
-      // Set left so the right edge stays at the same place
       el.style.left = (window.innerWidth - rightEdge - rect.width) + 'px';
       el.style.top = rect.top + 'px';
       el.style.right = '';
       el.style.position = 'fixed';
-      // Calculate mouse offset from the new left/top
       mouseOffsetX = e.clientX - (window.innerWidth - rightEdge - rect.width);
       mouseOffsetY = e.clientY - rect.top;
     } else {
