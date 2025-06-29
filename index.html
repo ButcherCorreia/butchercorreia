@@ -744,11 +744,13 @@ function makeDraggable(el) {
     if (e.button !== 0) return;
     e.preventDefault();
     isDragging = true;
-    // For popups: set left/top to current position and remove transform
+    // For popups: set left/top to current position in px, remove transform, and set right/bottom to auto
     if (el.classList.contains('popup') || el.classList.contains('popup-secondary')) {
       const rect = el.getBoundingClientRect();
       el.style.left = rect.left + 'px';
       el.style.top = rect.top + 'px';
+      el.style.right = 'auto';
+      el.style.bottom = 'auto';
       el.style.transform = '';
     }
     if (el.classList.contains('site-title-box')) {
