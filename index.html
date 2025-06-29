@@ -63,7 +63,6 @@
     .site-title-box {
       position: fixed;
       top: 20px;
-      right: 20px;
       left: 100vw;
       z-index: 100;
       cursor: move;
@@ -76,7 +75,7 @@
       align-items: center;
       justify-content: center;
       white-space: nowrap;
-      visibility: visible;
+      visibility: hidden;
     }
 
     .site-title-underline {
@@ -353,7 +352,7 @@
         overflow-x: hidden;
         box-sizing: border-box;
         padding: 1em;
-        background:#fff
+        background:#fff;
         border-width: 3px;
         touch-action: auto;
         display: none;
@@ -511,46 +510,47 @@ const contentData = {
     studio [at] butchercorreia.com<br><br>
     <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.<br><br>
     <img src="BCportrait.jpg" alt="Polaroid" width="200">
-  `
-"imagery": `
-  <div style="margin-bottom:1em;text-align:center;">
-    <label><input type="checkbox" class="img-filter" value="The Sound of Things" checked> The Sound of Things</label>
-    <label><input type="checkbox" class="img-filter" value="Taste of Sound" checked> Taste of Sound</label>
-    <label><input type="checkbox" class="img-filter" value="Just This And Only That"> Just This And Only That</label>
-    <label><input type="checkbox" class="img-filter" value="Performance Vista"> Performance Vista</label>
-  </div>
-  <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
-  <script>
-    // Define your images and their projects here
-    const galleryImages = [
-      // Images 1-10: The Sound of Things
-      ${Array.from({length: 10}, (_, i) => `{
-        src: "sound-of-things/sound-of-things${i+1}.jpg",
-        projects: ["The Sound of Things"]
-      }`).join(",\n      ")},
-      // Images 11-18: Taste of Sound
-      ${Array.from({length: 8}, (_, i) => `{
-        src: "sound-of-things/sound-of-things${i+11}.jpg",
-        projects: ["Taste of Sound"]
-      }`).join(",\n      ")}
-    ];
+  `,
+  "imagery": `
+    <div style="margin-bottom:1em;text-align:center;">
+      <label><input type="checkbox" class="img-filter" value="The Sound of Things" checked> The Sound of Things</label>
+      <label><input type="checkbox" class="img-filter" value="Taste of Sound" checked> Taste of Sound</label>
+      <label><input type="checkbox" class="img-filter" value="Just This And Only That"> Just This And Only That</label>
+      <label><input type="checkbox" class="img-filter" value="Performance Vista"> Performance Vista</label>
+    </div>
+    <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
+    <script>
+      // Define your images and their projects here
+      const galleryImages = [
+        // Images 1-10: The Sound of Things
+        ${Array.from({length: 10}, (_, i) => `{
+          src: "sound-of-things/sound-of-things${i+1}.jpg",
+          projects: ["The Sound of Things"]
+        }`).join(",\n        ")},
+        // Images 11-18: Taste of Sound
+        ${Array.from({length: 8}, (_, i) => `{
+          src: "sound-of-things/sound-of-things${i+11}.jpg",
+          projects: ["Taste of Sound"]
+        }`).join(",\n        ")}
+      ];
 
-    function renderGallery() {
-      const active = Array.from(document.querySelectorAll('.img-filter:checked')).map(cb => cb.value);
-      const imagesToShow = galleryImages.filter(img => img.projects.some(p => active.includes(p)));
-      const galleryDiv = document.getElementById('gallery');
-      if (galleryDiv) {
-        galleryDiv.innerHTML = imagesToShow.length ? imagesToShow.map(img =>
-          '<img src="' + img.src + '" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000; border-radius: 6px;" alt="artwork">'
-        ).join('') : '<div style="width:100%">No images for selected project(s).</div>';
+      function renderGallery() {
+        const active = Array.from(document.querySelectorAll('.img-filter:checked')).map(cb => cb.value);
+        const imagesToShow = galleryImages.filter(img => img.projects.some(p => active.includes(p)));
+        const galleryDiv = document.getElementById('gallery');
+        if (galleryDiv) {
+          galleryDiv.innerHTML = imagesToShow.length ? imagesToShow.map(img =>
+            '<img src="' + img.src + '" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000; border-radius: 6px;" alt="artwork">'
+          ).join('') : '<div style="width:100%">No images for selected project(s).</div>';
+        }
       }
-    }
 
-    // Initial render and event listeners
-    document.querySelectorAll('.img-filter').forEach(cb => cb.addEventListener('change', renderGallery));
-    renderGallery();
-  <\/script>
-`,
+      // Initial render and event listeners
+      document.querySelectorAll('.img-filter').forEach(cb => cb.addEventListener('change', renderGallery));
+      renderGallery();
+    <\/script>
+  `
+};
 
 function showPopup(id, element) {
   // Close all popups and remove active state
@@ -760,6 +760,16 @@ function makeDraggable(el) {
     document.onmousemove = null;
   }
 }
+window.onload = function () {
+  // Place site-title-box at top-right using left
+  const titleBox = document.querySelector('.site-title-box');
+  if (titleBox) {
+    const boxWidth = titleBox.offsetWidth;
+    titleBox.style.left = (window.innerWidth - boxWidth - 20) + 'px';
+    titleBox.style.top = '20px';
+    titleBox.style.visibility = 'visible';
+  }
+}
 document.addEventListener('DOMContentLoaded', function () {
   // Place site-title-box at top-right using left
   const titleBox = document.querySelector('.site-title-box');
@@ -772,9 +782,6 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.draggable').forEach(el => {
     makeDraggable(el);
   });
-});
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll('.draggable').forEach(makeDraggable);
 });
 
 // Mobile burger menu logic
