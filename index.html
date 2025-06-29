@@ -523,6 +523,55 @@ const contentData = {
   `
 };
 
+// Gallery images for 'The Sound of Things'
+const galleryImages = [
+  ...Array.from({length: 18}, (_, i) => ({
+    src: `sound-of-things/sound-of-things${i+1}.jpg`,
+    projects: ["The Sound of Things"]
+  }))
+];
+function renderGallery() {
+  const active = Array.from(document.querySelectorAll('.img-filter:checked')).map(cb => cb.value);
+  const imagesToShow = galleryImages.filter(img => img.projects.some(p => active.includes(p)));
+  const galleryDiv = document.getElementById('gallery');
+  if (galleryDiv) {
+    galleryDiv.innerHTML = imagesToShow.map(img =>
+      `<img src="${img.src}" class="gallery-img" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000;" onerror="this.style.display='none'">`
+    ).join('');
+  }
+  document.querySelectorAll('.gallery-img').forEach(img => {
+    img.onclick = function() {
+      const modal = document.getElementById('zoom-modal');
+      const zoomImg = document.getElementById('zoom-img');
+      zoomImg.src = this.src;
+      modal.style.display = 'flex';
+    };
+  });
+}
+function setupImageryGallery() {
+  document.querySelectorAll('.img-filter').forEach(cb => cb.addEventListener('change', renderGallery));
+  renderGallery();
+  // Setup zoom modal close
+  const modal = document.getElementById('zoom-modal');
+  if (modal) {
+    modal.onclick = function(e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.getElementById('zoom-img').src = '';
+      }
+    };
+  }
+}
+
+// Patch showPopup to call setupImageryGallery for imagery
+const originalShowPopup = showPopup;
+window.showPopup = function(id, element) {
+  originalShowPopup(id, element);
+  if (id === 'imagery') {
+    setupImageryGallery();
+  }
+};
+
 function showPopup(id, element) {
   // Close all popups and remove active state
   document.getElementById('popupContainer').style.display = 'none';
