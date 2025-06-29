@@ -512,27 +512,22 @@ const contentData = {
     <img src="BCportrait.jpg" alt="Polaroid" width="200">
   `,
   "imagery": `
-    <div style="margin-bottom:1em;text-align:center;">
+    <div style="margin-bottom:1em;text-align:left;">
       <label><input type="checkbox" class="img-filter" value="The Sound of Things"> The Sound of Things</label>
       <label><input type="checkbox" class="img-filter" value="Taste of Sound"> Taste of Sound</label>
       <label><input type="checkbox" class="img-filter" value="Just This And Only That"> Just This And Only That</label>
       <label><input type="checkbox" class="img-filter" value="Performance Vista"> Performance Vista</label>
     </div>
     <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
+    <div id="zoom-modal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;"><img id="zoom-img" style="max-width:90vw;max-height:90vh;box-shadow:0 0 20px #000;"></div>
   `
 };
 
-// Place this script in the main JS, not inside the HTML string
+// Only show images for The Sound of Things when that filter is checked
 const galleryImages = [
-  // Images 1-10: The Sound of Things
-  ...Array.from({length: 10}, (_, i) => ({
+  ...Array.from({length: 18}, (_, i) => ({
     src: `sound-of-things/sound-of-things${i+1}.jpg`,
     projects: ["The Sound of Things"]
-  })),
-  // Images 11-18: Taste of Sound
-  ...Array.from({length: 8}, (_, i) => ({
-    src: `sound-of-things/sound-of-things${i+11}.jpg`,
-    projects: ["Taste of Sound"]
   }))
 ];
 function renderGallery() {
@@ -540,19 +535,34 @@ function renderGallery() {
   const imagesToShow = galleryImages.filter(img => img.projects.some(p => active.includes(p)));
   const galleryDiv = document.getElementById('gallery');
   if (galleryDiv) {
-    galleryDiv.innerHTML = imagesToShow.length ? imagesToShow.map(img =>
-      `<img src="${img.src}" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000; border-radius: 6px;" alt="artwork">`
-    ).join('') : '<div style="width:100%">No images for selected project(s).</div>';
+    galleryDiv.innerHTML = imagesToShow.map(img =>
+      `<img src="${img.src}" class="gallery-img" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000;">`
+    ).join('');
   }
+  // Add zoom event listeners
+  document.querySelectorAll('.gallery-img').forEach(img => {
+    img.onclick = function() {
+      const modal = document.getElementById('zoom-modal');
+      const zoomImg = document.getElementById('zoom-img');
+      zoomImg.src = this.src;
+      modal.style.display = 'flex';
+    };
+  });
 }
-
-// When imagery popup is opened, set up event listeners and render
 function setupImageryGallery() {
   document.querySelectorAll('.img-filter').forEach(cb => cb.addEventListener('change', renderGallery));
   renderGallery();
+  // Setup zoom modal close
+  const modal = document.getElementById('zoom-modal');
+  if (modal) {
+    modal.onclick = function(e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.getElementById('zoom-img').src = '';
+      }
+    };
+  }
 }
-
-// Patch showPopup to call setupImageryGallery for imagery
 const originalShowPopup = showPopup;
 window.showPopup = function(id, element) {
   originalShowPopup(id, element);
