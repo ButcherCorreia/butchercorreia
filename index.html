@@ -744,14 +744,15 @@ function makeDraggable(el) {
     if (e.button !== 0) return;
     e.preventDefault();
     isDragging = true;
-    // For popups: set left/top to current position in px, remove transform, and set right/bottom to auto
+    // For popups: set position: fixed, left/top in px, right/bottom to auto, and remove transform and any percentage left/top
     if (el.classList.contains('popup') || el.classList.contains('popup-secondary')) {
       const rect = el.getBoundingClientRect();
+      el.style.position = 'fixed';
       el.style.left = rect.left + 'px';
       el.style.top = rect.top + 'px';
       el.style.right = 'auto';
       el.style.bottom = 'auto';
-      el.style.transform = '';
+      el.style.transform = 'none';
     }
     if (el.classList.contains('site-title-box')) {
       const rect = el.getBoundingClientRect();
