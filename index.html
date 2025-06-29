@@ -247,7 +247,7 @@
       border-radius: 4px;
     }
 
-    /* Custom filter checkbox styles */
+    /* Custom filter checkbox styles - empty box with black outline when inactive, red box with white cross when active */
     .img-filter {
       display: none;
     }
@@ -264,7 +264,7 @@
       width: 20px;
       height: 20px;
       border: 2px solid #000;
-      background: #000;
+      background: #fff;
       display: inline-block;
       margin-right: 0.5em;
       box-sizing: border-box;
@@ -277,17 +277,22 @@
       border-color: #ff4000;
       background: #ff4000;
     }
+    .img-filter:checked + .filter-custom-box::before,
     .img-filter:checked + .filter-custom-box::after {
       content: '';
-      display: block;
       position: absolute;
       left: 5px;
-      top: 2px;
-      width: 7px;
-      height: 12px;
-      border: solid #fff;
-      border-width: 0 3px 3px 0;
+      top: 5px;
+      width: 10px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+    }
+    .img-filter:checked + .filter-custom-box::before {
       transform: rotate(45deg);
+    }
+    .img-filter:checked + .filter-custom-box::after {
+      transform: rotate(-45deg);
     }
     .img-filter:checked ~ .filter-label-text {
       color: #ff4000;
