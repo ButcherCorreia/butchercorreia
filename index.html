@@ -513,43 +513,52 @@ const contentData = {
   `,
   "imagery": `
     <div style="margin-bottom:1em;text-align:center;">
-      <label><input type="checkbox" class="img-filter" value="The Sound of Things" checked> The Sound of Things</label>
-      <label><input type="checkbox" class="img-filter" value="Taste of Sound" checked> Taste of Sound</label>
+      <label><input type="checkbox" class="img-filter" value="The Sound of Things"> The Sound of Things</label>
+      <label><input type="checkbox" class="img-filter" value="Taste of Sound"> Taste of Sound</label>
       <label><input type="checkbox" class="img-filter" value="Just This And Only That"> Just This And Only That</label>
       <label><input type="checkbox" class="img-filter" value="Performance Vista"> Performance Vista</label>
     </div>
     <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
-    <script>
-      // Define your images and their projects here
-      const galleryImages = [
-        // Images 1-10: The Sound of Things
-        ${Array.from({length: 10}, (_, i) => `{
-          src: "sound-of-things/sound-of-things${i+1}.jpg",
-          projects: ["The Sound of Things"]
-        }`).join(",\n        ")},
-        // Images 11-18: Taste of Sound
-        ${Array.from({length: 8}, (_, i) => `{
-          src: "sound-of-things/sound-of-things${i+11}.jpg",
-          projects: ["Taste of Sound"]
-        }`).join(",\n        ")}
-      ];
-
-      function renderGallery() {
-        const active = Array.from(document.querySelectorAll('.img-filter:checked')).map(cb => cb.value);
-        const imagesToShow = galleryImages.filter(img => img.projects.some(p => active.includes(p)));
-        const galleryDiv = document.getElementById('gallery');
-        if (galleryDiv) {
-          galleryDiv.innerHTML = imagesToShow.length ? imagesToShow.map(img =>
-            '<img src="' + img.src + '" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000; border-radius: 6px;" alt="artwork">'
-          ).join('') : '<div style="width:100%">No images for selected project(s).</div>';
-        }
-      }
-
-      // Initial render and event listeners
-      document.querySelectorAll('.img-filter').forEach(cb => cb.addEventListener('change', renderGallery));
-      renderGallery();
-    <\/script>
   `
+};
+
+// Place this script in the main JS, not inside the HTML string
+const galleryImages = [
+  // Images 1-10: The Sound of Things
+  ...Array.from({length: 10}, (_, i) => ({
+    src: `sound-of-things/sound-of-things${i+1}.jpg`,
+    projects: ["The Sound of Things"]
+  })),
+  // Images 11-18: Taste of Sound
+  ...Array.from({length: 8}, (_, i) => ({
+    src: `sound-of-things/sound-of-things${i+11}.jpg`,
+    projects: ["Taste of Sound"]
+  }))
+];
+function renderGallery() {
+  const active = Array.from(document.querySelectorAll('.img-filter:checked')).map(cb => cb.value);
+  const imagesToShow = galleryImages.filter(img => img.projects.some(p => active.includes(p)));
+  const galleryDiv = document.getElementById('gallery');
+  if (galleryDiv) {
+    galleryDiv.innerHTML = imagesToShow.length ? imagesToShow.map(img =>
+      `<img src="${img.src}" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000; border-radius: 6px;" alt="artwork">`
+    ).join('') : '<div style="width:100%">No images for selected project(s).</div>';
+  }
+}
+
+// When imagery popup is opened, set up event listeners and render
+function setupImageryGallery() {
+  document.querySelectorAll('.img-filter').forEach(cb => cb.addEventListener('change', renderGallery));
+  renderGallery();
+}
+
+// Patch showPopup to call setupImageryGallery for imagery
+const originalShowPopup = showPopup;
+window.showPopup = function(id, element) {
+  originalShowPopup(id, element);
+  if (id === 'imagery') {
+    setupImageryGallery();
+  }
 };
 
 function showPopup(id, element) {
