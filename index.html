@@ -3,75 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
-
-  <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo. Explore their portfolio, CV, and contact information." />
-  <meta name="keywords" content="BUTCHER & CORREIA, Katherine Butcher, Carlos A. Correia, artist, portfolio, contemporary art, visual art" />
-  <meta name="author" content="BUTCHER & CORREIA" />
-  
-  <meta property="og:title" content="BUTCHER & CORREIA" />
-  <meta property="og:description" content="Explore the portfolio, CV, and contact information for Carlos A. Correia." />
-  <meta property="og:image" content="https://butchercorreia.com/landingimage2.jpg" />
-  <meta property="og:url" content="https://butchercorreia.com" />
-  <meta property="og:type" content="website" />
-  
-  <meta name="twitter:card" content="summary_large_image" />
-
   <title>BUTCHER & CORREIA</title>
-
   <style>
     html, body {
       margin: 0;
-      font-family: Georgia, serif;
+      padding: 0;
       height: 100%;
-      min-height: 100vh;
+      font-family: Georgia, serif;
       background-color: transparent;
-      position: relative;
-    }
-    .draggable img {
+      position: fixed; /* fix body top-left */
+      top: 0;
+      left: 0;
       width: 100%;
-      height: auto;
-      display: block;
     }
+
+    /* Landing image fixed bottom left */
+    #landing-img {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 300px; /* smaller size */
+      height: auto;
+      z-index: 1;
+    }
+
+    /* Site title top left */
     .site-title-box {
-      position: absolute;
+      position: fixed;
       top: 20px;
       left: 20px;
-      color: white;
+      z-index: 2;
       font-size: 2rem;
-      font-weight: bold;
+      color: black;
     }
+
+    /* Pop-up centered */
     .popup {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      z-index: 2;
       background: white;
       border: 2px dashed orange;
-      padding: 1rem;
-      max-width: 500px;
-      line-height: 1.5;
+      padding: 20px;
+      max-width: 400px;
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
+
+    /* Credits bottom right */
     .footnote-wrapper {
-      position: absolute;
+      position: fixed;
       bottom: 10px;
       right: 10px;
-      transform: rotate(-90deg);
-      transform-origin: right bottom;
-      font-size: 0.8rem;
-      color: gray;
+      z-index: 2;
+      color: black; /* black text */
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <div id="draggable-bg" class="draggable">
-    <img src="landingimage2.jpg" alt="Landing Image" draggable="false" />
-  </div>
-
   <div class="site-title-box">
     BUTCHER & CORREIA
   </div>
+
+  <img id="landing-img" src="landingimage2.jpg" alt="Landing Image" />
 
   <div class="popup">
     <p>studio [at] butchercorreia.com</p>
