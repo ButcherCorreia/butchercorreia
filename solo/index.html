@@ -45,13 +45,16 @@
   </div>
 
   <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image" style="width:150px; height:auto; cursor:pointer; display:block; margin: 20px auto;">
+  
+  <div class="footnote-wrapper">
+    © 2025 BUTCHER & CORREIA
+  </div>
+  
+  <script>
+  document.getElementById('landing-img').addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  </script>
 
-<div class="footnote-wrapper">
-  © 2025 BUTCHER & CORREIA
-</div>
-
-<script>
-document.getElementById('landing-img').addEventListener('click', function(){
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-</script>
+</body>
+</html>
