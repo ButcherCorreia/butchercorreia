@@ -11,12 +11,12 @@ html, body {
 }
 
 #landing-img {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  position: static;
+  display: block;
+  margin: 20px auto;
   width: 150px;
   height: auto;
-  z-index: 1;
+  cursor: pointer;
 }
 
 .site-title-box {
