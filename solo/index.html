@@ -1,114 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BUTCHER & CORREIA</title>
   <style>
+    /* page base */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       font-family: Georgia, serif;
       background-color: transparent;
-      width: 100%;
+      color: #000;
     }
 
-    /* Landing image fixed bottom left, half size */
-    #landing-img {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 120px; /* half the previous size */
-      height: auto;
-      z-index: 1;
-    }
+    /* anchor for scrolling to top */
+    #top { display:block; height:0; }
 
-    /* Site title top left, smaller */
+    /* small title fixed top-left */
     .site-title-box {
       position: fixed;
-      top: 15px;
-      left: 15px;
-      z-index: 2;
-      font-size: 0.75rem;
+      top: 16px;
+      left: 16px;
+      z-index: 20;
+      font-size: 0.8rem;
       color: black;
+      line-height: 1;
+      pointer-events: none; /* title not interactive */
     }
 
-    /* Body text smaller, no box */
-    .popup {
-      position: fixed;
-      top: 50px;
-      left: 15px;
-      right: 60px;
-      z-index: 2;
-      font-size: 0.75rem;
+    /* body content in normal flow so page can scroll */
+    .content {
+      box-sizing: border-box;
+      padding: 72px 20px 120px 20px; /* leave space for fixed title and image */
+      max-width: 820px;
+      margin: 0;
+      font-size: 1rem;        /* readable size */
       line-height: 1.5;
       color: black;
     }
 
-    /* Credits bottom right */
+    /* keep text width away from fixed image on small viewports */
+    @media (min-width: 900px) {
+      .content { max-width: calc(100% - 220px); } /* leave room for image */
+    }
+
+    /* fixed landing image bottom-left, halvesize-ish */
+    #landing-img {
+      position: fixed;
+      bottom: 12px;
+      left: 12px;
+      width: 150px; /* change if you want smaller/larger */
+      height: auto;
+      z-index: 10;
+      cursor: pointer;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
+    }
+
+    /* credits fixed bottom-right */
     .footnote-wrapper {
       position: fixed;
-      bottom: 10px;
-      right: 10px;
-      z-index: 2;
+      bottom: 12px;
+      right: 12px;
+      z-index: 20;
       color: black;
       font-size: 0.8rem;
+    }
+
+    /* ensure long text not overlapping image on narrow screens */
+    @media (max-width: 600px) {
+      #landing-img { width: 110px; left: 8px; bottom: 8px; }
+      .content { padding-bottom: 160px; }
     }
   </style>
 </head>
 <body>
-  <div class="site-title-box">
-    BUTCHER & CORREIA
-  </div>
+  <span id="top"></span>
 
-  <div class="popup">
-    <p><strong>solo</strong><br>
-    Visual elements: costume design, scenography, sonic landscape for <i>Forlengelser</i>, a performance by Rannei Grenne<br>
-    BABEL visningsrom for kunst, 5th and 6th of December, 2025<br>
-    12–16.00<br>
-    Artistic design assistant: Joana Bruno<br>
-    Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
-    Fabric: weaved from trønder sheep wool (Selbu Spinneri) by Varp & Veft<br>
-    Costume design: Manufacture Oslo<br>
-    Kastel sneakers, wool (from Trønder Sheep)<br>
-    Sound: captured with geophone<br></p>
+  <div class="site-title-box">BUTCHER &amp; CORREIA</div>
 
-    <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility. A collaboration with Selbu Spinneri, Varp & Veft, and Manufacture Oslo, it has evolved into a research-based inquiry into the textile industry’s full chain and the making of the “perfect” garment within local conditions. A live sound component uses geophone technology to capture the movements of audience and performer as vibrations, streamed in real time to the public space outside the venue—turning embodied presence into an acoustic trace that extends beyond the performance.</p>
+  <main class="content" role="main" aria-labelledby="page-title">
+    <h1 id="page-title" style="font-size:1.1rem; margin:0 0 0.6rem 0; font-weight:normal;">solo</h1>
 
-    <p><strong>solo manifesto</strong></p>
-    <p>
-    1. Resonant Chamber<br>
-    Every surface, sound, and silence carries energy. The work begins by tuning the space — not filling it. Materials are not passive but a participant in the resonance.<br><br>
-    2. Every Material is a Vehicle for a Story<br>
-    Where the wool? Who the wool? What the wool? Why the wool?<br>
-    3. Every Choice is a Compromise<br>
-    Let the friction be visible. Let the contradictions remain.<br>
-    4. Local ≠ Easy<br>
-    To source near is to confront distance. To insist on proximity is to reveal loss.<br>
-    6. Process is the Scene<br>
-    The making is not preparation. It’s performance in slow motion.<br><br>
-    7. Documentation is Choreography<br>
-    8. Friction is Data<br>
-    9. Logistics are Poetics<br>
-    10. Transparency Becomes Form<br>
-    Reveal the Scaffold: expose the systems behind the stage—labor, production, legislation, supply.<br>
-    11. Process as Performance / Performance as Process<br>
-    12. The Costume is a Membrane<br>
-    Not decoration but instrument. Wool becomes skin, speaker, and witness. It absorbs breath and echoes back.<br>
-    13. Let the Costume Resist You<br>
-    Let it shape your spine, tug your rhythm, interrupt your aesthetic.<br>
-    14. Epilogue: A Call to Attunement<br>
-    This work is not a product. It is a tuning practice—to sensation, to contradiction, to the ecosystems we inhabit and disturb. Let the work remain unfinished.<br>
+    <p style="margin:0 0 0.6rem 0;">
+      Visual elements: costume design, scenography, sonic landscape for <em>Forlengelser</em>, a performance by Rannei Grenne.<br>
+      BABEL visningsrom for kunst, 5th and 6th of December, 2025 — 12–16.00.<br>
+      Artistic design assistant: Joana Bruno.<br>
+      Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri.<br>
+      Fabric: weaved from Trønder Sheep wool (Selbu Spinneri) by Varp &amp; Veft.<br>
+      Costume design: Manufacture Oslo. Kastel sneakers, wool (from Trønder Sheep). Sound: captured with geophone.
     </p>
 
-    <p><strong>digital product passport</strong></p>
-  </div>
+    <p style="margin:0 0 0.8rem 0;">
+      BUTCHER &amp; CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility. A collaboration with Selbu Spinneri, Varp &amp; Veft, and Manufacture Oslo, it has evolved into a research-based inquiry into the textile industry’s full chain and the making of the “perfect” garment within local conditions. A live sound component uses geophone technology to capture the movements of audience and performer as vibrations, streamed in real time to the public space outside the venue—turning embodied presence into an acoustic trace that extends beyond the performance.
+    </p>
 
-  <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image" />
+    <h2 style="font-size:0.95rem; margin:1rem 0 0.4rem 0;">solo manifesto</h2>
 
-  <div class="footnote-wrapper">
-    © 2025 BUTCHER & CORREIA
-  </div>
+    <ol style="margin:0 0 1rem 1.1rem; padding:0; line-height:1.5; font-size:0.98rem;">
+      <li>Resonant Chamber — Every surface, sound, and silence carries energy. The work begins by tuning the space, not filling it.</li>
+      <li>Every Material is a Vehicle for a Story — Where the wool? Who the wool? What the wool? Why the wool?</li>
+      <li>Every Choice is a Compromise — Let the friction be visible. Let the contradictions remain.</li>
+      <li>Local ≠ Easy — To source near is to confront distance. To insist on proximity is to reveal loss.</li>
+      <li>Process is the Scene — The making is not preparation. It’s performance in slow motion.</li>
+      <li>Documentation is Choreography.</li>
+      <li>Friction is Data.</li>
+      <li>Logistics are Poetics.</li>
+      <li>Transparency Becomes Form — Reveal the scaffold: labor, production, legislation, supply.</li>
+      <li>Process as Performance / Performance as Process.</li>
+      <li>The Costume is a Membrane — Not decoration but instrument. Wool becomes skin, speaker, and witness.</li>
+      <li>Let the Costume Resist You — Let it shape your spine, tug your rhythm, interrupt your aesthetic.</li>
+      <li>Epilogue: A Call to Attunement — This work is not a product. It is a tuning practice. Let the work remain unfinished.</li>
+    </ol>
+
+    <h3 style="font-size:0.95rem; margin:1rem 0 0.4rem 0;">digital product passport</h3>
+    <p style="margin:0 0 1.6rem 0;">(details to follow)</p>
+
+    <!-- extra bottom spacing so content doesn't hide behind fixed image/credits -->
+    <div style="height:140px"></div>
+  </main>
+
+  <!-- clickable image that scrolls to top -->
+  <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image" aria-label="Scroll to top" />
+
+  <div class="footnote-wrapper">© 2025 BUTCHER &amp; CORREIA</div>
+
+  <script>
+    // image click scrolls to top smoothly
+    (function(){
+      var img = document.getElementById('landing-img');
+      if (img) {
+        img.addEventListener('click', function(e){
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
