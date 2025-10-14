@@ -1,25 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BUTCHER & CORREIA</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Georgia, serif;
+      background-color: transparent;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    /* Landing image fixed bottom left, half size */
+    #landing-img {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 150px;
+      height: auto;
+      z-index: 1;
+    }
+
+    /* Site title top left, smaller */
+    .site-title-box {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 2;
+      font-size: 0.8rem;
+      color: black;
+    }
+
+    /* Body of text top left, smaller, slightly below title */
+    .popup {
+      position: fixed;
+      top: 60px;
+      left: 20px;
+      z-index: 2;
+      font-size: 0.8rem; 
+      line-height: 1.5;
+      color: black;
+    }
+
+    /* Credits bottom right */
+    .footnote-wrapper {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 2;
+      color: black;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
 <body>
-  <div id="draggable-bg" class="draggable">
-    <img src="landingimage2.jpg" alt="Landing Image" draggable="false" />
+  <div class="site-title-box">
+    BUTCHER & CORREIA
   </div>
 
-  <div class="site-title-box draggable">
-    <span class="site-title-underline">
-      <span class="site-title">BUTCHER & CORREIA</span>
-    </span>
+  <div class="popup">
+    <p><strong>solo</strong><br>
+    Forlengelser, a performance by Rannei Grenne<br>
+    BABEL visningsrom for kunst, 5th and 6th of December, 2025<br>
+    12-16.00<br>
+    <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility. A collaboration with Selbu Spinneri, Varp & Veft, and Manufacture Oslo, it has evolved into a research-based inquiry into the textile industry’s full chain and the making of the “perfect” garment within local conditions. A live sound component uses geophone technology to capture the movements of audience and performer as vibrations, streamed in real time to the public space outside the venue—turning embodied presence into an acoustic trace that extends beyond the performance.</p>
+    <p>solo manifesto</p>
   </div>
 
-  <div class="popup" style="display:block; top:50%; left:50%; transform:translate(-50%,-50%);">
-    <div style="font-size:1.1rem; line-height:1.6;">
-      <p>
-        2025&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)<br>
-        2026&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, Kunstrom Jakob, Steinkjer Kulturhus (NO)<br>
-      </p>
-    </div>
-  </div>
+  <img id="landing-img" src="landingimage2.jpg" alt="Landing Image" />
 
-  <div class="footnote-wrapper draggable" id="footnote">
-    <div class="footnote">© 2025 BUTCHER & CORREIA</div>
+  <div class="footnote-wrapper">
+    © 2025 BUTCHER & CORREIA
   </div>
 </body>
-
+</html>
