@@ -11,45 +11,41 @@
       height: 100%;
       font-family: Georgia, serif;
       background-color: transparent;
-      position: fixed; /* fix body top-left */
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
     }
 
-    /* Landing image fixed bottom left */
+    /* Landing image fixed bottom left, half size */
     #landing-img {
       position: fixed;
       bottom: 0;
       left: 0;
-      width: 300px; /* smaller size */
+      width: 150px; /* half of previous 300px */
       height: auto;
       z-index: 1;
     }
 
-    /* Site title top left */
+    /* Site title top right */
     .site-title-box {
       position: fixed;
       top: 20px;
-      left: 20px;
+      right: 20px;
       z-index: 2;
       font-size: 2rem;
       color: black;
     }
 
-    /* Pop-up centered */
+    /* Body of text top left, no box */
     .popup {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 20px;
+      left: 20px;
       z-index: 2;
-      background: white;
-      border: 2px dashed orange;
-      padding: 20px;
-      max-width: 400px;
       font-size: 1.1rem;
       line-height: 1.6;
+      color: black;
     }
 
     /* Credits bottom right */
@@ -58,7 +54,7 @@
       bottom: 10px;
       right: 10px;
       z-index: 2;
-      color: black; /* black text */
+      color: black;
       font-size: 0.9rem;
     }
   </style>
@@ -67,8 +63,6 @@
   <div class="site-title-box">
     BUTCHER & CORREIA
   </div>
-
-  <img id="landing-img" src="landingimage2.jpg" alt="Landing Image" />
 
   <div class="popup">
     <p>studio [at] butchercorreia.com</p>
@@ -81,6 +75,8 @@
       2027&nbsp;&nbsp;B&amp;C Artistic collaboration for <em>Tentare/Tentacular</em> by Rannei Grenne, Kunsthall Trondheim and RAS, Sandnes
     </p>
   </div>
+
+  <img id="landing-img" src="landingimage2.jpg" alt="Landing Image" />
 
   <div class="footnote-wrapper">
     © 2025 BUTCHER & CORREIA
