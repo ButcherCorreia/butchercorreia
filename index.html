@@ -3,70 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
   <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
 
-  <!-- SEO metadata -->
-  <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo. Explore his portfolio, CV, and contact information." />
+  <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo. Explore their portfolio, CV, and contact information." />
   <meta name="keywords" content="BUTCHER & CORREIA, Katherine Butcher, Carlos A. Correia, artist, portfolio, contemporary art, visual art" />
   <meta name="author" content="BUTCHER & CORREIA" />
   
-  <!-- Open Graph (OG) metadata -->
-  <meta property="og:title" content="BUTCHER & CORREIA - " />
+  <meta property="og:title" content="BUTCHER & CORREIA" />
   <meta property="og:description" content="Explore the portfolio, CV, and contact information for Carlos A. Correia." />
-  <meta property="og:image" content="https://butchercorreia.com" />
+  <meta property="og:image" content="https://butchercorreia.com/landingimage2.jpg" />
   <meta property="og:url" content="https://butchercorreia.com" />
   <meta property="og:type" content="website" />
   
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
 
   <title>BUTCHER & CORREIA</title>
+
   <style>
     html, body {
       margin: 0;
       font-family: Georgia, serif;
       height: 100%;
-      background-color: transparent;
       min-height: 100vh;
+      background-color: transparent;
+      position: relative;
     }
-    body { min-height: 100vh; position: relative; }
-
-   <body>
+    .draggable img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .site-title-box {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .popup {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 2px dashed orange;
+      padding: 1rem;
+      max-width: 500px;
+      line-height: 1.5;
+    }
+    .footnote-wrapper {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      transform: rotate(-90deg);
+      transform-origin: right bottom;
+      font-size: 0.8rem;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
   <div id="draggable-bg" class="draggable">
     <img src="landingimage2.jpg" alt="Landing Image" draggable="false" />
   </div>
 
-  <div class="site-title-box draggable">
-    <span class="site-title-underline">
-      <span class="site-title">BUTCHER & CORREIA</span>
-    </span>
+  <div class="site-title-box">
+    BUTCHER & CORREIA
   </div>
 
-  <div class="popup" style="display:block; top:50%; left:50%; transform:translate(-50%,-50%);">
-    <div style="font-size:1.1rem; line-height:1.6;">
-      <p>studio [at] butchercorreia.com</p>
-
-      <p><strong>Upcoming</strong></p>
-      <p>
-        2025&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)<br>
-        2026&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, Kunstrom Jakob, Steinkjer Kulturhus (NO)<br>
-        2026&nbsp;&nbsp;B&amp;C Group show — Trondheimsbiennalen (NO)<br>
-        2027&nbsp;&nbsp;Artist residency and performance — Norsk Billedhoggerforening (NO)<br>
-        2027&nbsp;&nbsp;B&amp;C Artistic collaboration for <em>Tentare/Tentacular</em> by Rannei Grenne, Kunsthall Trondheim and RAS, Sandnes
-      </p>
-
-      <p>
-        2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
-        2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO) — ongoing<br>
-        2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti — KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
-        2023&nbsp;&nbsp;<em>net, nett, nether</em> — Heimdal Kunstforening, Trondheim (NO)<br>
-        2022&nbsp;&nbsp;<em>Unlikely the same as yesterday</em> — Grenseløs, Trondheim (NO)
-      </p>
-    </div>
+  <div class="popup">
+    <p>studio [at] butchercorreia.com</p>
+    <p><strong>Upcoming</strong></p>
+    <p>
+      2025&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)<br>
+      2026&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, Kunstrom Jakob, Steinkjer Kulturhus (NO)<br>
+      2026&nbsp;&nbsp;B&amp;C Group show — Trondheimsbiennalen (NO)<br>
+      2027&nbsp;&nbsp;Artist residency and performance — Norsk Billedhoggerforening (NO)<br>
+      2027&nbsp;&nbsp;B&amp;C Artistic collaboration for <em>Tentare/Tentacular</em> by Rannei Grenne, Kunsthall Trondheim and RAS, Sandnes
+    </p>
   </div>
 
-  <div class="footnote-wrapper draggable" id="footnote">
-    <div class="footnote">© 2025 BUTCHER & CORREIA</div>
+  <div class="footnote-wrapper">
+    © 2025 BUTCHER & CORREIA
   </div>
 </body>
-
+</html>
