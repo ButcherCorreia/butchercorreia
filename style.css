@@ -4,7 +4,7 @@ html, body {
   height: 100%;
   font-family: Georgia, serif;
   background-color: transparent;
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
