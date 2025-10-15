@@ -29,7 +29,7 @@ html, body {
 }
 
 .popup {
-  position: fixed;
+  position: relative;
   top: 60px;
   left: 20px;
   right: 80px;
