@@ -6,55 +6,81 @@
   <meta name="description" content="BUTCHER & CORREIA – interdisciplinary art and design practice.">
   <title>BUTCHER & CORREIA</title>
   <link rel="stylesheet" href="../style.css">
+  <style>
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .column {
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="site-title-box">
     BUTCHER & CORREIA
   </div>
 
-<div class="popup">
-    <p><strong>solo</strong><br>
-    Visual elements: costume design, scenography, sonic landscape for <i>Forlengelser</i>, a performance by Rannei Grenne<br>
-    BABEL visningsrom for kunst, 5th and 6th of December, 2025<br>
-    12–16.00<br>
-    Artistic design assistant: Joana Bruno<br>
-    Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
-    Fabric: weaved from trønder sheep wool (Selbu Spinneri) by Varp &amp; Veft<br>
-    Costume design: Manufacture Oslo<br>
-    Kastel sneakers, wool (from Trønder Sheep)<br>
-    Sound: captured with geophone</p>
+  <div class="content-grid">
+    <div class="column">
+      <h3>solo</h3>
+      <p>Visual elements: costume design, scenography, sonic landscape for <i>Forlengelser</i>, a performance by Rannei Grenne<br>
+      BABEL visningsrom for kunst, 5th and 6th of December, 2025<br>
+      12–16.00<br>
+      Artistic design assistant: Joana Bruno<br>
+      Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
+      Fabric: weaved from trønder sheep wool (Selbu Spinneri) by Varp &amp; Veft<br>
+      Costume design: Manufacture Oslo<br>
+      Kastel sneakers, wool (from Trønder Sheep)<br>
+      Sound: captured with geophone</p>
 
-    <p>BUTCHER &amp; CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—theproject exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility. A collaboration with Selbu Spinneri, Varp &amp; Veft, and Manufacture Oslo, it has evolved into a research-based inquiry into the textile industry’s full chain and the making of the “perfect” garment within local conditions. A live sound component uses geophone technology to capture the movements of audience and performer as vibrations, streamed in real time to the public space outside the venue—turning embodied presence into an acoustic trace that extends beyond the performance.</p>
+      <p>BUTCHER &amp; CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.</p>
+    </div>
 
-    <h3>solo manifesto</h3>
-    Resonant Chamber — Every surface, sound, and silence carries energy. The work begins by tuning the space, not filling it.<br>
-    Every Material is a Vehicle for a Story — Where the wool? Who the wool? What the wool? Why the wool?<br>
-    Every Choice is a Compromise — Let the friction be visible. Let the contradictions remain.<br>
-    Local ≠ Easy — To source near is to confront distance. To insist on proximity is to reveal loss.<br>
-    Process is the Scene — The making is not preparation. It’s performance in slow motion.<br>
-    Documentation is Choreography.<br>
-    Friction is Data.<br>
-    Logistics are Poetics.<br>
-    Transparency Becomes Form — Reveal the scaffold: labor, production, legislation, supply.<br>
-    Process as Performance / Performance as Process.<br>
-    The Costume is a Membrane — Not decoration but instrument. Wool becomes skin, speaker, and witness.<br>
-    Let the Costume Resist You — Let it shape your spine, tug your rhythm, interrupt your aesthetic.<br>
-    Epilogue: A Call to Attunement — This work is not a product. It is a tuning practice. Let the work remain unfinished.<br>
+    <div class="column">
+      <h3>manifesto</h3>
+      <p>Resonant Chamber — Every surface, sound, and silence carries energy. The work begins by tuning the space, not filling it.<br>
+      Every Material is a Vehicle for a Story — Where the wool? Who the wool? What the wool? Why the wool?<br>
+      Every Choice is a Compromise — Let the friction be visible. Let the contradictions remain.<br>
+      Local ≠ Easy — To source near is to confront distance. To insist on proximity is to reveal loss.<br>
+      Process is the Scene — The making is not preparation. It’s performance in slow motion.<br>
+      Documentation is Choreography.<br>
+      Friction is Data.<br>
+      Logistics are Poetics.<br>
+      Transparency Becomes Form — Reveal the scaffold: labor, production, legislation, supply.<br>
+      Process as Performance / Performance as Process.<br>
+      The Costume is a Membrane — Not decoration but instrument. Wool becomes skin, speaker, and witness.<br>
+      Let the Costume Resist You — Let it shape your spine, tug your rhythm, interrupt your aesthetic.<br>
+      Epilogue: A Call to Attunement — This work is not a product. It is a tuning practice. Let the work remain unfinished.</p>
+    </div>
 
-    <h4>digital product passport</h4>
+    <div class="column">
+      <h3>digital product passport</h3>
+      <p>Content for the digital product passport section goes here.</p>
+    </div>
   </div>
 
   <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image" style="width:150px; height:auto; cursor:pointer; display:block; margin: 20px auto;">
-  
+
   <div class="footnote-wrapper">
     © 2025 BUTCHER & CORREIA
   </div>
-  
-  <script>
-  document.getElementById('landing-img').addEventListener('click', function(){
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  </script>
 
+  <script>
+    document.getElementById('landing-img').addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
