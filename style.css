@@ -11,9 +11,9 @@ html, body {
 }
 
 #landing-img {
-  position: relative; /* normal flow */
+  position: relative;
   display: block;
-  margin: 0; /* no automatic centering */
+  margin: 0 auto 0 0; /* left aligned */
   width: 150px;
   height: auto;
   cursor: pointer;
