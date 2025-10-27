@@ -5,7 +5,133 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="BUTCHER & CORREIA – interdisciplinary art and design practice.">
   <title>BUTCHER & CORREIA</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Merged style.css into the page -->
+  <style>
+    /* style.css - merged into index.html */
+
+    /* predictable sizing */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Georgia, serif;
+      background-color: transparent;
+      width: 100%;
+    }
+
+    /* Site title box as a full-width fixed homepage button.
+       Grid columns: 1fr (left) | auto (center) | 1fr (right)
+       Padding provides the 20px left offset you requested. */
+    .site-title-box {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 20px;             /* 20px left offset */
+      text-decoration: none;
+      color: black;
+      font-size: 0.8rem;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;     /* keep transparent unless you want a bar */
+    }
+
+    /* the three slots (if you split the title into spans later) */
+    .site-title-box .site-left  { text-align: left;  }
+    .site-title-box .site-center{ text-align: center; }
+    .site-title-box .site-right { text-align: right; }
+
+    /* keyboard focus for accessibility */
+    .site-title-box:focus {
+      outline: 3px solid rgba(0,0,0,0.12);
+      outline-offset: 2px;
+    }
+
+    /* ensure page content starts below the fixed header */
+    body {
+      /* adjust this if you change top / padding / font-size of .site-title-box */
+      padding-top: 64px;
+    }
+
+    /* popup area */
+    .popup {
+      position: relative;
+      margin: 60px 80px 0 20px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: black;
+    }
+
+    /* landing image */
+    #landing-img {
+      position: relative; /* normal flow */
+      display: block;
+      margin: 20px 0 0 0; /* optional top spacing */
+      width: 150px;
+      height: auto;
+      cursor: pointer;
+      /* if you prefer centered: margin: 20px auto 0; */
+    }
+
+    /* footnote */
+    .footnote-wrapper {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 2;
+      color: black;
+      font-size: 0.8rem;
+    }
+
+    /* content-grid (preserved for pages that use it) */
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+
+      max-width: 1200px;
+      margin: 60px 0 0 20px; /* left edge 20px from page */
+      padding: 2rem;
+
+      line-height: 1.5;
+      text-align: left;
+      align-items: start;
+    }
+
+    .column {
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+        margin: 40px 20px;
+        padding: 1rem;
+        gap: 1.5rem;
+      }
+    }
+
+    /* small screen tweaks for header text size or collapsing */
+    @media (max-width: 420px) {
+      .site-title-box {
+        font-size: 0.75rem;
+        padding: 0 12px;
+      }
+
+      /* optionally hide the right word on very small screens:
+      .site-title-box .site-right { display: none; } */
+    }
+  </style>
 </head>
 <body>
   <div class="site-title-box">
@@ -13,7 +139,6 @@
   </div>
 
   <div class="popup">
- 
     <p><strong>projects</strong><br>
       2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
       2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
@@ -23,7 +148,8 @@
     </p>
   </div>
 
-<img id="landing-img" src="../landingimage2.jpg" alt="Landing Image" style="width:150px; height:auto; cursor:pointer; display:block; margin: 20px auto;">
+  <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image">
+
   <script>
     document.getElementById('landing-img').addEventListener('click', function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
