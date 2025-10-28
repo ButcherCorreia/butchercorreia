@@ -148,6 +148,14 @@
       margin: 0;
       padding: 0;
     }
+    /* Remove default top margins from content so detail pane aligns with the left list */
+    .popup .project-detail > * {
+      margin-top: 0;
+    }
+    .popup .project-detail h3 { margin-top: 0; margin-bottom: 0.25rem; }
+    .popup .project-detail p { margin: 0 0 0.5rem 0; }
+    /* Ensure the left list has no extra top offset */
+    .popup .projects-list { margin-top: 0; padding-top: 0; }
     .popup .projects-list {
       display: flex;
       flex-direction: column;
@@ -249,7 +257,6 @@
         <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
         <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
         <a href="#performance-vista2" data-key="performance-vista2" class="project-item">Performance Vista (Part II)</a>
-        <a href="#unlikely-the-same" data-key="unlikely-the-same" class="project-item">Unlikely the same as yesterday</a>
       </nav>
       <section class="project-detail" id="projectDetail" aria-live="polite">
         <h3 style="margin-top:0;">Select a project</h3>
@@ -261,7 +268,7 @@
   <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image">
 
   <script>
-    // Project descriptions (placeholder/random text) — edit content as needed
+    // Project descriptions (detailed content)
     const projectDescriptions = {
       'sound-of-things': `
         <h3>The Sound of Things (2025)</h3>
@@ -301,9 +308,8 @@
       `,
 
       'taste-of-sound': `
-        <h3>Taste of Sound</h3>
-        <p><strong>Canteen, 2023</strong><br>
-        Performance, 60 min, variable dimensions<br>
+        <h3>Taste of Sound: Canteen, 2023</h3>
+        <p><strong>Performance, 60 min, variable dimensions</strong><br>
         KunstFest, 2023 — Rotvoll Kunstnerkollektiv, Trondheim</p>
         <p>
         Taste of Sound explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously — sound, flavor, and visual impressions — can alter perception. Through manipulation of these elements, our gestures aim to challenge one’s sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food.
@@ -330,19 +336,11 @@
         <a href="https://www.performancevista.com" target="_blank" rel="noopener">www.performancevista.com</a><br>
         @performancevista
         </p>
-        <hr>
+      `,
+
+      'performance-vista2': `
         <h4>Performance Vista (Part II), 2023</h4>
         <p>Polaroids, metal plate, straps — Heimdal Kunstforening</p>
-      `,
-
-      'net-nett-nether': `
-        <h3>net, nett, nether</h3>
-        <p>A group exhibition exploring boundaries between networks and material presence. (Placeholder)</p>
-      `,
-
-      'unlikely-the-same': `
-        <h3>Unlikely the same as yesterday</h3>
-        <p>2022 — Grenseløs, Trondheim. (Placeholder)</p>
       `
     };
 
