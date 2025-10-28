@@ -146,6 +146,16 @@
       border: none; /* remove borders */
       box-sizing: border-box;
     }
+    /* When About is shown we hide the left project list and make the two detail columns equal width */
+    .popup.show-about .projects-list { display: none; }
+    .popup.show-about .project-detail { gap: 1rem; }
+    .popup.show-about .detail-col-left,
+    .popup.show-about .detail-col-right {
+      width: auto !important;
+      max-width: none !important;
+      flex: 1 1 50% !important;
+    }
+
     /* popup inner layout: left vertical list, right detail pane */
     .popup .popup-inner {
       display: flex;
@@ -267,7 +277,7 @@
     </nav>
   </div>
 
-  <div class="popup" id="mainPopup" aria-hidden="true">
+  <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
     <div class="popup-inner">
       <nav class="projects-list" aria-label="Projects list">
         <a href="#solo" data-key="solo" class="project-item">SOLO</a>
@@ -471,7 +481,8 @@
           }
           // ensure first item is focusable and focused for keyboard users
           if (projectItems[0]) projectItems[0].focus();
-          mainPopup.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // focus the popup to avoid page jump caused by scrollIntoView
+          mainPopup.focus();
         }
       });
     }
@@ -527,7 +538,8 @@
         // populate both columns with about content; user can edit aboutColumns above
         detailLeft.innerHTML = aboutColumns.left;
         detailRight.innerHTML = aboutColumns.right;
-        mainPopup.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // focus the popup instead of scrolling to avoid the page jump
+        mainPopup.focus();
       });
     }
 
