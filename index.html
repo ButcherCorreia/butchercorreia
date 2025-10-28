@@ -92,8 +92,8 @@
       position: absolute;
       left: 0;
       right: 0; /* follow the element width precisely */
-      height: 3px;
       bottom: 0;
+      height: 3px; /* 3px ~ 3pt */
       background: transparent;
       transition: background-color 120ms ease;
       pointer-events: none;
@@ -105,16 +105,18 @@
     .popup .projects-list a:focus::after {
       background: #ff4000;
     }
+
     /* ensure links have no extra horizontal padding so underline matches text width */
     .site-title-box .top-menu a,
     .popup .projects-list a {
       display: inline-block;
+      position: relative; /* anchor for the absolute ::after */
       padding-left: 0;
       padding-right: 0;
-      position: relative; /* anchor for the absolute ::after */
+      text-decoration: none;
     }
 
-    /* remove any outlines/borders/shadows for header, popup and their descendants */
+    /* remove any visible outline/border/box-shadow for header, popup and their descendants (per user request) */
     .site-title-box .top-menu a,
     .popup .projects-list a,
     .popup,
@@ -123,6 +125,7 @@
       border: none !important;
       box-shadow: none !important;
     }
+
     /* remove horizontal padding so underline width matches text */
     .site-title-box .top-menu a,
     .popup .projects-list a { display: inline-block; padding-left: 0; padding-right: 0; }
@@ -507,9 +510,9 @@
             selectProject(projectItems[0].dataset.key);
           }
           // ensure first item is focusable and focused for keyboard users
-          if (projectItems[0]) projectItems[0].focus();
+          //          if (projectItems[0]) projectItems[0].focus();
           // focus the popup to avoid page jump caused by scrollIntoView
-          mainPopup.focus();
+          //          mainPopup.focus();
         }
       });
     }
@@ -566,7 +569,7 @@
         detailLeft.innerHTML = aboutColumns.left;
         detailRight.innerHTML = aboutColumns.right;
         // focus the popup instead of scrolling to avoid the page jump
-        mainPopup.focus();
+        //        mainPopup.focus();
       });
     }
 
