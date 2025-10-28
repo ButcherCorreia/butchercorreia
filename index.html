@@ -246,7 +246,7 @@
 </head>
 <body>
   <!-- site title split into three areas and acts as a home button -->
-  <div class="site-title-box" id="siteTitle" role="button" tabindex="0" aria-label="Home">
+  <div class="site-title-box">
     <div class="title-row">
       <span class="site-left">BUTCHER</span>
       <span class="site-center">&amp;</span>
@@ -269,8 +269,13 @@
         <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
       </nav>
       <section class="project-detail" id="projectDetail" aria-live="polite">
-        <h4 style="margin-top:0;">Select a project</h4>
-        <p>Click a project on the left to view a short description. (Placeholder text — you can edit these later.)</p>
+        <div class="detail-col detail-col-left" id="detailLeft">
+          <h4 style="margin-top:0;">Select a project</h4>
+          <p>Click a project on the left to view a short description. (Placeholder text — you can edit these later.)</p>
+        </div>
+        <div class="detail-col detail-col-right" id="detailRight">
+          <!-- secondary column for extra content -->
+        </div>
       </section>
     </div>
   </div>
@@ -369,36 +374,44 @@
       `
     };
 
+    // Optional extra content for the right detail column (empty by default)
+    const projectExtras = {
+      'solo': '',
+      'sound-of-things': '',
+      'just-this': '',
+      'taste-of-sound': '',
+      'performance-vista2': '',
+      'performance-vista': ''
+    };
+
+    // About left/right column content - edit these strings to control About columns
+    const aboutColumns = {
+      left: `
+        <h4>Contact</h4>
+        <p>studio [at] butchercorreia.com</p>
+      `,
+      right: `
+        <h4>Upcoming & Past</h4>
+        <p><strong>upcoming</strong><br>
+        2025 – Scenography, costume design, sonic landscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)</p>
+      `
+    };
+
     // landing image click: scroll to top (home) behavior
     const landingImg = document.getElementById('landing-img');
     if (landingImg) landingImg.addEventListener('click', function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // site title acts as a home button - click or press Enter/Space to navigate home (reload to path)
-    const siteTitle = document.getElementById('siteTitle');
-    if (siteTitle) {
-      siteTitle.addEventListener('click', (e) => {
-        // ignore clicks that originate from the top-menu so menu handlers run
-        if (e.target.closest && e.target.closest('.top-menu')) return;
-        if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          window.location.href = window.location.pathname;
-        }
-      });
-       siteTitle.addEventListener('keydown', (e) => {
-         if (e.key === 'Enter' || e.key === ' ') {
-           e.preventDefault();
-           siteTitle.click();
-         }
-       });
-     }
+    // Header title is no longer a home button - removed click handlers
+    const siteTitle = document.querySelector('.site-title-box');
 
     // show popup only when clicking 'projects'
     const menuProjects = document.getElementById('menu-projects');
     const mainPopup = document.getElementById('mainPopup');
     const projectDetail = document.getElementById('projectDetail');
+    const detailLeft = document.getElementById('detailLeft');
+    const detailRight = document.getElementById('detailRight');
     const projectItems = Array.from(document.querySelectorAll('.project-item'));
     if (menuProjects && mainPopup) {
       menuProjects.addEventListener('click', function(e) {
@@ -441,10 +454,13 @@
     // handle project item clicks to show description
     function selectProject(key) {
       if (!projectDescriptions[key]) {
-        projectDetail.innerHTML = '<p>No description available.</p>';
+        detailLeft.innerHTML = '<p>No description available.</p>';
+        detailRight.innerHTML = '';
         return;
       }
-      projectDetail.innerHTML = projectDescriptions[key];
+      // put main description in left column, extras (if any) in right column
+      detailLeft.innerHTML = projectDescriptions[key];
+      detailRight.innerHTML = projectExtras[key] || '';
     }
 
     projectItems.forEach(item => {
@@ -494,7 +510,9 @@
         mainPopup.setAttribute('aria-hidden', 'false');
         // clear active project state
         projectItems.forEach(i => i.classList.remove('active'));
-        projectDetail.innerHTML = aboutHTML;
+        // populate both columns with about content; user can edit aboutColumns above
+        detailLeft.innerHTML = aboutColumns.left;
+        detailRight.innerHTML = aboutColumns.right;
         mainPopup.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
@@ -503,7 +521,7 @@
     document.addEventListener('click', function(e) {
       const target = e.target;
       if (!mainPopup) return;
-      if (mainPopup.contains(target) || menuProjects.contains(target) || (menuAbout && menuAbout.contains(target)) || siteTitle.contains(target)) return;
+      if (mainPopup.contains(target) || menuProjects.contains(target) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
       if (mainPopup.style.display === 'block') {
         mainPopup.style.display = 'none';
         mainPopup.setAttribute('aria-hidden', 'true');
