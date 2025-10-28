@@ -80,6 +80,7 @@
       padding: 4px 0 6px 0; /* no horizontal padding so underline matches word width */
       position: relative;
       display: inline-block;
+      cursor: pointer;
     }
     /* red line underneath on hover - flush to text width */
     .site-title-box .top-menu a:hover::after,
@@ -168,6 +169,7 @@
       text-decoration: none;
       padding: 6px 0;
       display: block;
+      cursor: pointer;
     }
     .popup .projects-list a:hover,
     .popup .projects-list a.active {
@@ -260,7 +262,7 @@
         <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
       </nav>
       <section class="project-detail" id="projectDetail" aria-live="polite">
-        <h3 style="margin-top:0;">Select a project</h3>
+        <h4 style="margin-top:0;">Select a project</h4>
         <p>Click a project on the left to view a short description. (Placeholder text — you can edit these later.)</p>
       </section>
     </div>
@@ -270,8 +272,9 @@
 
   <script>
     // Project descriptions (detailed content)
+    console.log('page script loaded');
     const projectDescriptions = {
-       'solo': `
+      'solo': `
         <h4>SOLO (2025)</h4>
         <p>Performance Forlengelser by Rannei Grenne<br>
         BABEL visningsrom - Trondheim, December 6th and 7th, 2025</p>
@@ -338,12 +341,8 @@
 
       'performance-vista2': `
         <h4>Performance Vista (Part II), 2023</h4>
-        <p>Polaroids, metal plate, straps</p>
-        <br>Group exhibition net, nett, nether</br>>
-        <br>Heimdal Kunstforening</br>
-
+        <p>Polaroids, metal plate, straps — Heimdal Kunstforening</p>
       `,
-      `
 
       'performance-vista': `
         <h4>Performance Vista (Scenes I–IV), 2022</h4>
@@ -360,9 +359,7 @@
         <a href="https://www.performancevista.com" target="_blank" rel="noopener">www.performancevista.com</a><br>
         @performancevista
         </p>
-      `,
-
-
+      `
     };
 
     // landing image click: scroll to top (home) behavior
@@ -374,20 +371,22 @@
     // site title acts as a home button - click or press Enter/Space to navigate home (reload to path)
     const siteTitle = document.getElementById('siteTitle');
     if (siteTitle) {
-      siteTitle.addEventListener('click', () => {
+      siteTitle.addEventListener('click', (e) => {
+        // ignore clicks that originate from the top-menu so menu handlers run
+        if (e.target.closest && e.target.closest('.top-menu')) return;
         if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           window.location.href = window.location.pathname;
         }
       });
-      siteTitle.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          siteTitle.click();
-        }
-      });
-    }
+       siteTitle.addEventListener('keydown', (e) => {
+         if (e.key === 'Enter' || e.key === ' ') {
+           e.preventDefault();
+           siteTitle.click();
+         }
+       });
+     }
 
     // show popup only when clicking 'projects'
     const menuProjects = document.getElementById('menu-projects');
@@ -396,7 +395,9 @@
     const projectItems = Array.from(document.querySelectorAll('.project-item'));
     if (menuProjects && mainPopup) {
       menuProjects.addEventListener('click', function(e) {
+        console.log('menuProjects handler');
         e.preventDefault();
+        e.stopPropagation();
         // toggle visibility
         if (mainPopup.style.display === 'block') {
           mainPopup.style.display = 'none';
@@ -439,7 +440,9 @@
 
     projectItems.forEach(item => {
       item.addEventListener('click', function(e) {
+        console.log('project click', this.dataset.key);
         e.preventDefault();
+        e.stopPropagation();
         const key = this.dataset.key;
         selectProject(key);
         projectItems.forEach(i => i.classList.remove('active'));
@@ -472,7 +475,9 @@
     `;
     if (menuAbout) {
       menuAbout.addEventListener('click', function(e) {
+        console.log('menuAbout handler');
         e.preventDefault();
+        e.stopPropagation();
         mainPopup.style.display = 'block';
         mainPopup.classList.add('show-about');
         mainPopup.setAttribute('aria-hidden', 'false');
