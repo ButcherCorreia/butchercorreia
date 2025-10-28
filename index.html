@@ -65,14 +65,15 @@
     .site-title-box .site-center{ text-align: center; font-size: 1.2rem; }
     .site-title-box .site-right { text-align: right; font-size: 1rem; }
 
-    /* top horizontal menu placed in the left column and centered there */
+    /* top horizontal menu placed in the left column and aligned to the left */
     .site-title-box .top-menu {
       display: flex;
       grid-column: 1 / 2; /* place the menu in the left column */
-      justify-content: center; /* center within the left column */
+      justify-content: flex-start; /* align to the left within the left column */
       gap: 1.5rem;
       width: 100%;
       padding-bottom: 2px;
+      padding-left: 0; /* start at the left edge (container already has 20px padding) */
     }
     .site-title-box .top-menu a {
       color: #000;
@@ -122,6 +123,16 @@
     /* hide main popup by default; will be shown when clicking 'projects' */
     .popup {
       display: none;
+      position: absolute; /* position relative to viewport */
+      top: 120px; /* below fixed header and menu */
+      left: 20px; /* match the left edge distance used elsewhere */
+      z-index: 100001; /* above most UI but below the title if needed */
+      max-width: 640px;
+      background: #fff;
+      padding: 1rem;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      border-left: 4px solid #ff4000;
+      box-sizing: border-box;
     }
 
     /* footnote */
@@ -188,8 +199,8 @@
     </nav>
   </div>
 
-  <div class="popup" id="mainPopup">
-    <p><strong>projects</strong><br>
+  <div class="popup" id="mainPopup" aria-hidden="true">
+    <p style="margin:0 0 0 0;"><strong>projects</strong><br>
       2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
       2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
       2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti — KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
