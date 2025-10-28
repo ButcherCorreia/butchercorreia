@@ -252,11 +252,12 @@
   <div class="popup" id="mainPopup" aria-hidden="true">
     <div class="popup-inner">
       <nav class="projects-list" aria-label="Projects list">
+        <a href="#solo" data-key="solo" class="project-item">SOLO</a>
         <a href="#sound-of-things" data-key="sound-of-things" class="project-item">The Sound of Things</a>
         <a href="#just-this" data-key="just-this" class="project-item">Just This And Only That</a>
         <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
-        <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
         <a href="#performance-vista2" data-key="performance-vista2" class="project-item">Performance Vista (Part II)</a>
+        <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
       </nav>
       <section class="project-detail" id="projectDetail" aria-live="polite">
         <h3 style="margin-top:0;">Select a project</h3>
@@ -270,6 +271,20 @@
   <script>
     // Project descriptions (detailed content)
     const projectDescriptions = {
+       'solo': `
+        <h4>SOLO (2025)</h4>
+        <p>Performance Forlengelser by Rannei Grenne<br>
+        BABEL visningsrom - Trondheim, December 6th and 7th, 2025</p>
+        <p>
+        Concept: Rannei Grenne<br>
+        Dance: Rannei Grenne<br>
+        Visuals: BUTCHER &amp; CORREIA<br>
+        Sound: BUTCHER &amp; CORREIA<br>
+        Artistic Design consultant: Joana Bruno<br>
+        More information coming soon.
+        </p>
+      `,
+
       'sound-of-things': `
         <h4>The Sound of Things (2025)</h4>
         <p>Performance, 60 min.<br>
@@ -321,6 +336,15 @@
         </p>
       `,
 
+      'performance-vista2': `
+        <h4>Performance Vista (Part II), 2023</h4>
+        <p>Polaroids, metal plate, straps</p>
+        <br>Group exhibition net, nett, nether</br>>
+        <br>Heimdal Kunstforening</br>
+
+      `,
+      `
+
       'performance-vista': `
         <h4>Performance Vista (Scenes I–IV), 2022</h4>
         <p><strong>Radio, anemometer, support jacks, lifting straps, Hoeflon C10 crane</strong><br>
@@ -338,30 +362,7 @@
         </p>
       `,
 
-      'performance-vista2': `
-        <h4>Performance Vista (Part II), 2023</h4>
-        <p>Polaroids, metal plate, straps</p>
-        <br>Group exhibition net, nett, nether</br>>
-        <br>Heimdal Kunstforening</br>
-      `,
 
-      'net-nett-nether': `
-        <h4>net, nett, nether</h4>
-        <p>Installation, 2023<br>
-        Heimdal Kunstforening, Trondheim</p>
-        <p>
-        A site-specific installation exploring the interplay between visibility and invisibility, presence and absence. The work investigates the thresholds of perception, drawing attention to the act of looking and the conditions under which seeing occurs.
-        </p>
-      `,
-
-      'unlikely-the-same': `
-        <h4>Unlikely the same as yesterday</h4>
-        <p>Performance, 2022<br>
-        Grenseløs, Trondheim</p>
-        <p>
-        A performance reflecting on the passage of time, memory, and the subtleties of change. Engaging with the site and its history, the work unfolds as a series of vignettes, each revealing a layer of the past while hinting at the potentialities of the future.
-        </p>
-      `
     };
 
     // landing image click: scroll to top (home) behavior
