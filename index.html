@@ -33,34 +33,51 @@
       top: 20px;
       left: 0;
       right: 0;
-      z-index: 999;
+      z-index: 100000; /* ensure this sits above other UI */
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
       padding: 0 20px;             /* 20px left offset */
       text-decoration: none;
       color: black;
-      font-size: 0.8rem;
+      font-size: 0.95rem;
       cursor: pointer;
       user-select: none;
-      background: transparent;     /* keep transparent unless you want a bar */
+      background: transparent;
     }
 
-    /* the three slots (if you split the title into spans later) */
-    .site-title-box .site-left  { text-align: left;  }
-    .site-title-box .site-center{ text-align: center; }
-    .site-title-box .site-right { text-align: right; }
-
-    /* keyboard focus for accessibility */
-    .site-title-box:focus {
-      outline: 3px solid rgba(0,0,0,0.12);
-      outline-offset: 2px;
+    .site-title-box .site-left,
+    .site-title-box .site-center,
+    .site-title-box .site-right {
+      display: inline-block;
+      line-height: 1;
+      font-weight: 700;
+      color: #000;
+      white-space: nowrap;
+      pointer-events: none; /* individual spans won't capture clicks; the container is the button */
     }
+    .site-title-box .site-left { text-align: left; font-size: 1rem; }
+    .site-title-box .site-center{ text-align: center; font-size: 1.2rem; }
+    .site-title-box .site-right { text-align: right; font-size: 1rem; }
+
+    .site-title-box:focus { outline: 3px solid rgba(0,0,0,0.12); outline-offset: 2px; }
 
     /* ensure page content starts below the fixed header */
-    body {
-      /* adjust this if you change top / padding / font-size of .site-title-box */
-      padding-top: 64px;
+    body { padding-top: 80px; }
+
+    /* landing image - bottom centered */
+    #landing-img {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1; /* sit behind header */
+      width: auto;
+      max-width: 30vw;
+      max-height: 28vh;
+      height: auto;
+      cursor: pointer;
+      display: block;
     }
 
     /* popup area */
@@ -70,17 +87,6 @@
       font-size: 0.8rem;
       line-height: 1.5;
       color: black;
-    }
-
-    /* landing image */
-    #landing-img {
-      position: relative; /* normal flow */
-      display: block;
-      margin: 20px 0 0 0; /* optional top spacing */
-      width: 150px;
-      height: auto;
-      cursor: pointer;
-      /* if you prefer centered: margin: 20px auto 0; */
     }
 
     /* footnote */
@@ -134,8 +140,11 @@
   </style>
 </head>
 <body>
-  <div class="site-title-box">
-    BUTCHER & CORREIA
+  <!-- site title split into three areas and acts as a home button -->
+  <div class="site-title-box" id="siteTitle" role="button" tabindex="0" aria-label="Home">
+    <span class="site-left">BUTCHER</span>
+    <span class="site-center">&amp;</span>
+    <span class="site-right">CORREIA</span>
   </div>
 
   <div class="popup">
@@ -151,9 +160,30 @@
   <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image">
 
   <script>
-    document.getElementById('landing-img').addEventListener('click', function() {
+    // landing image click: scroll to top (home) behavior
+    const landingImg = document.getElementById('landing-img');
+    if (landingImg) landingImg.addEventListener('click', function() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // site title acts as a home button - click or press Enter/Space to navigate home (reload to path)
+    const siteTitle = document.getElementById('siteTitle');
+    if (siteTitle) {
+      siteTitle.addEventListener('click', () => {
+        // if you're already on the homepage this will scroll to top, otherwise reload the current path (acts like home)
+        if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          window.location.href = window.location.pathname;
+        }
+      });
+      siteTitle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          siteTitle.click();
+        }
+      });
+    }
   </script>
 </body>
 </html>
