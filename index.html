@@ -80,18 +80,18 @@
       text-decoration: none;
       font-size: 0.9rem;
       letter-spacing: 0.02em;
-      padding: 4px 6px 8px 6px; /* give space for underline */
+      padding: 4px 0 6px 0; /* no horizontal padding so underline matches word width */
       position: relative;
       display: inline-block;
     }
-    /* red line underneath on hover */
+    /* red line underneath on hover - flush to text width */
     .site-title-box .top-menu a:hover::after,
     .site-title-box .top-menu a:focus::after {
       content: '';
       position: absolute;
       left: 0;
-      right: 0;
-      height: 3px;
+      width: 100%;
+      height: 3px; /* 3pt thickness approximated in px */
       background: #ff4000;
       bottom: 0;
     }
@@ -100,7 +100,9 @@
       color: #ff4000;
     }
 
-    .site-title-box:focus { outline: 3px solid rgba(0,0,0,0.12); outline-offset: 2px; }
+    /* remove default/gray outline visuals for the top area */
+    .site-title-box { outline: none; box-shadow: none; }
+    .site-title-box:focus { outline: none; box-shadow: none; }
 
     /* ensure page content starts below the fixed header + menu */
     body { padding-top: 120px; }
@@ -126,14 +128,30 @@
       position: absolute; /* position relative to viewport */
       top: 120px; /* below fixed header and menu */
       left: 20px; /* match the left edge distance used elsewhere */
-      z-index: 100001; /* above most UI but below the title if needed */
-      max-width: 640px;
-      background: #fff;
-      padding: 1rem;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-      border-left: 4px solid #ff4000;
+      z-index: 100001; /* ensure it sits above content */
+      max-width: 800px;
+      background: transparent; /* remove box background */
+      padding: 0; /* remove box padding */
+      box-shadow: none; /* remove shadow */
+      border: none; /* remove borders */
       box-sizing: border-box;
     }
+    /* projects list inside popup as two columns */
+    .popup .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem 2rem;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+    }
+    .popup .projects-grid a {
+      display: block;
+      padding: 4px 0;
+      color: #000;
+      text-decoration: none;
+    }
+    .popup .projects-grid a:hover { color: #ff4000; text-decoration: underline; }
 
     /* footnote */
     .footnote-wrapper {
@@ -200,13 +218,14 @@
   </div>
 
   <div class="popup" id="mainPopup" aria-hidden="true">
-    <p style="margin:0 0 0 0;"><strong>projects</strong><br>
-      2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
-      2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
-      2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti — KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
-      2023&nbsp;&nbsp;<em>net, nett, nether</em> — Heimdal Kunstforening, Trondheim (NO)<br>
-      2022&nbsp;&nbsp;<em>Unlikely the same as yesterday</em> — Grenseløs, Trondheim (NO)
-    </p>
+    <div class="projects-grid" aria-label="Projects list">
+      <a href="#sound-of-things">The Sound of Things</a>
+      <a href="#just-this">Just This And Only That</a>
+      <a href="#taste-of-sound">Taste of Sound</a>
+      <a href="#performance-vista">Performance Vista</a>
+      <a href="#net-nett-nether">net, nett, nether</a>
+      <a href="#unlikely-the-same">Unlikely the same as yesterday</a>
+    </div>
   </div>
 
   <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image">
