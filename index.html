@@ -115,8 +115,9 @@
       transform: translateX(-50%);
       z-index: 1; /* sit behind header */
       width: auto;
-      max-width: 30vw;
-      max-height: 28vh;
+      /* 25% smaller than previous 30vw -> 22.5vw */
+      max-width: 22.5vw;
+      max-height: 21vh;
       height: auto;
       cursor: pointer;
       display: block;
@@ -136,22 +137,35 @@
       border: none; /* remove borders */
       box-sizing: border-box;
     }
-    /* projects list inside popup as two columns */
-    .popup .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.5rem 2rem;
-      background: transparent;
-      padding: 0;
-      margin: 0;
+    /* popup inner layout: left vertical list, right detail pane */
+    .popup .popup-inner {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
     }
-    .popup .projects-grid a {
-      display: block;
-      padding: 4px 0;
+    .popup .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 200px;
+    }
+    .popup .projects-list a {
       color: #000;
       text-decoration: none;
+      padding: 6px 0;
+      display: block;
     }
-    .popup .projects-grid a:hover { color: #ff4000; text-decoration: underline; }
+    .popup .projects-list a:hover,
+    .popup .projects-list a.active {
+      color: #ff4000;
+      text-decoration: underline;
+    }
+    .popup .project-detail {
+      flex: 1 1 auto;
+      min-height: 120px;
+      padding-right: 8px;
+      color: #000;
+    }
 
     /* footnote */
     .footnote-wrapper {
@@ -218,19 +232,35 @@
   </div>
 
   <div class="popup" id="mainPopup" aria-hidden="true">
-    <div class="projects-grid" aria-label="Projects list">
-      <a href="#sound-of-things">The Sound of Things</a>
-      <a href="#just-this">Just This And Only That</a>
-      <a href="#taste-of-sound">Taste of Sound</a>
-      <a href="#performance-vista">Performance Vista</a>
-      <a href="#net-nett-nether">net, nett, nether</a>
-      <a href="#unlikely-the-same">Unlikely the same as yesterday</a>
+    <div class="popup-inner">
+      <nav class="projects-list" aria-label="Projects list">
+        <a href="#sound-of-things" data-key="sound-of-things" class="project-item">The Sound of Things</a>
+        <a href="#just-this" data-key="just-this" class="project-item">Just This And Only That</a>
+        <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
+        <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista</a>
+        <a href="#net-nett-nether" data-key="net-nett-nether" class="project-item">net, nett, nether</a>
+        <a href="#unlikely-the-same" data-key="unlikely-the-same" class="project-item">Unlikely the same as yesterday</a>
+      </nav>
+      <section class="project-detail" id="projectDetail" aria-live="polite">
+        <h3 style="margin-top:0;">Select a project</h3>
+        <p>Click a project on the left to view a short description. (Placeholder text — you can edit these later.)</p>
+      </section>
     </div>
   </div>
 
   <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image">
 
   <script>
+    // Project descriptions (placeholder/random text) — edit content as needed
+    const projectDescriptions = {
+      'sound-of-things': '<h3>The Sound of Things</h3><p>A practice-led exploration of sonic environments, combining field recordings and live performance into immersive listening experiences. (Placeholder)</p>',
+      'just-this': '<h3>Just This And Only That</h3><p>An ongoing participatory project considering materiality, textiles and slow processes. (Placeholder)</p>',
+      'taste-of-sound': '<h3>Taste of Sound</h3><p>An experimental collision of flavor, sound and visual composition, testing multisensory perception. (Placeholder)</p>',
+      'performance-vista': '<h3>Performance Vista</h3><p>A sculptural-performance series that interrogates site and spectacle through choreographed interactions. (Placeholder)</p>',
+      'net-nett-nether': '<h3>net, nett, nether</h3><p>A group exhibition exploring boundaries between networks and material presence. (Placeholder)</p>',
+      'unlikely-the-same': '<h3>Unlikely the same as yesterday</h3><p>A reflective project considering memory, tempo and repetition across performances. (Placeholder)</p>'
+    };
+
     // landing image click: scroll to top (home) behavior
     const landingImg = document.getElementById('landing-img');
     if (landingImg) landingImg.addEventListener('click', function() {
@@ -258,14 +288,24 @@
     // show popup only when clicking 'projects'
     const menuProjects = document.getElementById('menu-projects');
     const mainPopup = document.getElementById('mainPopup');
+    const projectDetail = document.getElementById('projectDetail');
+    const projectItems = Array.from(document.querySelectorAll('.project-item'));
     if (menuProjects && mainPopup) {
       menuProjects.addEventListener('click', function(e) {
         e.preventDefault();
         // toggle visibility
         if (mainPopup.style.display === 'block') {
           mainPopup.style.display = 'none';
+          mainPopup.setAttribute('aria-hidden', 'true');
         } else {
           mainPopup.style.display = 'block';
+          mainPopup.setAttribute('aria-hidden', 'false');
+          // set default selected project (first item)
+          if (projectItems.length > 0) {
+            projectItems.forEach(i => i.classList.remove('active'));
+            projectItems[0].classList.add('active');
+            selectProject(projectItems[0].dataset.key);
+          }
           mainPopup.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
@@ -276,7 +316,29 @@
       const target = e.target;
       if (!mainPopup || !menuProjects) return;
       if (mainPopup.contains(target) || menuProjects.contains(target) || siteTitle.contains(target)) return;
-      if (mainPopup.style.display === 'block') mainPopup.style.display = 'none';
+      if (mainPopup.style.display === 'block') {
+        mainPopup.style.display = 'none';
+        mainPopup.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // handle project item clicks to show description
+    function selectProject(key) {
+      if (!projectDescriptions[key]) {
+        projectDetail.innerHTML = '<p>No description available.</p>';
+        return;
+      }
+      projectDetail.innerHTML = projectDescriptions[key];
+    }
+
+    projectItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const key = this.dataset.key;
+        selectProject(key);
+        projectItems.forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+      });
     });
   </script>
 </body>
