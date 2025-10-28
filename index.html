@@ -273,6 +273,12 @@
       line-height: 1.5;
     }
 
+    /* About section styles */
+    .about-section { margin: 1.5rem 20px 3rem 20px; }
+    .about-inner { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .about-col-left { width: 48%; }
+    .about-col-right { flex: 1 1 auto; }
+
     @media (max-width: 900px) {
       .content-grid {
         grid-template-columns: 1fr;
@@ -302,9 +308,7 @@
       <span class="site-center">&amp;</span>
       <span class="site-right">CORREIA</span>
     </div>
-    <nav class="top-menu" aria-label="Main menu">
-      <a href="#about" id="menu-about">about</a>
-    </nav>
+    <!-- top menu removed per request -->
   </div>
 
   <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
@@ -326,6 +330,14 @@
           <!-- secondary column for extra content -->
         </div>
       </section>
+    </div>
+  </div>
+
+  <!-- About section (moved below project list) -->
+  <div class="about-section" id="aboutSection" aria-label="About">
+    <div class="about-inner">
+      <div class="about-col about-col-left" id="aboutLeft"></div>
+      <div class="about-col about-col-right" id="aboutRight"></div>
     </div>
   </div>
 
@@ -484,17 +496,14 @@
         console.log('delegated click on projects-list ->', a.dataset.key, 'target:', e.target);
       });
     }
-    // defensive check: ensure menu anchors are present
+    // defensive check: ensure menu anchor variable exists (menu removed intentionally)
     const menuProjects = document.getElementById('menu-projects');
-    if (!menuProjects) console.warn('menu-projects element not found');
-    const menuAbout = document.getElementById('menu-about');
-    if (!menuAbout) console.warn('menu-about element not found');
-    // Attach lightweight logging to top-menu anchors to confirm clicks
-    document.querySelectorAll('.top-menu a').forEach(a => {
-      a.addEventListener('click', (e) => {
-        console.log('top-menu anchor clicked ->', a.id || a.textContent.trim());
-      });
-    });
+    if (!menuProjects) console.warn('menu-projects element not found (menu removed)');
+    // Populate the static About section from aboutColumns
+    const aboutLeftEl = document.getElementById('aboutLeft');
+    const aboutRightEl = document.getElementById('aboutRight');
+    if (aboutLeftEl) aboutLeftEl.innerHTML = aboutColumns.left;
+    if (aboutRightEl) aboutRightEl.innerHTML = aboutColumns.right;
 
     // optional: clicking outside the popup will hide it
     document.addEventListener('click', function(e) {
@@ -533,25 +542,6 @@
         if (mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
       });
     });
-
-    // show About content when clicking 'about' menu
-    if (menuAbout) {
-      menuAbout.addEventListener('click', function(e) {
-        console.log('menuAbout handler');
-        e.preventDefault();
-        e.stopPropagation();
-        mainPopup.style.display = 'block';
-        mainPopup.classList.add('show-about');
-        mainPopup.setAttribute('aria-hidden', 'false');
-        // clear active project state
-        projectItems.forEach(i => i.classList.remove('active'));
-        // populate both columns with about content; user can edit aboutColumns above
-        detailLeft.innerHTML = aboutColumns.left;
-        detailRight.innerHTML = aboutColumns.right;
-        // focus the popup instead of scrolling to avoid the page jump
-        //        mainPopup.focus();
-      });
-    }
 
     // ensure clicking outside hides popup and removes show-about state
     document.addEventListener('click', function(e) {
