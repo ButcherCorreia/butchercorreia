@@ -218,7 +218,13 @@
       cursor: pointer;
       line-height: 1;
       vertical-align: bottom;
+      width: auto; /* ensure width fits content only */
+      padding-left: 0; /* ensure underline matches only the word */
+      padding-right: 0;
     }
+    /* ensure underline ::after follows only the inline width (already left/right:0 on ::after) */
+    .popup .projects-list a::after { left: 0; right: 0; }
+
     /* remove focus rings for project list links (user requested no outlines) */
     .popup .projects-list a,
     .site-title-box .top-menu a { outline: none !important; box-shadow: none !important; }
@@ -324,8 +330,6 @@
       </nav>
       <section class="project-detail" id="projectDetail" aria-live="polite">
         <div class="detail-col detail-col-left" id="detailLeft">
-          <h4 style="margin-top:0;">Select a project</h4>
-          <p>Click a project on the left to view a short description. (Placeholder text — you can edit these later.)</p>
         </div>
         <div class="detail-col detail-col-right" id="detailRight">
           <!-- secondary column for extra content -->
@@ -334,7 +338,7 @@
     </div>
   </div>
 
-  <img id="landing-img" src="../landingimage2.jpg" alt="Landing Image">
+  <!-- landing image removed -->
 
   <script>
     // Project descriptions (detailed content)
