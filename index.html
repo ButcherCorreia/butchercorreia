@@ -167,15 +167,24 @@
     .popup .projects-list a {
       color: #000;
       text-decoration: none;
-      padding: 6px 0;
-      display: block;
+      padding: 4px 0 6px 0; /* match top menu padding so underline width matches */
+      display: inline-block; /* inline-block to let underline width match text */
+      position: relative;
       cursor: pointer;
     }
-    .popup .projects-list a:hover,
-    .popup .projects-list a.active {
-      color: #ff4000;
-      text-decoration: underline;
+    /* same underline behaviour on hover for project list items */
+    .popup .projects-list a:hover::after,
+    .popup .projects-list a:focus::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #ff4000;
+      bottom: 0;
     }
+    /* keep project list items left aligned within their column */
+    .popup .projects-list { align-items: flex-start; }
     .popup .project-detail {
       flex: 1 1 auto;
       min-height: 120px;
@@ -413,6 +422,8 @@
             projectItems[0].classList.add('active');
             selectProject(projectItems[0].dataset.key);
           }
+          // ensure first item is focusable and focused for keyboard users
+          if (projectItems[0]) projectItems[0].focus();
           mainPopup.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
@@ -472,6 +483,8 @@
         2023&nbsp;&nbsp;<em>net, nett, nether</em> — Heimdal Kunstforening, Trondheim (NO)<br>
         2022&nbsp;&nbsp;<em>Unlikely the same as yesterday</em> — Grenseløs, Trondheim (NO)
       </p>
+
+      <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing. Through texture, rhythm, and gesture, they create environments that engage what is residual, erased, or on the edge of articulation. Informed by neuroqueering as both method and stance, their practice resists linearity and coherence, embracing fragmentation and difference as generative forces. Collaboration—between artists, materials, and sites—remains central, forming an ongoing dialogue of critical and sensory exploration.</p>
     `;
     if (menuAbout) {
       menuAbout.addEventListener('click', function(e) {
