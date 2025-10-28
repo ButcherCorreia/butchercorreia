@@ -25,9 +25,7 @@
       width: 100%;
     }
 
-    /* Site title box as a full-width fixed homepage button.
-       Grid columns: 1fr (left) | auto (center) | 1fr (right)
-       Padding provides the 20px left offset you requested. */
+    /* Site title box as a full-width fixed homepage button. */
     .site-title-box {
       position: fixed;
       top: 20px;
@@ -35,15 +33,22 @@
       right: 0;
       z-index: 100000; /* ensure this sits above other UI */
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-rows: auto auto auto; /* header row | divider | menu */
       align-items: center;
-      padding: 0 20px;             /* 20px left offset */
+      padding: 8px 20px;             /* 20px left offset */
       text-decoration: none;
       color: black;
       font-size: 0.95rem;
       cursor: pointer;
       user-select: none;
       background: transparent;
+    }
+
+    .site-title-box .title-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      width: 100%;
     }
 
     .site-title-box .site-left,
@@ -60,10 +65,38 @@
     .site-title-box .site-center{ text-align: center; font-size: 1.2rem; }
     .site-title-box .site-right { text-align: right; font-size: 1rem; }
 
+    /* red dashed divider under the header text (3pt thickness) */
+    .site-title-box .header-divider {
+      width: 100%;
+      border-bottom: 3pt dashed #ff4000;
+      margin: 6px 0;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+
+    /* top horizontal menu under the divider */
+    .site-title-box .top-menu {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      width: 100%;
+      padding-bottom: 2px;
+    }
+    .site-title-box .top-menu a {
+      color: #000;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      padding: 4px 6px;
+    }
+    .site-title-box .top-menu a:hover {
+      color: #ff4000;
+    }
+
     .site-title-box:focus { outline: 3px solid rgba(0,0,0,0.12); outline-offset: 2px; }
 
-    /* ensure page content starts below the fixed header */
-    body { padding-top: 80px; }
+    /* ensure page content starts below the fixed header + menu */
+    body { padding-top: 120px; }
 
     /* landing image - bottom centered */
     #landing-img {
@@ -142,9 +175,16 @@
 <body>
   <!-- site title split into three areas and acts as a home button -->
   <div class="site-title-box" id="siteTitle" role="button" tabindex="0" aria-label="Home">
-    <span class="site-left">BUTCHER</span>
-    <span class="site-center">&amp;</span>
-    <span class="site-right">CORREIA</span>
+    <div class="title-row">
+      <span class="site-left">BUTCHER</span>
+      <span class="site-center">&amp;</span>
+      <span class="site-right">CORREIA</span>
+    </div>
+    <div class="header-divider" aria-hidden="true"></div>
+    <nav class="top-menu" aria-label="Main menu">
+      <a href="#projects">projects</a>
+      <a href="#about">about</a>
+    </nav>
   </div>
 
   <div class="popup">
