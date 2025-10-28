@@ -152,7 +152,7 @@
     .popup .project-detail > * {
       margin-top: 0;
     }
-    .popup .project-detail h3 { margin-top: 0; margin-bottom: 0.25rem; }
+    .popup .project-detail h4 { margin-top: 0; margin-bottom: 0.25rem; font-size: 0.95rem; }
     .popup .project-detail p { margin: 0 0 0.5rem 0; }
     /* Ensure the left list has no extra top offset */
     .popup .projects-list { margin-top: 0; padding-top: 0; }
@@ -160,7 +160,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      min-width: 200px;
+      min-width: 240px; /* slightly wider */
       align-self: flex-start; /* ensure it stays at the top */
     }
     .popup .projects-list a {
@@ -271,8 +271,8 @@
     // Project descriptions (detailed content)
     const projectDescriptions = {
       'sound-of-things': `
-        <h3>The Sound of Things (2025)</h3>
-        <p><strong>Performance, 60 min.</strong><br>
+        <h4>The Sound of Things (2025)</h4>
+        <p>Performance, 60 min.<br>
         Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
         <p>
         Concept: Katherine Butcher and Klaus E. Holm w. Carlos<br>
@@ -289,7 +289,7 @@
       `,
 
       'just-this': `
-        <h3>Just This And Only That</h3>
+        <h4>Just This And Only That</h4>
         <p><a href="https://www.justthisandonlythat.com" target="_blank" rel="noopener">www.justthisandonlythat.com</a><br>
         Just This And Only That: 31 working days, 2024</p>
         <p>
@@ -308,7 +308,7 @@
       `,
 
       'taste-of-sound': `
-        <h3>Taste of Sound: Canteen, 2023</h3>
+        <h4>Taste of Sound: Canteen, 2023</h4>
         <p><strong>Performance, 60 min, variable dimensions</strong><br>
         KunstFest, 2023 — Rotvoll Kunstnerkollektiv, Trondheim</p>
         <p>
@@ -322,7 +322,7 @@
       `,
 
       'performance-vista': `
-        <h3>Performance Vista (Scenes I–IV), 2022</h3>
+        <h4>Performance Vista (Scenes I–IV), 2022</h4>
         <p><strong>Radio, anemometer, support jacks, lifting straps, Hoeflon C10 crane</strong><br>
         Variable dimensions</p>
         <p>
@@ -340,7 +340,27 @@
 
       'performance-vista2': `
         <h4>Performance Vista (Part II), 2023</h4>
-        <p>Polaroids, metal plate, straps — Heimdal Kunstforening</p>
+        <p>Polaroids, metal plate, straps</p>
+        <br>Group exhibition net, nett, nether</br>>
+        <br>Heimdal Kunstforening</br>
+      `,
+
+      'net-nett-nether': `
+        <h4>net, nett, nether</h4>
+        <p>Installation, 2023<br>
+        Heimdal Kunstforening, Trondheim</p>
+        <p>
+        A site-specific installation exploring the interplay between visibility and invisibility, presence and absence. The work investigates the thresholds of perception, drawing attention to the act of looking and the conditions under which seeing occurs.
+        </p>
+      `,
+
+      'unlikely-the-same': `
+        <h4>Unlikely the same as yesterday</h4>
+        <p>Performance, 2022<br>
+        Grenseløs, Trondheim</p>
+        <p>
+        A performance reflecting on the passage of time, memory, and the subtleties of change. Engaging with the site and its history, the work unfolds as a series of vignettes, each revealing a layer of the past while hinting at the potentialities of the future.
+        </p>
       `
     };
 
