@@ -182,7 +182,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      min-width: 440px; /* slightly wider */
+      min-width: 230px; /* slightly wider */
       align-self: flex-start; /* ensure it stays at the top */
     }
     .popup .projects-list a {
@@ -198,9 +198,8 @@
     /* Remove default focus outline for mouse-driven focus, but keep a clear outline for keyboard users */
     .popup .projects-list a { outline: none; }
     .popup .projects-list a:focus-visible {
-      outline: 2px solid #ff4000;
-      outline-offset: 3px;
-      border-radius: 2px;
+      outline: none;
+      box-shadow: none;
     }
 
     /* project-detail uses a two-column flex layout (left = fixed width, right = fluid */
