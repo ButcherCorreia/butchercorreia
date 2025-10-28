@@ -206,8 +206,10 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      min-width: 230px; /* slightly wider */
+      min-width: auto; /* allow width to shrink to content */
       align-self: flex-start; /* ensure it stays at the top */
+      align-items: flex-start; /* prevent children stretching */
+      padding-left: 0; /* remove accidental indentation */
     }
     .popup .projects-list a {
       color: #000;
@@ -221,6 +223,8 @@
       width: auto; /* ensure width fits content only */
       padding-left: 0; /* ensure underline matches only the word */
       padding-right: 0;
+      align-self: flex-start; /* prevent flex column from stretching anchors to container width */
+      white-space: nowrap; /* ensure the word doesn't wrap and expands the anchor only as needed */
     }
     /* ensure underline ::after follows only the inline width (already left/right:0 on ::after) */
     .popup .projects-list a::after { left: 0; right: 0; }
