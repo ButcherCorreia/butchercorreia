@@ -87,14 +87,17 @@
     /* default underline pseudo element (transparent) and hover behaviour */
     .site-title-box .top-menu a::after,
     .popup .projects-list a::after {
+      /* underline matched exactly to the inline link width */
       content: '';
       position: absolute;
       left: 0;
-      width: 100%;
-      height: 3px; /* 3px ~ 3pt */
+      right: 0; /* follow the element width precisely */
+      height: 3px;
       bottom: 0;
       background: transparent;
       transition: background-color 120ms ease;
+      pointer-events: none;
+      box-sizing: content-box;
     }
     .site-title-box .top-menu a:hover::after,
     .site-title-box .top-menu a:focus::after,
@@ -102,12 +105,28 @@
     .popup .projects-list a:focus::after {
       background: #ff4000;
     }
-    .site-title-box .top-menu a:hover, .site-title-box .top-menu a:focus,
-    .popup .projects-list a:hover, .popup .projects-list a:focus { color: #ff4000; }
+    /* ensure links have no extra horizontal padding so underline matches text width */
+    .site-title-box .top-menu a,
+    .popup .projects-list a {
+      display: inline-block;
+      padding-left: 0;
+      padding-right: 0;
+      position: relative; /* anchor for the absolute ::after */
+    }
 
-    /* remove default/gray outline visuals for the top area */
-    .site-title-box { outline: none; box-shadow: none; pointer-events: none; }
-    .site-title-box:focus { outline: none; box-shadow: none; }
+    /* remove any outlines/borders/shadows for header, popup and their descendants */
+    .site-title-box .top-menu a,
+    .popup .projects-list a,
+    .popup,
+    .popup * {
+      outline: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    /* remove horizontal padding so underline width matches text */
+    .site-title-box .top-menu a,
+    .popup .projects-list a { display: inline-block; padding-left: 0; padding-right: 0; }
+
     /* ensure nav and links inside header can receive pointer events */
     .site-title-box .top-menu,
     .site-title-box .top-menu a { pointer-events: auto; }
@@ -195,11 +214,15 @@
       line-height: 1;
       vertical-align: bottom;
     }
-    /* Remove default focus outline for mouse-driven focus, but keep a clear outline for keyboard users */
-    .popup .projects-list a { outline: none; }
-    .popup .projects-list a:focus-visible {
-      outline: none;
-      box-shadow: none;
+    /* remove focus rings for project list links (user requested no outlines) */
+    .popup .projects-list a,
+    .site-title-box .top-menu a { outline: none !important; box-shadow: none !important; }
+    .popup .projects-list a:focus,
+    .popup .projects-list a:focus-visible,
+    .site-title-box .top-menu a:focus,
+    .site-title-box .top-menu a:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
     }
 
     /* project-detail uses a two-column flex layout (left = fixed width, right = fluid */
@@ -309,16 +332,24 @@
     console.log('page script loaded');
     const projectDescriptions = {
       'solo': `
-        <h4>Forlengelser (2025)</h4>
-        <p>Performance by Rannei Grenne<br>
-        BABEL visningsrom - Trondheim, December 6th and 7th, 2025</p>
-        <p>
-        Concept: Rannei Grenne<br>
-        Dance: Rannei Grenne<br>
-        Visuals: BUTCHER &amp; CORREIA<br>
-        Sound: BUTCHER &amp; CORREIA<br>
-        Artistic Design consultant: Joana Bruno<br>
-        More information coming soon.
+        Visual elements: costume design, scenography, sonic landscape for Forlengelser, a performance by Rannei Grenne<br>
+        BABEL visningsrom, 6th and 7th of December, 2025<br>
+        12–16.00<br>
+        Artistic design assistant: Joana Bruno
+        <p>Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri</p>
+        Fabric: weaved from trønder sheep wool (Selbu Spinneri) by Varp & Veft<br>
+        Costume design: Manufacture Oslo<br>
+        Kastel sneakers, wool (from Trønder Sheep)<br>
+        Sound: captured with geophone<br>
+
+        <p>Concept / coreography / dance: Rannei Grenne</p>
+        External eye: Ásgerður Roberts Gunnarsdóttir<br>
+        Documentation: Lili Zaneta<br>
+
+        <p>Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
+        Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim</p>
+
+        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.
         </p>
       `,
 
@@ -429,29 +460,6 @@
           2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
           2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
           2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin
-          2023&nbsp;&nbsp;<em>net, nett, nether</em> — Heimdal Kunstforening, Trondheim (NO)<br>
-          2022&nbsp;&nbsp;<em>Unlikely the same as yesterday</em> — Grenseløs, Trondheim (NO)
-        </p>
-      `,
-      right: `
-         <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing. Through texture, rhythm, and gesture, they create environments that engage what is residual, erased, or on the edge of articulation. Informed by neuroqueering as both method and stance, their practice resists linearity and coherence, embracing fragmentation and difference as generative forces. Collaboration—between artists, materials, and sites—remains central, forming an ongoing dialogue of critical and sensory exploration.</p>
-      `
-    };
-
-    // landing image click: scroll to top (home) behavior
-    const landingImg = document.getElementById('landing-img');
-    if (landingImg) landingImg.addEventListener('click', function() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // Header title is no longer a home button - removed click handlers
-    const siteTitle = document.querySelector('.site-title-box');
-
-    // show popup only when clicking 'projects'
-    const menuProjects = document.getElementById('menu-projects');
-    const mainPopup = document.getElementById('mainPopup');
-    const projectDetail = document.getElementById('projectDetail');
-    const detailLeft = document.getElementById('detailLeft');
     const detailRight = document.getElementById('detailRight');
     const projectItems = Array.from(document.querySelectorAll('.project-item'));
     console.log('projectItems count:', projectItems.length);
