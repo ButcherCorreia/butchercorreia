@@ -6,11 +6,8 @@
   <meta name="description" content="BUTCHER & CORREIA – interdisciplinary art and design practice.">
   <title>BUTCHER & CORREIA</title>
 
-  <!-- Merged style.css into the page -->
   <style>
-    /* style.css - merged into index.html */
 
-    /* predictable sizing */
     *,
     *::before,
     *::after {
@@ -301,6 +298,8 @@
           mainPopup.style.display = 'none';
           mainPopup.setAttribute('aria-hidden', 'true');
         } else {
+          // ensure we're not in 'about' mode
+          mainPopup.classList.remove('show-about');
           mainPopup.style.display = 'block';
           mainPopup.setAttribute('aria-hidden', 'false');
           // set default selected project (first item)
