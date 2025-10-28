@@ -182,7 +182,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
-      min-width: 240px; /* slightly wider */
+      min-width: 440px; /* slightly wider */
       align-self: flex-start; /* ensure it stays at the top */
     }
     .popup .projects-list a {
@@ -195,9 +195,13 @@
       line-height: 1;
       vertical-align: bottom;
     }
-    /* (uses shared ::after defined above) */
-     /* keep project list items left aligned within their column */
-     .popup .projects-list { align-items: flex-start; }
+    /* Remove default focus outline for mouse-driven focus, but keep a clear outline for keyboard users */
+    .popup .projects-list a { outline: none; }
+    .popup .projects-list a:focus-visible {
+      outline: 2px solid #ff4000;
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
 
     /* project-detail uses a two-column flex layout (left = fixed width, right = fluid */
     .popup .project-detail {
@@ -280,7 +284,7 @@
   <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
     <div class="popup-inner">
       <nav class="projects-list" aria-label="Projects list">
-        <a href="#solo" data-key="solo" class="project-item">SOLO</a>
+        <a href="#solo" data-key="solo" class="project-item">Forlengelser</a>
         <a href="#sound-of-things" data-key="sound-of-things" class="project-item">The Sound of Things</a>
         <a href="#just-this" data-key="just-this" class="project-item">Just This And Only That</a>
         <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
@@ -306,8 +310,8 @@
     console.log('page script loaded');
     const projectDescriptions = {
       'solo': `
-        <h4>SOLO (2025)</h4>
-        <p>Performance Forlengelser by Rannei Grenne<br>
+        <h4>Forlengelser (2025)</h4>
+        <p>Performance by Rannei Grenne<br>
         BABEL visningsrom - Trondheim, December 6th and 7th, 2025</p>
         <p>
         Concept: Rannei Grenne<br>
@@ -396,6 +400,8 @@
     // Optional extra content for the right detail column (empty by default)
     const projectExtras = {
       'solo': '',
+      digital product passport (DPP)<br>
+      Information coming soon.<br>
       'sound-of-things': '',
       'just-this': '',
       'taste-of-sound': '',
