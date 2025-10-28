@@ -65,20 +65,12 @@
     .site-title-box .site-center{ text-align: center; font-size: 1.2rem; }
     .site-title-box .site-right { text-align: right; font-size: 1rem; }
 
-    /* red dashed divider under the header text (3pt thickness) */
-    .site-title-box .header-divider {
-      width: 100%;
-      border-bottom: 3pt dashed #ff4000;
-      margin: 6px 0;
-      box-sizing: border-box;
-      pointer-events: none;
-    }
-
-    /* top horizontal menu under the divider */
+    /* top horizontal menu placed in the left column and centered there */
     .site-title-box .top-menu {
       display: flex;
-      justify-content: center;
-      gap: 2rem;
+      grid-column: 1 / 2; /* place the menu in the left column */
+      justify-content: center; /* center within the left column */
+      gap: 1.5rem;
       width: 100%;
       padding-bottom: 2px;
     }
@@ -87,8 +79,22 @@
       text-decoration: none;
       font-size: 0.9rem;
       letter-spacing: 0.02em;
-      padding: 4px 6px;
+      padding: 4px 6px 8px 6px; /* give space for underline */
+      position: relative;
+      display: inline-block;
     }
+    /* red line underneath on hover */
+    .site-title-box .top-menu a:hover::after,
+    .site-title-box .top-menu a:focus::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #ff4000;
+      bottom: 0;
+    }
+
     .site-title-box .top-menu a:hover {
       color: #ff4000;
     }
@@ -113,13 +119,9 @@
       display: block;
     }
 
-    /* popup area */
+    /* hide main popup by default; will be shown when clicking 'projects' */
     .popup {
-      position: relative;
-      margin: 60px 80px 0 20px;
-      font-size: 0.8rem;
-      line-height: 1.5;
-      color: black;
+      display: none;
     }
 
     /* footnote */
@@ -180,14 +182,13 @@
       <span class="site-center">&amp;</span>
       <span class="site-right">CORREIA</span>
     </div>
-    <div class="header-divider" aria-hidden="true"></div>
     <nav class="top-menu" aria-label="Main menu">
-      <a href="#projects">projects</a>
-      <a href="#about">about</a>
+      <a href="#projects" id="menu-projects">projects</a>
+      <a href="#about" id="menu-about">about</a>
     </nav>
   </div>
 
-  <div class="popup">
+  <div class="popup" id="mainPopup">
     <p><strong>projects</strong><br>
       2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
       2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
@@ -210,7 +211,6 @@
     const siteTitle = document.getElementById('siteTitle');
     if (siteTitle) {
       siteTitle.addEventListener('click', () => {
-        // if you're already on the homepage this will scroll to top, otherwise reload the current path (acts like home)
         if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
@@ -224,6 +224,30 @@
         }
       });
     }
+
+    // show popup only when clicking 'projects'
+    const menuProjects = document.getElementById('menu-projects');
+    const mainPopup = document.getElementById('mainPopup');
+    if (menuProjects && mainPopup) {
+      menuProjects.addEventListener('click', function(e) {
+        e.preventDefault();
+        // toggle visibility
+        if (mainPopup.style.display === 'block') {
+          mainPopup.style.display = 'none';
+        } else {
+          mainPopup.style.display = 'block';
+          mainPopup.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // optional: clicking outside the popup will hide it
+    document.addEventListener('click', function(e) {
+      const target = e.target;
+      if (!mainPopup || !menuProjects) return;
+      if (mainPopup.contains(target) || menuProjects.contains(target) || siteTitle.contains(target)) return;
+      if (mainPopup.style.display === 'block') mainPopup.style.display = 'none';
+    });
   </script>
 </body>
 </html>
