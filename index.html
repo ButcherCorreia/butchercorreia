@@ -320,6 +320,7 @@
         <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
         <a href="#performance-vista2" data-key="performance-vista2" class="project-item">Performance Vista (Part II)</a>
         <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
+        <a href="#about" data-key="about" class="project-item">About</a>
       </nav>
       <section class="project-detail" id="projectDetail" aria-live="polite">
         <div class="detail-col detail-col-left" id="detailLeft">
@@ -330,14 +331,6 @@
           <!-- secondary column for extra content -->
         </div>
       </section>
-    </div>
-  </div>
-
-  <!-- About section (moved below project list) -->
-  <div class="about-section" id="aboutSection" aria-label="About">
-    <div class="about-inner">
-      <div class="about-col about-col-left" id="aboutLeft"></div>
-      <div class="about-col about-col-right" id="aboutRight"></div>
     </div>
   </div>
 
@@ -499,11 +492,6 @@
     // defensive check: ensure menu anchor variable exists (menu removed intentionally)
     const menuProjects = document.getElementById('menu-projects');
     if (!menuProjects) console.warn('menu-projects element not found (menu removed)');
-    // Populate the static About section from aboutColumns
-    const aboutLeftEl = document.getElementById('aboutLeft');
-    const aboutRightEl = document.getElementById('aboutRight');
-    if (aboutLeftEl) aboutLeftEl.innerHTML = aboutColumns.left;
-    if (aboutRightEl) aboutRightEl.innerHTML = aboutColumns.right;
 
     // optional: clicking outside the popup will hide it
     document.addEventListener('click', function(e) {
@@ -519,6 +507,12 @@
 
     // handle project item clicks to show description
     function selectProject(key) {
+      // special-case About: load aboutColumns into detail columns
+      if (key === 'about') {
+        detailLeft.innerHTML = aboutColumns.left;
+        detailRight.innerHTML = aboutColumns.right;
+        return;
+      }
       if (!projectDescriptions[key]) {
         detailLeft.innerHTML = '<p>No description available.</p>';
         detailRight.innerHTML = '';
