@@ -154,18 +154,20 @@
     /* ensure popup sits above landing image */
     .popup { z-index: 100002; }
 
-    /* hide main popup by default; will be shown when clicking 'projects' */
+    /* Render the projects list and details as a static block in the page (always visible) */
     .popup {
-      display: none;
-      position: absolute; /* position relative to viewport */
-      top: 120px; /* below fixed header and menu */
-      left: 20px; /* match the left edge distance used elsewhere */
-      z-index: 100001; /* ensure it sits above content */
-      max-width: 800px;
-      background: transparent; /* remove box background */
-      padding: 0; /* remove box padding */
-      box-shadow: none; /* remove shadow */
-      border: none; /* remove borders */
+      display: block; /* always visible */
+      position: static; /* flow in document */
+      top: auto;
+      left: auto;
+      z-index: 100001;
+      max-width: none;
+      width: calc(100% - 40px);
+      margin: 8px 20px 0 20px; /* sit below the fixed header */
+      background: transparent;
+      padding: 0;
+      box-shadow: none;
+      border: none;
       box-sizing: border-box;
     }
     /* When About is shown we hide the left project list and make the two detail columns equal width */
@@ -301,7 +303,6 @@
       <span class="site-right">CORREIA</span>
     </div>
     <nav class="top-menu" aria-label="Main menu">
-      <a href="#projects" id="menu-projects">projects</a>
       <a href="#about" id="menu-about">about</a>
     </nav>
   </div>
@@ -489,42 +490,15 @@
       });
     });
 
-    if (menuProjects && mainPopup) {
-      menuProjects.addEventListener('click', function(e) {
-        console.log('menuProjects handler');
-        e.preventDefault();
-        e.stopPropagation();
-        // toggle visibility
-        if (mainPopup.style.display === 'block') {
-          mainPopup.style.display = 'none';
-          mainPopup.setAttribute('aria-hidden', 'true');
-        } else {
-          // ensure we're not in 'about' mode
-          mainPopup.classList.remove('show-about');
-          mainPopup.style.display = 'block';
-          mainPopup.setAttribute('aria-hidden', 'false');
-          // set default selected project (first item)
-          if (projectItems.length > 0) {
-            projectItems.forEach(i => i.classList.remove('active'));
-            projectItems[0].classList.add('active');
-            selectProject(projectItems[0].dataset.key);
-          }
-          // ensure first item is focusable and focused for keyboard users
-          //          if (projectItems[0]) projectItems[0].focus();
-          // focus the popup to avoid page jump caused by scrollIntoView
-          //          mainPopup.focus();
-        }
-      });
-    }
-
     // optional: clicking outside the popup will hide it
     document.addEventListener('click', function(e) {
       const target = e.target;
-      if (!mainPopup || !menuProjects) return;
-      if (mainPopup.contains(target) || menuProjects.contains(target) || siteTitle.contains(target)) return;
-      if (mainPopup.style.display === 'block') {
-        mainPopup.style.display = 'none';
-        mainPopup.setAttribute('aria-hidden', 'true');
+      if (!mainPopup) return;
+      // if About is shown and click outside popup or About menu, remove show-about
+      if (mainPopup.classList.contains('show-about')) {
+        if (mainPopup.contains(target) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
+        mainPopup.classList.remove('show-about');
+        // restore about-hidden state (projects list visible by default)
       }
     });
 
