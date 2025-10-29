@@ -468,22 +468,22 @@
         <p>Digital product passport (DPP)<br>
         Information coming soon.</p>
       `,
-      'sound-of-things': '',
-      'just-this': '
-      <p>Manifesto</p>
-      <p>Just This And Only That believes in the collective adoption of sustainable living. Communication by asking and answering one another, guides us towards shared action.</p>
-      <p>Just This And Only That aims to transform overlooked aspects into valuable contributions that are rooted in the local community. By intertwining creativity and daily existence, we strive to achieve sustainable living.</p>
-      <p>Just This And Only That aims to create artistic constellations that promote shared responsibility, unexpected discoveries, and evolving identities.</p>
-      <p>Just This And Only That allocates resources in the support of freedom of expression, shelter, and movement.</p>
-      <p>Just This And Only That emphasises materiality, to underscore the significance of chosen materials, their texture, physicality, and contact with the body.</p>
-      <p>Just This And Only That emphasises present moment awareness to fully appreciate our surroundings and the artistic process.</p>
-      <p>Just This And Only That focuses on urgency to address environmental issues through actions that move within the distractions.</p>
-      <p>Just This And Only That aims to reduce our environmental footprint by encouraging sustainable choices and responsible practices.</p>
-      <p>Just This And Only That embraces Intersectionality by acknowledging the link between climate justice and social justice, to engage with these overlaps and consider the wider impact.</p>
-      ',
-      'taste-of-sound': '',
-      'performance-vista2': '',
-      'performance-vista': ''
+      'sound-of-things': ``,
+      'just-this': `
+        <p>Manifesto</p>
+        <p>Just This And Only That believes in the collective adoption of sustainable living. Communication by asking and answering one another, guides us towards shared action.</p>
+        <p>Just This And Only That aims to transform overlooked aspects into valuable contributions that are rooted in the local community. By intertwining creativity and daily existence, we strive to achieve sustainable living.</p>
+        <p>Just This And Only That aims to create artistic constellations that promote shared responsibility, unexpected discoveries, and evolving identities.</p>
+        <p>Just This And Only That allocates resources in the support of freedom of expression, shelter, and movement.</p>
+        <p>Just This And Only That emphasises materiality, to underscore the significance of chosen materials, their texture, physicality, and contact with the body.</p>
+        <p>Just This And Only That emphasises present moment awareness to fully appreciate our surroundings and the artistic process.</p>
+        <p>Just This And Only That focuses on urgency to address environmental issues through actions that move within the distractions.</p>
+        <p>Just This And Only That aims to reduce our environmental footprint by encouraging sustainable choices and responsible practices.</p>
+        <p>Just This And Only That embraces Intersectionality by acknowledging the link between climate justice and social justice, to engage with these overlaps and consider the wider impact.</p>
+      `,
+      'taste-of-sound': ``,
+      'performance-vista2': ``,
+      'performance-vista': ``
     };
 
     // About left/right column content - edit these strings to control About columns
@@ -512,6 +512,10 @@
 
     const detailRight = document.getElementById('detailRight');
     const detailLeft = document.getElementById('detailLeft');
+    // Ensure mainPopup and other optional menu refs exist before they are used
+    const mainPopup = document.getElementById('mainPopup');
+    const menuAbout = document.getElementById('menu-about');
+    const siteTitle = document.querySelector('.site-title-box');
     const projectItems = Array.from(document.querySelectorAll('.project-item'));
     console.log('projectItems count:', projectItems.length);
     projectItems.forEach(pi => console.log('found project item', pi.dataset.key));
