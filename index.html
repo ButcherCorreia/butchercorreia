@@ -106,6 +106,17 @@
       background: #ff4000;
     }
 
+    /* Active state: make selected project look identical to hover (underline + color) */
+    .popup .projects-list a.active::after,
+    .popup .projects-list a.active:focus::after {
+      background: #ff4000;
+    }
+    .popup .projects-list a.active {
+      color: #ff4000;
+      /* keep same font-style as other links (no weight change) */
+      font-weight: inherit;
+    }
+
     /* ensure links have no extra horizontal padding so underline matches text width */
     .site-title-box .top-menu a,
     .popup .projects-list a {
