@@ -173,12 +173,9 @@
     /* When About is shown we hide the left project list and make the two detail columns equal width */
     .popup.show-about .projects-list { display: none; }
     .popup.show-about .project-detail { gap: 1rem; }
-    .popup.show-about .detail-col-left,
-    .popup.show-about .detail-col-right {
-      width: auto !important;
-      max-width: none !important;
-      flex: 1 1 50% !important;
-    }
+    /* Keep left column fixed at 480px even in about mode; right column flexes */
+    .popup.show-about .detail-col-left { flex: 0 0 480px !important; width: 480px !important; }
+    .popup.show-about .detail-col-right { flex: 1 1 auto !important; }
 
     /* popup inner layout: left vertical list, right detail pane */
     .popup .popup-inner {
@@ -247,12 +244,19 @@
       align-items: flex-start;
     }
     .detail-col-left {
-      width: 480px; /* keep current project description column width here; adjust as needed */
-      max-width: 50%;
+      /* fixed-width left column */
+      flex: 0 0 480px;
+      width: 480px;
+      box-sizing: border-box;
     }
     .detail-col-right {
       flex: 1 1 auto;
+      min-width: 0; /* allow content to shrink within flex */
     }
+
+    /* Prevent long content or images from forcing column widths */
+    .project-detail img { max-width: 100%; height: auto; display: block; }
+    .project-detail { word-wrap: break-word; overflow-wrap: break-word; }
 
     /* footnote */
     .footnote-wrapper {
