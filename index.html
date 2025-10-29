@@ -174,8 +174,9 @@
     .popup.show-about .projects-list { display: none; }
     .popup.show-about .project-detail { gap: 1rem; }
     /* Keep left column fixed at 480px even in about mode; right column flexes */
-    .popup.show-about .detail-col-left { flex: 0 0 480px !important; width: 480px !important; }
-    .popup.show-about .detail-col-right { flex: 1 1 auto !important; }
+    /* Adjusted widths: left 550px, right 450px */
+    .popup.show-about .detail-col-left { flex: 0 0 550px !important; width: 550px !important; }
+    .popup.show-about .detail-col-right { flex: 0 0 450px !important; width: 450px !important; }
 
     /* popup inner layout: left vertical list, right detail pane */
     .popup .popup-inner {
@@ -245,13 +246,15 @@
     }
     .detail-col-left {
       /* fixed-width left column */
-      flex: 0 0 480px;
-      width: 480px;
+      flex: 0 0 550px;
+      width: 550px;
       box-sizing: border-box;
     }
     .detail-col-right {
-      flex: 1 1 auto;
-      min-width: 0; /* allow content to shrink within flex */
+      /* fixed-width right column */
+      flex: 0 0 450px;
+      width: 450px;
+      box-sizing: border-box;
     }
 
     /* Prevent long content or images from forcing column widths */
@@ -312,6 +315,11 @@
       /* optionally hide the right word on very small screens:
       .site-title-box .site-right { display: none; } */
     }
+
+    /* If the viewport becomes too narrow, allow the columns to wrap (responsive fallback) */
+    @media (max-width: 1024px) {
+      .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
+    }
   </style>
 </head>
 <body>
@@ -353,21 +361,22 @@
     console.log('page script loaded');
     const projectDescriptions = {
       'solo': `
-        Visual elements: costume design, scenography, sonic landscape for Forlengelser, a performance by Rannei Grenne<br>
-        BABEL visningsrom, 6th and 7th of December, 2025<br>
-        12–16.00<br>
-        Artistic design assistant: Joana Bruno
-        <p>Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri</p>
-        Fabric: weaved from trønder sheep wool (Selbu Spinneri) by Varp & Veft<br>
-        Costume design: Manufacture Oslo<br>
+        Durational performance by Rannei Grenne <br>
+        BABEL visningsrom, 6th and 7th of December, 12–16.00<br>
+        2025 Trondheim (NO)<br>
+
+        <p>Visual elements: costume design, scenography, sonic landscape for Forlengelser</p>
+        Artistic design assistant: Joana Bruno<br>
+        Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
+        Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
+        Fabric used for the costume weaved by Varp & Veft with trønder sheep wool (Selbu Spinneri) <br>
         Kastel sneakers, wool (from Trønder Sheep)<br>
         Sound: captured with geophone<br>
 
         <p>Concept / coreography / dance: Rannei Grenne</p>
         External eye: Ásgerður Roberts Gunnarsdóttir<br>
-        Documentation: Lili Zaneta<br>
-
-        <p>Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
+        <p>Documentation: Lili Zaneta</p>
+        Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
         Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim</p>
 
         <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.
@@ -375,9 +384,8 @@
       `,
 
       'sound-of-things': `
-        <h4>The Sound of Things (2025)</h4>
         <p>Performance, 60 min.<br>
-        Only Connect 2025, Rosendal Teater - Trondheim, 2025</p>
+        Only Connect 2025, Rosendal Teater - Trondheim (NO)</p>
         <p>
         Concept: Katherine Butcher and Klaus E. Holm w. Carlos<br>
         Sound Composition: Klaus E. Holm<br>
@@ -393,13 +401,10 @@
       `,
 
       'just-this': `
-        <h4>Just This And Only That</h4>
         <p><a href="https://www.justthisandonlythat.com" target="_blank" rel="noopener">www.justthisandonlythat.com</a><br>
         Just This And Only That: 31 working days, 2024</p>
-        <p>
-        Working studio, January<br>
-        Open day, 31.01.24</p>
-        <p>
+        <p>January 1st – 31st, 2024</p>>
+
         97 companies contacted in the region<br>
         11 positive responses<br>
         HUB borrowed for 1 month from Coop AS.<br>
@@ -412,30 +417,30 @@
       `,
 
       'taste-of-sound': `
-        <h4>Taste of Sound: Canteen, 2023</h4>
-        <p><strong>Performance, 60 min, variable dimensions</strong><br>
-        KunstFest, 2023 — Rotvoll Kunstnerkollektiv, Trondheim</p>
+        Performance, 60 min</br>
+        KunstFest, 2023 — Rotvoll Kunstnerkollektiv, Trondheim
+        <p>Taste of Sound explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously — sound, flavor, and visual impressions — can alter perception. Through manipulation of these elements, our gestures aim to challenge one’s sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food.</p>
         <p>
-        Taste of Sound explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously — sound, flavor, and visual impressions — can alter perception. Through manipulation of these elements, our gestures aim to challenge one’s sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food.
-        </p>
-        <p>
-        Scenography &amp; Choreography: BUTCHER &amp; CORREIA<br>
+        Visuals &amp; Choreography: BUTCHER &amp; CORREIA<br>
         Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
         Food: Martin Moen Mosti and Even Østby
         </p>
       `,
 
       'performance-vista2': `
-        <h4>Performance Vista (Part II), 2023</h4>
-        <p>Polaroids, metal plate, straps — Heimdal Kunstforening</p>
+        Group exhibition<br>
+        <p>Polaroids, metal plate, straps<br>
+        
+        <p>net,nett, nether, 2023<br>
+        Heimdal Kunstforening, Trondheim (NO)</p>
       `,
 
       'performance-vista': `
-        <h4>Performance Vista (Scenes I–IV), 2022</h4>
-        <p><strong>Radio, anemometer, support jacks, lifting straps, Hoeflon C10 crane</strong><br>
+        Group exhibition<br>
+        Radio, anemometer, support jacks, lifting straps, Hoeflon C10 crane<br>
         Variable dimensions</p>
         <p>
-        Unlikely the same as yesterday, 2022 — Grenseløs, Grensen, Trondheim
+        Unlikely the same as yesterday, 2022 — Grenseløs, Trondheim (NO)
         </p>
         <p>
         Performance Vista is a pleasing sight, between a long narrow row of trees, a succession of anticipated events, a vision, a view of a series of actions in the mind, played out, unfolding retrospectively and prospectively. Synchronising these actions into a perfect frame, a painting to portray a memory that can be either baffling or very ordinary.
