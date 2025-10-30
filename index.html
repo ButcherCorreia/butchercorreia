@@ -518,4 +518,92 @@
         <p><strong>past</strong><br>
           2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
           2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
-          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin
+          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti — KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)
+        </p>
+      `,
+      right: `
+         <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
+      `
+    };
+
+    // DOM references
+    const detailLeft = document.getElementById('detailLeft');
+    const detailRight = document.getElementById('detailRight');
+    const mainPopup = document.getElementById('mainPopup');
+    const menuAbout = document.getElementById('menu-about');
+    const siteTitle = document.querySelector('.site-title-box');
+    const projectItems = Array.from(document.querySelectorAll('.project-item'));
+
+    console.log('projectItems count:', projectItems.length);
+    projectItems.forEach(pi => console.log('found project item', pi.dataset.key));
+    projectItems.forEach(item => console.log('will attach listener to', item.dataset.key));
+
+    // Delegated fallback in case direct listeners don't fire
+    const projectsListEl = document.querySelector('.projects-list');
+    if (projectsListEl) {
+      projectsListEl.addEventListener('click', function(e) {
+        const a = e.target.closest('a');
+        if (!a) return;
+        console.log('delegated click on projects-list ->', a.dataset.key, 'target:', e.target);
+      });
+    }
+    // defensive check: ensure menu anchor variable exists (menu removed intentionally)
+    const menuProjects = document.getElementById('menu-projects');
+    if (!menuProjects) console.warn('menu-projects element not found (menu removed)');
+
+    // optional: clicking outside the popup will hide it (and remove show-about)
+    document.addEventListener('click', function(e) {
+      const target = e.target;
+      if (!mainPopup) return;
+      if (mainPopup.classList.contains('show-about')) {
+        if (mainPopup.contains(target) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
+        mainPopup.classList.remove('show-about');
+      }
+    });
+
+    // handle project item clicks to show description
+    function selectProject(key) {
+      // special-case About: load aboutColumns into detail columns
+      if (key === 'about') {
+        detailLeft.innerHTML = aboutColumns.left;
+        detailRight.innerHTML = aboutColumns.right;
+        return;
+      }
+      if (!projectDescriptions[key]) {
+        detailLeft.innerHTML = '<p>No description available.</p>';
+        detailRight.innerHTML = '';
+        return;
+      }
+      // put main description in left column, extras (if any) in right column
+      detailLeft.innerHTML = projectDescriptions[key];
+      detailRight.innerHTML = projectExtras[key] || '';
+    }
+
+    projectItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        console.log('project click', this.dataset.key);
+        e.preventDefault();
+        e.stopPropagation();
+        const key = this.dataset.key;
+        selectProject(key);
+        projectItems.forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+        // ensure projects-list is visible if a project was selected
+        if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
+      });
+    });
+
+    // ensure clicking outside hides popup and removes show-about state
+    document.addEventListener('click', function(e) {
+      const target = e.target;
+      if (!mainPopup) return;
+      if (mainPopup.contains(target) || (menuProjects && menuProjects.contains(target)) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
+      if (mainPopup.style.display === 'block') {
+        mainPopup.style.display = 'none';
+        mainPopup.setAttribute('aria-hidden', 'true');
+        mainPopup.classList.remove('show-about');
+      }
+    });
+  </script>
+</body>
+</html>
