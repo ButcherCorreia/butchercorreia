@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="BUTCHER & CORREIA – interdisciplinary art and design practice.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
+
+  <!-- SEO metadata -->
+  <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo. Explore his portfolio, CV, and contact information." />
+  <meta name="keywords" content="BUTCHER & CORREIA, Katherine Butcher, Carlos A. Correia, artist, portfolio, contemporary art, visual art" />
+  <meta name="author" content="BUTCHER & CORREIA" />
+  
+  <!-- Open Graph (OG) metadata -->
+  <meta property="og:title" content="BUTCHER & CORREIA - " />
+  <meta property="og:description" content="Explore the portfolio, CV, and contact information for Carlos A. Correia." />
+  <meta property="og:image" content="https://butchercorreia.com" />
+  <meta property="og:url" content="https://butchercorreia.com" />
+  <meta property="og:type" content="website" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
   <title>BUTCHER & CORREIA</title>
+  <!-- favicon -->
+  <link rel="icon" href="favicon.PNG" type="image/png">
 
   <style>
     :root { --accent: rgb(0,51,102); }
@@ -327,6 +344,31 @@
       height: auto;
       display: block;
       margin-bottom: 1rem; /* breathing room between image and contact text */
+    }
+
+    /* --- Custom UI polish: scrollbar, caret and cursor using the accent color --- */
+    /* Use the same accent variable already defined: --accent */
+    /* Firefox: set thin scrollbar and color */
+    body { scrollbar-color: var(--accent) transparent; scrollbar-width: thin; }
+
+    /* WebKit-based browsers (Chrome, Safari, Edge) */
+    body::-webkit-scrollbar { width: 12px; height: 12px; }
+    body::-webkit-scrollbar-track { background: transparent; }
+    body::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 8px;
+      border: 3px solid transparent; /* create padding around thumb */
+      background-clip: padding-box;
+    }
+    body::-webkit-scrollbar-thumb:hover { background: rgba(0,51,102,0.9); }
+
+    /* Text caret color matching accent */
+    body, input, textarea { caret-color: var(--accent); }
+
+    /* Custom pointer cursor using a tiny SVG arrow in the accent color. Fallback to default cursor. */
+    /* NOTE: some browsers may ignore custom cursors for security/size reasons. */
+    body, a, button {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M0 0 L22 12 L16 14 L12 10 L4 6 Z' fill='%23003366'/></svg>") 0 0, auto;
     }
 
     @media (max-width: 900px) {
