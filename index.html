@@ -235,6 +235,13 @@
       align-self: flex-start; /* prevent flex column from stretching anchors to container width */
       white-space: nowrap; /* ensure the word doesn't wrap and expands the anchor only as needed */
     }
+
+    /* add extra breathing room above the About link so it visually separates from the main project list */
+    .popup .projects-list a[data-key="about"] {
+      margin-top: 1rem; /* adjust this value to taste (e.g. 0.75rem or 1.25rem) */
+      padding-top: 0.25rem; /* slight extra padding to keep underline spacing consistent */
+    }
+
     /* ensure underline ::after follows only the inline width (already left/right:0 on ::after) */
     .popup .projects-list a::after { left: 0; right: 0; }
 
@@ -484,7 +491,10 @@
     const aboutColumns = {
       left: `
         <p>studio [at] butchercorreia.com</p>
-
+      
+        <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
+      `,
+      right: `
         <p><strong>upcoming</strong><br>
           2025&nbsp;&nbsp;Scenography, costume design, sonic landscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)<br>
           2026&nbsp;&nbsp;Group show — Trondheimsbiennalen (NO)<br>
@@ -496,10 +506,7 @@
           2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
           2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
           2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti — KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)
-        </p>
-      `,
-      right: `
-         <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
+        </p>   
       `
     };
 
