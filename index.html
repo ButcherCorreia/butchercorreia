@@ -518,7 +518,7 @@
         <p><strong>past</strong><br>
           2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
           2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
-          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti — KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)
+          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin
         </p>
       `,
       right: `
@@ -544,7 +544,21 @@
       projectsListEl.addEventListener('click', function(e) {
         const a = e.target.closest('a');
         if (!a) return;
-        console.log('delegated click on projects-list ->', a.dataset.key, 'target:', e.target);
+        const key = a.dataset.key;
+        console.log('delegated click on projects-list ->', key, 'target:', e.target);
+        e.preventDefault();
+        e.stopPropagation();
+        // call shared selector (function is hoisted)
+        try {
+          selectProject(key);
+        } catch (err) {
+          console.error('selectProject error (delegated):', err);
+        }
+        // update active state
+        const items = Array.from(document.querySelectorAll('.project-item'));
+        items.forEach(i => i.classList.remove('active'));
+        a.classList.add('active');
+        if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
       });
     }
     // defensive check: ensure menu anchor variable exists (menu removed intentionally)
