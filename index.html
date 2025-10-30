@@ -7,6 +7,7 @@
   <title>BUTCHER & CORREIA</title>
 
   <style>
+    :root { --accent: rgb(0,51,102); }
 
     *,
     *::before,
@@ -103,16 +104,16 @@
     .site-title-box .top-menu a:focus::after,
     .popup .projects-list a:hover::after,
     .popup .projects-list a:focus::after {
-      background: #ff4000;
+      background: var(--accent);
     }
 
     /* Active state: make selected project look identical to hover (underline + color) */
     .popup .projects-list a.active::after,
     .popup .projects-list a.active:focus::after {
-      background: #ff4000;
+      background: var(--accent);
     }
     .popup .projects-list a.active {
-      color: #ff4000;
+      color: var(--accent);
       /* keep same font-style as other links (no weight change) */
       font-weight: inherit;
     }
@@ -125,7 +126,13 @@
       padding-left: 0;
       padding-right: 0;
       text-decoration: none;
+      color: var(--accent); /* use accent for all link text */
     }
+
+    /* ensure general page links also use accent unless overridden */
+    a { color: var(--accent); }
+    a:visited { color: var(--accent); }
+    a:hover, a:focus { color: var(--accent); }
 
     /* remove any visible outline/border/box-shadow for header, popup and their descendants (per user request) */
     .site-title-box .top-menu a,
@@ -403,10 +410,9 @@
         External eye: Ásgerður Roberts Gunnarsdóttir<br>
         <p>Documentation: Lili Zaneta</p>
         Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
-        Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim</p>
+        Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim
 
-        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.
-        </p>
+        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.</p>
       `,
 
       'sound-of-things': `
