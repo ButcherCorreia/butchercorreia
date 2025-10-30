@@ -54,10 +54,13 @@
       text-decoration: none;
       color: black;
       font-size: 0.95rem;
-      cursor: pointer;
+      cursor: default; /* do not show clickable cursor */
       user-select: none;
       background: transparent;
     }
+
+    /* ensure header and its inner elements don't show pointer cursor */
+    .site-title-box, .site-title-box * { cursor: default !important; }
 
     .site-title-box .title-row {
       display: grid;
@@ -429,8 +432,6 @@
     </div>
   </div>
 
-  <!-- landing image removed -->
-
   <script>
     // Project descriptions (detailed content)
     console.log('page script loaded');
@@ -439,9 +440,10 @@
         Durational performance by Rannei Grenne <br>
         BABEL visningsrom, 6th and 7th of December, 12–16.00<br>
         2025 Trondheim (NO)<br>
+        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual identity (costume design, scenography) and the soundscape for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.</p>
 
-        <p>Visual elements: costume design, scenography, sonic landscape for Forlengelser</p>
-        Artistic design assistant: Joana Bruno<br>
+        <p>Visual (ostume design, scenography) and sonic landscape: BUTCHER & CORREIA</p>
+        <p>Artistic design assistant: Joana Bruno</p>
         Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
         Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
         Fabric used for the costume weaved by Varp & Veft with trønder sheep wool (Selbu Spinneri) <br>
@@ -454,20 +456,21 @@
         Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
         Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim
 
-        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.</p>
       `,
 
       'sound-of-things': `
-        <p>Performance, 60 min.
+        <p>Performance, 60 min.<br>
         Only Connect 2025, Rosendal Teater - Trondheim (NO)</p>
+
+        <p>The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.</p>
+
         <p>Concept: Katherine Butcher and Klaus E. Holm w. Carlos A. Correia</p>
         Sound Composition: Klaus E. Holm<br>
         Visuals &amp; Dramaturgy: BUTCHER &amp; CORREIA<br>
         Sound: Aksiom Ensemble<br>
         Food: Ieva Grigelionyte<br>
         Light designer: Abigail Nava<br>
-        Light technician: Torbjørn Benjaminsen<br>
-        <p>The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.</p>
+        Light technician: Torbjørn Benjaminsen
       `,
 
       'just-this': `
@@ -481,9 +484,7 @@
         Donations to the working garment archive.
         Costume design assistant: Joana Bruno
         </p>
-        <p>
-        We investigate the relationship between uniforms and work tasks. This 31-day performance in Trøndelag focused on the journey from concept to completion, documenting the process as it unfolded. By working with different stakeholders, we explored how ideas take shape, highlighting both successes and failures. A parallel aim of the project was to create the perfect working garment, making the evolving process an integral part of the final work.<br>
-        </p>
+        <p>We investigate the relationship between uniforms and work tasks. This 31-day performance in Trøndelag focused on the journey from concept to completion, documenting the process as it unfolded. By working with different stakeholders, we explored how ideas take shape, highlighting both successes and failures. A parallel aim of the project was to create the perfect working garment, making the evolving process an integral part of the final work.</p>
       `,
 
       'taste-of-sound': `
