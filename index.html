@@ -314,6 +314,14 @@
     .about-col-left { width: 48%; }
     .about-col-right { flex: 1 1 auto; }
 
+    /* Portrait used in the About left column */
+    .about-portrait {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 1rem; /* breathing room between image and contact text */
+    }
+
     @media (max-width: 900px) {
       .content-grid {
         grid-template-columns: 1fr;
@@ -383,10 +391,8 @@
         BABEL visningsrom, 6th and 7th of December, 12–16.00<br>
         2025 Trondheim (NO)<br>
 
-        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.
-        </p>
-
-        <p>Artistic design assistant: Joana Bruno</p>
+        <p>Visual elements: costume design, scenography, sonic landscape for Forlengelser</p>
+        Artistic design assistant: Joana Bruno<br>
         Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
         Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
         Fabric used for the costume weaved by Varp & Veft with trønder sheep wool (Selbu Spinneri) <br>
@@ -398,22 +404,24 @@
         <p>Documentation: Lili Zaneta</p>
         Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
         Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim</p>
+
+        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual design and costume for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.
+        </p>
       `,
 
       'sound-of-things': `
-        Performance, 60 min.<br>
-        Only Connect 2025, Rosendal Teater - Trondheim (NO)<br>
-
-        <p>The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.</p>
-
-        <p>Concept: Katherine Butcher and Klaus E. Holm w/ Carlos A. Correia</p>
+        <p>Performance, 60 min.
+        Only Connect 2025, Rosendal Teater - Trondheim (NO)</p>
+        <p>Concept: Katherine Butcher and Klaus E. Holm w. Carlos A. Correia</p>
         Sound Composition: Klaus E. Holm<br>
         Visuals &amp; Dramaturgy: BUTCHER &amp; CORREIA<br>
         Sound: Aksiom Ensemble<br>
         Food: Ieva Grigelionyte<br>
         Light designer: Abigail Nava<br>
         Light technician: Torbjørn Benjaminsen<br>
-
+        <p>
+        The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.
+        </p>
       `,
 
       'just-this': `
@@ -444,23 +452,28 @@
       `,
 
       'performance-vista2': `
-        Polaroids, metal plate, straps<br>
+        Group exhibition<br>
+        <p>Polaroids, metal plate, straps<br>
         
-        <p>part of group exhibition net,nett, nether, 2023<br>
+        <p>net,nett, nether, 2023<br>
         Heimdal Kunstforening, Trondheim (NO)</p>
       `,
 
       'performance-vista': `
-        Performance Vista is a pleasing sight, between a long narrow row of trees, a succession of anticipated events, a vision, a view of a series of actions in the mind, played out, unfolding retrospectively and prospectively. Synchronising these actions into a perfect frame, a painting to portray a memory that can be either baffling or very ordinary.
-        
-        <p><a href="https://vimeo.com/815321834" target="_blank" rel="noopener">www.vimeo.com/815321834</a></p>
-        <a href="https://www.performancevista.com" target="_blank" rel="noopener">www.performancevista.com</a><br>
-        @performancevista
-        <p>Part of group exhibition Unlikely the same as yesterday, 2022 — Grenseløs, Trondheim (NO)</p>
+        Group exhibition<br>
         Radio, anemometer, support jacks, lifting straps, Hoeflon C10 crane<br>
         Variable dimensions</p>
         <p>
-   
+        Unlikely the same as yesterday, 2022 — Grenseløs, Trondheim (NO)
+        </p>
+        <p>
+        Performance Vista is a pleasing sight, between a long narrow row of trees, a succession of anticipated events, a vision, a view of a series of actions in the mind, played out, unfolding retrospectively and prospectively. Synchronising these actions into a perfect frame, a painting to portray a memory that can be either baffling or very ordinary.
+        </p>
+        <p>
+        <a href="https://vimeo.com/815321834" target="_blank" rel="noopener">www.vimeo.com/815321834</a><br>
+        <a href="https://www.performancevista.com" target="_blank" rel="noopener">www.performancevista.com</a><br>
+        @performancevista
+        </p>
       `
     };
 
@@ -491,11 +504,10 @@
     // About left/right column content - edit these strings to control About columns
     const aboutColumns = {
       left: `
+        <img src="BCportrait.jpg" alt="Portrait of Butcher & Correia" class="about-portrait">
+        <h4>Contact</h4>
         <p>studio [at] butchercorreia.com</p>
-      
-        <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
-      `,
-      right: `
+
         <p><strong>upcoming</strong><br>
           2025&nbsp;&nbsp;Scenography, costume design, sonic landscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)<br>
           2026&nbsp;&nbsp;Group show — Trondheimsbiennalen (NO)<br>
@@ -506,90 +518,4 @@
         <p><strong>past</strong><br>
           2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
           2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
-          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti — KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)
-        </p>   
-      `
-    };
-
-    const detailRight = document.getElementById('detailRight');
-    const detailLeft = document.getElementById('detailLeft');
-    // Ensure mainPopup and other optional menu refs exist before they are used
-    const mainPopup = document.getElementById('mainPopup');
-    const menuAbout = document.getElementById('menu-about');
-    const siteTitle = document.querySelector('.site-title-box');
-    const projectItems = Array.from(document.querySelectorAll('.project-item'));
-    console.log('projectItems count:', projectItems.length);
-    projectItems.forEach(pi => console.log('found project item', pi.dataset.key));
-    // Log when attaching listeners
-    projectItems.forEach(item => console.log('will attach listener to', item.dataset.key));
-    // Delegated fallback in case direct listeners don't fire
-    const projectsListEl = document.querySelector('.projects-list');
-    if (projectsListEl) {
-      projectsListEl.addEventListener('click', function(e) {
-        const a = e.target.closest('a');
-        if (!a) return;
-        console.log('delegated click on projects-list ->', a.dataset.key, 'target:', e.target);
-      });
-    }
-    // defensive check: ensure menu anchor variable exists (menu removed intentionally)
-    const menuProjects = document.getElementById('menu-projects');
-    if (!menuProjects) console.warn('menu-projects element not found (menu removed)');
-
-    // optional: clicking outside the popup will hide it
-    document.addEventListener('click', function(e) {
-      const target = e.target;
-      if (!mainPopup) return;
-      // if About is shown and click outside popup or About menu, remove show-about
-      if (mainPopup.classList.contains('show-about')) {
-        if (mainPopup.contains(target) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
-        mainPopup.classList.remove('show-about');
-        // restore about-hidden state (projects list visible by default)
-      }
-    });
-
-    // handle project item clicks to show description
-    function selectProject(key) {
-      // special-case About: load aboutColumns into detail columns
-      if (key === 'about') {
-        detailLeft.innerHTML = aboutColumns.left;
-        detailRight.innerHTML = aboutColumns.right;
-        return;
-      }
-      if (!projectDescriptions[key]) {
-        detailLeft.innerHTML = '<p>No description available.</p>';
-        detailRight.innerHTML = '';
-        return;
-      }
-      // put main description in left column, extras (if any) in right column
-      detailLeft.innerHTML = projectDescriptions[key];
-      detailRight.innerHTML = projectExtras[key] || '';
-    }
-
-    projectItems.forEach(item => {
-      item.addEventListener('click', function(e) {
-        console.log('project click', this.dataset.key);
-        e.preventDefault();
-        e.stopPropagation();
-        const key = this.dataset.key;
-        selectProject(key);
-        projectItems.forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        // ensure projects-list is visible if a project was selected
-        if (mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
-      });
-    });
-
-    // ensure clicking outside hides popup and removes show-about state
-    document.addEventListener('click', function(e) {
-      const target = e.target;
-      if (!mainPopup) return;
-      if (mainPopup.contains(target) || (menuProjects && menuProjects.contains(target)) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
-      if (mainPopup.style.display === 'block') {
-        mainPopup.style.display = 'none';
-        mainPopup.setAttribute('aria-hidden', 'true');
-        mainPopup.classList.remove('show-about');
-      }
-    });
-  </script>
-</body>
-</html>
+          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin
