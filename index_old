@@ -19,932 +19,652 @@
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-
   <title>BUTCHER & CORREIA</title>
+  <!-- favicon -->
+  <link rel="icon" href="favicon.PNG" type="image/png">
+
   <style>
+    :root { --accent: rgb(0,51,102); }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     html, body {
       margin: 0;
+      padding: 0;
       font-family: Georgia, serif;
-      height: 100%;
       background-color: transparent;
-      min-height: 100vh;
-    }
-    body { min-height: 100vh; position: relative; }
-
-    #draggable-bg {
-      position: fixed;
-      z-index: 0;
-      top: 50%;
-      left: 50%;
-      width: 15vw;
-      min-width: 180px;
-      max-width: 540px;
-      height: auto;
-      pointer-events: auto;
-      transform: translate(-50%, -50%);
-      user-select: none;
-      cursor: move;
-      opacity: 1;
-    }
-    #draggable-bg img {
-      width: 100%; height: auto; display: block;
-      pointer-events: none; user-drag: none; user-select: none;
+      width: 100%;
     }
 
-    #modal-overlay {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: transparent; /* Invisible but still captures clicks */
-      pointer-events: auto;
-    }
-
+    /* Site title box as a full-width fixed homepage button. */
     .site-title-box {
       position: fixed;
       top: 20px;
-      left: 100vw;
-      z-index: 100;
-      cursor: move;
-      background: transparent;
-      padding: 0 0 0 0;
-      min-width: 0;
-      width: auto;
-      max-width: 90vw;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-      visibility: hidden;
-    }
-
-    .site-title-underline {
-      display: inline-block;
-      position: relative;
-      padding-bottom: 6px;
-    }
-    .site-title-underline::after {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      height: 4px;
-      background-image: repeating-linear-gradient(to right, #ff4000 0 8px, transparent 8px 16px);
-      background-size: 32px 4px;
-      background-repeat: repeat-x;
-      background-position-x: 0;
-      pointer-events: none;
-      z-index: 1;
-      transition: background-position-x 0.2s;
-    }
-    .site-title-underline:hover::after {
-      animation: dash-move-full 1s linear infinite;
-    }
-    @keyframes dash-move-full {
-      0% { background-position-x: 0; }
-      100% { background-position-x: 32px; }
-    }
-
-    .site-title {
-      font-size: 1.5rem; font-weight: bold; background: transparent;
-      color: #000; border: none; margin: 0; padding: 0;
-      box-sizing: border-box; line-height: 1.2;
-      white-space: nowrap; pointer-events: none; user-select: none;
-      display: block; text-align: center;
-    }
-
-    .nav-column {
-      position: fixed; top: 20px; left: 20px;
-      display: flex; flex-direction: column; gap: 0.3rem;
-      background: transparent; cursor: move; z-index: 2000;
-    }
-    
-    .nav-column-2nd {
-      position: fixed; top: 20px; left: 250px;
-      display: flex; flex-direction: column; gap: 0.3rem;
-      background: transparent; cursor: move; z-index: 2000;
-    }
-    
-    .nav-column a { color: #000; text-decoration: none; font-size: 1.1rem; cursor: pointer; }
-    .nav-column a:hover,
-    .nav-column a.active {
-      color: #ff4000;
-      font-weight: normal;
-    }
-
-    .popup {
-      position: fixed;
-      top: 50%; left: 45%; transform: translate(-50%, -50%);
-      background-color: #fff;
-      border: 4px dashed #ff4000;
-      padding: 2rem;
-      width: 400px; min-width: 350px; max-width: 90%; 
-      height: 500px; min-height: 440px; max-height: 90%;
-      box-shadow: 10px 10px 0 #ff4000;
-      z-index: 1100;
-      display: none;
-      overflow-y: auto;
-      overflow-x: hidden;
-      background: #fff;
-      max-height: 80vh;
-      height: auto;
-      box-sizing: border-box;
-    }
-    .popup-secondary {
-      position: fixed;
-      top: 55%; left: 55%; transform: translate(-50%, -50%);
-      background-color: #fff;
-      border: 4px dashed #ff4000;
-      padding: 2rem;
-      width: auto;
-      max-width: 90%;
-      min-width: 300px;
-      min-height: 350px;
-      max-width: 70vw;
-      max-height: 80vh;
-      box-shadow: 10px 10px 0 #ff4000;
-      z-index: 1200;
-      display: none;
-      background: #fff;
-      overflow-y: auto;
-      overflow-x: hidden;
-      height: auto;
-      box-sizing: border-box;
-    }
-    .popup .close-btn,
-    .popup-secondary .close-btn,
-    .popup .plus-btn,
-    .popup-secondary .plus-btn,
-    .popup .link-btn,
-    .popup-secondary .link-btn {
-      right: 10px;
-      left: unset;
-      position: absolute;
-      z-index: 401;
-      border: none;
-      background: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .popup .resize-button,
-    .popup-secondary .resize-button {
-      top: 5px;
-      right: 10px;
-      width: 20px;
-      height: 20px;
-      background: transparent;
-      cursor: pointer;
-      z-index: 400;
-      padding: 0;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .popup .close-btn,
-    .popup-secondary .close-btn { top: 30px; }
-    .popup .plus-btn,
-    .popup-secondary .plus-btn { top: 55px; }
-    .popup .link-btn,
-    .popup-secondary .link-btn { top: 80px; }
-    .popup .close-btn img,
-    .popup .plus-btn img,
-    .popup .link-btn img,
-    .popup-secondary .close-btn img,
-    .popup-secondary .plus-btn img,
-    .popup-secondary .link-btn img {
-      width: 20px;
-      height: 20px;
-      display: block;
-    }
-    .footnote-wrapper {
-      position: fixed; bottom: 20px; left: 40px; z-index: 500;
-      background: transparent; cursor: move; white-space: nowrap;
-      pointer-events: auto; display: block !important;
-    }
-    .footnote {
-      transform: rotate(-90deg); transform-origin: left bottom;
-      font-size: 0.9rem; background: transparent;
-      padding: 2px 8px; color: #333; display: block;
-    }
-
-    .popup,
-    .popup-secondary {
-      scrollbar-width: thin;              /* For Firefox */
-      scrollbar-color: #ff4000 #fff;      /* For Firefox */
-    }
-    .popup::-webkit-scrollbar,
-    .popup-secondary::-webkit-scrollbar {
-      width: 8px;
-      background: #fff;
-    }
-    .popup::-webkit-scrollbar-thumb,
-    .popup-secondary::-webkit-scrollbar-thumb {
-      background: #ff4000;
-      border-radius: 4px;
-    }
-
-    /* Custom filter checkbox styles - white cross goes to the edges */
-    .img-filter {
-      display: none;
-    }
-    .filter-label {
-      display: inline-flex;
-      align-items: center;
-      cursor: pointer;
-      margin-right: 1.2em;
-      font-size: 1.1em;
-      color: #000;
-      user-select: none;
-    }
-    .filter-custom-box {
-      width: 20px;
-      height: 20px;
-      border: 2px solid #000;
-      background: #fff;
-      display: inline-block;
-      margin-right: 0.5em;
-      box-sizing: border-box;
-      vertical-align: middle;
-      border-radius: 0;
-      position: relative;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .img-filter:checked + .filter-custom-box {
-      border-color: #ff4000;
-      background: #ff4000;
-    }
-    .img-filter:checked + .filter-custom-box::before,
-    .img-filter:checked + .filter-custom-box::after {
-      content: '';
-      position: absolute;
-      left: 3px;
-      top: 9px;
-      width: 14px;
-      height: 2px;
-      background: #fff;
-      border-radius: 1px;
-    }
-    .img-filter:checked + .filter-custom-box::before {
-      transform: rotate(45deg);
-    }
-    .img-filter:checked + .filter-custom-box::after {
-      transform: rotate(-45deg);
-    }
-    .img-filter:checked ~ .filter-label-text {
-      color: #ff4000;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 0;
-      }
-      .site-title-box {
-        position: fixed;
-        width: 100vw;
-        top: 0;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        background: #fff;
-        z-index: 3000;
-        margin: 0;
-        padding: 0em 0em 0em 0em;
-        min-height: 48px;
-      }
-      .site-title-underline {
-        border-bottom: 2px dashed #ff4000;
-        width: auto;
-        text-align: left;
-      }
-      .site-title {
-        font-size: 1.1rem;
-        margin-left: 0.5em;
-        margin-top: 0.5em
-      }
-      .nav-column, .nav-column-2nd {
-        display: none !important;
-      }
-      .burger-menu {
-        display: block !important;
-        position: fixed;
-        top: 0.5em;
-        right: 0.5em;
-        z-index: 4000;
-        background: none;
-        border: none;
-        font-size: 2em;
-        color: #ff4000;
-        cursor: pointer;
-      }
-      #mobileNavPopup {
-        display: none;
-        position: fixed;
-        top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(255,255,255,0.98);
-        z-index: 5000;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      #mobileNavPopup.active {
-        display: flex !important;
-      }
-      #mobileNavPopup .mobile-nav-links {
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
-        align-items: center;
-      }
-      #mobileNavPopup .close-mobile-nav {
-        position: absolute;
-        top: 1.2em;
-        right: 1.2em;
-        font-size: 2.2em;
-        background: none;
-        border: none;
-        color: #ff4000;
-        cursor: pointer;
-      }
-      .footnote-wrapper {
-        position: fixed;
-        left: 0.5em;
-        bottom: 0.5em;
-        z-index: 6000;
-        background: transparent;
-        pointer-events: auto;
-        display: block !important;
-        transform: none;
-      }
-      .footnote {
-        transform: none;
-        font-size: 0.7em;
-        color: #333;
-        background: transparent;
-        padding: 1px 5px;
-      }
-      .popup, .popup-secondary {
-        position: fixed;
-        top: 5em;
-        left: 50%;
-        transform: translate(-50%, 0);
-        width: 96vw;
-        max-width: 96vw;
-        min-width: unset;
-        min-height: 800px;
-        max-height: 70vh;
-        height: auto;
-        overflow-y: auto !important;
-        overflow-x: hidden;
-        box-sizing: border-box;
-        padding: 1em;
-        background:#fff;
-        border-width: 3px;
-        touch-action: auto;
-        display: none;
-      }
-      .popup[style*="display: block"], .popup-secondary[style*="display: block"] {
-        display: block !important;
-      }
-    }
-    @media (min-width: 769px) {
-      .burger-menu, #mobileNavPopup {
-        display: none !important;
-      }
-    }
-
-    /* Make zoom modal appear above everything and update drop shadow to red */
-    #zoom-modal {
-      display: none;
-      position: fixed !important;
-      z-index: 99999 !important;
-      top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.85);
+      right: 0;
+      z-index: 100000; /* ensure this sits above other UI */
+      display: grid;
+      grid-template-rows: auto auto auto; /* header row | divider | menu */
       align-items: center;
-      justify-content: center;
+      padding: 8px 20px;             /* 20px left offset */
+      text-decoration: none;
+      color: black;
+      font-size: 0.95rem;
+      cursor: default; /* do not show clickable cursor */
+      user-select: none;
+      background: transparent;
     }
-    #zoom-img {
-      max-width: 90vw;
-      max-height: 90vh;
-      box-shadow: 0 0 40px 0 rgba(255,64,0,0.7);
+
+    /* ensure header and its inner elements don't show pointer cursor */
+    .site-title-box, .site-title-box * { cursor: default !important; }
+
+    .site-title-box .title-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      width: 100%;
+    }
+
+    .site-title-box .site-left,
+    .site-title-box .site-center,
+    .site-title-box .site-right {
+      display: inline-block;
+      line-height: 1;
+      font-weight: 700;
+      color: #000;
+      white-space: nowrap;
+      pointer-events: none; /* individual spans won't capture clicks; the container is the button */
+    }
+    .site-title-box .site-left { text-align: left; font-size: 1rem; }
+    .site-title-box .site-center{ text-align: center; font-size: 1.2rem; }
+    .site-title-box .site-right { text-align: right; font-size: 1rem; }
+
+    /* top horizontal menu placed in the left column and aligned to the left */
+    .site-title-box .top-menu {
+      display: flex;
+      grid-column: 1 / 2; /* place the menu in the left column */
+      justify-content: flex-start; /* align to the left within the left column */
+      gap: 1.5rem;
+      width: 100%;
+      padding-bottom: 2px;
+      padding-left: 0; /* start at the left edge (container already has 20px padding) */
+    }
+    .site-title-box .top-menu a {
+      color: #000;
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      padding: 4px 0 6px 0; /* spacing to allow underline to sit close to word */
+      position: relative;
+      display: inline-block;
       cursor: pointer;
+      line-height: 1;
+      vertical-align: bottom;
+    }
+    /* default underline pseudo element (transparent) and hover behaviour */
+    .site-title-box .top-menu a::after,
+    .popup .projects-list a::after {
+      /* underline matched exactly to the inline link width */
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0; /* follow the element width precisely */
+      bottom: 0;
+      height: 3px; /* 3px ~ 3pt */
+      background: transparent;
+      transition: background-color 120ms ease;
+      pointer-events: none;
+      box-sizing: content-box;
+    }
+    .site-title-box .top-menu a:hover::after,
+    .site-title-box .top-menu a:focus::after,
+    .popup .projects-list a:hover::after,
+    .popup .projects-list a:focus::after {
+      background: var(--accent);
+    }
+
+    /* Active state: make selected project look identical to hover (underline + color) */
+    .popup .projects-list a.active::after,
+    .popup .projects-list a.active:focus::after {
+      background: var(--accent);
+    }
+    .popup .projects-list a.active {
+      color: var(--accent);
+      /* keep same font-style as other links (no weight change) */
+      font-weight: inherit;
+    }
+
+    /* ensure links have no extra horizontal padding so underline matches text width */
+    .site-title-box .top-menu a,
+    .popup .projects-list a {
+      display: inline-block;
+      position: relative; /* anchor for the absolute ::after */
+      padding-left: 0;
+      padding-right: 0;
+      text-decoration: none;
+      color: var(--accent); /* use accent for all link text */
+    }
+
+    /* ensure general page links also use accent unless overridden */
+    a { color: var(--accent); }
+    a:visited { color: var(--accent); }
+    a:hover, a:focus { color: var(--accent); }
+
+    /* remove any visible outline/border/box-shadow for header, popup and their descendants (per user request) */
+    .site-title-box .top-menu a,
+    .popup .projects-list a,
+    .popup,
+    .popup * {
+      outline: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* remove horizontal padding so underline width matches text */
+    .site-title-box .top-menu a,
+    .popup .projects-list a { display: inline-block; padding-left: 0; padding-right: 0; }
+
+    /* ensure nav and links inside header can receive pointer events */
+    .site-title-box .top-menu,
+    .site-title-box .top-menu a { pointer-events: auto; }
+
+    /* ensure page content starts below the fixed header + menu */
+    body { padding-top: 120px; }
+
+    /* landing image - bottom centered; keep behind UI */
+    #landing-img {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 0; /* behind popups and header */
+      width: auto;
+      max-width: 22.5vw;
+      max-height: 21vh;
+      height: auto;
+      cursor: pointer;
+      display: block;
+    }
+    /* ensure popup sits above landing image */
+    .popup { z-index: 100002; }
+
+    /* Render the projects list and details as a static block in the page (always visible) */
+    .popup {
+      display: block; /* always visible */
+      position: static; /* flow in document */
+      top: auto;
+      left: auto;
+      z-index: 100001;
+      max-width: none;
+      width: calc(100% - 40px);
+      margin: 8px 20px 0 20px; /* sit below the fixed header */
+      background: transparent;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      box-sizing: border-box;
+    }
+    /* When About is shown we hide the left project list and make the two detail columns equal width */
+    .popup.show-about .projects-list { display: none; }
+    .popup.show-about .project-detail { gap: 1rem; }
+    /* Keep left column fixed at 480px even in about mode; right column flexes */
+    /* Adjusted widths: left 550px, right 450px */
+    .popup.show-about .detail-col-left { flex: 0 0 550px !important; width: 550px !important; }
+    .popup.show-about .detail-col-right { flex: 0 0 450px !important; width: 450px !important; }
+
+    /* popup inner layout: left vertical list, right detail pane */
+    .popup .popup-inner {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start; /* ensure top alignment */
+    }
+    /* match menu font-size and improve spacing for list and detail */
+    .popup .projects-list,
+    .popup .project-detail {
+      font-size: 0.9rem; /* match .site-title-box .top-menu a */
+      line-height: 1.3;
+      margin: 0;
+      padding: 0;
+    }
+    /* Remove default top margins from content so detail pane aligns with the left list */
+    .popup .project-detail > * {
+      margin-top: 0;
+    }
+    .popup .project-detail h4 { margin-top: 0; margin-bottom: 0.25rem; font-size: 0.95rem; }
+    .popup .project-detail p { margin: 0 0 0.5rem 0; }
+    /* Ensure the left list has no extra top offset */
+    .popup .projects-list { margin-top: 0; padding-top: 0; }
+    .popup .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: auto; /* allow width to shrink to content */
+      align-self: flex-start; /* ensure it stays at the top */
+      align-items: flex-start; /* prevent children stretching */
+      padding-left: 0; /* remove accidental indentation */
+    }
+    .popup .projects-list a {
+      color: #000;
+      text-decoration: none;
+      padding: 4px 0 6px 0; /* match top menu padding so underline width matches */
+      display: inline-block; /* inline-block to let underline width match text */
+      position: relative;
+      cursor: pointer;
+      line-height: 1;
+      vertical-align: bottom;
+      width: auto; /* ensure width fits content only */
+      padding-left: 0; /* ensure underline matches only the word */
+      padding-right: 0;
+      align-self: flex-start; /* prevent flex column from stretching anchors to container width */
+      white-space: nowrap; /* ensure the word doesn't wrap and expands the anchor only as needed */
+    }
+
+    /* add extra breathing room above the About link so it visually separates from the main project list */
+    .popup .projects-list a[data-key="about"] {
+      margin-top: 1rem; /* adjust this value to taste (e.g. 0.75rem or 1.25rem) */
+      padding-top: 0.25rem; /* slight extra padding to keep underline spacing consistent */
+    }
+
+    /* ensure underline ::after follows only the inline width (already left/right:0 on ::after) */
+    .popup .projects-list a::after { left: 0; right: 0; }
+
+    /* remove focus rings for project list links (user requested no outlines) */
+    .popup .projects-list a,
+    .site-title-box .top-menu a { outline: none !important; box-shadow: none !important; }
+    .popup .projects-list a:focus,
+    .popup .projects-list a:focus-visible,
+    .site-title-box .top-menu a:focus,
+    .site-title-box .top-menu a:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    /* project-detail uses a two-column flex layout (left = fixed width, right = fluid */
+    .popup .project-detail {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .detail-col-left {
+      /* fixed-width left column */
+      flex: 0 0 550px;
+      width: 550px;
+      box-sizing: border-box;
+    }
+    .detail-col-right {
+      /* fixed-width right column */
+      flex: 0 0 450px;
+      width: 450px;
+      box-sizing: border-box;
+    }
+
+    /* Prevent long content or images from forcing column widths */
+    .project-detail img { max-width: 100%; height: auto; display: block; }
+    .project-detail { word-wrap: break-word; overflow-wrap: break-word; }
+
+    /* footnote */
+    .footnote-wrapper {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 2;
+      color: black;
+      font-size: 0.8rem;
+    }
+
+    /* content-grid (preserved for pages that use it) */
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+
+      max-width: 1200px;
+      margin: 60px 0 0 20px; /* left edge 20px from page */
+      padding: 2rem;
+
+      line-height: 1.5;
+      text-align: left;
+      align-items: start;
+    }
+
+    .column {
+      line-height: 1.5;
+    }
+
+    /* About section styles */
+    .about-section { margin: 1.5rem 20px 3rem 20px; }
+    .about-inner { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .about-col-left { width: 48%; }
+    .about-col-right { flex: 1 1 auto; }
+
+    /* Portrait used in the About left column */
+    .about-portrait {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 1rem; /* breathing room between image and contact text */
+    }
+
+    /* --- Custom UI polish: scrollbar, caret and cursor using the accent color --- */
+    /* Use the same accent variable already defined: --accent */
+    /* Firefox: set thin scrollbar and color */
+    body { scrollbar-color: var(--accent) transparent; scrollbar-width: thin; }
+
+    /* WebKit-based browsers (Chrome, Safari, Edge) */
+    body::-webkit-scrollbar { width: 12px; height: 12px; }
+    body::-webkit-scrollbar-track { background: transparent; }
+    body::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 8px;
+      border: 3px solid transparent; /* create padding around thumb */
+      background-clip: padding-box;
+    }
+    body::-webkit-scrollbar-thumb:hover { background: rgba(0,51,102,0.9); }
+
+    /* Text caret color matching accent */
+    body, input, textarea { caret-color: var(--accent); }
+
+    /* Custom pointer cursor using a tiny SVG arrow in the accent color. Fallback to default cursor. */
+    /* NOTE: some browsers may ignore custom cursors for security/size reasons. */
+    body, a, button {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M0 0 L22 12 L16 14 L12 10 L4 6 Z' fill='%23003366'/></svg>") 0 0, auto;
+    }
+
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+        margin: 40px 20px;
+        padding: 1rem;
+        gap: 1.5rem;
+      }
+    }
+
+    /* small screen tweaks for header text size or collapsing */
+    @media (max-width: 420px) {
+      .site-title-box {
+        font-size: 0.75rem;
+        padding: 0 12px;
+      }
+
+      /* optionally hide the right word on very small screens:
+      .site-title-box .site-right { display: none; } */
+    }
+
+    /* If the viewport becomes too narrow, allow the columns to wrap (responsive fallback) */
+    @media (max-width: 1024px) {
+      .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
     }
   </style>
 </head>
 <body>
-  <div id="draggable-bg" class="draggable">
-    <img src="landingimage2.jpg" alt="Landing Image" draggable="false" />
-  </div>
-
-  <div id="modal-overlay"></div>
-
-  <div class="site-title-box draggable">
-    <span class="site-title-underline">
-      <span class="site-title">BUTCHER & CORREIA</span>
-    </span>
-  </div>
-
-  <div class="nav-column draggable">
-    <a onclick="showPopup('sound-of-things', this)">The Sound of Things</a>
-    <a onclick="showPopup('just-this', this)">Just This And Only That</a>
-    <a onclick="showPopup('taste-of-sound', this)">Taste of Sound</a>
-    <a onclick="showPopup('performance-vista', this)">Performance Vista</a>
-  </div>
-
-  <div class="nav-column nav-column-2nd draggable">
-    <a onclick="showPopup('about', this)">About</a>
-    <a onclick="showPopup('imagery', this)">Imagery</a>
-  </div>
-
-  <div id="popupContainer" class="popup draggable">
-    <button class="close-btn" onclick="closePopup()"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <div id="popupContent"></div>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-  </div>
-
-  <div id="secondPopup-sound-of-things" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('sound-of-things')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div>
-      <div style="padding:56.25% 0 0 0;position:relative;">
-        <iframe src="https://player.vimeo.com/video/1093466451?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="The Sound of Things"></iframe>
-      </div>
+  <!-- site title split into three areas and acts as a home button -->
+  <div class="site-title-box">
+    <div class="title-row">
+      <span class="site-left">BUTCHER</span>
+      <span class="site-center">&amp;</span>
+      <span class="site-right">CORREIA</span>
     </div>
-  </div>
-  <div id="secondPopup-just-this" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('just-this')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div><iframe src="https://justthisandonlythat.com" width="600" height="400"></iframe></div>
-  </div>
-  <div id="secondPopup-taste-of-sound" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('taste-of-sound')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div><strong>Secondary popup for Taste of Sound</strong><br>Extra content here.</div>
-  </div>
-  <div id="secondPopup-performance-vista" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('performance-vista')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <img src="images/performancevista.jpg" alt="map" width="400">
-    <img src="images/performancevista2.jpeg" alt="sketch" width="400">
-    <a href="images/performance vista_leaflet.pdf" target="_blank">Performance Vista leaflet</a>
-  </div>
-  <div id="secondPopup-about" class="popup-secondary draggable">
-    <button class="close-btn" onclick="closeSecondPopup('about')"><img src="icons/Signs_close.jpg" alt="Close" style="width:20px;height:20px;"></button>
-    <button class="plus-btn" onclick="handlePlusClick()"><img src="icons/Signs_plus.jpg" alt="Plus" style="width:20px;height:20px;"></button>
-    <button class="link-btn" onclick="handleLinkClick()"><img src="icons/Signs_link.jpg" alt="Link" style="width:20px;height:20px;"></button>
-    <div><strong>cv</strong><br>
-      upcoming<br>
-      2026/2027  Norsk billedhoggerforening, Oslo (NO)<br>
-      2026    Group show — Trondheimsbiennalen (NO)<br>
-      2025    Costume design for SOLO by Rannei Grenne, BABEL, Trondheim and Kunstrom Jakob, Steinkjer (NO)</p>
-       <p>2025    The Sound of Things, performance by Klaus E. Holm & Katherine Butcher, with Ieva Grigelionyte and Ensemble Aksiom - OnlyConnect at Rosendal Teater, Trondheim (NO)</p>
-      2024    Just This And Only That, performance in public realm, Trøndelag (NO) - ongoing<br>
-      2023    Taste of Sound, performance in collaboration with Klaus Ellerhusen Holm and Martin Moen Mosti - KunstFest 23 at Rotvoll kunstnerkollektiv, Trondheim (NO)<br>
-      2023    net, nett, nether - Heimdal Kunstforening, Trondheim (NO)<br>
-      2022    Unlikely the same as yesterday - Grenseløs, Trondheim (NO)<br></div>
+    <!-- top menu removed per request -->
   </div>
 
-  <div class="footnote-wrapper draggable" id="footnote">
-    <div class="footnote">© 2025 BUTCHER & CORREIA</div>
-  </div>
-
-<!-- Add burger menu button and mobile nav popup -->
-  <button class="burger-menu" id="burgerMenuBtn" aria-label="Open navigation" style="display:none;">&#9776;</button>
-  <div id="mobileNavPopup">
-    <button class="close-mobile-nav" aria-label="Close navigation">&times;</button>
-    <div class="mobile-nav-links">
-      <a onclick="showPopup('sound-of-things', this); closeMobileNav();">The Sound of Things</a>
-      <a onclick="showPopup('just-this', this); closeMobileNav();">Just This And Only That</a>
-      <a onclick="showPopup('taste-of-sound', this); closeMobileNav();">Taste of Sound</a>
-      <a onclick="showPopup('performance-vista', this); closeMobileNav();">Performance Vista</a>
-      <a onclick="showPopup('about', this); closeMobileNav();">About</a>
-      <a onclick="showPopup('imagery', this); closeMobileNav();">Imagery</a>
+  <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
+    <div class="popup-inner">
+      <nav class="projects-list" aria-label="Projects list">
+        <a href="#solo" data-key="solo" class="project-item">Forlengelser</a>
+        <a href="#sound-of-things" data-key="sound-of-things" class="project-item">The Sound of Things</a>
+        <a href="#just-this" data-key="just-this" class="project-item">Just This And Only That</a>
+        <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
+        <a href="#performance-vista2" data-key="performance-vista2" class="project-item">Performance Vista (Part II)</a>
+        <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
+        <a href="#about" data-key="about" class="project-item">About</a>
+      </nav>
+      <section class="project-detail" id="projectDetail" aria-live="polite">
+        <div class="detail-col detail-col-left" id="detailLeft">
+        </div>
+        <div class="detail-col detail-col-right" id="detailRight">
+          <!-- secondary column for extra content -->
+        </div>
+      </section>
     </div>
   </div>
 
-<script>
-let currentPopupId = null;
+  <script>
+    // Project descriptions (detailed content)
+    console.log('page script loaded');
+    const projectDescriptions = {
+      'solo': `
+        Durational performance by Rannei Grenne <br>
+        BABEL visningsrom, 6th and 7th of December, 12–16.00<br>
+        2025 Trondheim (NO)<br>
+        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual identity (costume design, scenography) and the soundscape for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.</p>
 
-const contentData = {
-  "sound-of-things": `
-    Performance, 60 min.<br>
-    Only Connect 2025, Rosendal Teater - Trondheim, 2025<br>
-    <p><strong>The Sound of Things</strong> is a collaborative, interdisciplinary performance conceived by Klaus Ellerhusen Holm (NO) and Katherine Butcher (AU), developed with Carlos A. Correia (PT), and featuring interdisciplinary artist in taste Ieva Grigelionyte (LT/UK). Aksiom Ensemble performs the sound composition.</p>
-    Concept: Katherine Butcher and Klaus Ellerhusen Holm, developed with Carlos A. Correia<br>
-    Sound Composition: Klaus E. Holm<br>
-    Visuals & Dramaturgy: BUTCHER & CORREIA<br>
-    Sound: Aksiom Ensemble<br>
-    Food: Ieva Grigelionyte<br>
-    Light design: Abigail Nava<br>
-    Light tecnhician: Torbjørn Benjaminsen<br>
-    Supported by: Trondheim kommune, Nettle T.O.C., Culligan
-  `,
-  "just-this": `
-    2.01.2024–on going<br>
-    <p><strong>Just This and Only That</strong> is a deliberately slow and participatory performative project that interweaves sustainability, art and community. We enter the project from a position of partial knowledge in order to create a new dialogue about sustainable living in our region. The project focuses on materiality, the textiles we wear on our bodies in both work and life, to examine our allocation of resources to meet our need for freedom of shelter, movement and expression. Our performative actions are committed to the awareness of the present moment. Through 'Just This And Only That' we step forward to act in new artistic constellations to encourage shared responsibility, unexpected discoveries and evolving identities.</p>
-    <a href="https://justthisandonlythat.com">justthisandonlythat.com</a><br>
-    Supported by: Kulturdirektoratet
-  `,
-  "taste-of-sound": `
-    Performance, 60 min.<br>
-    KunstFest, Rotvoll Kunstnerkollektiv - Trondheim, 2023<br><br>
-    <p>Layers of plasticity: elements such as background music, tableware, packaging design, lighting hues, and even menu item names have been recognized as significant factors that shape our perception of taste.</p>
-    <p><strong>Taste of Sound</strong> explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously can provide new and curious personal imagery. The performance interweaves sound, flavor, and visual impressions. Through manipulation of these elements, our gestures aim to challenge your sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food. This event serves as a scaled-down preview of our comprehensive showcase scheduled for 2024.</p>
-    Concept: Katherine Butcher and Klaus Ellerhusen Holm, developed with Carlos A. Correia<br>
-    Visuals & Choreography: BUTCHER & CORREIA<br>
-    Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
-    Food: Martin Moen Mosti and Even Østby<br>
-    Event supported by: Rotvoll Kunstnerkollektiv - KunstFest, Norsk jazzforum and Norsk Komponistforening
-  `,
-  "performance-vista": `
-    Performance, anemometer, support jacks, lifting straps, construction helmets, reflective vests, and HOEFLON C10 crane. Variable dimensions.<br>
-    Group exhibition <strong>Unlikely the same as yesterday</strong>, GRENSELØS, Norway
-    <p><strong>Performance Vista</strong> is a pleasing sight between a long narrow row of trees; a succession of anticipated events, a vision, a view of a series of actions in the mind, a performance vista played out, unfolding retrospectively and prospectively.</p>
-    <a href="https://performancevista.com">performancevista.com</a><br>
-    <a href="https://instagram.com/performancevista">@performancevista</a>
-  `,
-  "about": `
-    we are Katherine BUTCHER & Carlos A. CORREIA<br>
-    studio [at] butchercorreia.com<br><br>
-    <p>BUTCHER & CORREIA ground their artistic process in an awareness of local and global political and social landscapes. Their work spans performance, immersive environments, and tangible objects, often critiquing contemporary issues like labor, hierarchy, regenerative practices, and social norms. Embracing intersectionality, they link climate justice with social justice, integrating environmental concerns into social and political narratives. Their art reflects a commitment to positive environmental and social change, fostering connections between art, nature, and shared human experience while underscoring the interdependence of climate and social equity.<br><br>
-    <img src="BCportrait.jpg" alt="Polaroid" width="200">
-  `,
-  "imagery": `
-    <div style="margin-bottom:1em;text-align:left;">
-      <label class="filter-label"><input type="checkbox" class="img-filter" value="The Sound of Things"><span class="filter-custom-box"></span><span class="filter-label-text">The Sound of Things</span></label>
-      <label class="filter-label"><input type="checkbox" class="img-filter" value="Taste of Sound"><span class="filter-custom-box"></span><span class="filter-label-text">Taste of Sound</span></label>
-      <label class="filter-label"><input type="checkbox" class="img-filter" value="Just This And Only That"><span class="filter-custom-box"></span><span class="filter-label-text">Just This And Only That</span></label>
-      <label class="filter-label"><input type="checkbox" class="img-filter" value="Performance Vista"><span class="filter-custom-box"></span><span class="filter-label-text">Performance Vista</span></label>
-    </div>
-    <div id="gallery" style="display: flex; flex-wrap: wrap; gap: 1em; justify-content: center;"></div>
-    <div id="zoom-modal" style="display:none;position:fixed;z-index:99999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;"><img id="zoom-img" style="max-width:90vw;max-height:90vh;box-shadow:0 0 40px 0 rgba(255,64,0,0.7);"></div>
-  `
-};
+        <p>Visual (ostume design, scenography) and sonic landscape: BUTCHER & CORREIA</p>
+        <p>Artistic design assistant: Joana Bruno</p>
+        Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
+        Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
+        Fabric used for the costume weaved by Varp & Veft with trønder sheep wool (Selbu Spinneri) <br>
+        Kastel sneakers, wool (from Trønder Sheep)<br>
+        Sound: captured with geophone<br>
 
-// Gallery images for 'The Sound of Things'
-const galleryImages = [
-  ...Array.from({length: 18}, (_, i) => ({
-    src: `sound-of-things/sound-of-things${i+1}.jpg`,
-    projects: ["The Sound of Things"]
-  }))
-];
-function renderGallery() {
-  const active = Array.from(document.querySelectorAll('.img-filter:checked')).map(cb => cb.value);
-  const imagesToShow = galleryImages.filter(img => img.projects.some(p => active.includes(p)));
-  const galleryDiv = document.getElementById('gallery');
-  if (galleryDiv) {
-    galleryDiv.innerHTML = imagesToShow.map(img =>
-      `<img src="${img.src}" class="gallery-img" style="max-width: 180px; max-height: 180px; margin: 0.5em; border: 2px solid #ff4000;" onerror="this.style.display='none'">`
-    ).join('');
-  }
-  // Add click event for zoom modal navigation
-  document.querySelectorAll('.gallery-img').forEach((img, idx, arr) => {
-    img.onclick = function() {
-      const modal = document.getElementById('zoom-modal');
-      const zoomImg = document.getElementById('zoom-img');
-      zoomImg.src = this.src;
-      modal.style.display = 'flex';
-      // Store current gallery and index for navigation
-      modal.dataset.gallery = JSON.stringify(imagesToShow.map(i => i.src));
-      modal.dataset.index = idx;
+        <p>Concept / coreography / dance: Rannei Grenne</p>
+        External eye: Ásgerður Roberts Gunnarsdóttir<br>
+        <p>Documentation: Lili Zaneta</p>
+        Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
+        Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim
+
+      `,
+
+      'sound-of-things': `
+        <p>Performance, 60 min.<br>
+        Only Connect 2025, Rosendal Teater - Trondheim (NO)</p>
+
+        <p>The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.</p>
+
+        <p>Concept: Katherine Butcher and Klaus E. Holm w. Carlos A. Correia</p>
+        Sound Composition: Klaus E. Holm<br>
+        Visuals &amp; Dramaturgy: BUTCHER &amp; CORREIA<br>
+        Sound: Aksiom Ensemble<br>
+        Food: Ieva Grigelionyte<br>
+        Light designer: Abigail Nava<br>
+        Light technician: Torbjørn Benjaminsen
+      `,
+
+      'just-this': `
+        <p><a href="https://www.justthisandonlythat.com" target="_blank" rel="noopener">www.justthisandonlythat.com</a><br>
+        Durational performance in public space</p>
+        <p>January 1st – 31st 2024, Trøndelag (NO)</p>
+
+        97 companies contacted in the region<br>
+        11 positive responses<br>
+        HUB borrowed for 1 month from Coop AS.<br>
+        Donations to the working garment archive.
+        Costume design assistant: Joana Bruno
+        </p>
+        <p>We investigate the relationship between uniforms and work tasks. This 31-day performance in Trøndelag focused on the journey from concept to completion, documenting the process as it unfolded. By working with different stakeholders, we explored how ideas take shape, highlighting both successes and failures. A parallel aim of the project was to create the perfect working garment, making the evolving process an integral part of the final work.</p>
+      `,
+
+      'taste-of-sound': `
+        Performance, 60 min</br>
+        KunstFest, 2023 — Rotvoll Kunstnerkollektiv, Trondheim
+        <p>Taste of Sound explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously — sound, flavor, and visual impressions — can alter perception. Through manipulation of these elements, our gestures aim to challenge one’s sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food.</p>
+        <p>
+        Visuals &amp; Choreography: BUTCHER &amp; CORREIA<br>
+        Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
+        Food: Martin Moen Mosti and Even Østby
+        </p>
+      `,
+
+      'performance-vista2': `
+        Group exhibition<br>
+        <p>Polaroids, metal plate, straps<br>
+        
+        <p>net,nett, nether, 2023<br>
+        Heimdal Kunstforening, Trondheim (NO)</p>
+      `,
+
+      'performance-vista': `
+        Group exhibition<br>
+        Radio, anemometer, support jacks, lifting straps, Hoeflon C10 crane<br>
+        Variable dimensions</p>
+        <p>
+        Unlikely the same as yesterday, 2022 — Grenseløs, Trondheim (NO)
+        </p>
+        <p>
+        Performance Vista is a pleasing sight, between a long narrow row of trees, a succession of anticipated events, a vision, a view of a series of actions in the mind, played out, unfolding retrospectively and prospectively. Synchronising these actions into a perfect frame, a painting to portray a memory that can be either baffling or very ordinary.
+        </p>
+        <p>
+        <a href="https://vimeo.com/815321834" target="_blank" rel="noopener">www.vimeo.com/815321834</a><br>
+        <a href="https://www.performancevista.com" target="_blank" rel="noopener">www.performancevista.com</a><br>
+        @performancevista
+        </p>
+      `
     };
-  });
-}
 
-function setupImageryGallery() {
-  document.querySelectorAll('.img-filter').forEach(cb => cb.addEventListener('change', renderGallery));
-  renderGallery();
-  // Setup zoom modal close and navigation
-  const modal = document.getElementById('zoom-modal');
-  if (modal) {
-    modal.onclick = function(e) {
-      const zoomImg = document.getElementById('zoom-img');
-      // If click is on the image, go to next image
-      if (e.target === zoomImg) {
-        const gallery = JSON.parse(modal.dataset.gallery || '[]');
-        let idx = parseInt(modal.dataset.index || '0', 10);
-        if (gallery.length > 0) {
-          idx = (idx + 1) % gallery.length;
-          zoomImg.src = gallery[idx];
-          modal.dataset.index = idx;
+    // Optional extra content for the right detail column (empty by default)
+    const projectExtras = {
+      'solo': `
+        <p>Digital product passport (DPP)<br>
+        Information coming soon.</p>
+      `,
+      'sound-of-things': ``,
+      'just-this': `
+        <p>Manifesto</p>
+        <p>Just This And Only That believes in the collective adoption of sustainable living. Communication by asking and answering one another, guides us towards shared action.</p>
+        <p>Just This And Only That aims to transform overlooked aspects into valuable contributions that are rooted in the local community. By intertwining creativity and daily existence, we strive to achieve sustainable living.</p>
+        <p>Just This And Only That aims to create artistic constellations that promote shared responsibility, unexpected discoveries, and evolving identities.</p>
+        <p>Just This And Only That allocates resources in the support of freedom of expression, shelter, and movement.</p>
+        <p>Just This And Only That emphasises materiality, to underscore the significance of chosen materials, their texture, physicality, and contact with the body.</p>
+        <p>Just This And Only That emphasises present moment awareness to fully appreciate our surroundings and the artistic process.</p>
+        <p>Just This And Only That focuses on urgency to address environmental issues through actions that move within the distractions.</p>
+        <p>Just This And Only That aims to reduce our environmental footprint by encouraging sustainable choices and responsible practices.</p>
+        <p>Just This And Only That embraces Intersectionality by acknowledging the link between climate justice and social justice, to engage with these overlaps and consider the wider impact.</p>
+      `,
+      'taste-of-sound': ``,
+      'performance-vista2': ``,
+      'performance-vista': ``
+    };
+
+    // About left/right column content - edit these strings to control About columns
+    const aboutColumns = {
+      left: `
+        <p>studio [at] butchercorreia.com</p>
+
+        <p><strong>upcoming</strong><br>
+          2025&nbsp;&nbsp;Scenography, costume design, sonic landscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)<br>
+          2026&nbsp;&nbsp;Group show — Trondheimsbiennalen (NO)<br>
+          2026&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, Kunstrom Jakob, Steinkjer Kulturhus (NO)<br>
+          2027&nbsp;&nbsp;Artist residency and performance — Norsk Billedhoggerforening (NO)<br>
+        </p>
+
+        <p><strong>past</strong><br>
+          2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
+          2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
+          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin
+        </p>
+      `,
+      right: `
+         <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
+          <p><img src="BCportrait.jpg" alt="Portrait of Butcher & Correia" class="about-portrait"></p>
+
+      ` 
+    };
+
+    // DOM references
+    const detailLeft = document.getElementById('detailLeft');
+    const detailRight = document.getElementById('detailRight');
+    const mainPopup = document.getElementById('mainPopup');
+    const menuAbout = document.getElementById('menu-about');
+    const siteTitle = document.querySelector('.site-title-box');
+    const projectItems = Array.from(document.querySelectorAll('.project-item'));
+
+    console.log('projectItems count:', projectItems.length);
+    projectItems.forEach(pi => console.log('found project item', pi.dataset.key));
+    projectItems.forEach(item => console.log('will attach listener to', item.dataset.key));
+
+    // Delegated fallback in case direct listeners don't fire
+    const projectsListEl = document.querySelector('.projects-list');
+    if (projectsListEl) {
+      projectsListEl.addEventListener('click', function(e) {
+        const a = e.target.closest('a');
+        if (!a) return;
+        const key = a.dataset.key;
+        console.log('delegated click on projects-list ->', key, 'target:', e.target);
+        e.preventDefault();
+        e.stopPropagation();
+        // call shared selector (function is hoisted)
+        try {
+          selectProject(key);
+        } catch (err) {
+          console.error('selectProject error (delegated):', err);
         }
-      } else if (e.target === modal) {
-        modal.style.display = 'none';
-        zoomImg.src = '';
-        modal.dataset.gallery = '';
-        modal.dataset.index = '';
+        // update active state
+        const items = Array.from(document.querySelectorAll('.project-item'));
+        items.forEach(i => i.classList.remove('active'));
+        a.classList.add('active');
+        if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
+      });
+    }
+    // defensive check: ensure menu anchor variable exists (menu removed intentionally)
+    const menuProjects = document.getElementById('menu-projects');
+    if (!menuProjects) console.warn('menu-projects element not found (menu removed)');
+
+    // optional: clicking outside the popup will hide it (and remove show-about)
+    document.addEventListener('click', function(e) {
+      const target = e.target;
+      if (!mainPopup) return;
+      if (mainPopup.classList.contains('show-about')) {
+        if (mainPopup.contains(target) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
+        mainPopup.classList.remove('show-about');
       }
-    };
-  }
-}
-
-// Patch showPopup to call setupImageryGallery for imagery
-const originalShowPopup = showPopup;
-window.showPopup = function(id, element) {
-  originalShowPopup(id, element);
-  if (id === 'imagery') {
-    setupImageryGallery();
-  }
-};
-
-function showPopup(id, element) {
-  // Close all popups and remove active state
-  document.getElementById('popupContainer').style.display = 'none';
-  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-  document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-  currentPopupId = null;
-  setOverlayVisibility();
-
-  // Now, immediately open the new popup for the nav link
-  const popup = document.getElementById('popupContainer');
-  const content = document.getElementById('popupContent');
-  currentPopupId = id;
-  content.innerHTML = contentData[id] || 'No content found.';
-  popup.style.display = 'block';
-  if (element) element.classList.add('active');
-  setOverlayVisibility();
-  // Add resize button to main popup if not present
-  if (!popup.querySelector('.resize-button')) {
-    const button = document.createElement('div');
-    button.className = 'resize-button';
-    button.setAttribute('aria-label', 'resize');
-    button.setAttribute('tabindex', '-1');
-    button.innerHTML = `<img src="icons/Signs_expand1.jpg" alt="Resize" style="width:20px;height:20px;">`;
-    let isResizing = false;
-    let startX, startY, startWidth, startHeight;
-    button.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      isResizing = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
-      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
-      document.documentElement.addEventListener('mousemove', doResize);
-      document.documentElement.addEventListener('mouseup', stopResize);
     });
-    function doResize(e) {
-      if (!isResizing) return;
-      popup.style.width = (startWidth + e.clientX - startX) + 'px';
-      popup.style.height = (startHeight + e.clientY - startY) + 'px';
+
+    // handle project item clicks to show description
+    function selectProject(key) {
+      // special-case About: load aboutColumns into detail columns
+      if (key === 'about') {
+        detailLeft.innerHTML = aboutColumns.left;
+        detailRight.innerHTML = aboutColumns.right;
+        return;
+      }
+      if (!projectDescriptions[key]) {
+        detailLeft.innerHTML = '<p>No description available.</p>';
+        detailRight.innerHTML = '';
+        return;
+      }
+      // put main description in left column, extras (if any) in right column
+      detailLeft.innerHTML = projectDescriptions[key];
+      detailRight.innerHTML = projectExtras[key] || '';
     }
-    function stopResize() {
-      isResizing = false;
-      document.documentElement.removeEventListener('mousemove', doResize);
-      document.documentElement.removeEventListener('mouseup', stopResize);
-    }
-    popup.appendChild(button);
-  }
-}
 
-function handlePlusClick() {
-  if (!currentPopupId) return;
-  openSecondPopup(currentPopupId);
-}
-
-function closeSecondPopup(id) {
-  if (!id) return;
-  const secondPopup = document.getElementById('secondPopup-' + id);
-  if (secondPopup) {
-    secondPopup.style.display = 'none';
-    setOverlayVisibility();
-  }
-}
-
-function closePopup() {
-  document.getElementById('popupContainer').style.display = 'none';
-  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-  document.querySelectorAll('.nav-column a').forEach(link => link.classList.remove('active'));
-  currentPopupId = null;
-  setOverlayVisibility();
-}
-
-function openSecondPopup(id) {
-  document.querySelectorAll('.popup-secondary').forEach(sp => sp.style.display = 'none');
-  const popup = document.getElementById(`secondPopup-${id}`);
-  if (!popup) return;
-  popup.style.display = 'block';
-  setOverlayVisibility();
-  if (!popup.querySelector('.resize-button')) {
-    const button = document.createElement('div');
-    button.className = 'resize-button';
-    button.setAttribute('aria-label', 'resize');
-    button.setAttribute('tabindex', '-1');
-    button.innerHTML = `
-      <img src="icons/Signs_expand1.jpg" alt="Resize" style="width:20px;height:20px;">
-    `;
-    let isResizing = false;
-    let startX, startY, startWidth, startHeight;
-    
-     button.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      isResizing = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
-      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
-      document.documentElement.addEventListener('mousemove', doResize);
-      document.documentElement.addEventListener('mouseup', stopResize);
+    projectItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        console.log('project click', this.dataset.key);
+        e.preventDefault();
+        e.stopPropagation();
+        const key = this.dataset.key;
+        selectProject(key);
+        projectItems.forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+        // ensure projects-list is visible if a project was selected
+        if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
+      });
     });
-    
-    button.addEventListener('mousedown', (e) => {
-      isResizing = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startWidth = parseInt(document.defaultView.getComputedStyle(popup).width, 10);
-      startHeight = parseInt(document.defaultView.getComputedStyle(popup).height, 10);
-      document.documentElement.addEventListener('mousemove', doResize);
-      document.documentElement.addEventListener('mouseup', stopResize);
+
+    // ensure clicking outside hides popup and removes show-about state
+    document.addEventListener('click', function(e) {
+      const target = e.target;
+      if (!mainPopup) return;
+      if (mainPopup.contains(target) || (menuProjects && menuProjects.contains(target)) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
+      if (mainPopup.style.display === 'block') {
+        mainPopup.style.display = 'none';
+        mainPopup.setAttribute('aria-hidden', 'true');
+        mainPopup.classList.remove('show-about');
+      }
     });
-    function doResize(e) {
-      if (!isResizing) return;
-      popup.style.width = (startWidth + e.clientX - startX) + 'px';
-      popup.style.height = (startHeight + e.clientY - startY) + 'px';
-    }
-    function stopResize() {
-      isResizing = false;
-      document.documentElement.removeEventListener('mousemove', doResize);
-      document.documentElement.removeEventListener('mouseup', stopResize);
-    }
-    popup.appendChild(button);
-  }
-}
-
-function setOverlayVisibility() {
-  const mainPopup = document.getElementById("popupContainer");
-  const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-  const anyMainVisible = mainPopup && mainPopup.style.display !== "none";
-  const anySecondaryVisible = allSecondPopups.some(el => el.style.display !== "none");
-  const overlay = document.getElementById("modal-overlay");
-  overlay.style.display = (anyMainVisible || anySecondaryVisible) ? "block" : "none";
-}
-
-document.getElementById('modal-overlay').addEventListener('mousedown', function(e) {
-  if (e.target !== this) return;
-  const mainPopup = document.getElementById("popupContainer");
-  const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-  const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none");
-  if (visibleSecondPopup) {
-    visibleSecondPopup.style.display = "none";
-    setOverlayVisibility();
-  } else if (mainPopup && mainPopup.style.display !== "none") {
-    closePopup();
-    setOverlayVisibility();
-  }
-});
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' || e.key === 'Esc') {
-    const mainPopup = document.getElementById("popupContainer");
-    const allSecondPopups = Array.from(document.querySelectorAll(".popup-secondary"));
-    const visibleSecondPopup = allSecondPopups.find(el => el.style.display !== "none");
-    if (visibleSecondPopup) {
-      visibleSecondPopup.style.display = "none";
-      setOverlayVisibility();
-    } else if (mainPopup && mainPopup.style.display !== "none") {
-      closePopup();
-      setOverlayVisibility();
-    }
-  }
-});
-
-function makeDraggable(el) {
-  let isDragging = false;
-  let origZ = '';
-  let mouseOffsetX = 0, mouseOffsetY = 0;
-  el.onmousedown = dragMouseDown;
-  function dragMouseDown(e) {
-    if (e.target.closest('.resize-button')) return;
-    if (e.button !== 0) return;
-    e.preventDefault();
-    isDragging = true;
-    // For popups: set position: fixed, left/top in px, right/bottom to auto, and remove transform and any percentage left/top
-    if (el.classList.contains('popup') || el.classList.contains('popup-secondary')) {
-      const rect = el.getBoundingClientRect();
-      el.style.position = 'fixed';
-      el.style.left = rect.left + 'px';
-      el.style.top = rect.top + 'px';
-      el.style.right = 'auto';
-      el.style.bottom = 'auto';
-      el.style.transform = 'none';
-    }
-    if (el.classList.contains('site-title-box')) {
-      const rect = el.getBoundingClientRect();
-      const rightEdge = window.innerWidth - rect.right;
-      el.style.left = (window.innerWidth - rightEdge - rect.width) + 'px';
-      el.style.top = rect.top + 'px';
-      el.style.right = '';
-      el.style.position = 'fixed';
-      mouseOffsetX = e.clientX - (window.innerWidth - rightEdge - rect.width);
-      mouseOffsetY = e.clientY - rect.top;
-    } else {
-      const rect = el.getBoundingClientRect();
-      mouseOffsetX = e.clientX - rect.left;
-      mouseOffsetY = e.clientY - rect.top;
-    }
-    origZ = el.style.zIndex;
-    el.style.zIndex = 2000;
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
-  }
-  function elementDrag(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-    el.style.top = (e.clientY - mouseOffsetY) + "px";
-    el.style.left = (e.clientX - mouseOffsetX) + "px";
-  }
-  function closeDragElement() {
-    isDragging = false;
-    el.style.zIndex = origZ;
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-window.onload = function () {
-  // Place site-title-box at top-right using left
-  const titleBox = document.querySelector('.site-title-box');
-  if (titleBox) {
-    const boxWidth = titleBox.offsetWidth;
-    titleBox.style.left = (window.innerWidth - boxWidth - 20) + 'px';
-    titleBox.style.top = '20px';
-    titleBox.style.visibility = 'visible';
-  }
-}
-document.addEventListener('DOMContentLoaded', function () {
-  // Place site-title-box at top-right using left
-  const titleBox = document.querySelector('.site-title-box');
-  if (titleBox) {
-    const boxWidth = titleBox.offsetWidth;
-    titleBox.style.left = (window.innerWidth - boxWidth - 20) + 'px';
-    titleBox.style.top = '20px';
-    titleBox.style.visibility = 'visible';
-  }
-  document.querySelectorAll('.draggable').forEach(el => {
-    makeDraggable(el);
-  });
-});
-
-// Mobile burger menu logic
-function openMobileNav() {
-  document.getElementById('mobileNavPopup').classList.add('active');
-}
-function closeMobileNav() {
-  document.getElementById('mobileNavPopup').classList.remove('active');
-}
-const burgerBtn = document.getElementById('burgerMenuBtn');
-const mobileNavPopup = document.getElementById('mobileNavPopup');
-if (burgerBtn && mobileNavPopup) {
-  burgerBtn.addEventListener('click', openMobileNav);
-  mobileNavPopup.querySelector('.close-mobile-nav').addEventListener('click', closeMobileNav);
-}
-// Show/hide burger menu on resize
-function handleBurgerMenuDisplay() {
-  if (window.innerWidth <= 768) {
-    burgerBtn.style.display = 'block';
-  } else {
-    burgerBtn.style.display = 'none';
-    closeMobileNav();
-  }
-}
-window.addEventListener('resize', handleBurgerMenuDisplay);
-document.addEventListener('DOMContentLoaded', handleBurgerMenuDisplay);
-// Disable draggable on mobile
-function isMobile() {
-  return window.innerWidth <= 768;
-}
-function disableDraggableOnMobile() {
-  if (isMobile()) {
-    document.querySelectorAll('.draggable').forEach(el => {
-      el.onmousedown = null;
-      el.ontouchstart = null;
-      el.style.pointerEvents = 'none';
-      el.style.userSelect = 'none';
-      el.style.cursor = 'default';
-    });
-  } else {
-    document.querySelectorAll('.draggable').forEach(makeDraggable);
-  }
-}
-window.addEventListener('resize', disableDraggableOnMobile);
-document.addEventListener('DOMContentLoaded', disableDraggableOnMobile);
-
-function handleLinkClick() {
-  alert('Link button clicked! (placeholder)');
-}
-</script>
+  </script>
 </body>
 </html>
