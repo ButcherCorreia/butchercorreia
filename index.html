@@ -349,29 +349,27 @@
       margin-bottom: 1rem; /* breathing room between image and contact text */
     }
 
-    /* --- Custom UI polish: scrollbar, caret and cursor using the accent color --- */
-    /* Use the same accent variable already defined: --accent */
-    /* Firefox: set thin scrollbar and color */
-    body { scrollbar-color: var(--accent) transparent; scrollbar-width: thin; }
-
-    /* WebKit-based browsers (Chrome, Safari, Edge) */
-    body::-webkit-scrollbar { width: 12px; height: 12px; }
-    body::-webkit-scrollbar-track { background: transparent; }
-    body::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 8px;
-      border: 3px solid transparent; /* create padding around thumb */
-      background-clip: padding-box;
+    /* Project gallery styles */
+    .project-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 1rem;
+      align-items: flex-start;
     }
-    body::-webkit-scrollbar-thumb:hover { background: rgba(0,51,102,0.9); }
-
-    /* Text caret color matching accent */
-    body, input, textarea { caret-color: var(--accent); }
-
-    /* Custom pointer cursor using a tiny SVG arrow in the accent color. Fallback to default cursor. */
-    /* NOTE: some browsers may ignore custom cursors for security/size reasons. */
-    body, a, button {
-      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M0 0 L22 12 L16 14 L12 10 L4 6 Z' fill='%23003366'/></svg>") 0 0, auto;
+    .project-figure {
+      width: calc(50% - 6px);
+      margin: 0;
+      background: transparent;
+    }
+    .project-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    @media (max-width: 700px) {
+      .project-figure { width: 100%; }
     }
 
     @media (max-width: 900px) {
@@ -558,6 +556,25 @@
       'performance-vista': ``
     };
 
+    // Map of project images (fill with files from `tos/` folder). Empty by default.
+    const projectImages = {
+      'taste-of-sound': [
+        // example: 'tos/01.jpg', 'tos/02.jpg'
+      ]
+    };
+    
+    // Render a simple responsive gallery into a container element
+    function renderGallery(containerEl, srcArray) {
+      if (!containerEl) return;
+      if (!srcArray || srcArray.length === 0) {
+        containerEl.innerHTML = '';
+        return;
+      }
+      containerEl.innerHTML = srcArray.map((src, i) => (
+        `<figure class="project-figure"><img src="${src}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`
+      )).join('');
+    }
+
     // About left/right column content - edit these strings to control About columns
     const aboutColumns = {
       left: `
@@ -640,14 +657,34 @@
         detailRight.innerHTML = aboutColumns.right;
         return;
       }
+
       if (!projectDescriptions[key]) {
         detailLeft.innerHTML = '<p>No description available.</p>';
         detailRight.innerHTML = '';
+        // remove any existing gallery
+        const eg = detailRight.querySelector('.project-gallery');
+        if (eg) eg.remove();
         return;
       }
+
       // put main description in left column, extras (if any) in right column
       detailLeft.innerHTML = projectDescriptions[key];
       detailRight.innerHTML = projectExtras[key] || '';
+
+      // render gallery if images exist for this project; otherwise remove any prior gallery
+      const imgs = (projectImages && projectImages[key]) ? projectImages[key] : [];
+      const existingGallery = detailRight.querySelector('.project-gallery');
+      if (imgs.length) {
+        let galleryEl = existingGallery;
+        if (!galleryEl) {
+          galleryEl = document.createElement('div');
+          galleryEl.className = 'project-gallery';
+          detailRight.appendChild(galleryEl);
+        }
+        renderGallery(galleryEl, imgs);
+      } else if (existingGallery) {
+        existingGallery.remove();
+      }
     }
 
     projectItems.forEach(item => {
