@@ -720,11 +720,11 @@
       }
 
       // get images for this project
-      const imgs = (projectImages && projectImages[key]) ? projectImages[key] : [];
+      const imgs = (projectImages && projectImages[key] ) ? projectImages[key] : [];
 
-      // Special layout for taste-of-sound: render vertical gallery in the LEFT column and move description to the RIGHT
-      if (key === 'taste-of-sound') {
-        // Left column: vertical scrolling gallery
+      // Special layout for certain projects: render vertical gallery in the LEFT column and move description to the RIGHT
+      if (['taste-of-sound', 'performance-vista', 'just-this'].includes(key)) {
+        // Left column: vertical stacked gallery
         renderVerticalGallery(detailLeft, imgs);
         // Right column: project description + extras
         detailRight.innerHTML = projectDescriptions[key] + (projectExtras[key] || '');
