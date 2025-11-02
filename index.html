@@ -24,7 +24,7 @@
   <link rel="icon" href="favicon.PNG" type="image/png">
 
   <style>
-    :root { --accent: rgb(0,51,102); }
+    :root { --accent: rgb(0,84,166); }
 
     *,
     *::before,
@@ -200,21 +200,16 @@
       border: none;
       box-sizing: border-box;
     }
-    /* When About is shown we hide the left project list and make the two detail columns equal width */
     .popup.show-about .projects-list { display: none; }
     .popup.show-about .project-detail { gap: 1rem; }
-    /* Keep left column fixed at 480px even in about mode; right column flexes */
-    /* Adjusted widths: left 550px, right 450px */
     .popup.show-about .detail-col-left { flex: 0 0 550px !important; width: 550px !important; }
     .popup.show-about .detail-col-right { flex: 0 0 450px !important; width: 450px !important; }
 
-    /* popup inner layout: left vertical list, right detail pane */
     .popup .popup-inner {
       display: flex;
       gap: 2rem;
       align-items: flex-start; /* ensure top alignment */
     }
-    /* match menu font-size and improve spacing for list and detail */
     .popup .projects-list,
     .popup .project-detail {
       font-size: 0.9rem; /* match .site-title-box .top-menu a */
@@ -222,7 +217,6 @@
       margin: 0;
       padding: 0;
     }
-    /* Remove default top margins from content so detail pane aligns with the left list */
     .popup .project-detail > * {
       margin-top: 0;
     }
@@ -308,7 +302,6 @@
       font-size: 0.8rem;
     }
 
-    /* content-grid (preserved for pages that use it) */
     .content-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -333,7 +326,6 @@
     .about-col-left { width: 48%; }
     .about-col-right { flex: 1 1 auto; }
 
-    /* Portrait used in the About left column */
     .about-portrait {
       max-width: 100%;
       height: auto;
@@ -341,7 +333,6 @@
       margin-bottom: 1rem; /* breathing room between image and contact text */
     }
 
-    /* Project gallery styles */
     .project-gallery {
       display: flex;
       flex-wrap: wrap;
@@ -361,13 +352,11 @@
       object-fit: cover;
     }
 
-    /* Vertical scroll gallery used only for taste-of-sound in the left detail column */
     .vertical-gallery {
       display: flex;
       flex-direction: column;
       gap: 12px;
       margin-top: 0.25rem;
-      /* allow the page to scroll instead of the gallery creating an internal scrollbar */
       max-height: none;
       overflow: visible;
       padding-right: 0;
@@ -388,13 +377,19 @@
         padding: 0 12px;
       }
 
-      /* optionally hide the right word on very small screens:
-      .site-title-box .site-right { display: none; } */
     }
 
     /* If the viewport becomes too narrow, allow the columns to wrap (responsive fallback) */
     @media (max-width: 1024px) {
       .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
+    }
+
+    /* make project list links change to accent on hover/focus (match active state) */
+    .popup .projects-list a:hover,
+    .popup .projects-list a:focus,
+    .popup .projects-list a:focus-visible {
+      color: var(--accent);
+      transition: color 120ms ease;
     }
   </style>
 </head>
@@ -406,7 +401,6 @@
       <span class="site-center">&amp;</span>
       <span class="site-right">CORREIA</span>
     </div>
-    <!-- top menu removed per request -->
   </div>
 
   <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
@@ -436,7 +430,7 @@
   </div>
 
   <script>
-    // landing image: scroll to top when clicked (smooth)
+    // landing image: scroll to top when clicked
     (function(){
       const landing = document.getElementById('landing-img');
       if (!landing) return;
@@ -455,19 +449,18 @@
         Performance by Rannei Grenne <br>
         BABEL visningsrom, 6th and 7th of December, 12–16.00<br>
         2025 Trondheim (NO)<br>
-        <p>
-        BUTCHER & CORREIA, together with Joana Bruno, develop visual identity (costume design, scenography) and the soundscape for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.
-        </p>
+        <p>BUTCHER & CORREIA, together with Joana Bruno, develop visual identity (costume design, scenography) and the soundscape for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.</p>
         <p>
         Concept/coreography/dance: Rannei Grenne<br>
         Visual (costume design, scenography) and sonic landscape: BUTCHER & CORREIA<br>
         Artistic design assistant: Joana Bruno
         </p>
+        <p>
         Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
         Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
         Fabric used for the costume weaved by Varp & Veft with trønder sheep wool (Selbu Spinneri)<br>
         Kastel sneakers, wool (from Trønder Sheep)<br>
-        Sound: captured with geophone<br>
+        Sound: captured with geophone
         </p>
         <p>
         External eye: Ásgerður Roberts Gunnarsdóttir<br>
@@ -479,7 +472,7 @@
 
       'sound-of-things': `
         Performance, 60 min.<br>
-        Only Connect 2025, Rosendal Teater - Trondheim (NO)
+        Only Connect 2025, Rosendal Teater - Trondheim (NO)<br>
         <p>The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.</p>
         <p>Concept: Katherine Butcher and Klaus E. Holm w. Carlos A. Correia</p>
         Sound Composition: Klaus E. Holm<br>
@@ -495,7 +488,7 @@
         Durational performance in public space<br>
         January 1st – 31st 2024, Trøndelag (NO)
         <p>We investigate the relationship between uniforms and work tasks. This 31-day performance in Trøndelag focused on the journey from concept to completion, documenting the process as it unfolded. By working with different stakeholders, we explored how ideas take shape, highlighting both successes and failures. A parallel aim of the project was to create the perfect working garment, making the evolving process an integral part of the final work.</p>
-        <p>97 companies contacted in the region</p>
+        <p>97 companies contacted in the region<br>
         11 positive responses<br>
         HUB borrowed for 1 month from Coop AS.<br>
         Donations to the working garment archive.<br>
@@ -535,8 +528,8 @@
     const projectExtras = {
       'solo': `
         <p>Digital product passport (DPP)<br>
-        Information coming soon.</p> 
-        <p><alt="Solo project image" class="project-image"></p>
+        Information coming soon.
+        </p>
       `,
       'sound-of-things': ``,
       'just-this': `
@@ -553,7 +546,7 @@
       `,
       'taste-of-sound': ``,
       'performance-vista2': `
-        <p><img src="pv2/pv2.jpg" alt="Performance Vista (Part II) image" class="project-image"></p>
+        <p>alt="Performance Vista (Part II) image" class="project-image"></p>
       `,
       'performance-vista': ``
     };
