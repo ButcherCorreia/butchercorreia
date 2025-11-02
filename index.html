@@ -575,9 +575,8 @@
       'performance-vista': [
         'pv/PV_00.jpg',
         'pv/PV_01.jpg',
-        'pv/PV_02.jpg',
+        'pv/PV_02.gif',
         'pv/PV_03.jpg',
-        'pv/PV_04.jpg',
         'pv/PV_05.jpg',
         'pv/PV_06.jpg',
         'pv/PV_07.jpg',
@@ -609,12 +608,27 @@
         containerEl.innerHTML = '';
         return;
       }
-      containerEl.innerHTML = srcArray.map((src, i) => (
-        `<figure class="project-figure"><img src="${src}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`
-      )).join('');
+
+      function mediaMarkup(src, i) {
+        const s = String(src || '').trim();
+        const lower = s.toLowerCase();
+        // video files -> autoplaying, muted, looping <video>
+        if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
+          const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
+          return `<figure class="project-figure"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video></figure>`;
+        }
+        // GIFs -> render as <img> but do not lazy-load so animation starts immediately
+        if (lower.endsWith('.gif')) {
+          return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" class="project-image gif-image"></figure>`;
+        }
+        // default images -> lazy-load
+        return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`;
+      }
+
+      containerEl.innerHTML = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
     }
 
-    // Render a vertical scrolling gallery (stacked images) used for taste-of-sound
+    // Render a vertical stacked gallery used for taste-of-sound and similar projects
     function renderVerticalGallery(containerEl, srcArray) {
       if (!containerEl) return;
       if (!srcArray || srcArray.length === 0) {
@@ -623,9 +637,21 @@
         return;
       }
       containerEl.classList.add('vertical-gallery');
-      containerEl.innerHTML = srcArray.map((src, i) => (
-        `<figure class="project-figure"><img src="${src}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`
-      )).join('');
+
+      function mediaMarkup(src, i) {
+        const s = String(src || '').trim();
+        const lower = s.toLowerCase();
+        if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
+          const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
+          return `<figure class="project-figure"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video></figure>`;
+        }
+        if (lower.endsWith('.gif')) {
+          return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" class="project-image gif-image"></figure>`;
+        }
+        return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`;
+      }
+
+      containerEl.innerHTML = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
     }
 
     // About left/right column content - edit these strings to control About columns
