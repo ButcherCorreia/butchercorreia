@@ -98,21 +98,19 @@
       text-decoration: none;
       font-size: 0.9rem;
       letter-spacing: 0.02em;
-      padding: 4px 0 6px 0; /* spacing to allow underline to sit close to word */
+      padding: 4px 0 6px 0; 
       position: relative;
       display: inline-block;
       cursor: pointer;
       line-height: 1;
       vertical-align: bottom;
     }
-    /* default underline pseudo element (transparent) and hover behaviour */
     .site-title-box .top-menu a::after,
     .popup .projects-list a::after {
-      /* underline matched exactly to the inline link width */
       content: '';
       position: absolute;
       left: 0;
-      right: 0; /* follow the element width precisely */
+      right: 0;
       bottom: 0;
       height: 3px; /* 3px ~ 3pt */
       background: transparent;
@@ -127,18 +125,15 @@
       background: var(--accent);
     }
 
-    /* Active state: make selected project look identical to hover (underline + color) */
     .popup .projects-list a.active::after,
     .popup .projects-list a.active:focus::after {
       background: var(--accent);
     }
     .popup .projects-list a.active {
       color: var(--accent);
-      /* keep same font-style as other links (no weight change) */
       font-weight: inherit;
     }
 
-    /* ensure links have no extra horizontal padding so underline matches text width */
     .site-title-box .top-menu a,
     .popup .projects-list a {
       display: inline-block;
@@ -537,11 +532,11 @@
       `
     };
 
-    // Optional extra content for the right detail column (empty by default)
     const projectExtras = {
       'solo': `
         <p>Digital product passport (DPP)<br>
-        Information coming soon.</p>
+        Information coming soon.</p> 
+        <p><img src="solo/solo.jpg" alt="Solo project image" class="project-image"></p>
       `,
       'sound-of-things': ``,
       'just-this': `
@@ -557,12 +552,17 @@
         <p>Just This And Only That embraces Intersectionality by acknowledging the link between climate justice and social justice, to engage with these overlaps and consider the wider impact.</p>
       `,
       'taste-of-sound': ``,
-      'performance-vista2': ``,
+      'performance-vista2': 
+      <p><img src="pv2/pv2.jpg" alt="Performance Vista (Part II) image" class="project-image"></p>
       'performance-vista': ``
     };
 
     // Map of project images (fill with files from `tos/` folder). Empty by default.
     const projectImages = {
+      'solo': [
+        'solo/solo.jpg',
+        'solo/solo2.jpg',
+      ],
       'taste-of-sound': [
         'tos/ToS_1.jpg',
         'tos/ToS_2.jpg',
@@ -571,6 +571,9 @@
         'tos/ToS_5.jpg',
         'tos/ToS_6.jpg',
         'tos/ToS_7.jpg'
+      ],
+      'performance-vista2': [
+        'pv2/pv2.jpg'
       ],
       'performance-vista': [
         'pv/PV_00.jpg',
