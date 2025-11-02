@@ -202,8 +202,8 @@
     }
     .popup.show-about .projects-list { display: none; }
     .popup.show-about .project-detail { gap: 1rem; }
-    .popup.show-about .detail-col-left { flex: 0 0 550px !important; width: 550px !important; }
-    .popup.show-about .detail-col-right { flex: 0 0 450px !important; width: 450px !important; }
+    .popup.show-about .detail-col-left { flex: 0 0 550px !important; width: 100% !important; }
+    .popup.show-about .detail-col-right { flex: 0 0 450px !important; width: 100% !important; }
 
     .popup .popup-inner {
       display: flex;
@@ -285,7 +285,7 @@
     .detail-col-right {
       /* fixed-width right column */
       flex: 0 0 450px;
-      width: 450px;
+      width: 100%;
       box-sizing: border-box;
     }
 
@@ -383,7 +383,6 @@
       }
 
     }
-<<<<<<< HEAD
 
     @media (max-width: 1024px) {
       .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
@@ -397,7 +396,6 @@
     }
 
     
-=======
 
     @media (max-width: 1024px) {
       .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
@@ -416,7 +414,7 @@
     /* enlarge images in the left detail column so they span full column width */ 
     .detail-col-left .project-gallery .project-figure { width: 100% !important; } .detail-col-left .project-image { object-fit: contain; }
     /* custom scrollbar styling (WebKit + Firefox). Thumb uses requested rgba color */ 
-    ::-webkit-scrollbar { width: 12px; height: 12px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(254,0,0,1); border-radius: 6px; } ::-webkit-scrollbar-thumb:hover { background: rgba(200,0,0,1); } / Firefox */ :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,1) transparent; }
+    ::-webkit-scrollbar { width: 12px; height: 12px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(254,0,0,1); border-radius: 3px; } ::-webkit-scrollbar-thumb:hover { background: rgba(200,0,0,1); } / Firefox */ :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,1) transparent; }
   
   </style>
 </head>
