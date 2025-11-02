@@ -331,7 +331,7 @@
       max-width: 100%;
       height: auto;
       display: block;
-      margin-bottom: 1rem; /* breathing room between image and contact text */
+      margin-bottom: 1rem;
     }
 
     .project-gallery {
@@ -340,6 +340,8 @@
       gap: 12px;
       margin-top: 1rem;
       align-items: flex-start;
+      padding-bottom: 100px;
+
     }
     .project-figure {
       width: calc(50% - 6px);
@@ -362,12 +364,11 @@
       overflow: visible;
       padding-right: 0;
       align-items: stretch;
-      padding-bottom: 100px; /* breathing room after last image */
+      padding-bottom: 100px;
     }
     .vertical-gallery .project-figure { width: 100%; margin: 0; }
     .vertical-gallery .project-image { width: 100%; height: auto; display: block; }
 
-    /* Right column: make gallery single-column so images are larger */ 
     .detail-col-right .project-gallery .project-figure { width: 100% !important; } .detail-col-right .project-image { object-fit: contain; } .detail-col-right { padding: 0; }
 
 
@@ -375,7 +376,6 @@
       .project-figure { width: 100%; }
     }
 
-    /* small screen tweaks for header text size or collapsing */
     @media (max-width: 420px) {
       .site-title-box {
         font-size: 0.75rem;
@@ -385,12 +385,10 @@
     }
 <<<<<<< HEAD
 
-    /* If the viewport becomes too narrow, allow the columns to wrap (responsive fallback) */
     @media (max-width: 1024px) {
       .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
     }
 
-    /* make project list links change to accent on hover/focus (match active state) */
     .popup .projects-list a:hover,
     .popup .projects-list a:focus,
     .popup .projects-list a:focus-visible {
@@ -401,12 +399,10 @@
     
 =======
 
-    /* If the viewport becomes too narrow, allow the columns to wrap (responsive fallback) */
     @media (max-width: 1024px) {
       .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
     }
 
-    /* make project list links change to accent on hover/focus (match active state) */
     .popup .projects-list a:hover,
     .popup .projects-list a:focus,
     .popup .projects-list a:focus-visible {
@@ -419,11 +415,12 @@
 
     /* enlarge images in the left detail column so they span full column width */ 
     .detail-col-left .project-gallery .project-figure { width: 100% !important; } .detail-col-left .project-image { object-fit: contain; }
-
+    /* custom scrollbar styling (WebKit + Firefox). Thumb uses requested rgba color */ 
+    ::-webkit-scrollbar { width: 12px; height: 12px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(254,0,0,1); border-radius: 6px; } ::-webkit-scrollbar-thumb:hover { background: rgba(200,0,0,1); } / Firefox */ :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,1) transparent; }
+  
   </style>
 </head>
 <body>
-  <!-- site title split into three areas and acts as a home button -->
   <div class="site-title-box">
     <div class="title-row">
       <span class="site-left">BUTCHER</span>
@@ -759,54 +756,53 @@
       }
     });
 
-    // handle project item clicks to show description
-    function selectProject(key) {
-      // special-case About: load aboutColumns into detail columns
-      if (key === 'about') {
-        detailLeft.classList.remove('vertical-gallery');
-        detailLeft.innerHTML = aboutColumns.left;
-        detailRight.innerHTML = aboutColumns.right;
-        return;
-      }
+// handle project item clicks to show description
+function selectProject(key) {
+  // special-case About: load aboutColumns into detail columns
+  if (key === 'about') {
+    detailLeft.classList.remove('vertical-gallery');
+    detailLeft.innerHTML = aboutColumns.left;
+    detailRight.innerHTML = aboutColumns.right;
+    return;
+  }
 
-      if (!projectDescriptions[key]) {
-        detailLeft.classList.remove('vertical-gallery');
-        detailLeft.innerHTML = '<p>No description available.</p>';
-        detailRight.innerHTML = '';
-        return;
-      }
+  if (!projectDescriptions[key]) {
+    // no description: clear left gallery and show fallback on right
+    detailLeft.classList.remove('vertical-gallery');
+    detailLeft.innerHTML = '';
+    detailRight.innerHTML = '<p>No description available.</p>';
+    return;
+  }
 
-      // get images for this project
-      const imgs = (projectImages && projectImages[key] ) ? projectImages[key] : [];
+  // get images for this project
+  const imgs = (projectImages && projectImages[key]) ? projectImages[key] : [];
 
-      // Special layout for certain projects: render vertical gallery in the LEFT column and move description to the RIGHT
-      if (['taste-of-sound', 'performance-vista', 'just-this'].includes(key)) {
-        // Left column: vertical stacked gallery
-        renderVerticalGallery(detailLeft, imgs);
-        // Right column: project description + extras
-        detailRight.innerHTML = projectDescriptions[key] + (projectExtras[key] || '');
-        return;
-      }
+  // Special layout for certain projects: vertical stacked gallery in the LEFT column and description in the RIGHT
+  if (['taste-of-sound', 'performance-vista', 'just-this'].includes(key)) {
+    // Left column: vertical stacked gallery
+    renderVerticalGallery(detailLeft, imgs);
+    // Right column: project description + extras
+    detailRight.innerHTML = projectDescriptions[key] + (projectExtras[key] || '');
+    return;
+  }
 
-      // Default behaviour: main description in left, extras + gallery in right
-      detailLeft.classList.remove('vertical-gallery');
-      detailLeft.innerHTML = projectDescriptions[key];
-      detailRight.innerHTML = projectExtras[key] || '';
+  // Default behaviour: render gallery in LEFT column and put description + extras in RIGHT column
+  detailLeft.classList.remove('vertical-gallery');
 
-      // render gallery if images exist for this project into the right column
-      const existingGallery = detailRight.querySelector('.project-gallery');
-      if (imgs.length) {
-        let galleryEl = existingGallery;
-        if (!galleryEl) {
-          galleryEl = document.createElement('div');
-          galleryEl.className = 'project-gallery';
-          detailRight.appendChild(galleryEl);
-        }
-        renderGallery(galleryEl, imgs);
-      } else if (existingGallery) {
-        existingGallery.remove();
-      }
-    }
+  if (imgs.length) {
+    renderGallery(detailLeft, imgs);
+  } else {
+    // no images -> clear left column
+    detailLeft.innerHTML = '';
+  }
+
+  // Ensure any gallery previously appended to the right column is removed
+  const existingGalleryInRight = detailRight.querySelector('.project-gallery');
+  if (existingGalleryInRight) existingGalleryInRight.remove();
+
+  // Set right column content to description + extras
+  detailRight.innerHTML = projectDescriptions[key] + (projectExtras[key] || '');
+}
 
     projectItems.forEach(item => {
       item.addEventListener('click', function(e) {
