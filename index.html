@@ -175,19 +175,16 @@
     /* ensure page content starts below the fixed header + menu */
     body { padding-top: 120px; }
 
-    /* landing image - bottom centered; keep behind UI */
+    /* landing image - was fixed; change to inline block shown at the end of the document */
     #landing-img {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 0; /* behind popups and header */
+      /* inline image shown at page end */
+      position: static;
+      display: block;
+      margin: 40px 20px 120px 20px; /* top/right/bottom/left — bottom keeps breathing room */
       width: auto;
-      max-width: 22.5vw;
-      max-height: 21vh;
+      max-width: 320px; /* sensible cap for large viewports */
       height: auto;
       cursor: pointer;
-      display: block;
     }
     /* ensure popup sits above landing image */
     .popup { z-index: 100002; }
@@ -380,6 +377,7 @@
       overflow: visible;
       padding-right: 0;
       align-items: stretch;
+      padding-bottom: 100px; /* breathing room after last image */
     }
     .vertical-gallery .project-figure { width: 100%; margin: 0; }
     .vertical-gallery .project-image { width: 100%; height: auto; display: block; }
@@ -436,6 +434,23 @@
       </section>
     </div>
   </div>
+
+  <!-- landing image placed inline at the very end of the document -->
+  <div class="landing-wrap" aria-hidden="false">
+    <img id="landing-img" src="landingimage2.jpg" alt="Butcher & Correia" loading="lazy" style="display:block; margin:40px 20px 120px 20px; max-width:320px; height:auto;">
+  </div>
+
+  <script>
+    // landing image: scroll to top when clicked (smooth)
+    (function(){
+      const landing = document.getElementById('landing-img');
+      if (!landing) return;
+      landing.addEventListener('click', function(e){
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
 
   <script>
     // Project descriptions (detailed content)
