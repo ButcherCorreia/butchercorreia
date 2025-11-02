@@ -378,6 +378,7 @@
       }
 
     }
+<<<<<<< HEAD
 
     /* If the viewport becomes too narrow, allow the columns to wrap (responsive fallback) */
     @media (max-width: 1024px) {
@@ -391,6 +392,29 @@
       color: var(--accent);
       transition: color 120ms ease;
     }
+
+    
+=======
+
+    /* If the viewport becomes too narrow, allow the columns to wrap (responsive fallback) */
+    @media (max-width: 1024px) {
+      .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
+    }
+
+    /* make project list links change to accent on hover/focus (match active state) */
+    .popup .projects-list a:hover,
+    .popup .projects-list a:focus,
+    .popup .projects-list a:focus-visible {
+      color: var(--accent);
+      transition: color 120ms ease;
+    }
+
+    /* Large paragraph */
+    p { margin-bottom: 1.5rem; }
+
+    /* enlarge images in the left detail column so they span full column width */ 
+    .detail-col-left .project-gallery .project-figure { width: 100% !important; } .detail-col-left .project-image { object-fit: contain; }
+
   </style>
 </head>
 <body>
@@ -533,7 +557,7 @@
       `,
       'sound-of-things': ``,
       'just-this': `
-        <p>Manifesto</p>
+        <p><strong>Manifesto</strong></p>
         <p>Just This And Only That believes in the collective adoption of sustainable living. Communication by asking and answering one another, guides us towards shared action.</p>
         <p>Just This And Only That aims to transform overlooked aspects into valuable contributions that are rooted in the local community. By intertwining creativity and daily existence, we strive to achieve sustainable living.</p>
         <p>Just This And Only That aims to create artistic constellations that promote shared responsibility, unexpected discoveries, and evolving identities.</p>
@@ -544,9 +568,11 @@
         <p>Just This And Only That aims to reduce our environmental footprint by encouraging sustainable choices and responsible practices.</p>
         <p>Just This And Only That embraces Intersectionality by acknowledging the link between climate justice and social justice, to engage with these overlaps and consider the wider impact.</p>
       `,
+     
       'taste-of-sound': ``,
+     
       'performance-vista2': `
-        <p>alt="Performance Vista (Part II) image" class="project-image"></p>
+        <p>image" class="project-image"></p>
       `,
       'performance-vista': ``
     };
