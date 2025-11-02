@@ -368,17 +368,22 @@
       display: block;
       object-fit: cover;
     }
+
+    /* Vertical scroll gallery used only for taste-of-sound in the left detail column */
+    .vertical-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 0.25rem;
+      max-height: calc(80vh - 160px); /* leave room for header and padding */
+      overflow-y: auto;
+      padding-right: 6px; /* room for scrollbar */
+    }
+    .vertical-gallery .project-figure { width: 100%; }
+    .vertical-gallery .project-image { width: 100%; height: auto; display: block; }
+
     @media (max-width: 700px) {
       .project-figure { width: 100%; }
-    }
-
-    @media (max-width: 900px) {
-      .content-grid {
-        grid-template-columns: 1fr;
-        margin: 40px 20px;
-        padding: 1rem;
-        gap: 1.5rem;
-      }
     }
 
     /* small screen tweaks for header text size or collapsing */
@@ -560,7 +565,13 @@
     // Map of project images (fill with files from `tos/` folder). Empty by default.
     const projectImages = {
       'taste-of-sound': [
-        // example: 'tos/01.jpg', 'tos/02.jpg'
+        'tos/ToS_1.jpg',
+        'tos/ToS_2.jpg',
+        'tos/ToS_3.jpg',
+        'tos/ToS_4.jpg',
+        'tos/ToS_5.jpg',
+        'tos/ToS_6.jpg',
+        'tos/ToS_7.jpg'
       ]
     };
     
@@ -571,6 +582,20 @@
         containerEl.innerHTML = '';
         return;
       }
+      containerEl.innerHTML = srcArray.map((src, i) => (
+        `<figure class="project-figure"><img src="${src}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`
+      )).join('');
+    }
+
+    // Render a vertical scrolling gallery (stacked images) used for taste-of-sound
+    function renderVerticalGallery(containerEl, srcArray) {
+      if (!containerEl) return;
+      if (!srcArray || srcArray.length === 0) {
+        containerEl.innerHTML = '';
+        containerEl.classList.remove('vertical-gallery');
+        return;
+      }
+      containerEl.classList.add('vertical-gallery');
       containerEl.innerHTML = srcArray.map((src, i) => (
         `<figure class="project-figure"><img src="${src}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`
       )).join('');
@@ -654,26 +679,37 @@
     function selectProject(key) {
       // special-case About: load aboutColumns into detail columns
       if (key === 'about') {
+        detailLeft.classList.remove('vertical-gallery');
         detailLeft.innerHTML = aboutColumns.left;
         detailRight.innerHTML = aboutColumns.right;
         return;
       }
 
       if (!projectDescriptions[key]) {
+        detailLeft.classList.remove('vertical-gallery');
         detailLeft.innerHTML = '<p>No description available.</p>';
         detailRight.innerHTML = '';
-        // remove any existing gallery
-        const eg = detailRight.querySelector('.project-gallery');
-        if (eg) eg.remove();
         return;
       }
 
-      // put main description in left column, extras (if any) in right column
+      // get images for this project
+      const imgs = (projectImages && projectImages[key]) ? projectImages[key] : [];
+
+      // Special layout for taste-of-sound: render vertical gallery in the LEFT column and move description to the RIGHT
+      if (key === 'taste-of-sound') {
+        // Left column: vertical scrolling gallery
+        renderVerticalGallery(detailLeft, imgs);
+        // Right column: project description + extras
+        detailRight.innerHTML = projectDescriptions[key] + (projectExtras[key] || '');
+        return;
+      }
+
+      // Default behaviour: main description in left, extras + gallery in right
+      detailLeft.classList.remove('vertical-gallery');
       detailLeft.innerHTML = projectDescriptions[key];
       detailRight.innerHTML = projectExtras[key] || '';
 
-      // render gallery if images exist for this project; otherwise remove any prior gallery
-      const imgs = (projectImages && projectImages[key]) ? projectImages[key] : [];
+      // render gallery if images exist for this project into the right column
       const existingGallery = detailRight.querySelector('.project-gallery');
       if (imgs.length) {
         let galleryEl = existingGallery;
