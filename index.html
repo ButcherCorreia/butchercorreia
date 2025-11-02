@@ -177,12 +177,15 @@
 
     /* landing image - was fixed; change to inline block shown at the end of the document */
     #landing-img {
-      /* inline image shown at page end */
-      position: static;
-      display: block;
-      margin: 40px 20px 120px 20px; /* top/right/bottom/left — bottom keeps breathing room */
+      /* fixed at bottom-left; keep same left offset as header (20px) */
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      transform: none;
+      z-index: 99999; /* sit below site title (100000) and popups (100002) */
       width: auto;
-      max-width: 320px; /* sensible cap for large viewports */
+      /* ~70% smaller than previous max (320px -> ~96px) */
+      max-width: 96px;
       height: auto;
       cursor: pointer;
     }
@@ -468,6 +471,7 @@
         Visual (costume design, scenography) and sonic landscape: BUTCHER & CORREIA<br>
         Artistic design assistant: Joana Bruno
         </p>
+        <p>
         Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
         Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
         Fabric used for the costume weaved by Varp & Veft with trønder sheep wool (Selbu Spinneri)<br>
@@ -485,9 +489,7 @@
       'sound-of-things': `
         <p>Performance, 60 min.<br>
         Only Connect 2025, Rosendal Teater - Trondheim (NO)</p>
-
         <p>The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.</p>
-
         <p>
         Concept: Katherine Butcher and Klaus E. Holm w. Carlos A. Correia<br>
         Sound Composition: Klaus E. Holm<br>
