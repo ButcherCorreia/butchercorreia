@@ -281,12 +281,14 @@
       width: 550px;
       box-sizing: border-box;
       padding: 0;
+      align-self: flex-start; /* ensure this column aligns to the top of the projects list */
     }
     .detail-col-right {
       /* fixed-width right column */
       flex: 0 0 450px;
       width: 100%;
       box-sizing: border-box;
+      align-self: flex-start; /* ensure this column aligns to the top of the projects list */
     }
 
     /* Prevent long content or images from forcing column widths */
@@ -338,7 +340,8 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 1rem;
+      /* remove top margin so gallery aligns with project list and right column */
+      margin-top: 0;
       align-items: flex-start;
       padding-bottom: 100px;
 
@@ -359,7 +362,8 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-top: 0.25rem;
+      /* remove small top offset so vertical galleries align with header and list */
+      margin-top: 0;
       max-height: none;
       overflow: visible;
       padding-right: 0;
