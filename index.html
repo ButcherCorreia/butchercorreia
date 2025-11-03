@@ -413,8 +413,33 @@
 
     /* enlarge images in the left detail column so they span full column width */ 
     .detail-col-left .project-gallery .project-figure { width: 100% !important; } .detail-col-left .project-image { object-fit: contain; }
-    /* custom scrollbar styling (WebKit + Firefox). Thumb uses requested rgba color */ 
-    ::-webkit-scrollbar { width: 12px; height: 12px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(254,0,0,1); border-radius: 3px; } ::-webkit-scrollbar-thumb:hover { background: rgba(200,0,0,1); } / Firefox */ :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,1) transparent; }
+    /* custom scrollbar: thinner and auto-hide by default; visible on hover or while scrolling */
+    /* WebKit-based browsers (Chrome, Edge, Safari) */
+    *::-webkit-scrollbar { width: 8px; height: 8px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb {
+      background: rgba(254,0,0,0); /* hidden by default */
+      border-radius: 6px;
+      transition: background-color 200ms ease, opacity 200ms ease;
+      min-height: 24px;
+    }
+
+    /* show thumb when hovering a scrollable area */
+    body:hover *::-webkit-scrollbar-thumb,
+    .project-gallery:hover::-webkit-scrollbar-thumb,
+    .detail-col-left:hover::-webkit-scrollbar-thumb,
+    .detail-col-right:hover::-webkit-scrollbar-thumb {
+      background: rgba(254,0,0,0.95);
+    }
+
+    /* allow JS to reveal the thumb briefly during scroll */
+    body.show-scroll *::-webkit-scrollbar-thumb { background: rgba(254,0,0,0.95); }
+
+    /* Firefox: thin scrollbar by default and hidden thumb color; reveal on hover/scroll */
+    :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,0) transparent; }
+    .project-gallery:hover, .detail-col-left:hover, .detail-col-right:hover, body.show-scroll {
+      scrollbar-color: rgba(254,0,0,0.95) transparent;
+    }
   
   </style>
 </head>
