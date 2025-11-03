@@ -853,5 +853,39 @@ function selectProject(key) {
       }
     });
   </script>
+
+  <script>
+    // Reveal scroll thumb while user is scrolling or hovering scrollable areas.
+    (function() {
+      const SHOW_CLASS = 'show-scroll';
+      let timer = null;
+
+      function reveal() {
+        document.body.classList.add(SHOW_CLASS);
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => document.body.classList.remove(SHOW_CLASS), 700);
+      }
+
+      // common scroll and input events
+      window.addEventListener('scroll', reveal, { passive: true });
+      window.addEventListener('wheel', reveal, { passive: true });
+      window.addEventListener('touchmove', reveal, { passive: true });
+      window.addEventListener('keydown', (e) => {
+        // show on navigation keys that cause scrolling
+        const keys = ['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '];
+        if (keys.includes(e.key)) reveal();
+      }, { passive: true });
+
+      // show while hovering known scrollable areas
+      const hoverTargets = document.querySelectorAll('.project-gallery, .detail-col-left, .detail-col-right, .projects-list');
+      hoverTargets.forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add(SHOW_CLASS), { passive: true });
+        el.addEventListener('mouseleave', () => document.body.classList.remove(SHOW_CLASS), { passive: true });
+      });
+
+      // For browsers that don't fire scroll events for some containers, observe wheel events on the document
+      document.addEventListener('wheel', reveal, { passive: true });
+    })();
+  </script>
 </body>
 </html>
