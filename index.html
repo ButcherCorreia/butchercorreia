@@ -654,12 +654,21 @@
     };
     
     // Render a simple responsive gallery into a container element
+    // Ensure the container has the `project-gallery` class so CSS targeting
+    // `.detail-col-left .project-gallery .project-figure { width: 100% }` applies.
     function renderGallery(containerEl, srcArray) {
       if (!containerEl) return;
+      // remove vertical-gallery state if present
+      containerEl.classList.remove('vertical-gallery');
+
       if (!srcArray || srcArray.length === 0) {
+        containerEl.classList.remove('project-gallery');
         containerEl.innerHTML = '';
         return;
       }
+
+      // ensure gallery class is present
+      containerEl.classList.add('project-gallery');
 
       function mediaMarkup(src, i) {
         const s = String(src || '').trim();
@@ -688,6 +697,8 @@
         containerEl.classList.remove('vertical-gallery');
         return;
       }
+      // vertical gallery should not keep the project-gallery class which targets grid/wrap styles
+      containerEl.classList.remove('project-gallery');
       containerEl.classList.add('vertical-gallery');
 
       function mediaMarkup(src, i) {
