@@ -369,6 +369,16 @@
     .vertical-gallery .project-figure { width: 100%; margin: 0; }
     .vertical-gallery .project-image { width: 100%; height: auto; display: block; }
 
+    /* single-column/full-width override for specific projects */
+    .detail-col-left .project-gallery.single {
+      display: block;
+    }
+    .detail-col-left .project-gallery.single .project-figure {
+      width: 100% !important;
+      margin: 0 !important;
+      display: block;
+    }
+
     .detail-col-right .project-gallery .project-figure { width: 100% !important; } .detail-col-right .project-image { object-fit: contain; } .detail-col-right { padding: 0; }
 
 
@@ -833,6 +843,11 @@ function selectProject(key) {
 
   if (imgs.length) {
     renderGallery(detailLeft, imgs);
+    // force single-column (full-width) layout for short galleries that should fill the column
+    if (['solo', 'performance-vista2'].includes(key)) {
+      const wrapper = detailLeft.querySelector('.project-gallery');
+      if (wrapper) wrapper.classList.add('single');
+    }
   } else {
     // no images -> clear left column
     detailLeft.innerHTML = '';
