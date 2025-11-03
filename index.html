@@ -658,17 +658,13 @@
     // `.detail-col-left .project-gallery .project-figure { width: 100% }` applies.
     function renderGallery(containerEl, srcArray) {
       if (!containerEl) return;
-      // remove vertical-gallery state if present
+      // remove any vertical-gallery class from the container (we'll use internal wrappers)
       containerEl.classList.remove('vertical-gallery');
 
       if (!srcArray || srcArray.length === 0) {
-        containerEl.classList.remove('project-gallery');
         containerEl.innerHTML = '';
         return;
       }
-
-      // ensure gallery class is present
-      containerEl.classList.add('project-gallery');
 
       function mediaMarkup(src, i) {
         const s = String(src || '').trim();
@@ -686,7 +682,16 @@
         return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`;
       }
 
-      containerEl.innerHTML = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
+      // wrap figures in an internal .project-gallery so CSS selectors like
+      // `.detail-col-left .project-gallery .project-figure` match correctly
+      const inner = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
+      containerEl.innerHTML = `<div class="project-gallery">${inner}</div>`;
+      // Ensure figures fill the column (use inline style to override any stubborn CSS)
+      const figs = containerEl.querySelectorAll('.project-figure');
+      figs.forEach(f => {
+        f.style.width = '100%';
+        f.style.margin = '0';
+      });
     }
 
     // Render a vertical stacked gallery used for taste-of-sound and similar projects
@@ -697,7 +702,8 @@
         containerEl.classList.remove('vertical-gallery');
         return;
       }
-      // vertical gallery should not keep the project-gallery class which targets grid/wrap styles
+      // vertical galleries use an internal wrapper so the container element stays
+      // as `.detail-col-left` and our CSS selectors continue to work.
       containerEl.classList.remove('project-gallery');
       containerEl.classList.add('vertical-gallery');
 
@@ -714,7 +720,8 @@
         return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`;
       }
 
-      containerEl.innerHTML = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
+      const innerV = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
+      containerEl.innerHTML = `<div class="vertical-gallery">${innerV}</div>`;
     }
 
     // About left/right column content - edit these strings to control About columns
