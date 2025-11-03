@@ -418,7 +418,7 @@
     *::-webkit-scrollbar { width: 8px; height: 8px; }
     *::-webkit-scrollbar-track { background: transparent; }
     *::-webkit-scrollbar-thumb {
-      background: rgba(254,0,0,0); /* hidden by default */
+      background: rgba(254,0,0,1); /* red thumb */
       border-radius: 6px;
       transition: background-color 200ms ease, opacity 200ms ease;
       min-height: 24px;
@@ -436,9 +436,9 @@
     body.show-scroll *::-webkit-scrollbar-thumb { background: rgba(254,0,0,0.95); }
 
     /* Firefox: thin scrollbar by default and hidden thumb color; reveal on hover/scroll */
-    :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,0) transparent; }
+    :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,1) transparent; }
     .project-gallery:hover, .detail-col-left:hover, .detail-col-right:hover, body.show-scroll {
-      scrollbar-color: rgba(254,0,0,0.95) transparent;
+      scrollbar-color: rgba(254,0,0,1) transparent;
     }
   
   </style>
@@ -515,6 +515,7 @@
         <p>
         External eye: Ásgerður Roberts Gunnarsdóttir<br>
         Documentation: Lili Zaneta<br>
+        <p>Special thanks to: Astrid Ljungberg, Pekka Stokke</p>
         Supported by: Kulturrådet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere<br>
         Co-production: DansiT koreografisk senter, in collaboration with BABEL visningsrom, Trondheim
         </p>
