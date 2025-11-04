@@ -456,6 +456,66 @@
       scrollbar-color: rgba(254,0,0,1) transparent;
     }
   
+    /* Mobile burger + overlay (visible under mobile breakpoint) */
+    @media (max-width: 700px) {
+      /* Hamburger button */
+      .mobile-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+      .mobile-menu-toggle .hamburger {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #000;
+        position: relative;
+      }
+      .mobile-menu-toggle .hamburger::before,
+      .mobile-menu-toggle .hamburger::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #000;
+      }
+      .mobile-menu-toggle .hamburger::before { top: -7px; }
+      .mobile-menu-toggle .hamburger::after { top: 7px; }
+
+      /* Hide the left projects list by default — show as overlay when menu is open */
+      .popup .projects-list {
+        display: none;
+        position: absolute;
+        top: 64px; /* adjust if header height differs or use safe-area calc on iOS */
+        left: 20px;
+        right: 20px;
+        background: #fff;
+        padding: 12px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        border-radius: 4px;
+        max-height: 60vh;
+        overflow: auto;
+        z-index: 100003;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .popup.mobile-open .projects-list {
+        display: flex;
+      }
+    }
+
+    /* Hide toggle on larger screens */
+    @media (min-width: 701px) {
+      .mobile-menu-toggle { display: none; }
+    }
+  
   </style>
 </head>
 <body>
@@ -465,11 +525,17 @@
       <span class="site-center">&amp;</span>
       <span class="site-right">CORREIA</span>
     </div>
+    <!-- Mobile hamburger toggle (visible under the mobile breakpoint) -->
+    <div class="top-menu" aria-hidden="false">
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="projectsList" aria-label="Open projects menu">
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
 
   <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
     <div class="popup-inner">
-      <nav class="projects-list" aria-label="Projects list">
+      <nav id="projectsList" class="projects-list" aria-label="Projects list">
         <a href="#solo" data-key="solo" class="project-item">Forlengelser</a>
         <a href="#sound-of-things" data-key="sound-of-things" class="project-item">The Sound of Things</a>
         <a href="#just-this" data-key="just-this" class="project-item">Just This And Only That</a>
@@ -837,6 +903,13 @@
         items.forEach(i => i.classList.remove('active'));
         a.classList.add('active');
         if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
+
+        // close mobile menu if open
+        if (mainPopup && mainPopup.classList.contains('mobile-open')) {
+          mainPopup.classList.remove('mobile-open');
+          const mobToggle = document.getElementById('mobile-menu-toggle');
+          if (mobToggle) mobToggle.setAttribute('aria-expanded', 'false');
+        }
       });
     }
     // defensive check: ensure menu anchor variable exists (menu removed intentionally)
@@ -917,6 +990,13 @@ function selectProject(key) {
         this.classList.add('active');
         // ensure projects-list is visible if a project was selected
         if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
+
+        // close mobile menu if open
+        if (mainPopup && mainPopup.classList.contains('mobile-open')) {
+          mainPopup.classList.remove('mobile-open');
+          const mobToggle = document.getElementById('mobile-menu-toggle');
+          if (mobToggle) mobToggle.setAttribute('aria-expanded', 'false');
+        }
       });
     });
 
@@ -931,6 +1011,51 @@ function selectProject(key) {
         mainPopup.classList.remove('show-about');
       }
     });
+  </script>
+
+  <!-- Mobile menu toggle script -->
+  <script>
+  (function(){
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const projectsList = document.getElementById('projectsList');
+    if (!toggle || !projectsList) return;
+
+    function openMenu() {
+      if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.add('mobile-open');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+    function closeMenu() {
+      if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.remove('mobile-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      if (expanded) closeMenu(); else openMenu();
+    });
+
+    // Close after selecting a project in the mobile overlay
+    projectsList.addEventListener('click', function(e){
+      const a = e.target.closest('a');
+      if (!a) return;
+      // allow existing handlers to run, then close the overlay
+      setTimeout(closeMenu, 50);
+    });
+
+    // click outside to close
+    document.addEventListener('click', function(e){
+      if (!mainPopup) return;
+      if (!mainPopup.classList.contains('mobile-open')) return;
+      if (mainPopup.contains(e.target) || (siteTitle && siteTitle.contains(e.target))) return;
+      closeMenu();
+    });
+
+    // Close if switching to desktop widths
+    window.addEventListener('resize', function(){
+      if (window.innerWidth > 700) closeMenu(); // change 700->768 if you change the media query
+    }, { passive: true });
+  })();
   </script>
 
   <script>
