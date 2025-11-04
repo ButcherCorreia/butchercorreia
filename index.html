@@ -674,6 +674,8 @@
         'jtaot/JTAOT_15.jpg'
       ]
     };
+  // Feature flag: show captions under images when true. Keep false to preserve current look.
+  const SHOW_CAPTIONS = false;
     
     // Render a simple responsive gallery into a container element
     // Ensure the container has the `project-gallery` class so CSS targeting
@@ -688,20 +690,43 @@
         return;
       }
 
-      function mediaMarkup(src, i) {
-        const s = String(src || '').trim();
+      // Accept either a string (legacy) or an object { src, alt, caption }
+      function normalizeEntry(entry) {
+        if (!entry) return { src: '', alt: '', caption: '' };
+        if (typeof entry === 'string') return { src: entry, alt: '', caption: '' };
+        // defensively coerce fields to strings
+        return { src: String(entry.src || ''), alt: String(entry.alt || ''), caption: String(entry.caption || '') };
+      }
+
+      function mediaMarkup(entry, i) {
+        const e = normalizeEntry(entry);
+        const s = String(e.src || '').trim();
         const lower = s.toLowerCase();
+        const altText = e.alt || `Image ${i+1}`;
+
         // video files -> autoplaying, muted, looping <video>
         if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
           const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
           return `<figure class="project-figure"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video></figure>`;
         }
+
         // GIFs -> render as <img> but do not lazy-load so animation starts immediately
         if (lower.endsWith('.gif')) {
-          return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" class="project-image gif-image"></figure>`;
+          return `<figure class="project-figure"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image"></figure>`;
         }
+
         // default images -> lazy-load
-        return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`;
+        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image">`;
+        // optionally include caption (disabled by default to preserve appearance)
+        if (SHOW_CAPTIONS && e.caption) {
+          return `<figure class="project-figure">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption></figure>`;
+        }
+        return `<figure class="project-figure">${imgHtml}</figure>`;
+      }
+
+      // small helper to escape minimal HTML for injected attributes/captions
+      function escapeHtml(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
 
       // wrap figures in an internal .project-gallery so CSS selectors like
@@ -729,17 +754,25 @@
       containerEl.classList.remove('project-gallery');
       containerEl.classList.add('vertical-gallery');
 
-      function mediaMarkup(src, i) {
-        const s = String(src || '').trim();
+      // vertical gallery uses same normalization + markup helper
+      function mediaMarkup(entry, i) {
+        const e = normalizeEntry(entry);
+        const s = String(e.src || '').trim();
         const lower = s.toLowerCase();
+        const altText = e.alt || `Image ${i+1}`;
+
         if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
           const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
           return `<figure class="project-figure"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video></figure>`;
         }
         if (lower.endsWith('.gif')) {
-          return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" class="project-image gif-image"></figure>`;
+          return `<figure class="project-figure"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image"></figure>`;
         }
-        return `<figure class="project-figure"><img src="${s}" alt="Image ${i+1}" loading="lazy" class="project-image"></figure>`;
+        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image">`;
+        if (SHOW_CAPTIONS && e.caption) {
+          return `<figure class="project-figure">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption></figure>`;
+        }
+        return `<figure class="project-figure">${imgHtml}</figure>`;
       }
 
       const innerV = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
