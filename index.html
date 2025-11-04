@@ -676,6 +676,17 @@
     };
   // Feature flag: show captions under images when true. Keep false to preserve current look.
   const SHOW_CAPTIONS = false;
+  // helper: accept either a string (legacy) or an object { src, alt, caption }
+  function normalizeEntry(entry) {
+    if (!entry) return { src: '', alt: '', caption: '' };
+    if (typeof entry === 'string') return { src: entry, alt: '', caption: '' };
+    return { src: String(entry.src || ''), alt: String(entry.alt || ''), caption: String(entry.caption || '') };
+  }
+
+  // small helper to escape minimal HTML for injected attributes/captions
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
     
     // Render a simple responsive gallery into a container element
     // Ensure the container has the `project-gallery` class so CSS targeting
@@ -688,14 +699,6 @@
       if (!srcArray || srcArray.length === 0) {
         containerEl.innerHTML = '';
         return;
-      }
-
-      // Accept either a string (legacy) or an object { src, alt, caption }
-      function normalizeEntry(entry) {
-        if (!entry) return { src: '', alt: '', caption: '' };
-        if (typeof entry === 'string') return { src: entry, alt: '', caption: '' };
-        // defensively coerce fields to strings
-        return { src: String(entry.src || ''), alt: String(entry.alt || ''), caption: String(entry.caption || '') };
       }
 
       function mediaMarkup(entry, i) {
@@ -724,10 +727,7 @@
         return `<figure class="project-figure">${imgHtml}</figure>`;
       }
 
-      // small helper to escape minimal HTML for injected attributes/captions
-      function escapeHtml(str) {
-        return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      }
+      
 
       // wrap figures in an internal .project-gallery so CSS selectors like
       // `.detail-col-left .project-gallery .project-figure` match correctly
