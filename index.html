@@ -457,58 +457,52 @@
     }
   
     /* Mobile burger + overlay (visible under mobile breakpoint) */
+    
     @media (max-width: 700px) {
-      /* Hamburger button */
-      .mobile-menu-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: transparent;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-      }
-      .mobile-menu-toggle .hamburger {
-        display: block;
-        width: 22px;
-        height: 2px;
-        background: #000;
-        position: relative;
-      }
-      .mobile-menu-toggle .hamburger::before,
-      .mobile-menu-toggle .hamburger::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #000;
-      }
-      .mobile-menu-toggle .hamburger::before { top: -7px; }
-      .mobile-menu-toggle .hamburger::after { top: 7px; }
+    /* Hamburger button */
+    .mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    / Position the toggle flush with the left of the site title /
+    position: absolute;
+    left: 20px; / aligns with .site-title-box padding /
+    top: 8px; / small vertical offset to sit within the header /
+    z-index: 100020; / sit above other UI /
+    }
+    .mobile-menu-toggle .hamburger {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #000;
+    position: relative;
+    z-index: 100021; / ensure the 3 bars are above everything */
+    }
 
-      /* Hide the left projects list by default — show as overlay when menu is open */
-      .popup .projects-list {
-        display: none;
-        position: absolute;
-        top: 64px; /* adjust if header height differs or use safe-area calc on iOS */
-        left: 20px;
-        right: 20px;
-        background: #fff;
-        padding: 12px;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-        border-radius: 4px;
-        max-height: 60vh;
-        overflow: auto;
-        z-index: 100003;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      .popup.mobile-open .projects-list {
-        display: flex;
-      }
+    /* Hide the left projects list by default — show as overlay when menu is open /
+    .popup .projects-list {
+    display: none;
+    position: absolute;
+    top: 64px; / adjust if header height differs or use safe-area calc on iOS */
+    left: 20px;
+    right: 20px;
+    padding: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    border-radius: 4px;
+    max-height: 60vh;
+    overflow: auto;
+    z-index: 100003;
+    flex-direction: column;
+    gap: 0.5rem;
+    }
+    .popup.mobile-open .projects-list {
+    display: flex;
     }
 
     /* Hide toggle on larger screens */
