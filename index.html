@@ -400,6 +400,18 @@
     /* allow keyboard focus on figure to reveal credits */
     .project-figure[tabindex] { outline: none; }
 
+    /* Consistent caption styling for images when SHOW_CAPTIONS = true */
+    .project-caption {
+      display: block;
+      font-size: 0.85rem;
+      color: #333; /* neutral, readable color */
+      margin-top: 0.35rem;
+      line-height: 1.25;
+      font-style: italic;
+      background: transparent; /* inline captions use transparent background */
+      padding: 0 2px;
+    }
+
     /* single-column/full-width override for specific projects */
     .detail-col-left .project-gallery.single {
       display: block;
@@ -894,9 +906,9 @@
       right: `
          <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
           <p>
-            <figure class="project-figure" tabindex="0" style="position:relative; max-width:260px;">
+            <figure class="project-figure" tabindex="0">
               <img src="BCportrait.jpg" alt="Portrait of Butcher & Correia" class="project-image about-portrait" data-credit="Photo: Katherine Butcher" data-source="Butcher & Correia archive" data-license="All rights reserved">
-              <figcaption class="photo-credit">Photo: Katherine Butcher — Butcher & Correia archive</figcaption>
+              <figcaption class="photo-credit">Butcher & Correia archive</figcaption>
             </figure>
           </p>
 
