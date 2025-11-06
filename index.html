@@ -351,6 +351,7 @@
       width: calc(50% - 6px);
       margin: 0;
       background: transparent;
+      position: relative; /* required for credit overlay positioning */
     }
     .project-image {
       width: 100%;
@@ -373,6 +374,31 @@
     }
     .vertical-gallery .project-figure { width: 100%; margin: 0; }
     .vertical-gallery .project-image { width: 100%; height: auto; display: block; }
+
+    /* Photo credit overlay (revealed on hover or keyboard focus) */
+    .photo-credit {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.92);
+      color: #111;
+      font-size: 0.78rem;
+      line-height: 1.2;
+      padding: 6px 8px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 180ms ease, transform 180ms ease;
+      pointer-events: none; /* avoid capturing pointer events while hidden */
+    }
+    .project-figure:focus-within .photo-credit,
+    .project-figure:hover .photo-credit {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    /* allow keyboard focus on figure to reveal credits */
+    .project-figure[tabindex] { outline: none; }
 
     /* single-column/full-width override for specific projects */
     .detail-col-left .project-gallery.single {
@@ -739,9 +765,16 @@
   const SHOW_CAPTIONS = false;
   // helper: accept either a string (legacy) or an object { src, alt, caption }
   function normalizeEntry(entry) {
-    if (!entry) return { src: '', alt: '', caption: '' };
-    if (typeof entry === 'string') return { src: entry, alt: '', caption: '' };
-    return { src: String(entry.src || ''), alt: String(entry.alt || ''), caption: String(entry.caption || '') };
+    if (!entry) return { src: '', alt: '', caption: '', credit: '', source: '', license: '' };
+    if (typeof entry === 'string') return { src: entry, alt: '', caption: '', credit: '', source: '', license: '' };
+    return {
+      src: String(entry.src || ''),
+      alt: String(entry.alt || ''),
+      caption: String(entry.caption || ''),
+      credit: String(entry.credit || ''),
+      source: String(entry.source || ''),
+      license: String(entry.license || '')
+    };
   }
 
   // small helper to escape minimal HTML for injected attributes/captions
@@ -771,21 +804,21 @@
         // video files -> autoplaying, muted, looping <video>
         if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
           const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
-          return `<figure class="project-figure"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video></figure>`;
+          return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video>${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}</figure>`;
         }
 
         // GIFs -> render as <img> but do not lazy-load so animation starts immediately
         if (lower.endsWith('.gif')) {
-          return `<figure class="project-figure"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image"></figure>`;
+          return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image" data-credit="${escapeHtml(e.credit)}"></figure>${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}`;
         }
 
         // default images -> lazy-load
-        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image">`;
+        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}">`;
         // optionally include caption (disabled by default to preserve appearance)
         if (SHOW_CAPTIONS && e.caption) {
-          return `<figure class="project-figure">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption></figure>`;
+          return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption>${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}</figure>`;
         }
-        return `<figure class="project-figure">${imgHtml}</figure>`;
+        return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}">${imgHtml}${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}</figure>`;
       }
 
       
@@ -824,16 +857,16 @@
 
         if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
           const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
-          return `<figure class="project-figure"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video></figure>`;
+          return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video>${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}</figure>`;
         }
         if (lower.endsWith('.gif')) {
-          return `<figure class="project-figure"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image"></figure>`;
+          return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image" data-credit="${escapeHtml(e.credit)}">${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}</figure>`;
         }
-        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image">`;
+        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}">`;
         if (SHOW_CAPTIONS && e.caption) {
-          return `<figure class="project-figure">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption></figure>`;
+          return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption>${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}</figure>`;
         }
-        return `<figure class="project-figure">${imgHtml}</figure>`;
+        return `<figure class="project-figure" tabindex="0" data-credit="${escapeHtml(e.credit)}" data-source="${escapeHtml(e.source)}" data-license="${escapeHtml(e.license)}">${imgHtml}${e.credit ? `<figcaption class="photo-credit">${escapeHtml(e.credit)}</figcaption>` : ''}</figure>`;
       }
 
       const innerV = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
@@ -860,7 +893,12 @@
       `,
       right: `
          <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
-          <p><img src="BCportrait.jpg" alt="Portrait of Butcher & Correia" class="about-portrait"></p>
+          <p>
+            <figure class="project-figure" tabindex="0" style="position:relative; max-width:260px;">
+              <img src="BCportrait.jpg" alt="Portrait of Butcher & Correia" class="project-image about-portrait" data-credit="Photo: Katherine Butcher" data-source="Butcher & Correia archive" data-license="All rights reserved">
+              <figcaption class="photo-credit">Photo: Katherine Butcher — Butcher & Correia archive</figcaption>
+            </figure>
+          </p>
 
       ` 
     };
