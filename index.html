@@ -383,11 +383,10 @@
     /* Consistent caption styling for images when SHOW_CAPTIONS = true */
     .project-caption {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: #333; /* neutral, readable color */
       margin-top: 0.35rem;
       line-height: 1.25;
-      font-style: italic;
       background: transparent; /* inline captions use transparent background */
       padding: 0 2px;
     }
@@ -704,53 +703,53 @@
     // Map of project images (fill with files from `tos/` folder). Empty by default.
     const projectImages = {
       'solo': [
-          { src: 'solo/solo.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'solo/solo2.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
+          { src: 'solo/solo.jpg', caption: 'Manufacture Oslo', credit: 'Manufacture Oslo' },
+          { src: 'solo/solo2.jpg', caption: 'Manufacture Oslo', credit: 'Manufacture Oslo' },
         ],
       'sound-of-things': [
-          { src: 'tsot/tsot.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tsot/tsot_2.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tsot/tsot_3.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
+          { src: 'tsot/tsot.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tsot/tsot_2.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tsot/tsot_3.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
           { src: 'tsot/tsot_4.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
           { src: 'tsot/tsot_5.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' }
         ],
       'taste-of-sound': [
-          { src: 'tos/ToS_1.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tos/ToS_2.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tos/ToS_3.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tos/ToS_4.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tos/ToS_5.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tos/ToS_6.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'tos/ToS_7.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' }
+          { src: 'tos/ToS_1.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tos/ToS_2.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tos/ToS_3.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tos/ToS_4.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tos/ToS_5.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tos/ToS_6.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
+          { src: 'tos/ToS_7.jpg', caption: 'B&C', credit: 'B&C' }
         ],
       'performance-vista2': [
-          { src: 'pv2/pv2.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' }
+          { src: 'pv2/pv2.jpg', caption: 'Daniel V. Hansen', credit: 'Daniel Vincent Hansen' }
         ],
       'performance-vista': [
-          { src: 'pv/PV_00.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
+          { src: 'pv/PV_00.jpg', caption: 'B&C', credit: 'B&C' },
           { src: 'pv/PV_01.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'pv/PV_02.gif', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'pv/PV_03.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'pv/PV_05.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'pv/PV_06.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'pv/PV_07.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'pv/PV_08.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' }
+          { src: 'pv/PV_02.gif', caption: 'B&C', credit: 'B&C' },
+          { src: 'pv/PV_03.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'pv/PV_05.jpg', caption: 'Google', credit: 'Google' },
+          { src: 'pv/PV_06.jpg', caption: 'Google', credit: 'Google' },
+          { src: 'pv/PV_07.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'pv/PV_08.jpg', caption: 'B&C', credit: 'B&C' },
         ],
       'just-this': [
-          { src: 'jtaot/JTAOT_1.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_2.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_3.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_5.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_6.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_7.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_8.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_9.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_10.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_11.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_12.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_13.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_14.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' },
-          { src: 'jtaot/JTAOT_15.jpg', caption: 'Caption — edit', credit: 'Photo: — edit' }
+          { src: 'jtaot/JTAOT_1.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_2.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_3.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_5.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_6.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_7.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_8.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_9.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_10.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_11.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_12.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_13.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_14.jpg', caption: 'B&C', credit: 'B&C' },
+          { src: 'jtaot/JTAOT_15.jpg', caption: 'B&C', credit: 'B&C' },
         ]
     };
   // Feature flag: show captions under images when true. Set true so captions are visible; edit captions in projectImages below.
