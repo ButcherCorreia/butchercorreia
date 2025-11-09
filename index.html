@@ -444,9 +444,7 @@
     .popup .projects-list a:focus-visible {
       color: var(--accent);
       transition: color 120ms ease;
-    }
-
-    
+    }  
 
     @media (max-width: 1024px) {
       .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
@@ -508,8 +506,10 @@
         position: absolute;
         /* align horizontally with the header's left inset and vertically
            match the header's top inset so spacing is identical */
-        left: 20px; /* matches .site-title-box padding-left */
-        top: 8px;   /* matches .site-title-box padding-top */
+      left: 20px; /* matches .site-title-box padding-left */
+      /* match header top padding + anchor top padding (8px + 4px) so
+        the visual gap between page edge and burger equals header text */
+      top: calc(8px + 4px);
         z-index: 100020; /* sit above other UI */
       }
 
