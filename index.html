@@ -24,7 +24,7 @@
   <link rel="icon" href="favicon.PNG" type="image/png">
 
   <style>
-    :root { --accent: rgb(0,84,166); }
+  :root { --accent: rgb(0,84,166); --site-side-pad: 20px; --site-top-pad: 8px; }
 
     *,
     *::before,
@@ -50,7 +50,7 @@
       display: grid;
       grid-template-rows: auto auto auto; /* header row | divider | menu */
       align-items: center;
-      padding: 8px 20px;             /* 20px left offset */
+  padding: var(--site-top-pad) var(--site-side-pad);             /* uses CSS vars for consistent insets */
       text-decoration: none;
       color: black;
       font-size: 0.95rem;
@@ -428,9 +428,13 @@
     }
 
     @media (max-width: 420px) {
+      /* reduce header padding on very small screens and update CSS vars so
+         the mobile toggle can reference the same values */
       .site-title-box {
         font-size: 0.75rem;
-        padding: 0 12px;
+        --site-side-pad: 12px;
+        --site-top-pad: 0px;
+        padding: var(--site-top-pad) var(--site-side-pad);
       }
 
     }
