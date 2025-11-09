@@ -496,7 +496,10 @@
   
     /* Mobile burger + overlay (visible under mobile breakpoint) */
     @media (max-width: 700px) {
-      /* Hamburger button positioned flush to the left of the site title */
+      /* Hamburger button positioned flush to the left of the site title.
+         Use the shared site padding variables so the toggle always mirrors
+         the header's right-side inset (when header is aligned to right).
+      */
       .mobile-menu-toggle {
         display: inline-flex;
         align-items: center;
@@ -508,13 +511,25 @@
         padding: 0;
         cursor: pointer;
         position: absolute;
-        /* align horizontally with the header's left inset and vertically
-           match the header's top inset so spacing is identical */
-      left: 20px; /* matches .site-title-box padding-left */
-      /* match header top padding + anchor top padding (8px + 4px) so
-        the visual gap between page edge and burger equals header text */
-      top: calc(8px + 4px);
+        /* place the burger the same distance from the left as the header
+           content is placed from the right (uses CSS var set on .site-title-box) */
+        left: var(--site-side-pad);
+        /* align vertically with the top of the header */
+        top: var(--site-top-pad);
         z-index: 100020; /* sit above other UI */
+      }
+
+      /* Mobile: align the visible header text to the right side of the header
+         and hide the left/center spans so the site title sits flush to the right. */
+      .site-title-box .site-left,
+      .site-title-box .site-center {
+        display: none !important;
+      }
+      .site-title-box .site-right {
+        /* span entire row and align the title to the right edge */
+        grid-column: 1 / -1;
+        text-align: right;
+        justify-self: end;
       }
 
       .mobile-menu-toggle .hamburger {
