@@ -506,10 +506,10 @@
         padding: 0;
         cursor: pointer;
         position: absolute;
-        left: 20px; /* aligns with .site-title-box padding */
-        /* vertically center the toggle within the fixed header */
-        top: 50%;
-        transform: translateY(-50%);
+        /* align horizontally with the header's left inset and vertically
+           match the header's top inset so spacing is identical */
+        left: 20px; /* matches .site-title-box padding-left */
+        top: 8px;   /* matches .site-title-box padding-top */
         z-index: 100020; /* sit above other UI */
       }
 
