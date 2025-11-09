@@ -507,7 +507,9 @@
         cursor: pointer;
         position: absolute;
         left: 20px; /* aligns with .site-title-box padding */
-        top: 8px; /* small vertical offset to sit within the header */
+        /* vertically center the toggle within the fixed header */
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 100020; /* sit above other UI */
       }
 
