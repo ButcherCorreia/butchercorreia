@@ -412,6 +412,21 @@
       .project-figure { width: 100%; }
     }
 
+    /* Mobile: stack detail columns so images (left column) appear above right column */
+    @media (max-width: 700px) {
+      .popup .popup-inner { flex-direction: column; gap: 1rem; }
+      .popup .project-detail { flex-direction: column; gap: 1rem; }
+      .popup .project-detail .detail-col-left,
+      .popup .project-detail .detail-col-right {
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        box-sizing: border-box;
+      }
+      /* ensure left column (images) renders before right column */
+      .popup .project-detail .detail-col-left { order: 0; }
+      .popup .project-detail .detail-col-right { order: 1; }
+    }
+
     @media (max-width: 420px) {
       .site-title-box {
         font-size: 0.75rem;
@@ -504,6 +519,22 @@
         position: relative;
         z-index: 100021; /* ensure the 3 bars are above everything */
       }
+
+      /* create top and bottom bars from pseudo-elements so the markup
+         only needs a single <span class="hamburger"> */
+      .mobile-menu-toggle .hamburger::before,
+      .mobile-menu-toggle .hamburger::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 22px;
+        height: 2px;
+        background: #000;
+        transition: transform 160ms ease, opacity 160ms ease;
+        z-index: 100021;
+      }
+      .mobile-menu-toggle .hamburger::before { top: -7px; }
+      .mobile-menu-toggle .hamburger::after  { top: 7px; }
 
       /* Hide the left projects list by default — show as overlay when menu is open */
       .popup .projects-list {
