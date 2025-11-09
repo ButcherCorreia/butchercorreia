@@ -519,17 +519,19 @@
         z-index: 100020; /* sit above other UI */
       }
 
-      /* Mobile: align the visible header text to the right side of the header
-         and hide the left/center spans so the site title sits flush to the right. */
-      .site-title-box .site-left,
-      .site-title-box .site-center {
-        display: none !important;
+      /* Mobile: keep the full site title visible but align it to the right.
+         Switch the title-row to flex so the three spans render inline and
+         flush to the right while preserving spacing between words. */
+      .site-title-box .title-row {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.25rem;
+        align-items: center;
       }
+      .site-title-box .site-left,
+      .site-title-box .site-center,
       .site-title-box .site-right {
-        /* span entire row and align the title to the right edge */
-        grid-column: 1 / -1;
-        text-align: right;
-        justify-self: end;
+        display: inline-block;
       }
 
       .mobile-menu-toggle .hamburger {
