@@ -24,7 +24,7 @@
   <link rel="icon" href="favicon.PNG" type="image/png">
 
   <style>
-  :root { --accent: rgb(0,84,166); --site-side-pad: 20px; --site-top-pad: 8px; }
+  :root { --accent: rgb(0,84,166); --site-side-pad: 20px; --site-top-pad: 8px; --top-menu-link-pad: 4px; --top-menu-link-bottom: 6px; }
 
     *,
     *::before,
@@ -98,7 +98,7 @@
       text-decoration: none;
       font-size: 0.9rem;
       letter-spacing: 0.02em;
-      padding: 4px 0 6px 0; 
+      padding: var(--top-menu-link-pad) 0 var(--top-menu-link-bottom) 0; 
       position: relative;
       display: inline-block;
       cursor: pointer;
@@ -511,11 +511,9 @@
         padding: 0;
         cursor: pointer;
         position: absolute;
-        /* place the burger the same distance from the left as the header
-           content is placed from the right (uses CSS var set on .site-title-box) */
-        left: var(--site-side-pad);
+    left: var(--site-side-pad);
         /* align vertically with the top of the header */
-        top: var(--site-top-pad);
+    top: calc(var(--site-top-pad) + var(--top-menu-link-pad));
         z-index: 100020; /* sit above other UI */
       }
 
