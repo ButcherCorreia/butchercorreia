@@ -511,8 +511,10 @@
         padding: 0;
         cursor: pointer;
         position: absolute;
-        left: 10px;
-        top: -10px
+        left: var(--site-side-pad);
+        /* align the toggle's top with the header's inner padding so the
+           vertical inset matches the header text */
+        top: var(--site-top-pad);
         z-index: 100020; /* sit above other UI */
       }
 
