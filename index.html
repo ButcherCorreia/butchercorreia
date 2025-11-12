@@ -512,9 +512,9 @@
         cursor: pointer;
         position: absolute;
         left: var(--site-side-pad);
-        /* align the toggle's top with the header's inner padding so the
-           vertical inset matches the header text */
-        top: var(--site-top-pad);
+      /* align the toggle's top with the header link padding so the
+        vertical inset matches the header link baseline */
+      top: calc(var(--site-top-pad) + var(--top-menu-link-pad));
         z-index: 100020; /* sit above other UI */
       }
 
