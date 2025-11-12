@@ -26,6 +26,17 @@
   <style>
   :root { --accent: rgb(0,84,166); --site-side-pad: 20px; --site-top-pad: 8px; --top-menu-link-pad: 4px; --top-menu-link-bottom: 6px; }
 
+  /* Custom circular cursor that matches the link accent color.
+    Uses an inline SVG data URL (percent-encoded). The hotspot is centered (8 8).
+    Applied globally; interactive elements (links, buttons) will also show it. */
+  :root {
+   --cursor-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='4' fill='%230054A6' fill-opacity='0.65'/%3E%3C/svg%3E") 8 8, auto;
+  }
+
+  /* Apply the custom cursor broadly. Keep fallback to default if browser
+    doesn't support SVG cursors. */
+  html, body, a, button, input, textarea { cursor: var(--cursor-svg); }
+
     *,
     *::before,
     *::after {
