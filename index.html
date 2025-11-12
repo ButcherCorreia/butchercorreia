@@ -32,17 +32,13 @@
   :root {
   /* Small square cursor (same color) applied site-wide. Hotspot centered. */
   --cursor-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Crect width='12' height='12' fill='%230054A6'/%3E%3C/svg%3E") 6 6, auto;
-  /* use the same small square for core so hover doesn't change appearance */
-  /* rotated core for hover states: rotate 45deg around the 6,6 center */
-  --cursor-core: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Crect width='12' height='12' fill='%230054A6' transform='rotate(45%206%206)'/%3E%3C/svg%3E") 6 6, auto;
+  /* rotated core for hover states: rotate 45% of a full circle (162°) around the 6,6 center */
+  --cursor-core: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Crect width='12' height='12' fill='%230054A6' transform='rotate(162%206%206)'/%3E%3C/svg%3E") 6 6, auto;
   }
 
   /* Apply the custom cursor broadly. Keep fallback to default if browser
-    doesn't support SVG cursors. Inputs and editable fields should keep
-    the text cursor for usability. */
-  html, body, a, button, .project-item, .mobile-menu-toggle, .popup .projects-list a, #landing-img, .project-figure, .project-image { cursor: var(--cursor-svg); }
-  /* Keep a text cursor for editable controls */
-  input, textarea, [contenteditable] { cursor: text; }
+    doesn't support SVG cursors. */
+  html, body, a, button, input, textarea { cursor: var(--cursor-svg); }
 
   /* When hovering interactive links and controls, remove the faded outline
      by switching to the core-only cursor so only the filled dot remains. */
@@ -72,7 +68,7 @@
       width: 100%;
     }
 
-  /* Site title box as a full-width fixed homepage button. */
+    /* Site title box as a full-width fixed homepage button. */
     .site-title-box {
       position: fixed;
       top: 20px;
@@ -86,13 +82,13 @@
       text-decoration: none;
       color: black;
       font-size: 0.95rem;
-      cursor: var(--cursor-svg); /* use unified custom cursor */
+      cursor: default; /* do not show clickable cursor */
       user-select: none;
       background: transparent;
     }
 
-    /* ensure header and its inner elements inherit the unified cursor */
-    .site-title-box, .site-title-box * { cursor: var(--cursor-svg) !important; }
+    /* ensure header and its inner elements don't show pointer cursor */
+    .site-title-box, .site-title-box * { cursor: default !important; }
 
     .site-title-box .title-row {
       display: grid;
@@ -133,7 +129,7 @@
       padding: var(--top-menu-link-pad) 0 var(--top-menu-link-bottom) 0; 
       position: relative;
       display: inline-block;
-      cursor: var(--cursor-svg);
+      cursor: pointer;
       line-height: 1;
       vertical-align: bottom;
     }
@@ -211,7 +207,7 @@
       width: auto;
       max-width: 60px;
       height: auto;
-      cursor: var(--cursor-svg);
+      cursor: pointer;
     }
     /* ensure popup sits above landing image */
     .popup { z-index: 100002; }
@@ -272,7 +268,7 @@
       padding: 4px 0 6px 0; /* match top menu padding so underline width matches */
       display: inline-block; /* inline-block to let underline width match text */
       position: relative;
-      cursor: var(--cursor-svg);
+      cursor: pointer;
       line-height: 1;
       vertical-align: bottom;
       width: auto; /* ensure width fits content only */
@@ -541,7 +537,7 @@
         background: transparent;
         border: none;
         padding: 0;
-        cursor: var(--cursor-svg);
+        cursor: pointer;
         position: absolute;
       /* position the toggle aligned to the site's left inset so it
         lines up with the left menu/overlay (uses --site-side-pad) */
