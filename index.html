@@ -30,12 +30,10 @@
     Uses an inline SVG data URL (percent-encoded). The hotspot is centered (8 8).
     Applied globally; interactive elements (links, buttons) will also show it. */
   :root {
-  /* larger cursor with a faded outer ring and a core dot.
-    - Full cursor: 64x64, outer faded ring (fill-opacity 0.12) and core filled at 75% opacity.
-    - Core-only cursor (used on link hover): 20x20 single core filled at 75% opacity.
-  */
-  --cursor-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='45%25' stop-color='%230054A6' stop-opacity='0.12'/%3E%3Cstop offset='100%25' stop-color='%230054A6' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='20' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%230054A6' fill-opacity='0.75'/%3E%3C/svg%3E") 32 32, auto;
-  --cursor-core: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='6' fill='%230054A6' fill-opacity='0.75'/%3E%3C/svg%3E") 12 12, auto;
+  /* Small square cursor (same color) applied site-wide. Hotspot centered. */
+  --cursor-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Crect width='12' height='12' fill='%230054A6'/%3E%3C/svg%3E") 6 6, auto;
+  /* use the same small square for core so hover doesn't change appearance */
+  --cursor-core: var(--cursor-svg);
   }
 
   /* Apply the custom cursor broadly. Keep fallback to default if browser
@@ -47,9 +45,14 @@
   /* On interactive hover/focus switch to the core-only cursor (remove faded ring).
      Use !important to ensure this takes precedence in case other rules try to
      force a different cursor (e.g., header overrides). */
+  /* Keep the same square cursor when hovering interactive elements */
   a:hover, a:focus, button:hover, button:focus, input:hover, textarea:hover, .project-item:hover {
     cursor: var(--cursor-core) !important;
   }
+
+  /* Selection highlight: use the site's accent blue at reduced opacity */
+  ::selection { background: rgba(0,84,166,0.25); color: inherit; }
+  ::-moz-selection { background: rgba(0,84,166,0.25); color: inherit; }
 
     *,
     *::before,
