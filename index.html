@@ -87,8 +87,8 @@
       background: transparent;
     }
 
-    /* ensure header and its inner elements don't show pointer cursor */
-    .site-title-box, .site-title-box * { cursor: default !important; }
+  /* ensure header and its inner elements use the site diamond cursor */
+  .site-title-box, .site-title-box * { cursor: var(--cursor-svg) !important; }
 
     .site-title-box .title-row {
       display: grid;
@@ -688,13 +688,14 @@
         <p>BABEL visningsrom, Trondheim (NO) 6th and 7th of December 2025<br>
         Kunstrom Jakob, Steinkjer (NO) 5th and 6th of June 2026<br>
         Pink, Stockport (GB) 2026<br>
+        </p>
         <p>
         BUTCHER & CORREIA, together with Joana Bruno, develop visual identity (costume design, scenography) and the soundscape for a performance exploring strategies of giving away and letting go. The project centres on a sustainable garment based on Grenne’s daily training clothes and a “soft scenography” of textiles and sound. The work treats dancer, material, and space as a resonant ecosystem where wool becomes a conductor of energy, and floor, mats, and fabrics amplify presence. Through ethical and material engagement—tracing supply, sustainability, and production constraints—the project exposes the compromises of local, natural production, linking performer and audience through shared frequency, attention, and tactility.
         </p>
         <p>
-        Scenography: felted wool (from Trønder Sheep) from Selbu Spinneri<br>
+        Scenography: felted wool (from Trønder Sheep - Selbu Spinneri)<br>
         Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
-        Fabric used for the costume weaved by Varp & Veft with trønder sheep wool (Selbu Spinneri)<br>
+        Costume's fabric: weaved by Varp & Veft (with Trønder sheep - Selbu Spinneri)<br>
         Sound: captured with geophone
         </p>
         <p>
@@ -827,8 +828,8 @@
       `,
       'sound-of-things': ``,
       'just-this': `
-        <p><strong>Manifesto</strong></p>
-        <p>Just This And Only That believes in the collective adoption of sustainable living. Communication by asking and answering one another, guides us towards shared action.</p>
+        <strong>Manifesto</strong>
+        Just This And Only That believes in the collective adoption of sustainable living. Communication by asking and answering one another, guides us towards shared action.
         <p>Just This And Only That aims to transform overlooked aspects into valuable contributions that are rooted in the local community. By intertwining creativity and daily existence, we strive to achieve sustainable living.</p>
         <p>Just This And Only That aims to create artistic constellations that promote shared responsibility, unexpected discoveries, and evolving identities.</p>
         <p>Just This And Only That allocates resources in the support of freedom of expression, shelter, and movement.</p>
