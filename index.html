@@ -773,7 +773,7 @@
     const projectExtras = {
       'solo': `
         <strong>Digital product passport (DPP)</<trong><br>
-        <p><strong>Product Identification</p></strong>
+        <p><strong>Product Identification</strong></p>
         Product name:	SOLO<br>
         Product category:	Textile (Apparel / Home Textile)<br>
         Product Type Code:	According to EU Product Classification (e.g., CPA 13.92 for woven wool fabrics)<br>
@@ -783,7 +783,7 @@
         Country of Design: 	Norway <br>
         Batch/Serial Number:	One of a kind
           
-        <p><strong>Material Composition</p></strong>
+        <p><strong>Material Composition</strong></p>
         Primary Fiber:	100% Trønder sheep (virgin wool)<br>
         Other materials:  drawstring (Germany, Cotton)<br>
         Fiber Origin:	Trøndelag, Norway<br>
@@ -791,7 +791,7 @@
         Dyeing/Finishing:	Undyed, natural color<br>
         Chemical substances used:	Local breed wool; optional traceability via Norwegian Wool Standard or equivalent
           
-        <p><strong>Manufacturing and Supply Chain</p></strong>	
+        <p><strong>Manufacturing and Supply Chain</strong></p>	
         Farming/Breeding (costume & scenography):	Øfsti søndre, Stjørdal (NO) www.ofsti.no<br>
         Washing (costume & scenography):	Selbu Spinneri, Klæbu (NO) www.selbuspinneri.no <br>
         Spinning (costume):	Selbu Spinneri, Klæbu (NO) www.selbuspinneri.no <br>
@@ -804,7 +804,7 @@
         Supply Chain Traceability:	Fully traceable, all Norwegian production<br>
         Energy Source:	Primarily renewable (confirm from each supplier if possible)
           
-        <p><strong>Environmental and Circularity Data</p></strong>	
+        <p><strong>Environmental and Circularity Data</strong>	</p>
         Fiber Renewability:	100% renewable natural fiber<br>
         Carbon Footprint (estimated):	 <10 kg CO₂e/kg (based on regional small-scale wool processing averages)<br>
         Repairability	High: (wool is re-mendable and re-feltable)<br>
@@ -812,13 +812,13 @@
         Biodegradability:	Yes (under natural conditions)<br>
         End-of-Life Guidance:	Compost, reuse, or return for mechanical recycling
           
-        <p><strong>Usage and Care</p></strong>	
+        <p><strong>Usage and Care</strong></p>	
         Care Instruction:	Hand wash cold with wool detergent, air dry flat<br>
         Durability Rating:	Expected lifespan >10 years with maintenance<br>
         Repair Guidance: 	Darning / patching supported by Manufacture Oslo (optional service)<br>
         Spare Components:	N/A
           
-        <p><strong>Compliance and Legal</p></strong>	
+        <p><strong>Compliance and Legal</strong></p>	
         Conformity:	Follows EU Textile Regulation (1007/2011)<br>
         Origin Marking:	Made in Norway<br>
         Safety Standards:	Meets Norwegian textile safety and labelling requirements<br>
@@ -1007,6 +1007,26 @@
       containerEl.innerHTML = `<div class="vertical-gallery">${innerV}</div>`;
     }
 
+    // Normalize description HTML so that hanging-indent (text-indent) works.
+    // Many descriptions used <br> for line breaks; text-indent only affects
+    // wrapped lines inside the same block. If a description contains no
+    // <p> elements we convert <br> groups into <p> paragraphs so the CSS
+    // rule for `.popup .project-detail p` (padding-left:2px; text-indent:-2px)
+    // can apply and shift continuation lines by 2px as requested.
+    function normalizeDescriptionHtml(html) {
+      if (!html) return '';
+      // If the html already contains paragraph tags, assume it's structured
+      // and return as-is so we don't double-wrap.
+      if (/<p[\s>]/i.test(html)) return html;
+
+      // Replace <br/> and <br> with newlines, collapse multiple newlines,
+      // then split into paragraphs by double-newline. Single newlines are
+      // preserved as intra-paragraph line breaks.
+      const tmp = String(html).replace(/<br\s*\/?>/gi, '\n').replace(/\r/g, '\n').replace(/\n{2,}/g, '\n\n').trim();
+      const parts = tmp.split(/\n\n/).map(s => s.trim()).filter(Boolean);
+      return parts.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+    }
+
     // About left/right column content - edit these strings to control About columns
     const aboutColumns = {
       left: `
@@ -1118,11 +1138,11 @@ function selectProject(key) {
   const imgs = (projectImages && projectImages[key]) ? projectImages[key] : [];
 
   // Special layout for certain projects: vertical stacked gallery in the LEFT column and description in the RIGHT
-  if (['taste-of-sound', 'performance-vista', 'just-this'].includes(key)) {
+    if (['taste-of-sound', 'performance-vista', 'just-this'].includes(key)) {
     // Left column: vertical stacked gallery
     renderVerticalGallery(detailLeft, imgs);
     // Right column: project description + extras
-    detailRight.innerHTML = projectDescriptions[key] + (projectExtras[key] || '');
+    	detailRight.innerHTML = normalizeDescriptionHtml(projectDescriptions[key]) + (projectExtras[key] || '');
     return;
   }
 
@@ -1145,8 +1165,9 @@ function selectProject(key) {
   const existingGalleryInRight = detailRight.querySelector('.project-gallery');
   if (existingGalleryInRight) existingGalleryInRight.remove();
 
-  // Set right column content to description + extras
-  detailRight.innerHTML = projectDescriptions[key] + (projectExtras[key] || '');
+  // Set right column content to description + extras (normalize <br>-based
+  // descriptions into paragraphs so hanging-indents work)
+  detailRight.innerHTML = normalizeDescriptionHtml(projectDescriptions[key]) + (projectExtras[key] || '');
 }
 
     projectItems.forEach(item => {
