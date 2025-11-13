@@ -1216,10 +1216,34 @@ function selectProject(key) {
 
     function openMenu() {
       if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.add('mobile-open');
+      // Position the projectsList overlay so its LEFT edge aligns with the
+      // left edge of the header's right column (the "CORREIA" text). This
+      // keeps the hamburger on the left while the list appears flush under
+      // the right header column.
+      try {
+        const siteRight = document.querySelector('.site-title-box .site-right');
+        if (siteRight && projectsList) {
+          const rect = siteRight.getBoundingClientRect();
+          // read the CSS variable for side inset (fallback to 20px)
+          const padRaw = getComputedStyle(document.documentElement).getPropertyValue('--site-side-pad') || '20px';
+          const pad = padRaw.trim();
+          projectsList.style.left = Math.max(8, Math.round(rect.left)) + 'px';
+          projectsList.style.right = pad;
+        }
+      } catch (err) {
+        // fail silently and let CSS fallback apply
+        console.error('positioning overlay failed:', err);
+      }
       toggle.setAttribute('aria-expanded', 'true');
     }
     function closeMenu() {
       if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.remove('mobile-open');
+      // clear inline positioning so desktop styles and other rules resume
+      if (projectsList) {
+        projectsList.style.left = '';
+        projectsList.style.right = '';
+        projectsList.style.width = '';
+      }
       toggle.setAttribute('aria-expanded', 'false');
     }
 
@@ -1248,6 +1272,18 @@ function selectProject(key) {
     // Close if switching to desktop widths
     window.addEventListener('resize', function(){
       if (window.innerWidth > 700) closeMenu(); // change 700->768 if you change the media query
+      // If the overlay is open, reposition it to remain aligned
+      if (projectsList && mainPopup && mainPopup.classList.contains('mobile-open')) {
+        try {
+          const siteRight = document.querySelector('.site-title-box .site-right');
+          if (siteRight) {
+            const rect = siteRight.getBoundingClientRect();
+            const padRaw = getComputedStyle(document.documentElement).getPropertyValue('--site-side-pad') || '20px';
+            projectsList.style.left = Math.max(8, Math.round(rect.left)) + 'px';
+            projectsList.style.right = padRaw.trim();
+          }
+        } catch (err) { /* ignore */ }
+      }
     }, { passive: true });
   })();
   </script>
