@@ -250,7 +250,7 @@
     }
     .popup .project-detail h4 { margin-top: 0; margin-bottom: 0.25rem; font-size: 0.95rem; }
   /* keep top margin 0 but match global paragraph spacing for project descriptions */
-  .popup .project-detail p { margin: 0 0 2.5rem 0; }
+  .popup .project-detail p { margin: 0 0 2.5rem 0; padding-left: 2px; text-indent: -2px; }
     /* Ensure the left list has no extra top offset */
     .popup .projects-list { margin-top: 0; padding-top: 0; }
     .popup .projects-list {
@@ -421,7 +421,14 @@
       line-height: 1.25;
       background: transparent;
       padding: 0 0px;
+      /* when captions wrap, shift continuation lines 2px to the right */
+      padding-left: 2px;
+      text-indent: -2px;
     }
+
+    /* helper class: shift continuation (wrapped) lines by 2px
+       Usage: add .wrap-continuation-2px to any block-level element */
+    .wrap-continuation-2px { padding-left: 2px; text-indent: -2px; }
 
     /* single-column/full-width override for specific projects */
     .detail-col-left .project-gallery.single {
