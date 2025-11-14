@@ -553,16 +553,29 @@
         z-index: 100020; /* sit above other UI */
       }
 
-      /* Remove any native button outline/rounded background on mobile toggle
-         (user requested the surrounding grey rounded box/outline to be removed). */
-      .mobile-menu-toggle,
+      /* Remove native button chrome (background/rounded box) while keeping
+         the hamburger bars visible. Only the button itself resets to
+         transparent/flat; the .hamburger bars keep their background color. */
+      .mobile-menu-toggle {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+      }
+
+      /* Keep the hamburger bars visible: remove only outline/box-shadow from
+         the bar elements but DO NOT change their background. The background
+         for the bars is defined earlier (.hamburger { background: #0000ff }). */
       .mobile-menu-toggle .hamburger,
       .mobile-menu-toggle .hamburger::before,
       .mobile-menu-toggle .hamburger::after {
         outline: none !important;
         box-shadow: none !important;
         border: none !important;
-        background: transparent !important;
         border-radius: 0 !important;
         -webkit-appearance: none !important;
         appearance: none !important;
