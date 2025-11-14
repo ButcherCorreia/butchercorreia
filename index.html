@@ -548,8 +548,8 @@
       left: var(--site-side-pad);
       /* remove horizontal transform now that left is anchored */
       transform: none;
-      /* place the toggle just below the header area with a small gap (lowered 5px) */
-      top: calc(100% + 11px);
+      /* place the toggle further below the header area to increase distance */
+      top: calc(100% + 18px);
         z-index: 100020; /* sit above other UI */
       }
 
@@ -567,6 +567,7 @@
         display: inline-block;
       }
 
+      /* hamburger bars */
       .mobile-menu-toggle .hamburger {
         display: block;
         width: 22px;
@@ -574,12 +575,11 @@
         background: #0000ff;
         position: relative;
         z-index: 100021; /* ensure the 3 bars are above everything */
-        transition: background 160ms ease, transform 200ms ease;
+        transition: background 160ms ease, transform 180ms cubic-bezier(.2,.9,.2,1);
         transform-origin: center;
       }
 
-      /* create top and bottom bars from pseudo-elements so the markup
-         only needs a single <span class="hamburger"> */
+      /* top & bottom bars are pseudo elements */
       .mobile-menu-toggle .hamburger::before,
       .mobile-menu-toggle .hamburger::after {
         content: '';
@@ -588,17 +588,27 @@
         width: 22px;
         height: 2px;
         background: #0000ff;
-        transition: transform 160ms ease, top 160ms ease, opacity 160ms ease, background 160ms ease;
+        transition: transform 200ms cubic-bezier(.2,.9,.2,1), top 150ms ease, opacity 120ms ease, background 120ms ease;
         z-index: 100021;
         transform-origin: center;
+        will-change: transform, top, opacity;
       }
       .mobile-menu-toggle .hamburger::before { top: -7px; }
       .mobile-menu-toggle .hamburger::after  { top: 7px; }
 
-      /* Toggle -> X state when expanded (use aria-expanded so we don't rely on DOM order) */
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger { background: transparent; }
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger::before { top: 0; transform: rotate(45deg); }
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger::after  { top: 0; transform: rotate(-45deg); }
+      /* Expanded: hide middle bar and rotate pseudo-elements into X */
+      .mobile-menu-toggle[aria-expanded="true"] .hamburger {
+        background: transparent;
+        transform: scaleX(0.0);
+      }
+      .mobile-menu-toggle[aria-expanded="true"] .hamburger::before {
+        top: 0;
+        transform: rotate(45deg) scaleX(1);
+      }
+      .mobile-menu-toggle[aria-expanded="true"] .hamburger::after {
+        top: 0;
+        transform: rotate(-45deg) scaleX(1);
+      }
 
       /* Hide the left projects list by default — show as overlay when menu is open */
       .popup .projects-list {
@@ -607,10 +617,11 @@
         top: 64px; /* adjust if header height differs or use safe-area calc on iOS */
         left: 20px;
         right: 20px;
-        background: #fff;
-        padding: 0; /* remove padding on small screens per request */
-        box-shadow: none; /* remove border/shadow */
-        border-radius: 0; /* remove rounded corners */
+        background: transparent !important; /* remove visible background */
+        padding: 0 !important; /* ensure no internal padding */
+        box-shadow: none !important; /* remove drop shadow */
+        border: none !important; /* remove border */
+        border-radius: 0 !important; /* remove rounded corners */
         max-height: 60vh;
         overflow: auto;
         z-index: 100003;
