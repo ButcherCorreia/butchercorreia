@@ -545,11 +545,11 @@
         position: absolute;
       /* position the toggle aligned to the site's left inset so it
         lines up with the left menu/overlay (uses --site-side-pad) */
-      left: var(--site-side-pad);
+      left: calc(100% + 20px);
       /* remove horizontal transform now that left is anchored */
       transform: none;
       /* place the toggle just below the header area with a small gap (lowered 5px) */
-      top: calc(100% + 11px);
+      top: calc(100% + 30px);
         z-index: 100020; /* sit above other UI */
       }
 
