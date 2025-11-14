@@ -541,16 +541,16 @@
         height: 40px;
         background: transparent;
         border: none;
-  padding: 0;
-  cursor: var(--cursor-svg);
-        position: absolute;
-      /* position the toggle aligned to the site's left inset so it
-        lines up with the left menu/overlay (uses --site-side-pad) */
-      left: calc(100% + 2px);
-      /* remove horizontal transform now that left is anchored */
-      transform: none;
-      /* place the toggle just below the header area with a small gap (moved ~20px lower) */
-      top: calc(100% + 120px);
+        padding: 0;
+        cursor: var(--cursor-svg);
+        /* Use grid placement: the button is a child of .title-row so
+           we can place it into the left column and nudge it down with
+           margin-top for the vertical gap. */
+        position: static;
+        grid-column: 1 / 2; /* place in the left header column */
+        justify-self: start;
+        align-self: start;
+        margin-top: 20px; /* lower the toggle ~20px beneath the header */
         z-index: 100020; /* sit above other UI */
       }
 
@@ -671,13 +671,15 @@
       <span class="site-left">BUTCHER</span>
       <span class="site-center">&amp;</span>
       <span class="site-right">CORREIA</span>
-    </div>
-    <!-- Mobile hamburger toggle (visible under the mobile breakpoint) -->
-    <div class="top-menu" aria-hidden="false">
+
+      <!-- Mobile hamburger toggle moved into the header grid so we can use
+           CSS Grid placement instead of absolute positioning. -->
       <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="projectsList" aria-label="Open projects menu">
         <span class="hamburger" aria-hidden="true"></span>
       </button>
     </div>
+    <!-- top-menu kept for desktop links or future content; currently empty -->
+    <div class="top-menu" aria-hidden="false"></div>
   </div>
 
   <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
