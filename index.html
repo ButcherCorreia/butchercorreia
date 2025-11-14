@@ -6,13 +6,13 @@
   <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
 
   <!-- SEO metadata -->
-  <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo. Explore his portfolio, CV, and contact information." />
+  <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo./>
   <meta name="keywords" content="BUTCHER & CORREIA, Katherine Butcher, Carlos A. Correia, artist, portfolio, contemporary art, visual art" />
   <meta name="author" content="BUTCHER & CORREIA" />
   
   <!-- Open Graph (OG) metadata -->
   <meta property="og:title" content="BUTCHER & CORREIA - " />
-  <meta property="og:description" content="Explore the portfolio, CV, and contact information for Carlos A. Correia." />
+  <meta property="og:description" content="Explore the portfolio, CV, and contact information." />
   <meta property="og:image" content="https://butchercorreia.com" />
   <meta property="og:url" content="https://butchercorreia.com" />
   <meta property="og:type" content="website" />
@@ -95,6 +95,7 @@
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
       width: 100%;
+      position: relative; /* anchor absolute children (mobile toggle) to the header row */
     }
 
     .site-title-box .site-left,
@@ -543,9 +544,13 @@
   padding: 0;
   cursor: var(--cursor-svg);
         position: absolute;
+      /* position the toggle aligned to the site's left inset so it
+        lines up with the left menu/overlay (uses --site-side-pad) */
       left: calc(100% + 2px);
+      /* remove horizontal transform now that left is anchored */
       transform: none;
-      top: calc(100% + 70px);
+      /* place the toggle just below the header area with a small gap (lowered 5px) */
+      top: calc(100% + 100px);
         z-index: 100020; /* sit above other UI */
       }
 
