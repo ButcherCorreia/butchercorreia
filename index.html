@@ -543,12 +543,12 @@
         border: none;
         padding: 0;
         cursor: var(--cursor-svg);
-        position: static;
-        grid-column: 1 / 2; /* place in the left header column */
-        justify-self: start;
-        align-self: start;
-        margin-top: 150px;
-        margin-left: 1px;
+        /* Absolute positioning relative to .title-row (which is positioned)
+           so left/top will move the toggle. We offset left by the negative
+           header padding so the button is flush to the page left edge. */
+        position: absolute;
+        left: calc(-1 * var(--site-side-pad)); /* flush to page left edge */
+        top: calc(100% + 12px); /* 12px below the header row */
         z-index: 100020; /* sit above other UI */
       }
 
