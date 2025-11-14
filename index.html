@@ -553,6 +553,28 @@
         z-index: 100020; /* sit above other UI */
       }
 
+      /* Remove any native button outline/rounded background on mobile toggle
+         (user requested the surrounding grey rounded box/outline to be removed). */
+      .mobile-menu-toggle,
+      .mobile-menu-toggle .hamburger,
+      .mobile-menu-toggle .hamburger::before,
+      .mobile-menu-toggle .hamburger::after {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+      }
+
+      .mobile-menu-toggle:focus,
+      .mobile-menu-toggle:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
       /* Keep the header layout consistent with large screens: use the same
          grid arrangement so the header behaves the same on mobile and desktop. */
       .site-title-box .title-row {
