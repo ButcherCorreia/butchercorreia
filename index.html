@@ -543,14 +543,12 @@
         border: none;
         padding: 0;
         cursor: var(--cursor-svg);
-        /* Use grid placement: the button is a child of .title-row so
-           we can place it into the left column and nudge it down with
-           margin-top for the vertical gap. */
         position: static;
         grid-column: 1 / 2; /* place in the left header column */
         justify-self: start;
         align-self: start;
-        margin-top: 20px; /* lower the toggle ~20px beneath the header */
+        margin-top: 50px;
+        margin-left: 20px;
         z-index: 100020; /* sit above other UI */
       }
 
