@@ -547,8 +547,10 @@
            so left/top will move the toggle. We offset left by the negative
            header padding so the button is flush to the page left edge. */
         position: absolute;
-        left: calc(-1 * var(--site-side-pad)); /* flush to page left edge */
-        top: calc(100% + 12px); /* 12px below the header row */
+        /* move ~10px further left than before (cancel header pad then shift) */
+        left: calc(-1 * var(--site-side-pad) - 10px); /* flush further to the left */
+        /* lower the toggle by ~50px more than before */
+        top: calc(100% + 62px); /* ~62px below the header row */
         z-index: 100020; /* sit above other UI */
       }
 
@@ -657,10 +659,12 @@
       /* Hide the left projects list by default — show as overlay when menu is open */
       .popup .projects-list {
         display: none;
-        position: absolute;
-        top: 64px; /* adjust if header height differs or use safe-area calc on iOS */
-        left: 20px;
-        right: 20px;
+  position: absolute;
+  /* lower the mobile projects overlay so it sits further below the header */
+  top: 114px; /* 64px + ~50px to lower the menu */
+  /* nudge the overlay 10px to the left */
+  left: 10px;
+  right: 20px;
         background: #fff;
         padding: 0; /* remove padding on small screens per request */
         box-shadow: none; /* remove border/shadow */
