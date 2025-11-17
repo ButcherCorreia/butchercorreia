@@ -601,38 +601,58 @@
         display: inline-block;
       }
 
+      /* Meatballs: three small red dots stacked vertically. On expand
+         they morph into an X using the pseudo-elements. */
       .mobile-menu-toggle .hamburger {
         display: block;
-        width: 22px;
-        height: 2px;
-        background: #0000ff;
+        width: 8px;
+        height: 8px;
+        background: #ff0000; /* red dot */
+        border-radius: 50%;
         position: relative;
-        z-index: 100021; /* ensure the 3 bars are above everything */
-        transition: background 160ms ease, transform 200ms ease;
+        z-index: 100021; /* ensure the 3 dots are above everything */
+        transition: background 160ms ease, width 160ms ease, height 160ms ease, transform 200ms ease, left 160ms ease, top 160ms ease;
         transform-origin: center;
       }
 
-      /* create top and bottom bars from pseudo-elements so the markup
-         only needs a single <span class="hamburger"> */
+      /* top and bottom dots */
       .mobile-menu-toggle .hamburger::before,
       .mobile-menu-toggle .hamburger::after {
         content: '';
         position: absolute;
         left: 0;
-        width: 22px;
-        height: 2px;
-        background: #0000ff;
-        transition: transform 160ms ease, top 160ms ease, opacity 160ms ease, background 160ms ease;
+        width: 8px;
+        height: 8px;
+        background: #ff0000; /* red dot */
+        border-radius: 50%;
+        transition: transform 160ms ease, top 160ms ease, opacity 160ms ease, background 160ms ease, width 160ms ease, height 160ms ease, left 160ms ease;
         z-index: 100021;
         transform-origin: center;
       }
-      .mobile-menu-toggle .hamburger::before { top: -7px; }
-      .mobile-menu-toggle .hamburger::after  { top: 7px; }
+      .mobile-menu-toggle .hamburger::before { top: -12px; }
+      .mobile-menu-toggle .hamburger::after  { top: 12px; }
 
-      /* Toggle -> X state when expanded (use aria-expanded so we don't rely on DOM order) */
+      /* Toggle -> X state when expanded (use aria-expanded so we don't rely on DOM order)
+         Morph dots into two crossing bars by expanding width/height and rotating. */
       .mobile-menu-toggle[aria-expanded="true"] .hamburger { background: transparent; }
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger::before { top: 0; transform: rotate(45deg); }
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger::after  { top: 0; transform: rotate(-45deg); }
+      .mobile-menu-toggle[aria-expanded="true"] .hamburger::before {
+        top: 0;
+        left: -7px;
+        width: 22px;
+        height: 2px;
+        border-radius: 2px;
+        transform: rotate(45deg);
+        background: #ff0000;
+      }
+      .mobile-menu-toggle[aria-expanded="true"] .hamburger::after  {
+        top: 0;
+        left: -7px;
+        width: 22px;
+        height: 2px;
+        border-radius: 2px;
+        transform: rotate(-45deg);
+        background: #ff0000;
+      }
 
       /* Hide the left projects list by default — show as overlay when menu is open */
       .popup .projects-list {
