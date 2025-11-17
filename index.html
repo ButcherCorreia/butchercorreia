@@ -543,14 +543,13 @@
         border: none;
         padding: 0;
         cursor: var(--cursor-svg);
-        /* Absolute positioning relative to .title-row (which is positioned)
-           so left/top will move the toggle. We offset left by the negative
-           header padding so the button is flush to the page left edge. */
-        position: absolute;
-        /* move ~10px further left than before (cancel header pad then shift) */
-        left: calc(-1 * var(--site-side-pad) - 10px); /* flush further to the left */
-        /* lower the toggle by ~50px more than before */
-        top: calc(100% + 62px); /* ~62px below the header row */
+        /* Use fixed positioning so the toggle is positioned relative to the
+           viewport. A small JS routine (below) will compute precise top/left
+           to align the toggle ~50px below the header and ~10px from the
+           viewport left. These defaults provide a reasonable fallback. */
+        position: fixed;
+        left: 10px; /* fallback: 10px from viewport left */
+        top: 90px; /* fallback distance from viewport top; JS will adjust */
         z-index: 100020; /* sit above other UI */
       }
 
@@ -1311,6 +1310,37 @@ function selectProject(key) {
     window.addEventListener('resize', function(){
       if (window.innerWidth > 700) closeMenu(); // change 700->768 if you change the media query
     }, { passive: true });
+
+    // Positioning: compute pixel-perfect placement for the fixed toggle so it
+    // sits ~50px below the header and ~10px from the viewport left on mobile.
+    // This adapts to header height, font-size changes and resizes.
+    function positionToggle() {
+      if (!toggle) return;
+      // Only apply on small viewports where the mobile toggle is visible
+      if (window.innerWidth > 700) {
+        // restore fallback values when desktop
+        toggle.style.left = '';
+        toggle.style.top = '';
+        return;
+      }
+      const header = document.querySelector('.site-title-box');
+      const offsetBelowHeader = 50; // px desired below header
+      const leftFromViewport = 10; // px from left edge
+
+      // header.getBoundingClientRect() returns viewport-relative coordinates
+      const headerRect = header ? header.getBoundingClientRect() : { bottom: 20 };
+      // place the toggle offsetBelowHeader pixels below header bottom
+      const top = Math.round(headerRect.bottom + offsetBelowHeader);
+
+      toggle.style.position = 'fixed';
+      toggle.style.left = leftFromViewport + 'px';
+      toggle.style.top = top + 'px';
+    }
+
+    // initial placement and reflow handlers
+    positionToggle();
+    window.addEventListener('resize', positionToggle, { passive: true });
+    window.addEventListener('scroll', positionToggle, { passive: true });
   })();
   </script>
 
