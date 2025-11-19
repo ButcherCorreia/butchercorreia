@@ -1162,11 +1162,15 @@
         a.classList.add('active');
         if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
 
-        // close mobile menu if open
+        // close mobile menu if open and restore the meatball toggle
         if (mainPopup && mainPopup.classList.contains('mobile-open')) {
           mainPopup.classList.remove('mobile-open');
           const mobToggle = document.getElementById('mobile-menu-toggle');
-          if (mobToggle) mobToggle.setAttribute('aria-expanded', 'false');
+          if (mobToggle) {
+            mobToggle.setAttribute('aria-expanded', 'false');
+            mobToggle.classList.remove('no-cross');
+          }
+          try { document.body.classList.remove('projects-open'); } catch (e) { /* ignore */ }
         }
       });
     }
@@ -1254,11 +1258,15 @@ function selectProject(key) {
         // ensure projects-list is visible if a project was selected
         if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
 
-        // close mobile menu if open
+        // close mobile menu if open and restore the meatball toggle
         if (mainPopup && mainPopup.classList.contains('mobile-open')) {
           mainPopup.classList.remove('mobile-open');
           const mobToggle = document.getElementById('mobile-menu-toggle');
-          if (mobToggle) mobToggle.setAttribute('aria-expanded', 'false');
+          if (mobToggle) {
+            mobToggle.setAttribute('aria-expanded', 'false');
+            mobToggle.classList.remove('no-cross');
+          }
+          try { document.body.classList.remove('projects-open'); } catch (e) { /* ignore */ }
         }
       });
     });
