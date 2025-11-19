@@ -602,7 +602,7 @@
         display: inline-block;
       }
 
-      /* Meatballs: three small red dots stacked vertically. On expand
+      /* Meatballs: three small red dots arranged horizontally. On expand
          they morph into an X using the pseudo-elements. */
       .mobile-menu-toggle .hamburger {
         display: block;
@@ -630,8 +630,9 @@
         z-index: 100021;
         transform-origin: center;
       }
-      .mobile-menu-toggle .hamburger::before { top: -12px; }
-      .mobile-menu-toggle .hamburger::after  { top: 12px; }
+      /* Arrange dots horizontally (left and right offsets) */
+      .mobile-menu-toggle .hamburger::before { left: -12px; top: 0; }
+      .mobile-menu-toggle .hamburger::after  { left: 12px; top: 0; }
 
       /* Toggle -> X state when expanded (use aria-expanded so we don't rely on DOM order)
          Morph dots into two crossing bars by expanding width/height and rotating. */
@@ -704,7 +705,7 @@
   <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
     <div class="popup-inner">
       <nav id="projectsList" class="projects-list" aria-label="Projects list">
-        <a href="#solo" data-key="solo" class="project-item">Forlengelser</a>
+        <a href="#solo" data-key="solo" class="project-item">SOLO</a>
         <a href="#sound-of-things" data-key="sound-of-things" class="project-item">The Sound of Things</a>
         <a href="#just-this" data-key="just-this" class="project-item">Just This And Only That</a>
         <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
