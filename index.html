@@ -551,6 +551,11 @@
         z-index: 100020; /* sit above other UI */
       }
 
+      /* When the projects overlay is open on mobile, hide the meatball toggle
+         so it doesn't overlap the expanded list. JS will toggle `projects-open`
+         on the body when opening/closing. */
+      body.projects-open .mobile-menu-toggle { display: none !important; }
+
       /* Remove native button chrome (background/rounded box) while keeping
          the hamburger bars visible. Only the button itself resets to
          transparent/flat; the .hamburger bars keep their background color. */
@@ -1279,11 +1284,14 @@ function selectProject(key) {
       // keep aria-expanded for accessibility, but add a class to suppress
       // the visual cross when the project list overlay is shown
       if (toggle) toggle.classList.add('no-cross');
+      // hide the toggle while the projects list is expanded
+      try { document.body.classList.add('projects-open'); } catch (e) {}
       toggle.setAttribute('aria-expanded', 'true');
     }
     function closeMenu() {
       if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.remove('mobile-open');
       if (toggle) toggle.classList.remove('no-cross');
+      try { document.body.classList.remove('projects-open'); } catch (e) {}
       toggle.setAttribute('aria-expanded', 'false');
     }
 
