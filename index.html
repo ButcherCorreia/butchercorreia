@@ -543,13 +543,11 @@
         border: none;
         padding: 0;
         cursor: var(--cursor-svg);
-        /* Use fixed positioning so the toggle is positioned relative to the
-           viewport. A small JS routine (below) will compute precise top/left
-           to align the toggle ~50px below the header and ~10px from the
-           viewport left. These defaults provide a reasonable fallback. */
-        position: fixed;
-        left: 25px; /* fallback: 10px from viewport left */
-        top: 40px; /* fallback distance from viewport top; JS will adjust */
+      /* Use absolute positioning relative to the header row so the toggle
+        sits at a consistent spot anchored to the header. Requested values: */
+      position: absolute;
+      left: 20px;
+      top: 60px;
         z-index: 100020; /* sit above other UI */
       }
 
@@ -659,10 +657,10 @@
       /* Hide the left projects list by default — show as overlay when menu is open */
       .popup .projects-list {
         display: none;
-  position: absolute;
-  top: 250px;
-  left: 5px;
-  right: 20px;
+        position: absolute;
+        top: 60px;
+        left: 20px;
+        right: 20px;
         background: #fff;
         padding: 0; /* remove padding on small screens per request */
         box-shadow: none; /* remove border/shadow */
