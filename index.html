@@ -544,10 +544,13 @@
         padding: 0;
         cursor: var(--cursor-svg);
       /* Use absolute positioning relative to the header row so the toggle
-        sits at a consistent spot anchored to the header. Requested values: */
+        sits aligned with the header text inset. Use the header padding CSS
+        variable so it adjusts across breakpoints. Vertically center the
+        toggle inside the header row for consistent alignment. */
         position: absolute;
-        left: 30px;
-        top: 70px;
+        left: var(--site-side-pad);
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 100020; /* sit above other UI */
       }
 
