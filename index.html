@@ -1310,36 +1310,9 @@ function selectProject(key) {
       if (window.innerWidth > 700) closeMenu(); // change 700->768 if you change the media query
     }, { passive: true });
 
-    // Positioning: compute pixel-perfect placement for the fixed toggle so it
-    // sits ~50px below the header and ~10px from the viewport left on mobile.
-    // This adapts to header height, font-size changes and resizes.
-    function positionToggle() {
-      if (!toggle) return;
-      // Only apply on small viewports where the mobile toggle is visible
-      if (window.innerWidth > 700) {
-        // restore fallback values when desktop
-        toggle.style.left = '';
-        toggle.style.top = '';
-        return;
-      }
-      const header = document.querySelector('.site-title-box');
-      const offsetBelowHeader = 50; // px desired below header
-      const leftFromViewport = 10; // px from left edge
-
-      // header.getBoundingClientRect() returns viewport-relative coordinates
-      const headerRect = header ? header.getBoundingClientRect() : { bottom: 20 };
-      // place the toggle offsetBelowHeader pixels below header bottom
-      const top = Math.round(headerRect.bottom + offsetBelowHeader);
-
-      toggle.style.position = 'fixed';
-      toggle.style.left = leftFromViewport + 'px';
-      toggle.style.top = top + 'px';
-    }
-
-    // initial placement and reflow handlers
-    positionToggle();
-    window.addEventListener('resize', positionToggle, { passive: true });
-    window.addEventListener('scroll', positionToggle, { passive: true });
+    // Positioning is driven by CSS absolute positioning anchored to
+    // `.site-title-box .title-row` (which is positioned). No JS placement
+    // adjustments are necessary for the requested absolute top/left values.
   })();
   </script>
 
