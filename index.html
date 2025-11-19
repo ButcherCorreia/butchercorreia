@@ -552,14 +552,13 @@
       }
 
     /* When the projects overlay is open on mobile, hide the meatball toggle
-      so it doesn't overlap the expanded list. JS will toggle `projects-open`
-      on the body when opening/closing. */
+       so it doesn't overlap the expanded list. JS will toggle
+       `projects-open` on the body when opening/closing. */
     body.projects-open .mobile-menu-toggle { display: none !important; }
 
-    /* Explicitly ensure the meatball toggle is visible on mobile when the
-      projects list is NOT open. This forces visibility if some other rule
-      has overridden the display. */
-    body:not(.projects-open) .mobile-menu-toggle { display: inline-flex !important; }
+    /* Default: ensure the meatball toggle is visible on mobile unless the
+       projects list is open. Use !important to override other rules. */
+    .mobile-menu-toggle { display: inline-flex !important; }
 
       /* Remove native button chrome (background/rounded box) while keeping
          the hamburger bars visible. Only the button itself resets to
