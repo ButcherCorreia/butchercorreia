@@ -634,17 +634,17 @@
 
       /* Toggle -> X state when expanded (use aria-expanded so we don't rely on DOM order)
          Morph dots into two crossing bars by expanding width/height and rotating. */
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger { background: transparent; }
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger::before {
-        top: 5;
-        left: -3px;
+      .mobile-menu-toggle[aria-expanded="true"]:not(.no-cross) .hamburger { background: transparent; }
+      .mobile-menu-toggle[aria-expanded="true"]:not(.no-cross) .hamburger::before {
+        top: 0;
+        left: -7px;
         width: 22px;
         height: 2px;
         border-radius: 2px;
         transform: rotate(45deg);
         background: #ff0000;
       }
-      .mobile-menu-toggle[aria-expanded="true"] .hamburger::after  {
+      .mobile-menu-toggle[aria-expanded="true"]:not(.no-cross) .hamburger::after  {
         top: 0;
         left: -7px;
         width: 22px;
@@ -1276,10 +1276,14 @@ function selectProject(key) {
 
     function openMenu() {
       if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.add('mobile-open');
+      // keep aria-expanded for accessibility, but add a class to suppress
+      // the visual cross when the project list overlay is shown
+      if (toggle) toggle.classList.add('no-cross');
       toggle.setAttribute('aria-expanded', 'true');
     }
     function closeMenu() {
       if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.remove('mobile-open');
+      if (toggle) toggle.classList.remove('no-cross');
       toggle.setAttribute('aria-expanded', 'false');
     }
 
