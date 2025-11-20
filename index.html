@@ -547,9 +547,11 @@
         toggle inside the header row for consistent alignment. */
         position: absolute;
   /* nudge 6px to the right from the header padding */
-  left: calc(var(--site-side-pad) + 6px);
-  top: 50%;
-  transform: translateY(-50%);
+      left: calc(var(--site-side-pad) + 6px);
+      /* place the toggle just below the header's top padding so it doesn't overlap text
+        Use --site-top-pad (adjusted at small widths) plus a small offset for fine-tuning */
+      top: calc(var(--site-top-pad) + 6px);
+      transform: none;
         z-index: 100020; /* sit above other UI */
       }
 
