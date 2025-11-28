@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Product Passport - SOLO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gallery-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .passport-title {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .product-name {
+            font-size: 4rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+            color: #000;
+        }
+
+        .product-info {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #000;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background-color: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 2% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #999;
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            z-index: 10;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .modal h2 {
+            margin-bottom: 1.5rem;
+            color: #000;
+            font-size: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .modal h3 {
+            margin: 2rem 0 1rem 0;
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .modal-info-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .modal-info-value {
+            color: #666;
+        }
+
+        .modal p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .annotations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .annotation-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .annotation-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        .links-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .links-section a {
+            display: block;
+            color: #0066cc;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+
+        .links-section a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .product-name {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1% auto;
+                padding: 1rem;
+                max-height: 95vh;
+            }
+
+            .modal-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Gallery Section -->
+        <div class="gallery">
+            <div class="gallery-item">
+                <video autoplay muted loop playsinline>
+                    <source src="https://www.dropbox.com/scl/fi/hlpox7yj3nonplz164jpg/ButcherCorreia_white.mp4?rlkey=jrqqzpskb1vwoh1nc0dpuqxz0&st=ydmmpt53&raw=1" type="video/mp4">
+                    MO Animation
+                </video>
+            </div>
+            <div class="gallery-item">
+                <img src="https://drive.google.com/uc?export=view&id=1ZpJ-BGH53p0hDn5w_0jXcnXXk0eTmx3G" alt="SOLO" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://drive.google.com/uc?export=view&id=1hbnqswoTle7AkxoQ5_buS-sG7LgAKBJl" alt="FORLENGELSER" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="https://drive.google.com/uc?export=view&id=1MGmF3wHTVvCQOnSLVqrfcx2ZOMqloHxn" alt="SOLO map" loading="lazy">
+            </div>
+        </div>
+
+        <!-- Header Section -->
+        <div class="header">
+            <div class="passport-title">Digital product passport for</div>
+            <div class="product-name">SOLO</div>
+            
+            <!-- Product Information -->
+            <div class="product-info">
+                <div class="info-grid">
+                    <div class="info-label">product category:</div>
+                    <div class="info-value">soft sculpture</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">artist:</div>
+                    <div class="info-value">BUTCHER & CORREIA studio</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">imagery:</div>
+                    <div class="info-value">Manufacture Oslo, BUTCHER & CORREIA Studio</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">main material:</div>
+                    <div class="info-value">wool</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">color:</div>
+                    <div class="info-value">Trønder sheep</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">country of origin:</div>
+                    <div class="info-value">Trøndelag, Norway</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="navigation">
+            <a href="#" class="nav-link" onclick="openModal('about-solo')">About SOLO</a>
+            <a href="#" class="nav-link" onclick="openModal('about-product')">About product</a>
+            <a href="#" class="nav-link" onclick="openModal('about-butcher-correia')">About BUTCHER & CORREIA</a>
+            <a href="#" class="nav-link" onclick="openModal('annotations')">Annotations</a>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+    <!-- About SOLO Modal -->
+    <div id="about-solo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('about-solo')">&times;</span>
+            <h2>About SOLO</h2>
+            <p>SOLO is developed by BUTCHER & CORREIA, together with Joana Bruno, as a world of visual gestures that gathers around the moving body of Rannei Grenne. Grenne brings with her a decade of practice, a vocabulary lived through the fibres of her training clothes. From attentive watching and from deep conversation, SOLO grows as costume, scenography, sound and relation, threaded into Forlengelser, translated as Extensions. Wool, hand, floor, animal, machine and time are held in a single orbit, each answering the other. The fibre carries energy, the surfaces draw movement into presence, the space listens. SOLO drifts within, without and between the emerging frame of the Digital Product Passport, one possible answer to the crisis, revealing the openings and the blindspots in the attempt to remake the textiles we live in and love. Sustainable thinking must compete with the pressures of increasing market share, and the work asks what it would take to imagine these everyday items otherwise, through a form of attention that moves against this current. It traces where this insistance holds, where it strains, where it breaks and where it opens toward new forms of making, learning and understanding. The material is more than tangible. It is intention, process, method, company, decision and consequence. It is the unseen pressures and the felt constraints that leave their traces on the work. SOLO attends to Forlengelser.</p>
+            
+            <h3>Credits</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Performance concept Forlengelser/coreography/dance:</div>
+                <div class="modal-info-value">Rannei Grenne</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Visual (costume design, scenography, sonic landscape):</div>
+                <div class="modal-info-value">BUTCHER & CORREIA</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Artistic design assistant:</div>
+                <div class="modal-info-value">Joana Bruno</div>
+            </div>
+            
+            <h3>Locations</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Location #1:</div>
+                <div class="modal-info-value">BABEL visningsrom, Trondheim (NO) December 2025</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Location #2:</div>
+                <div class="modal-info-value">Kunstrom Jakob, Steinkjer (NO) June 2026</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Location #3:</div>
+                <div class="modal-info-value">Pink, Stockport (UK) 2026/2027</div>
+            </div>
+            
+            <h3>Production Details</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Scenography:</div>
+                <div class="modal-info-value">felted wool (from Trønder Sheep) from Selbu Spinneri (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Costume design:</div>
+                <div class="modal-info-value">translation work by Manufacture Oslo (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Garment's fabric:</div>
+                <div class="modal-info-value">weaved by Varp & Veft with trønder sheep wool (yarn from Selbu Spinneri) (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Sound:</div>
+                <div class="modal-info-value">LOM Geofón, omnidirectional geophone, Lom, Bratislava (SK)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Light:</div>
+                <div class="modal-info-value">Exterior Wash™ 310, Marten Lighting, Aarhus (DK) - discontinued</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Hair/Eye:</div>
+                <div class="modal-info-value">Unseen Beauty, London (UK)</div>
+            </div>
+            
+            <h3>Additional Credits</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">External eye for coreography and dance:</div>
+                <div class="modal-info-value">Ásgerður Gunnarsdóttir</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Light design:</div>
+                <div class="modal-info-value">BUTCHER & CORREIA</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Artistic documentation concept:</div>
+                <div class="modal-info-value">BUTCHER & CORREIA</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Photography and Video:</div>
+                <div class="modal-info-value">Lili Zaneta</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Hair design:</div>
+                <div class="modal-info-value">Solvår K. Sandvik</div>
+            </div>
+            
+            <p><strong>Special thanks to:</strong> Astrid Ljungberg, Pekka Stokke, Yahya Khider, Veslemøy Lilleengen Grey Trøndelag sheep supported by Norsk Sau og Geit (NSG)</p>
+            
+            <h3>Support</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Supported by:</div>
+                <div class="modal-info-value">Kulturdirektoratet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Co-producer:</div>
+                <div class="modal-info-value">DansiT koreografisk senter</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Product Modal -->
+    <div id="about-product" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('about-product')">&times;</span>
+            <h2>About Product</h2>
+            
+            <h3>Product Identification</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Product name</div>
+                <div class="modal-info-value">SOLO</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Product category</div>
+                <div class="modal-info-value">Apparel, Clothing / Home textiles, Furnishings</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Product Type Code (CPA)</div>
+                <div class="modal-info-value">Garment: CPA 14.19 / Cushion: CPA 13.92.1</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Unique Product ID (HS/CN)</div>
+                <div class="modal-info-value">Garment: HS/CN 6211.49 / Cushion: HS/CN 9404.90</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Artist</div>
+                <div class="modal-info-value">BUTCHER & CORREIA Studio</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Artistic design consultant</div>
+                <div class="modal-info-value">Joana Bruno</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Country of Origin</div>
+                <div class="modal-info-value">Norway*</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Country of Design</div>
+                <div class="modal-info-value">Norway</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Batch/Serial Number</div>
+                <div class="modal-info-value">One-of-a-kind</div>
+            </div>
+            
+            <h3>Material Composition</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Primary Fiber</div>
+                <div class="modal-info-value">Virgin wool from Grå Trøndersau (Trønder sheep)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Norwegian Wool Standard details</div>
+                <div class="modal-info-value">C1S</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Primary Fiber Origin</div>
+                <div class="modal-info-value">Trøndelag, Norway</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Recycled Content</div>
+                <div class="modal-info-value">0%</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Dyeing</div>
+                <div class="modal-info-value">Undyed natural colour and indigo dye</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Chemical substances used</div>
+                <div class="modal-info-value">None beyond standard wool-washing agents; local breed wool. Optional traceability available via the Norwegian Wool Standard (NWS) classification</div>
+            </div>
+            
+            <h3>Other Materials</h3>
+            <p><strong>Materials (Notions and Accessories)</strong></p>
+            
+            <p><strong>Thread:</strong><br>
+            Construction thread: Manufacture Oslo (supplier and composition to be added).<br>
+            Embroidery thread: WonderFil Splendor 40 wt Rayon, colour Surf The Web, code R3119.<br>
+            Origin: Canada.<br>
+            Supplier: Buran Library, Trondheim.<br>
+            Sourced by: BUTCHER and CORREIA Studio, Norway.</p>
+            
+            <p><strong>Elastic:</strong><br>
+            Elastic band for waistband.<br>
+            Supplier: Manufacture Oslo (supplier and composition to be added).<br>
+            Sourced by: Manufacture Oslo, Oslo.</p>
+            
+            <p><strong>Button:</strong><br>
+            Button for back closure.<br>
+            Origin: Portugal.<br>
+            Composition: 99 percent cotton.<br>
+            Supplier: Kinkeliane, Stavanger.<br>
+            Sourced by: BUTCHER and CORREIA Studio, Norway.</p>
+            
+            <p><strong>Drawstring:</strong><br>
+            Drawstring cord for trousers.<br>
+            GTIN: 7054490111145.<br>
+            Origin: Germany.<br>
+            Composition: 100 percent cotton.<br>
+            Supplier: M Sommer AS, Trondheim.<br>
+            Sourced by: BUTCHER and CORREIA Studio, Norway.</p>
+            
+            <p><strong>Tag:</strong><br>
+            Cotton identification tag.<br>
+            Origin: China.<br>
+            Composition: 100 percent cotton.<br>
+            Supplier: Selfmade Norge AS, Trondheim.<br>
+            Sourced by: BUTCHER and CORREIA Studio, Norway.</p>
+            
+            <h3>Manufacturing and Supply Chain</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Farming/Breeding (costume & scenography)</div>
+                <div class="modal-info-value">Øfsti søndre, Stjørdal (NO) www.ofsti.no supported by Raselaget for Grå Trøndersau, Norsk Sau og Geit (NSG) https://www.nsg.no/gra-trondersau/. NSG is part of the organisation Landbrukets Klimaselskap SA https://klimasmartlandbruk.no/forside/.</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Felting (scenography)</div>
+                <div class="modal-info-value">BUTCHER & CORREIA Studio, Trondheim (NO) www.butchercorreia.com</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Washing (costume & scenography)</div>
+                <div class="modal-info-value">Selbu Spinneri, Klæbu (NO) www.selbuspinneri.no</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Spinning (costume)</div>
+                <div class="modal-info-value">Selbu Spinneri, Klæbu (NO) www.selbuspinneri.no</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Weaving (costume)</div>
+                <div class="modal-info-value">Varp & Veft, Sandnes (NO) www.villveis.com</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Top Construction (costume)</div>
+                <div class="modal-info-value">Caroline Cherry / MO, Oslo (NO) https://www.manufacture-oslo.no/</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Trouser Construction (costume)</div>
+                <div class="modal-info-value">Victoria Castro / MO, Oslo (NO) https://www.manufacture-oslo.no/</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Top Technician (costume)</div>
+                <div class="modal-info-value">Petra Clough-Helgese / MO, Oslo (NO) https://www.manufacture-oslo.no/</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Trouser Technician (costume)</div>
+                <div class="modal-info-value">Linnea Therese Helle / MO, Oslo (NO) https://www.manufacture-oslo.no/</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Tags (costume & scenography)</div>
+                <div class="modal-info-value">BUTCHER & CORREIA Studio / Digital embroidery using Janome Memory Craft 550E Limited Edition, Buran Library, Trondheim (NO) https://biblioteket.trondheim.kommune.no/innhold/om-biblioteket/avdelinger/buranbibliotek/</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Supply Chain Traceability</div>
+                <div class="modal-info-value">Fully traceable up to our best, 99% Norwegian production</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Energy Source</div>
+                <div class="modal-info-value">Individual company energy supplies are not detailed. International Energy Agency (IEA), Norway: Energy Mix (2024). Hydropower accounts for 43% of total energy supply, and oil and oil products for 28%. Based on the 2023 reporting on Energy consumption by sector Norwegian industry uses 28.6% of Total Final Consumption.</div>
+            </div>
+            
+            <h3>Environmental and Circularity Data</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Fiber Renewability</div>
+                <div class="modal-info-value">100% renewable natural fiber</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Material Breakdown (for circularity and recovery)</div>
+                <div class="modal-info-value">Wool: ≈99% of total material composition; virgin C1S-grade Grå Trøndersau wool. Suitable for mechanical fibre recovery; no coatings or chemical finishes. Cotton Accessories: <1% (drawstring, tags). Remove manually before fibre recycling. Notions: Button (material pending), elastic (synthetic), thread (pending). All must be removed prior to recycling.</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Transport Emissions</div>
+                <div class="modal-info-value">Posten: Trondheim return shipments (studio ⇄ Oslo), low-volume parcels; estimated low-impact due to national electric fleet mix</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Carbon Footprint (estimated)</div>
+                <div class="modal-info-value">&lt;10 kg CO₂e/kg, based on Nordic small-scale wool LCA values (SIFO/OsloMet 2021; EU JRC PEFCR 2018).</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Repairability</div>
+                <div class="modal-info-value">High (wool is re-mendable and re-feltable)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Recyclability</div>
+                <div class="modal-info-value">&gt;95% wool component recyclable (mechanical processing), Non-wool components fully removable, Wool suitable for reuse as felt, insulation, acoustic materials, or batting</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Biodegradability</div>
+                <div class="modal-info-value">Yes (under natural conditions)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">End-of-Life Guidance</div>
+                <div class="modal-info-value">Remove cotton drawstring and tag > Remove elastic, button, thread, and all non-wool components > Shred remaining wool textile > Card into reclaimed fibre > Reuse as felt, insulation, acoustic material or compost / return to mechanical recycling</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Hazard Warnings</div>
+                <div class="modal-info-value">No hazardous substances; washed with standard wool detergents</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Circularity Score</div>
+                <div class="modal-info-value">High recyclability (&gt;95%) Transport footprint low due to short-distance national logistics and partial electrification of Posten fleet</div>
+            </div>
+            
+            <h3>Usage and Care</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Care Instruction</div>
+                <div class="modal-info-value">Hand wash cold with wool detergent, air dry flat</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Durability Rating</div>
+                <div class="modal-info-value">Expected lifespan &gt;10 years with maintenance</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Repair Guidance</div>
+                <div class="modal-info-value">Darning / patching supported by Manufacture Oslo (optional service)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Spare Components</div>
+                <div class="modal-info-value">N/A</div>
+            </div>
+            
+            <h3>Compliance and Legal</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Conformity</div>
+                <div class="modal-info-value">Follows EU Textile Regulation (1007/2011)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Origin Marking</div>
+                <div class="modal-info-value">Made in Norway</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Safety Standards</div>
+                <div class="modal-info-value">Meets Norwegian textile safety and labelling requirements</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Digital Passport Storage</div>
+                <div class="modal-info-value">Secure QR code / NFC link on product label</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About BUTCHER & CORREIA Modal -->
+    <div id="about-butcher-correia" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('about-butcher-correia')">&times;</span>
+            <h2>About BUTCHER & CORREIA</h2>
+            <p>BUTCHER & CORREIA is an interdisciplinary artist duo based in Trondheim/Sydney. Formed in 2022, they examine perception as a political act, using sensory attunement to expose and unsettle dominant structures of seeing and knowing.</p>
+            
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Website</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">butchercorreia.com</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">Contact</div>
+                <div class="modal-info-value"><a href="mailto:studio@butchercorreia.com">studio@butchercorreia.com</a></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Annotations Modal -->
+    <div id="annotations" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('annotations')">&times;</span>
+            <h2>Annotations</h2>
+            
+            <h3>BUTCHER & CORREIA Annotations</h3>
+            <div class="annotations-grid">
+                <div class="annotation-item">
+                    <img src="https://drive.google.com/uc?export=view&id=1KhKYBj41QhXqnylKQldwS4iMApxBuEKs" alt="Adidas pants" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="https://drive.google.com/uc?export=view&id=19IhJQVfMsj5bAN4WkWY4bJDQNPPJbsNt" alt="T-shirt no brand" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="https://drive.google.com/uc?export=view&id=1gXRpPstv0Q_1oY7BU8EPEG5ECLjLGsK5" alt="Nike shoes" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="https://drive.google.com/uc?export=view&id=1MGmF3wHTVvCQOnSLVqrfcx2ZOMqloHxn" alt="SOLO" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="https://drive.google.com/uc?export=view&id=1MGmF3wHTVvCQOnSLVqrfcx2ZOMqloHxn" alt="Forlengelser" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="https://drive.google.com/uc?export=view&id=1MGmF3wHTVvCQOnSLVqrfcx2ZOMqloHxn" alt="SOLO map" loading="lazy">
+                </div>
+            </div>
+
+            <h3>MANUFACTURE OSLO - ANNOTATIONS</h3>
+            
+            <h4>Project Background</h4>
+            <p>The first meeting with the dancer, Rannei Grenne, took place at our Manufacture Oslo office at Kabelgata 13 on Tuesday 13 September at 13:00. She brought her favourite rehearsal uniform: a pair of sweatpants and an oversized T-shirt, both in soft, stretchy materials that had become worn and comfortable through years of use.</p>
+            <p>The initial idea was to recreate this uniform using materials that are fully Norwegian in both fibre and production. Norwegian wool was essential.</p>
+
+            <h4>Design Challenges</h4>
+            <p>The main challenge was recreating the uniform as authentically as possible while making necessary adjustments to accommodate the very different behaviours of the new materials. The original garments were made from elastic jersey, whereas the new ones would be made from a rigid woven wool. We also considered the tactile experience of wearing wool, which can feel drier or itchier, but Rannei assured us this would not be a problem for her.</p>
+
+            <h4>Key Design Changes</h4>
+            <p>One of the main modifications to the top was introducing a keyhole opening at the back neckline. We also incorporated subtle details inspired by Norwegian bunad heritage. These additions felt both functional and poetically fitting, transforming a plain T-shirt into something more intentional.</p>
+            <p>We chose not to include interfacing in the neckline to avoid introducing materials that were not Norwegian. Apart from this, we kept most of the original T-shirt details.</p>
+            <p>For the trousers, the inseam and crotch area were widened to maintain the same freedom of movement Rannei was used to. Because the original sweatpants were stretchy and the wool is not, this adjustment was essential. We added pockets and kept the elastic waistband to preserve the original functionality and look.</p>
+
+            <h4>Fitting</h4>
+            <p>During the fitting, Rannei tried on the outfit and we agreed on several modifications to the top. The woven fabric had a different drape and carried more volume, causing it to lift away from the body. We therefore adjusted the sleeves as well as the length and width of the body.</p>
+            <p>For the trousers, we shortened the legs to prevent excessive gathering at the hem, resulting in a cleaner silhouette. The elastic waist was also adjusted to balance the fabric's weight and suit the dancer's waist-to-hip ratio.</p>
+
+            <h3>SELBU SPINNERI - ANNOTATIONS</h3>
+            <p>Ulla dere har kjøpt er ull fra Grå Trøndersau fra Trøndelag av ullklassen C1S. C1S er den «beste» kvaliteten av grå ull. Denne ulla er like fin som hvit ull av tilsvarende klasse, men fordi den er grå, er den mye lavere priset i ullprisene. Vi kjøper ulla fra lokale bønder og fra det lokale ullmottaket i Malvik. Sauene ulla kommer fra, har helt definitivt et nummer, det har alle sauer og produksjonsdyr som holdes etter reglene i Norge. De fleste sauene har også navn. De som har gamle saueraser som Grå Trøndersau er som regel veldig glade i dyrene sine og gir dem godt stell og mye omsorg. Noen ganger er ulla vi kjøper puttet i sekker med navnet til sauen, «Milla», «Lita», «Rosa», «Lillelammet» og «Rubus» er noen navn som har stått. I våre systemer kan vi spore ulla tilbake til gården den kommer fra, eller hvilken ball fra ullmottaket. Ullmottaket har videre sporbarhet til gård og individ.</p>
+            <p>Gårdene vi kjøper fra, bruker som regel en fast klipper, men dette er en prosess som foregår på gården, ikke hos oss, så vi har ikke navn på klipperen bak ulla.</p>
+            <p>Vi sorterer all ulla vi bruker selv. Den sorteres etter lengde på fiberen, tykkelse på fiberen, krimp (hvor bølgete den er) og farge. Summen av alle disse faktorene gjør at vi sorterer til forskjellige typer garn, teppegarn og filting. Ved å sortere slik og tilby en bredde av produkter, kan vi bruke nesten all ull vi får inn, fordi vi har produkter som bruker alle kvalitetene av ull. Selv «resteulla» selger vi til folk som bruker det til å isolere biler, uthus, forsendelser og til å dekke i hagen.</p>
+            <p>Det er vannkrevende å vaske ull, men vi er så heldige å være i et område med veldig god tilgang på vann, så belastningen på omgivelsene av vårt vannforbruk er svært liten. Vi driver i så liten skala at vårt gråvann går inn i kommunens renseanlegg uten å belaste det ekstra. Vi renser eller gjenbruker ikke vaskevannet vårt selv.</p>
+            <p>Vi håper fremtiden til spinneriet er god. Som liten bedrift, med et sterkt bærekraftfokus, er det veldig krevende å få det til å gå fra måned til måned. Vi er veldig sårbare for svingninger i sesong og mer langvarige trender. Vi håper den etterspørselen etter lokale tekstiler vi har opplevd vil fortsette å øke og at det kommer flere bedrifter som kan gjøre andre steg av produksjonskjeden. Maskinstrikk, veving, filting og søm spesialisert på norsk ull er produksjoner vi håper vokser frem i nærområdet snart.</p>
+
+            <div class="links-section">
+                <h3>Links</h3>
+                <a href="https://www.animalia.no/contentassets/d91150be325e4d72b5b814f83b92b2f8/202961-animalia-ullstandard-engelsk-04.pdf" target="_blank">www.animalia.no/contentassets/d91150be325e4d72b5b814f83b92b2f8/202961-animalia-ullstandard-engelsk-04.pdf</a>
+                <a href="https://www.biblioteket.trondheim.kommune.no/innhold/om-biblioteket/avdelinger/buranbibliotek/" target="_blank">www.biblioteket.trondheim.kommune.no/innhold/om-biblioteket/avdelinger/buranbibliotek/</a>
+                <a href="https://butchercorreia.com" target="_blank">www.butchercorreia.com</a>
+                <a href="https://data.europa.eu/en/news-events/news/eus-digital-product-passport-advancing-transparency-and-sustainability" target="_blank">www.data.europa.eu/en/news-events/news/eus-digital-product-passport-advancing-transparency-and-sustainability</a>
+                <a href="https://www.manufacture-oslo.no/" target="_blank">www.manufacture-oslo.no/</a>
+                <a href="https://www.nsg.no/gra-trondersau/" target="_blank">www.nsg.no/gra-trondersau/</a>
+                <a href="https://www.ofsti.no/" target="_blank">www.ofsti.no/</a>
+                <a href="https://www.selbuspinneri.no/" target="_blank">www.selbuspinneri.no/</a>
+                <a href="https://www.varpogveft.no/en/pages/save-the-black-sheep" target="_blank">www.varpogveft.no/en/pages/save-the-black-sheep</a>
+                <a href="https://www.villveis.com" target="_blank">www.villveis.com</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
