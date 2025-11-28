@@ -26,22 +26,21 @@
         }
 
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        .gallery-item {
             position: relative;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
         }
 
-        .gallery-item:hover {
-            transform: translateY(-4px);
+        .gallery-item {
+            display: none;
+            width: 100%;
+        }
+
+        .gallery-item.active {
+            display: block;
         }
 
         .gallery-item img {
@@ -54,6 +53,52 @@
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: background 0.3s ease;
+            z-index: 10;
+        }
+
+        .gallery-nav:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .gallery-prev {
+            left: 1rem;
+        }
+
+        .gallery-next {
+            right: 1rem;
+        }
+
+        .gallery-dots {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .gallery-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .gallery-dot.active {
+            background: #000;
         }
 
         .header {
@@ -111,19 +156,20 @@
         }
 
         .nav-link {
-            color: #000;
+            color: #fff;
             text-decoration: none;
             padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
+            border: 1px solid #0066cc;
             border-radius: 6px;
             transition: all 0.3s ease;
             font-weight: 500;
+            background-color: #0066cc;
         }
 
         .nav-link:hover {
-            background-color: #000;
+            background-color: #004499;
             color: #fff;
-            border-color: #000;
+            border-color: #004499;
         }
 
         /* Modal Styles */
@@ -288,7 +334,7 @@
     <div class="container">
         <!-- Gallery Section -->
         <div class="gallery">
-            <div class="gallery-item">
+            <div class="gallery-item active">
                 <video autoplay muted loop playsinline>
                     <source src="https://www.dropbox.com/scl/fi/hlpox7yj3nonplz164jpg/ButcherCorreia_white.mp4?rlkey=jrqqzpskb1vwoh1nc0dpuqxz0&st=ydmmpt53&raw=1" type="video/mp4">
                     MO Animation
@@ -303,6 +349,14 @@
             <div class="gallery-item">
                 <img src="https://drive.google.com/uc?export=view&id=1MGmF3wHTVvCQOnSLVqrfcx2ZOMqloHxn" alt="SOLO map" loading="lazy">
             </div>
+            <button class="gallery-nav gallery-prev" onclick="previousImage()">&larr;</button>
+            <button class="gallery-nav gallery-next" onclick="nextImage()">&rarr;</button>
+        </div>
+        <div class="gallery-dots">
+            <span class="gallery-dot active" onclick="currentImage(1)"></span>
+            <span class="gallery-dot" onclick="currentImage(2)"></span>
+            <span class="gallery-dot" onclick="currentImage(3)"></span>
+            <span class="gallery-dot" onclick="currentImage(4)"></span>
         </div>
 
         <!-- Header Section -->
@@ -313,27 +367,27 @@
             <!-- Product Information -->
             <div class="product-info">
                 <div class="info-grid">
-                    <div class="info-label">product category:</div>
+                    <div class="info-label">product category</div>
                     <div class="info-value">soft sculpture</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">artist:</div>
+                    <div class="info-label">artist</div>
                     <div class="info-value">BUTCHER & CORREIA studio</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">imagery:</div>
+                    <div class="info-label">imagery</div>
                     <div class="info-value">Manufacture Oslo, BUTCHER & CORREIA Studio</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">main material:</div>
+                    <div class="info-label">main material</div>
                     <div class="info-value">wool</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">color:</div>
+                    <div class="info-label">color</div>
                     <div class="info-value">Trønder sheep</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">country of origin:</div>
+                    <div class="info-label">country of origin</div>
                     <div class="info-value">Trøndelag, Norway</div>
                 </div>
             </div>
@@ -772,6 +826,8 @@
     </div>
 
     <script>
+        let currentImageIndex = 1;
+        
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -780,6 +836,37 @@
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
             document.body.style.overflow = 'auto';
+        }
+
+        function showImage(index) {
+            const items = document.querySelectorAll('.gallery-item');
+            const dots = document.querySelectorAll('.gallery-dot');
+            
+            // Hide all items and deactivate all dots
+            items.forEach(item => item.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show selected item and activate corresponding dot
+            items[index - 1].classList.add('active');
+            dots[index - 1].classList.add('active');
+            
+            currentImageIndex = index;
+        }
+
+        function nextImage() {
+            const totalImages = document.querySelectorAll('.gallery-item').length;
+            const nextIndex = currentImageIndex >= totalImages ? 1 : currentImageIndex + 1;
+            showImage(nextIndex);
+        }
+
+        function previousImage() {
+            const totalImages = document.querySelectorAll('.gallery-item').length;
+            const prevIndex = currentImageIndex <= 1 ? totalImages : currentImageIndex - 1;
+            showImage(prevIndex);
+        }
+
+        function currentImage(index) {
+            showImage(index);
         }
 
         // Close modal when clicking outside of it
@@ -801,6 +888,15 @@
                     activeModal.classList.remove('active');
                     document.body.style.overflow = 'auto';
                 }
+            }
+        });
+
+        // Keyboard navigation for gallery
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousImage();
+            } else if (event.key === 'ArrowRight') {
+                nextImage();
             }
         });
     </script>
