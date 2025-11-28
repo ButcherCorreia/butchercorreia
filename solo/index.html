@@ -150,8 +150,8 @@
         .navigation {
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            margin: 3rem 0;
+            gap: 0.6rem;
+            margin: 1.5rem 0;
             flex-wrap: wrap;
         }
 
@@ -313,19 +313,19 @@
                 gap: 1rem;
             }
 
-            .gallery {
-                grid-template-columns: 1fr;
+            .gallery-dot {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: #0066cc;
+                margin: 0 0.5rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
             }
 
-            .modal-content {
-                width: 95%;
-                margin: 1% auto;
-                padding: 1rem;
-                max-height: 95vh;
-            }
-
-            .modal-info-grid {
-                grid-template-columns: 1fr;
+            .gallery-dot.active {
+                background: #004499;
             }
         }
     </style>
