@@ -59,18 +59,21 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: transparent;
-            color: rgb(0, 0, 255);
+            background: rgb(0, 0, 255);
+            color: #ffffff;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.6rem;
             cursor: pointer;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
+            font-size: 1.2rem;
+            line-height: 1;
+            border-radius: 3px;
+            transition: background 0.2s ease, transform 0.1s ease;
             z-index: 10;
         }
 
         .gallery-nav:hover {
-            color: rgb(0, 0, 255);
+            background: rgb(0, 0, 220);
+            transform: translateY(-50%) scale(1.02);
         }
 
         .gallery-prev {
@@ -157,10 +160,11 @@
         }
 
         .navigation {
+            max-width: 600px;
             display: flex;
             justify-content: center;
             gap: 0.3rem;
-            margin: 2rem 0 2rem 0;
+            margin: 2rem auto;
             flex-wrap: wrap;
             flex-direction: column;
         }
@@ -177,6 +181,7 @@
             line-height: 1.2;
             font-size: 0.95rem;
             border-radius: 1px;
+            width: 100%;
         }
 
         .nav-link:hover {
@@ -623,7 +628,7 @@
             
             <h3>manufacturing and supply chain</h3>
             <div class="modal-info-grid">
-                <div class="modal-info-label">farming/breeding (costume & scenography)</div>
+                <div class="modal-info-label">farming & breeding (costume & scenography)</div>
                 <div class="modal-info-value">Øfsti søndre, Stjørdal (NO) www.ofsti.no supported by Raselaget for Grå Trøndersau, Norsk Sau og Geit (NSG) https://www.nsg.no/gra-trondersau/. NSG is part of the organisation Landbrukets Klimaselskap SA https://klimasmartlandbruk.no/forside/.</div>
             </div>
             <div class="modal-info-grid">
@@ -697,7 +702,7 @@
                 <div class="modal-info-value">&gt;95% wool component recyclable (mechanical processing), Non-wool components fully removable, Wool suitable for reuse as felt, insulation, acoustic materials, or batting</div>
             </div>
             <div class="modal-info-grid">
-                <div class="modal-info-label">biodegradability</div>
+                <div class="modal-info-label">bio- degradability</div>
                 <div class="modal-info-value">Yes (under natural conditions)</div>
             </div>
             <div class="modal-info-grid">
@@ -915,6 +920,6 @@
     </script>
     
     <!-- Footer Note -->
-    <div class="footer-note">powered by B&C studio</div>
+    <div class="footer-note"><a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">powered by B&C studio</a></div>
 </body>
 </html>
