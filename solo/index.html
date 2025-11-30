@@ -13,7 +13,7 @@
     
     <!-- Open Graph (OG) metadata -->
     <meta property="og:title" content="BUTCHER & CORREIA" />
-    <meta property="og:description" content="Explore the portfolio, CV, and contact information." />
+    <meta property="og:description" content="Digital Product Passport (DPP) for SOLO by BUTCHER & CORREIA studio" />
     <meta property="og:image" content="https://butchercorreia.com" />
     <meta property="og:url" content="https://butchercorreia.com" />
     <meta property="og:type" content="website" />
@@ -341,12 +341,46 @@
             color: rgb(255, 0, 0);
         }
 
+        /* Make links in modal info rows behave like links-section */
+        .modal-info-value a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        .modal-info-value a:hover {
+            color: rgb(255, 0, 0);
+            text-decoration: underline;
+
+        }
+
         /* Footer */
         .footer-note {
             text-align: center;
             color: #666;
             font-size: 0.8rem;
             margin: 2rem 0 1rem 0;
+        }
+
+        /* Scrollbar (WebKit browsers: Chrome, Edge, Safari) */
+        *::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        *::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        *::-webkit-scrollbar-thumb {
+            background-color: rgb(0, 0, 255);
+            border-radius: 8px;
+            border: 2px solid #ffffff;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+            background-color: rgb(0, 0, 220);
+        }
+
+        /* Scrollbar (Firefox) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgb(0, 0, 255) #f0f0f0;
         }
 
         @media (max-width: 768px) {
@@ -798,6 +832,9 @@
             <div class="modal-info-grid">
                 <div class="modal-info-label">contact</div>
                 <div class="modal-info-value"><a href="mailto:studio@butchercorreia.com">studio@butchercorreia.com</a></div>
+            </div>
+            <div class="annotation-item">
+                <img src="/BCportrait.jpg" alt="polaroid" loading="lazy">
             </div>
         </div>
     </div>
