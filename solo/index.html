@@ -439,7 +439,6 @@
             <div class="gallery-item active">
                 <video autoplay muted loop playsinline>
                     <source src="solo_white.mp4" type="video/mp4">
-                    MO Animation
                 </video>
             </div>
             <div class="gallery-item">
@@ -1010,6 +1009,42 @@
                 nextImage();
             }
         });
+
+        // Fix gallery height to tallest item to avoid layout fluctuation
+        function computeGalleryHeight() {
+            const gallery = document.querySelector('.gallery');
+            if (!gallery) return;
+            const items = document.querySelectorAll('.gallery-item');
+            let maxHeight = 0;
+
+            items.forEach(item => {
+                // Ensure item is measurable
+                const wasActive = item.classList.contains('active');
+                if (!wasActive) item.style.display = 'block';
+
+                const media = item.querySelector('img, video');
+                if (media) {
+                    const h = media.getBoundingClientRect().height || media.offsetHeight;
+                    if (h > maxHeight) maxHeight = h;
+                }
+
+                if (!wasActive) item.style.display = ''; // revert to stylesheet
+            });
+
+            if (maxHeight > 0) {
+                gallery.style.minHeight = Math.ceil(maxHeight) + 'px';
+            }
+        }
+
+        // Recompute after media loads and on resize
+        window.addEventListener('load', computeGalleryHeight);
+        window.addEventListener('resize', computeGalleryHeight);
+        // Also recompute after changing slides
+        const _showImage = showImage;
+        showImage = function(index) {
+            _showImage(index);
+            computeGalleryHeight();
+        }
     </script>
     
     <!-- Favicon Image Above Footer -->
