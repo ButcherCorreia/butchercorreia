@@ -446,7 +446,7 @@
         <!-- Gallery Section -->
         <div class="gallery">
             <div class="gallery-item active">
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline preload="auto">
                     <source src="solo_white.mp4" type="video/mp4">
                 </video>
             </div>
@@ -1089,6 +1089,25 @@
         }
 
         window.addEventListener('load', bindVideoClickToggle);
+
+        // One-time user gesture bootstrap: if autoplay is delayed, start on first click/touch
+        function bootstrapAutoplayOnFirstInteraction() {
+            const startAll = () => {
+                document.removeEventListener('click', startAll);
+                document.removeEventListener('touchstart', startAll);
+                const videos = document.querySelectorAll('video');
+                videos.forEach(v => {
+                    // Attempt play; ignore promise rejections
+                    const p = v.play();
+                    if (p && typeof p.then === 'function') {
+                        p.catch(() => {});
+                    }
+                });
+            };
+            document.addEventListener('click', startAll, { once: true });
+            document.addEventListener('touchstart', startAll, { once: true });
+        }
+        bootstrapAutoplayOnFirstInteraction();
     </script>
     
     <!-- Favicon Image Above Footer -->
