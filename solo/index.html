@@ -439,6 +439,26 @@
                 background: rgb(0, 0, 255);
             }
         }
+        /* Cursor Trail */
+        .cursor-trail-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgb(0, 0, 255);
+            pointer-events: none;
+            opacity: 0.35;
+            transform: translate(-50%, -50%);
+            filter: blur(0.6px);
+            will-change: transform, opacity;
+            z-index: 9999;
+            animation: trailFade 700ms ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% { opacity: 0.35; }
+            100% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -1108,6 +1128,39 @@
             document.addEventListener('touchstart', startAll, { once: true });
         }
         bootstrapAutoplayOnFirstInteraction();
+    </script>
+    <script>
+        // Blue cursor trail (smooth, lightweight)
+        (function enableCursorTrail() {
+            let lastTime = 0;
+            const minInterval = 20; // ms, limit creation rate
+            const maxDots = 60; // cap number of dots to avoid buildup
+            const dots = [];
+
+            function addDot(x, y) {
+                const dot = document.createElement('div');
+                dot.className = 'cursor-trail-dot';
+                dot.style.left = x + 'px';
+                dot.style.top = y + 'px';
+                document.body.appendChild(dot);
+                dots.push(dot);
+                if (dots.length > maxDots) {
+                    const old = dots.shift();
+                    if (old && old.parentNode) old.parentNode.removeChild(old);
+                }
+                // Remove after animation ends
+                setTimeout(() => {
+                    if (dot && dot.parentNode) dot.parentNode.removeChild(dot);
+                }, 750);
+            }
+
+            window.addEventListener('mousemove', (e) => {
+                const now = performance.now();
+                if (now - lastTime < minInterval) return;
+                lastTime = now;
+                addDot(e.clientX, e.clientY);
+            });
+        })();
     </script>
     
     <!-- Favicon Image Above Footer -->
