@@ -1051,6 +1051,24 @@
             _showImage(index);
             computeGalleryHeight();
         }
+
+        // Toggle play/pause when clicking on videos (no icon)
+        function bindVideoClickToggle() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                // Ensure clicks only toggle playback
+                video.style.cursor = 'pointer';
+                video.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                });
+            });
+        }
+
+        window.addEventListener('load', bindVideoClickToggle);
     </script>
     
     <!-- Favicon Image Above Footer -->
