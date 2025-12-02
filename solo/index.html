@@ -1058,6 +1058,26 @@
             videos.forEach(video => {
                 // Ensure clicks only toggle playback
                 video.style.cursor = 'pointer';
+                // Strengthen autoplay conditions for mobile browsers
+                video.setAttribute('playsinline', '');
+                video.muted = true;
+                // If marked for autoplay, attempt to start
+                if (video.autoplay || video.getAttribute('autoplay') !== null) {
+                    const start = () => {
+                        const p = video.play();
+                        if (p && typeof p.then === 'function') {
+                            p.catch(() => {
+                                // Ignore autoplay rejections silently
+                            });
+                        }
+                    };
+                    // Try after metadata for reliable dimensions and policies
+                    if (video.readyState >= 1) {
+                        start();
+                    } else {
+                        video.addEventListener('loadedmetadata', start, { once: true });
+                    }
+                }
                 video.addEventListener('click', () => {
                     if (video.paused) {
                         video.play();
