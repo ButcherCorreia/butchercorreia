@@ -23,10 +23,9 @@
     <!-- favicon -->
     <link rel="icon" href="/favicon.PNG" type="image/png">
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=PT+Mono&display=swap" rel="stylesheet">
-    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>DPP - SOLO</title>
     <style>
         * {
@@ -144,7 +143,6 @@
         }
 
         .product-name {
-            font-family: 'Outfit', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
             max-width: 600px;
             font-size: 1.5rem;
             font-weight: bold;
@@ -312,9 +310,9 @@
             font-size: 0.9rem;
         }
 
-        /* Use Outfit for all h2 headings */
-        h2 {
-            font-family: 'Outfit', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        /* Use Roboto for h2, h3, product-name, and nav links */
+        h2, h3, .product-name, .nav-link {
+            font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
         }
 
         .annotations-grid {
@@ -1028,7 +1026,7 @@
             items.forEach(item => {
                 // Ensure item is measurable
                 const wasActive = item.classList.contains('active');
-                if (!wasActive) item.style.display = 'block';solo
+                if (!wasActive) item.style.display = 'block';
 
                 const media = item.querySelector('img, video');
                 if (media) {
