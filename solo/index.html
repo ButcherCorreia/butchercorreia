@@ -13,7 +13,7 @@
     
     <!-- Open Graph (OG) metadata -->
     <meta property="og:title" content="BUTCHER & CORREIA" />
-    <meta property="og:description" content="Explore the portfolio, CV, and contact information." />
+    <meta property="og:description" content="Explore DPP for SOLO, forlengelser performance" />
     <meta property="og:image" content="https://butchercorreia.com" />
     <meta property="og:url" content="https://butchercorreia.com" />
     <meta property="og:type" content="website" />
@@ -35,6 +35,7 @@
 
         body {
             font-family: 'Overpass Mono', monospace;
+            font-weight: 400;
             background-color: #fff;
             color: #000;
             line-height: 1.2;
@@ -468,27 +469,23 @@
             <!-- Product Information -->
             <div class="product-info">
                 <div class="info-grid">
-                    <div class="info-label">category</div>
-                    <div class="info-value">soft sculpture</div>
+                    <div class="info-label">type</div>
+                    <div class="info-value">wearable soft sculpture</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">artist</div>
+                    <div class="info-label">author</div>
                     <div class="info-value">BUTCHER & CORREIA studio</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">imagery</div>
-                    <div class="info-value">Manufacture Oslo, BUTCHER & CORREIA studio</div>
+                    <div class="info-label">ID</div>
+                    <div class="info-value">one-of-a-kind</div>
                 </div>
                 <div class="info-grid">
                     <div class="info-label">main material</div>
                     <div class="info-value">wool</div>
                 </div>
                 <div class="info-grid">
-                    <div class="info-label">color</div>
-                    <div class="info-value">Trønder sheep</div>
-                </div>
-                <div class="info-grid">
-                    <div class="info-label">made in</div>
+                    <div class="info-label">origin & design</div>
                     <div class="info-value">Norway</div>
                 </div>
             </div>
@@ -929,6 +926,7 @@
                 <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a>
                 <a href="https://www.ranneigrenne.com/" target="_blank">Rannei Grenne</a>
                 <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a>
+                <a href="https://standard.no/fagomrader/digitale-produktpass-dpp/" target="_blank">Standard Norge - Digitale produktpass (DPP)</a>
                 <a href="https://www.varpogveft.no/en/pages/save-the-black-sheep" target="_blank">Save The Black Sheep</a>
                 <a href="https://www.villveis.com" target="_blank">Villveis</a>
             </div>
@@ -1020,7 +1018,7 @@
             items.forEach(item => {
                 // Ensure item is measurable
                 const wasActive = item.classList.contains('active');
-                if (!wasActive) item.style.display = 'block';
+                if (!wasActive) item.style.display = 'block';solo
 
                 const media = item.querySelector('img, video');
                 if (media) {
