@@ -460,6 +460,63 @@
                 background: rgb(0, 0, 255);
             }
         }
+
+        /* Small phones (iPhone SE 2/3, small Android) */
+        @media (max-width: 400px) {
+            .container {
+                padding: 0.9rem 1rem 1rem 1rem;
+            }
+            .header {
+                margin-bottom: 1rem;
+                padding: 0.5rem 0 0.3rem 0;
+            }
+            .passport-title {
+                font-size: 0.85rem;
+            }
+            .product-name {
+                font-size: 1.35rem;
+                letter-spacing: 1.5px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr; /* stack label/value */
+                gap: 0.2rem;
+            }
+            .info-label, .info-value {
+                text-align: left;
+            }
+            .navigation {
+                margin: 1.5rem auto;
+                gap: 0.25rem;
+            }
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+            .modal-content {
+                padding: 1.4rem;
+                width: 92%;
+            }
+            .modal h2 {
+                font-size: 1.25rem;
+            }
+            .modal h3, .modal h4 {
+                font-size: 0.95rem;
+            }
+            .modal p {
+                font-size: 0.85rem;
+                line-height: 1.15;
+            }
+            .modal-info-grid {
+                grid-template-columns: 1fr; /* stack rows in modal */
+            }
+            .annotations-grid {
+                grid-template-columns: 1fr; /* single column for images */
+            }
+            .gallery-nav {
+                padding: 0.4rem 0.8rem;
+                font-size: 1.35rem;
+            }
+        }
         /* Cursor Trail */
         .cursor-trail-dot {
             position: fixed;
@@ -639,7 +696,7 @@
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">supported by</div>
-                <div class="modal-info-value">Kulturdirektoratet, Trondheim Kommune, Trøndelag Fylkeskommune, Fond for utøvende Kunstnere</div>
+                <div class="modal-info-value">Kulturdirektoratet, Trondheim kommune, Trøndelag fylkeskommune, Fond for utøvende kunstnere</div>
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">co-producer</div>
@@ -755,9 +812,9 @@
                 <div class="modal-info-label">socks</div>
                 <div class="modal-info-value"> Art.nr.: 1227407002 
                 Composition: 67% cotton 27% polyamide 4% elastodiene 2% elastone
-                Produced: SUNGHWA TRADING Co. Ltd., Vietnam
+                Produced: SUNGHWA TRADING Co. Ltd. (VN)
                 Supplier: H&M
-                Sourced by: BUTCHER and CORREIA Studio, Norway.</div>
+                Sourced by: BUTCHER and CORREIA Studio (NO)</div>
             </div>
             
             <h3>manufacturing and supply chain</h3>
