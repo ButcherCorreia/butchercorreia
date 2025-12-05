@@ -24,7 +24,7 @@
   <link rel="icon" href="favicon.PNG" type="image/png">
 
   <style>
-  :root { --accent: rgb(0,84,166); --site-side-pad: 20px; --site-top-pad: 8px; --top-menu-link-pad: 4px; --top-menu-link-bottom: 6px; }
+  :root { --accent: #0000FF; --site-side-pad: 20px; --site-top-pad: 8px; --top-menu-link-pad: 4px; --top-menu-link-bottom: 6px; }
   /* Mobile simple title should be hidden by default (desktop) */
   .mobile-site-title { display: none; }
 
@@ -560,7 +560,19 @@
         /* Align vertically with .mobile-site-title top */
         top: var(--site-top-pad);
       }
-      .mobile-menu-text { display: inline-flex !important; background: transparent; border: none; padding: 0; font-size: 0.9rem; color: #000; letter-spacing: 0.02em; }
+      /* Make mobile text toggle match site link styling */
+      .mobile-menu-text {
+        display: inline-flex !important;
+        background: transparent;
+        border: none;
+        padding: 0;
+        font-size: 0.9rem; /* match .top-menu a */
+        color: var(--accent); /* match link color */
+        letter-spacing: 0.02em;
+        font-family: inherit;
+        font-weight: inherit;
+        line-height: 1;
+      }
       .mobile-menu-toggle .hamburger { display: none !important; }
 
       .mobile-menu-toggle {
