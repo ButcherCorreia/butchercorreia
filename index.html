@@ -557,7 +557,8 @@
       .mobile-menu-toggle {
         position: absolute;
         right: var(--site-side-pad);
-        top: calc(var(--site-top-pad) + 6px);
+        /* Align vertically with .mobile-site-title top */
+        top: var(--site-top-pad);
       }
       .mobile-menu-text { display: inline-flex !important; background: transparent; border: none; padding: 0; font-size: 0.9rem; color: #000; letter-spacing: 0.02em; }
       .mobile-menu-toggle .hamburger { display: none !important; }
@@ -575,7 +576,7 @@
         /* keep absolute positioning but anchor to the right */
         position: absolute;
         right: var(--site-side-pad);
-        top: calc(var(--site-top-pad) + 6px);
+        top: var(--site-top-pad);
         transform: none;
         z-index: 100020; /* sit above other UI */
       }
@@ -686,8 +687,9 @@
       /* Hide the left projects list by default — show as overlay when menu is open */
       .popup .projects-list {
         display: none;
-        position: absolute;
-        top: 60px;
+        /* Keep the overlay anchored to the mobile toggle (top-right) */
+        position: fixed;
+        top: calc(var(--site-top-pad) + 28px);
         left: auto;
         right: var(--site-side-pad);
         background: #fff;
