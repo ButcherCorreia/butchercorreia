@@ -550,19 +550,14 @@
         text-align: left;
       }
 
-      /* Replace hamburger with text 'Menu' aligned to top-right as mobile toggle */
+      /* Position mobile text 'Menu' toggle top-right */
       .mobile-menu-toggle {
         position: absolute;
         right: var(--site-side-pad);
         top: calc(var(--site-top-pad) + 6px);
       }
+      .mobile-menu-text { display: inline-flex !important; background: transparent; border: none; padding: 0; font-size: 0.9rem; color: #000; letter-spacing: 0.02em; }
       .mobile-menu-toggle .hamburger { display: none !important; }
-      .mobile-menu-toggle::after {
-        content: 'Menu';
-        color: #000;
-        font-size: 0.9rem;
-        letter-spacing: 0.02em;
-      }
 
       .mobile-menu-toggle {
         display: inline-flex;
@@ -724,6 +719,7 @@
     /* Hide toggle on larger screens */
     @media (min-width: 701px) {
       .mobile-menu-toggle { display: none; }
+      .mobile-menu-text { display: none !important; }
     }
   </style>
 </head>
@@ -742,6 +738,8 @@
     </div>
     <!-- Mobile simple header shown only under @media rules -->
     <span class="mobile-site-title" aria-hidden="true">BUTCHER &amp; CORREIA</span>
+    <!-- Mobile text menu toggle (shown only on small screens) -->
+    <button id="mobile-menu-text-toggle" class="mobile-menu-toggle mobile-menu-text" aria-expanded="false" aria-controls="projectsList" aria-label="Open projects menu">Menu</button>
     <!-- top-menu kept for desktop links or future content; currently empty -->
     <div class="top-menu" aria-hidden="false"></div>
   </div>
@@ -1280,6 +1278,7 @@ function selectProject(key) {
   <script>
   (function(){
     const toggle = document.getElementById('mobile-menu-toggle');
+    const textToggle = document.getElementById('mobile-menu-text-toggle');
     const projectsList = document.getElementById('projectsList');
     if (!toggle || !projectsList) return;
 
@@ -1299,18 +1298,33 @@ function selectProject(key) {
       toggle.setAttribute('aria-expanded', 'false');
     }
 
-    toggle.addEventListener('click', function(e){
-      e.stopPropagation();
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      if (expanded) closeMenu(); else openMenu();
-    });
+    function bindToggle(btn){
+      if (!btn) return;
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        if (expanded) {
+          closeMenu();
+          btn.setAttribute('aria-expanded','false');
+        } else {
+          openMenu();
+          btn.setAttribute('aria-expanded','true');
+        }
+      });
+    }
+    bindToggle(toggle);
+    bindToggle(textToggle);
 
     // Close after selecting a project in the mobile overlay
     projectsList.addEventListener('click', function(e){
       const a = e.target.closest('a');
       if (!a) return;
       // allow existing handlers to run, then close the overlay
-      setTimeout(closeMenu, 50);
+      setTimeout(() => {
+        closeMenu();
+        try { toggle.setAttribute('aria-expanded','false'); } catch(e){}
+        try { textToggle && textToggle.setAttribute('aria-expanded','false'); } catch(e){}
+      }, 50);
     });
 
     // click outside to close
@@ -1319,11 +1333,17 @@ function selectProject(key) {
       if (!mainPopup.classList.contains('mobile-open')) return;
       if (mainPopup.contains(e.target) || (siteTitle && siteTitle.contains(e.target))) return;
       closeMenu();
+      try { toggle.setAttribute('aria-expanded','false'); } catch(e){}
+      try { textToggle && textToggle.setAttribute('aria-expanded','false'); } catch(e){}
     });
 
     // Close if switching to desktop widths
     window.addEventListener('resize', function(){
-      if (window.innerWidth > 700) closeMenu(); // change 700->768 if you change the media query
+      if (window.innerWidth > 700) {
+        closeMenu();
+        try { toggle.setAttribute('aria-expanded','false'); } catch(e){}
+        try { textToggle && textToggle.setAttribute('aria-expanded','false'); } catch(e){}
+      } // change 700->768 if you change the media query
     }, { passive: true });
 
     // Positioning is driven by CSS absolute positioning anchored to
