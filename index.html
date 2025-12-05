@@ -478,18 +478,6 @@
     @media (max-width: 1024px) {
       .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
     }
-      /* Mobile header: show combined title on the left */
-      .site-left-full { display: inline-block; font-weight: 700; color: #000; }
-      .site-title-box .title-row { grid-template-columns: 1fr auto; }
-      .site-title-box .site-left,
-      .site-title-box .site-center,
-      .site-title-box .site-right { display: none; }
-
-      /* Mobile menu toggle: show "Menu" text on the right */
-      .mobile-menu-toggle { position: absolute; right: var(--site-side-pad); top: calc(var(--site-top-pad) + 6px); }
-      .mobile-menu-toggle .menu-label { display: inline; font-size: 0.9rem; color: #ff0000; letter-spacing: 0.02em; }
-      .mobile-menu-toggle .hamburger { display: none; }
-
 
     .popup .projects-list a:hover,
     .popup .projects-list a:focus,
@@ -549,6 +537,31 @@
         left: 50%;
         transform: translateX(-50%);
         bottom: 20px;
+      }
+
+      /* Hide complex desktop header row; show simple mobile title */
+      .site-title-box .title-row { display: none; }
+      .mobile-site-title {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #000;
+        padding: var(--site-top-pad) var(--site-side-pad);
+        text-align: left;
+      }
+
+      /* Replace hamburger with text 'Menu' aligned to top-right as mobile toggle */
+      .mobile-menu-toggle {
+        position: absolute;
+        right: var(--site-side-pad);
+        top: calc(var(--site-top-pad) + 6px);
+      }
+      .mobile-menu-toggle .hamburger { display: none; }
+      .mobile-menu-toggle::after {
+        content: 'Menu';
+        color: #000;
+        font-size: 0.9rem;
+        letter-spacing: 0.02em;
       }
 
       .mobile-menu-toggle {
@@ -720,16 +733,15 @@
       <span class="site-left">BUTCHER</span>
       <span class="site-center">&amp;</span>
       <span class="site-right">CORREIA</span>
-      <!-- Mobile combined title, shown only under @media rules -->
-      <span class="site-left-full" aria-hidden="true">BUTCHER &amp; CORREIA</span>
 
       <!-- Mobile hamburger toggle moved into the header grid so we can use
            CSS Grid placement instead of absolute positioning. -->
       <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="projectsList" aria-label="Open projects menu">
         <span class="hamburger" aria-hidden="true"></span>
-        <span class="menu-label" aria-hidden="true">Menu</span>
       </button>
     </div>
+    <!-- Mobile simple header shown only under @media rules -->
+    <span class="mobile-site-title" aria-hidden="true">BUTCHER &amp; CORREIA</span>
     <!-- top-menu kept for desktop links or future content; currently empty -->
     <div class="top-menu" aria-hidden="false"></div>
   </div>
