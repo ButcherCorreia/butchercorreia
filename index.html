@@ -25,6 +25,8 @@
 
   <style>
   :root { --accent: rgb(0,84,166); --site-side-pad: 20px; --site-top-pad: 8px; --top-menu-link-pad: 4px; --top-menu-link-bottom: 6px; }
+  /* Mobile simple title should be hidden by default (desktop) */
+  .mobile-site-title { display: none; }
 
   /* Custom circular cursor that matches the link accent color.
     Uses an inline SVG data URL (percent-encoded). The hotspot is centered (8 8).
@@ -711,6 +713,7 @@
     @media (min-width: 701px) {
       .mobile-menu-toggle { display: none; }
       .mobile-menu-text { display: none !important; }
+      .mobile-site-title { display: none !important; }
     }
   </style>
 </head>
