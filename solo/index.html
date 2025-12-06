@@ -1002,6 +1002,14 @@
                 </div>
             </div>
 
+            <!-- Extra info toggle (right-aligned) -->
+            <div style="text-align: right; margin-top: 0.5rem;">
+                <button id="bc-extra-toggle" type="button" aria-expanded="false" aria-controls="bc-extra-content" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+            </div>
+            <div id="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+                <p>more information soon</p>
+            </div>
+
             
             <h3>MANUFACTURE OSLO</h3>
             
@@ -1213,6 +1221,19 @@
             document.addEventListener('touchstart', startAll, { once: true });
         }
         bootstrapAutoplayOnFirstInteraction();
+
+        // Right-aligned plus/minus toggle for B&C extra info
+        (function initBcExtraToggle(){
+            const btn = document.getElementById('bc-extra-toggle');
+            const content = document.getElementById('bc-extra-content');
+            if (!btn || !content) return;
+            btn.addEventListener('click', () => {
+                const isOpen = content.style.display !== 'none';
+                content.style.display = isOpen ? 'none' : 'block';
+                btn.textContent = isOpen ? '+' : '-';
+                btn.setAttribute('aria-expanded', String(!isOpen));
+            });
+        })();
     </script>
     <script>
         // Blue cursor trail (smooth, lightweight)
