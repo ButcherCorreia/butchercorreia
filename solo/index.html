@@ -618,11 +618,11 @@
             <h3>credits</h3>
             <div class="modal-info-grid">
                 <div class="modal-info-label">performance concept, coreography, dance</div>
-                <div class="modal-info-value">Rannei Grenne</div>
+                <div class="modal-info-value"><a href="https://www.ranneigrenne.com" target="_blank">Rannei Grenne</a></div>
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">visual identity (costume design, scenography, sonic landscape)</div>
-                <div class="modal-info-value">BUTCHER & CORREIA</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a></div>
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">artistic design assistant</div>
@@ -632,7 +632,7 @@
             <h3>locations</h3>
             <div class="modal-info-grid">
                 <div class="modal-info-label">location #1</div>
-                <div class="modal-info-value"><a href="https://lkv.no/en/babel" target="_blank" rel="noopener noreferrer">BABEL visningsrom</a>, Trondheim (NO) December 2025</div>
+                <div class="modal-info-value"><a href="https://lkv.no/en/babel" target="_blank" rel="noopener noreferrer">BABEL</a>, Trondheim (NO) December 2025</div>
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">location #2</div>
@@ -676,15 +676,15 @@
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">light design</div>
-                <div class="modal-info-value">BUTCHER & CORREIA</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a></div>
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">artistic documentation concept</div>
-                <div class="modal-info-value">BUTCHER & CORREIA</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a></div>
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">photography and video</div>
-                <div class="modal-info-value">Lili Zaneta</div>
+                <div class="modal-info-value">Lili Zaneta<a href="https://lilizaneta.com" target="_blank">Lili Zaneta</a></div>
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">hair design</div>
@@ -700,7 +700,7 @@
             </div>
             <div class="modal-info-grid">
                 <div class="modal-info-label">co-producer</div>
-                <div class="modal-info-value">DansiT koreografisk senter, Trondheim (NO)</div>
+                <div class="modal-info-value"><a href="https://dansit.no/" target="_blank">DansiT koreografisk senter</a>, Trondheim (NO)</div>
             </div>
         </div>
     </div>
@@ -814,7 +814,7 @@
 
             <div class="modal-info-grid">
                 <div class="modal-info-label">socks</div>
-                <div class="modal-info-value"> Art.nr.: 1227407002 / Composition: 67% cotton 27% polyamide 4% elastodiene 2% elastone / Produced: SUNGHWA TRADING Co. Ltd. (VN) / Supplier: H&M / Sourced by: BUTCHER and CORREIA Studio (NO)</div>
+                <div class="modal-info-value"> Art.nr.: 1227407002 / Composition: 67% cotton 27% polyamide 4% elastodiene 2% elastone / Produced: SUNGHWA TRADING Co. Ltd. (VN) / Supplier: H&M / Sourced by: <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> (NO)</div>
             </div>
             
             <h3>manufacturing and supply chain</h3>
@@ -1060,10 +1060,32 @@
                     v.setAttribute('playsinline', '');
                     v.setAttribute('webkit-playsinline', '');
                     v.muted = true;
-                    const p = v.play();
-                    if (p && typeof p.then === 'function') {
-                        p.catch(() => {});
+                    // Force metadata load before play to avoid AbortError
+                    const srcEl = v.querySelector('source');
+                    if (srcEl && srcEl.getAttribute('src')) {
+                        // Re-assign src to trigger request and bypass caching if needed
+                        const src = srcEl.getAttribute('src');
+                        const bust = src.includes('?') ? src + '&_=' + Date.now() : src + '?_=' + Date.now();
+                        srcEl.setAttribute('src', bust);
+                        v.setAttribute('preload', 'metadata');
+                        try { v.load(); } catch (_) {}
                     }
+                    const start = () => {
+                        const p = v.play();
+                        if (p && typeof p.then === 'function') {
+                            p.catch(() => {});
+                        }
+                    };
+                    if (v.readyState >= 1) {
+                        start();
+                    } else {
+                        v.addEventListener('loadedmetadata', start, { once: true });
+                        v.addEventListener('canplay', start, { once: true });
+                    }
+                    // Optional: log media errors for debugging
+                    v.addEventListener('error', () => {
+                        // swallow to avoid console noise in production
+                    });
                 });
             } catch (e) {
                 // ignore
