@@ -978,7 +978,7 @@
             <h3>BUTCHER & CORREIA</h3>
             <div class="annotations-grid">
                 <div class="gallery-item active">
-                <video autoplay muted loop playsinline preload="auto">
+                <video autoplay muted loop playsinline webkit-playsinline preload="auto">
                     <source src="trailersolo.mp4" type="video/mp4">
                 </video>
                 </div>
@@ -1052,6 +1052,22 @@
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden';
+            // Attempt to autoplay any videos within the opened modal
+            try {
+                const modal = document.getElementById(modalId);
+                const vids = modal ? modal.querySelectorAll('video') : [];
+                vids.forEach(v => {
+                    v.setAttribute('playsinline', '');
+                    v.setAttribute('webkit-playsinline', '');
+                    v.muted = true;
+                    const p = v.play();
+                    if (p && typeof p.then === 'function') {
+                        p.catch(() => {});
+                    }
+                });
+            } catch (e) {
+                // ignore
+            }
         }
 
         function closeModal(modalId) {
