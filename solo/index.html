@@ -7,7 +7,7 @@
     <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
 
     <!-- SEO metadata -->
-    <meta name="description" content="Digital Product Passport (DPP) for SOLO/>
+    <meta name="description" content="Digital Product Passport (DPP) for SOLO" />
     <meta name="keywords" content="BUTCHER & CORREIA, DPP, Soft Sculpture" />
     <meta name="author" content="BUTCHER & CORREIA" />
     
@@ -365,6 +365,28 @@
             color: rgb(255, 0, 0);
         }
 
+        /* Figures and captions */
+        figure {
+            margin: 0;
+        }
+        figcaption {
+            font-family: 'PT Mono', monospace;
+            font-weight: 400;
+            font-size: 0.8rem;
+            line-height: 1.15;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        .modal figcaption {
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.3rem;
+            align-items: start;
+        }
+
         /* Make links in modal info rows behave like links-section */
         .modal-info-value a {
             color: #ffffff;
@@ -500,10 +522,10 @@
                 font-size: 1.25rem;
             }
             .modal h3, .modal h4 {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
             }
             .modal p {
-                font-size: 0.85rem;
+                font-size: 0.9rem;
                 line-height: 1.15;
             }
             .modal-info-grid {
@@ -1007,19 +1029,22 @@
                 <button id="bc-extra-toggle" type="button" aria-expanded="false" aria-controls="bc-extra-content" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
             </div>
             <div id="bc-extra-content" style="display: none; margin-top: 0.5rem;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.3rem; align-items: start;">
-                    <div class="annotation-item" style="border: none;">
-                        <img src="janome.gif" alt="Janome embroidery process" loading="lazy" style="width: 100%; height: auto; display: block;">
-                    </div>
-                    <div class="annotation-item" style="border: none;">
-                        <img src="solo_lilizaneta.jpg" alt="Lili Zaneta" loading="lazy" style="width: 100%; height: auto; display: block;">
-                    </div>
-                    <div class="annotation-item" style="border: none;">
-                        <img src="solo_lilizaneta2.jpg" alt="Lili Zaneta" loading="lazy" style="width: 100%; height: auto; display: block;">
-                    </div>
-                    <div class="annotation-item" style="border: none;">
-                        <img src="solo_lilizaneta3.jpg" alt="Lili Zaneta" loading="lazy" style="width: 100%; height: auto; display: block;">
-                    </div>
+                <div class="extra-grid">
+                    <figure class="annotation-item">
+                        <img src="janome.gif" alt="Janome embroidery process" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="solo_lilizaneta.jpg" alt="SOLO by Lili Zaneta" loading="lazy">
+                        <figcaption>Photo: Lili Zaneta</figcaption>
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="solo_lilizaneta2.jpg" alt="SOLO by Lili Zaneta (2)" loading="lazy">
+                        <figcaption>Photo: Lili Zaneta</figcaption>
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="solo_lilizaneta3.jpg" alt="SOLO by Lili Zaneta (3)" loading="lazy">
+                        <figcaption>Photo: Lili Zaneta</figcaption>
+                    </figure>
                 </div>
             </div>
 
