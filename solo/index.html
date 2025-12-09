@@ -1202,6 +1202,9 @@
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden';
+            if (modalId === 'product-journey') {
+                initProductJourneyMap();
+            }
         }
 
         function closeModal(modalId) {
@@ -1363,6 +1366,73 @@
             document.addEventListener('touchstart', startAll, { once: true });
         }
         bootstrapAutoplayOnFirstInteraction();
+
+        // Initialize Mapbox in product-journey modal on demand
+        function initProductJourneyMap() {
+            const mapEl = document.getElementById('map');
+            if (!mapEl || mapEl.dataset.initialized === 'true') return;
+            if (typeof mapboxgl === 'undefined') return;
+            // TODO: replace with a valid token
+            mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN';
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/light-v11',
+                center: [10, 55],
+                zoom: 3.5
+            });
+            map.on('load', () => {
+                // remove symbol labels
+                const layers = map.getStyle().layers || [];
+                layers.forEach(layer => {
+                    if (layer.type === 'symbol') {
+                        try { map.removeLayer(layer.id); } catch (e) {}
+                    }
+                });
+                // country borders
+                map.addLayer({
+                    id: 'country-borders-red',
+                    type: 'line',
+                    source: { type: 'vector', url: 'mapbox://mapbox.country-boundaries-v1' },
+                    'source-layer': 'country_boundaries',
+                    paint: { 'line-color': '#ff0000', 'line-width': 1 }
+                });
+                // coastlines (simple)
+                map.addLayer({
+                    id: 'coastlines-simple',
+                    type: 'line',
+                    source: { type: 'vector', url: 'mapbox://mapbox.mapbox-streets-v8' },
+                    'source-layer': 'water',
+                    paint: { 'line-color': '#000000', 'line-width': 0.3 }
+                });
+                const garmentRoute = {
+                    type: 'Feature',
+                    geometry: { type: 'LineString', coordinates: [
+                        [10.917, 63.468],
+                        [10.400, 63.285],
+                        [5.735, 58.852],
+                        [10.757, 59.912],
+                        [10.420, 63.433],
+                        [10.757, 59.912],
+                        [10.420, 63.433]
+                    ] }
+                };
+                const scenographyRoute = {
+                    type: 'Feature',
+                    geometry: { type: 'LineString', coordinates: [
+                        [10.917, 63.468],
+                        [10.400, 63.285],
+                        [10.420, 63.433]
+                    ] }
+                };
+                map.addSource('garment-line', { type: 'geojson', data: garmentRoute });
+                map.addSource('scenography-line', { type: 'geojson', data: scenographyRoute });
+                map.addLayer({ id: 'garment-journey', type: 'line', source: 'garment-line', paint: {
+                    'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
+                map.addLayer({ id: 'scenography-journey', type: 'line', source: 'scenography-line', paint: {
+                    'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
+            });
+            mapEl.dataset.initialized = 'true';
+        }
 
         // Smooth scroll inside annotations modal for section menu
         (function initModalSectionMenu(){
