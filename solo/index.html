@@ -365,6 +365,25 @@
             color: rgb(255, 0, 0);
         }
 
+        /* Modal section menu */
+        .modal-section-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0.5rem 0 1rem 0;
+        }
+        .modal-section-menu a {
+            font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+            font-size: 0.9rem;
+            color: #ffffff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .modal-section-menu a:hover {
+            color: rgb(255, 0, 0);
+            text-decoration: underline;
+        }
+
         /* Figures and captions */
         figure {
             margin: 0;
@@ -996,8 +1015,14 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('annotations')">&times;</span>
             <h2>extensions</h2>
+            <div class="modal-section-menu" aria-label="section menu">
+                <a href="#sec-bc">BUTCHER & CORREIA</a>
+                <a href="#sec-babel">BABEL</a>
+                <a href="#sec-jakob">Kunstkrom Jakob</a>
+                <a href="#sec-pink">PINK</a>
+            </div>
             
-            <h3>BUTCHER & CORREIA</h3>
+            <h3 id="sec-bc">BUTCHER & CORREIA</h3>
             <div class="annotations-grid">
                 <div class="gallery-item active">
                 <video autoplay muted loop playsinline preload="auto">
@@ -1051,7 +1076,7 @@
                 </div>
             </div>
 
-            <h3>BABEL</h3>
+            <h3 id="sec-babel">BABEL</h3>
             <!-- Extra info toggle (right-aligned) -->
             <div style="text-align: right; margin-top: 0.5rem;">
                 <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
@@ -1082,7 +1107,7 @@
                 </div>
             </div>
             
-            <h3>Kunstkrom Jakob</h3>
+            <h3 id="sec-jakob">Kunstkrom Jakob</h3>
             <!-- Extra info toggle (right-aligned) -->
             <div style="text-align: right; margin-top: 0.5rem;">
                 <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
@@ -1093,7 +1118,7 @@
                 </div>
             </div>
             
-            <h3>PINK</h3>
+            <h3 id="sec-pink">PINK</h3>
             <!-- Extra info toggle (right-aligned) -->
             <div style="text-align: right; margin-top: 0.5rem;">
                 <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
@@ -1104,6 +1129,13 @@
                 </div>
             </div>
             
+
+            <div class="modal-section-menu" aria-label="section menu">
+                <a href="#sec-bc">BUTCHER & CORREIA</a>
+                <a href="#sec-babel">BABEL</a>
+                <a href="#sec-jakob">Kunstkrom Jakob</a>
+                <a href="#sec-pink">PINK</a>
+            </div>
 
             <h3>MANUFACTURE OSLO</h3>
             
@@ -1316,6 +1348,22 @@
             document.addEventListener('touchstart', startAll, { once: true });
         }
         bootstrapAutoplayOnFirstInteraction();
+
+        // Smooth scroll inside annotations modal for section menu
+        (function initModalSectionMenu(){
+            const modal = document.getElementById('annotations');
+            if (!modal) return;
+            modal.addEventListener('click', (e) => {
+                const link = e.target.closest('.modal-section-menu a[href^="#"]');
+                if (!link) return;
+                e.preventDefault();
+                const targetId = link.getAttribute('href').slice(1);
+                const target = modal.querySelector('#' + CSS.escape(targetId));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
 
         // Right-aligned plus/minus toggles (supports multiple sections)
         (function initBcExtraToggles(){
