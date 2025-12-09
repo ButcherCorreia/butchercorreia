@@ -1020,9 +1020,9 @@
 
             <!-- Extra info toggle (right-aligned) -->
             <div style="text-align: right; margin-top: 0.5rem;">
-                <button id="bc-extra-toggle" type="button" aria-expanded="false" aria-controls="bc-extra-content" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
             </div>
-            <div id="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
                 <div class="extra-grid">
                     <figure class="annotation-item">
                         <img src="janome.gif" alt="Janome embroidery process" loading="lazy">
@@ -1054,9 +1054,9 @@
             <h3>BABEL</h3>
             <!-- Extra info toggle (right-aligned) -->
             <div style="text-align: right; margin-top: 0.5rem;">
-                <button id="bc-extra-toggle" type="button" aria-expanded="false" aria-controls="bc-extra-content" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
             </div>
-            <div id="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
                 <div class="extra-grid">
                     <figure class="annotation-item">
                         <img src="Hose_1.gif" alt="hose" loading="lazy">
@@ -1085,22 +1085,22 @@
             <h3>Kunstkrom Jakob</h3>
             <!-- Extra info toggle (right-aligned) -->
             <div style="text-align: right; margin-top: 0.5rem;">
-                <button id="bc-extra-toggle" type="button" aria-expanded="false" aria-controls="bc-extra-content" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
             </div>
-            <div id="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
                 <div class="extra-grid">
-                more information coming.
+                <p>more information coming.</p>
                 </div>
             </div>
             
             <h3>PINK</h3>
             <!-- Extra info toggle (right-aligned) -->
             <div style="text-align: right; margin-top: 0.5rem;">
-                <button id="bc-extra-toggle" type="button" aria-expanded="false" aria-controls="bc-extra-content" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
             </div>
-            <div id="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
                 <div class="extra-grid">
-                more information coming.
+                <p>more information coming.</p>
                 </div>
             </div>
             
@@ -1317,16 +1317,23 @@
         }
         bootstrapAutoplayOnFirstInteraction();
 
-        // Right-aligned plus/minus toggle for B&C extra info
-        (function initBcExtraToggle(){
-            const btn = document.getElementById('bc-extra-toggle');
-            const content = document.getElementById('bc-extra-content');
-            if (!btn || !content) return;
-            btn.addEventListener('click', () => {
-                const isOpen = content.style.display !== 'none';
-                content.style.display = isOpen ? 'none' : 'block';
-                btn.textContent = isOpen ? '+' : '-';
-                btn.setAttribute('aria-expanded', String(!isOpen));
+        // Right-aligned plus/minus toggles (supports multiple sections)
+        (function initBcExtraToggles(){
+            const buttons = document.querySelectorAll('.bc-extra-toggle');
+            if (!buttons.length) return;
+            buttons.forEach(btn => {
+                const wrapper = btn.parentElement;
+                const content = wrapper ? wrapper.nextElementSibling : null;
+                if (!content || !content.classList.contains('bc-extra-content')) return;
+                // Initialize state
+                btn.setAttribute('aria-expanded', 'false');
+                content.style.display = 'none';
+                btn.addEventListener('click', () => {
+                    const isOpen = content.style.display !== 'none';
+                    content.style.display = isOpen ? 'none' : 'block';
+                    btn.textContent = isOpen ? '+' : '-';
+                    btn.setAttribute('aria-expanded', String(!isOpen));
+                });
             });
         })();
     </script>
