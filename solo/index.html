@@ -1395,6 +1395,49 @@
             // Expose map for resize on modal open
             window.__productJourneyMap = map;
             map.on('load', () => {
+                // Make base map greyscale: adjust background and land colors (best-effort)
+                try {
+                    map.setPaintProperty('background', 'background-color', '#ffffff');
+                } catch(e) {}
+
+                // Remove labels: hide all symbol layers
+                const style = map.getStyle();
+                const layers = (style && style.layers) ? style.layers : [];
+                layers.forEach(layer => {
+                    if (layer.type === 'symbol') {
+                        try { map.setLayoutProperty(layer.id, 'visibility', 'none'); } catch(e) {}
+                    }
+                });
+
+                // Country borders with red outlines (OpenMapTiles boundary layer, admin level 2)
+                try {
+                    map.addLayer({
+                        id: 'country-borders-red',
+                        type: 'line',
+                        source: 'openmaptiles',
+                        'source-layer': 'boundary',
+                        filter: ['all', ['==', ['get', 'admin_level'], 2], ['==', ['get', 'maritime'], 0]],
+                        paint: {
+                            'line-color': '#ff0000',
+                            'line-width': 1
+                        }
+                    });
+                } catch(e) {}
+
+                // Simplified coastlines: thin black outlines around water polygons
+                try {
+                    map.addLayer({
+                        id: 'coastlines-simple',
+                        type: 'line',
+                        source: 'openmaptiles',
+                        'source-layer': 'water',
+                        paint: {
+                            'line-color': '#000000',
+                            'line-width': 0.3
+                        }
+                    });
+                } catch(e) {}
+
                 // Add custom journey routes as GeoJSON sources/layers
                 const garmentRoute = {
                     type: 'Feature',
@@ -1422,6 +1465,38 @@
                     'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
                 map.addLayer({ id: 'scenography-journey', type: 'line', source: 'scenography-line', paint: {
                     'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
+
+                // Journey markers with letter labels (A-G) for garment, A-C for scenography
+                const journeyPoints = {
+                    type: 'FeatureCollection',
+                    features: [
+                        { type: 'Feature', properties: { label: 'A' }, geometry: { type: 'Point', coordinates: [10.917, 63.468] } },
+                        { type: 'Feature', properties: { label: 'B' }, geometry: { type: 'Point', coordinates: [10.400, 63.285] } },
+                        { type: 'Feature', properties: { label: 'C' }, geometry: { type: 'Point', coordinates: [5.735, 58.852] } },
+                        { type: 'Feature', properties: { label: 'D' }, geometry: { type: 'Point', coordinates: [10.757, 59.912] } },
+                        { type: 'Feature', properties: { label: 'E' }, geometry: { type: 'Point', coordinates: [10.420, 63.433] } },
+                        { type: 'Feature', properties: { label: 'F' }, geometry: { type: 'Point', coordinates: [10.757, 59.912] } },
+                        { type: 'Feature', properties: { label: 'G' }, geometry: { type: 'Point', coordinates: [10.420, 63.433] } }
+                    ]
+                };
+                const scenographyPoints = {
+                    type: 'FeatureCollection',
+                    features: [
+                        { type: 'Feature', properties: { label: 'A' }, geometry: { type: 'Point', coordinates: [10.917, 63.468] } },
+                        { type: 'Feature', properties: { label: 'B' }, geometry: { type: 'Point', coordinates: [10.400, 63.285] } },
+                        { type: 'Feature', properties: { label: 'C' }, geometry: { type: 'Point', coordinates: [10.420, 63.433] } }
+                    ]
+                };
+                map.addSource('journey-points', { type: 'geojson', data: journeyPoints });
+                map.addSource('scenography-points', { type: 'geojson', data: scenographyPoints });
+                map.addLayer({ id: 'journey-points-circle', type: 'circle', source: 'journey-points', paint: {
+                    'circle-color': '#ffffff', 'circle-stroke-color': '#0080ff', 'circle-stroke-width': 1, 'circle-radius': 4 } });
+                map.addLayer({ id: 'journey-points-label', type: 'symbol', source: 'journey-points', layout: {
+                    'text-field': ['get', 'label'], 'text-size': 10, 'text-offset': [0, 1.2] }, paint: { 'text-color': '#000000' } });
+                map.addLayer({ id: 'scenography-points-circle', type: 'circle', source: 'scenography-points', paint: {
+                    'circle-color': '#ffffff', 'circle-stroke-color': '#0080ff', 'circle-stroke-width': 1, 'circle-radius': 4 } });
+                map.addLayer({ id: 'scenography-points-label', type: 'symbol', source: 'scenography-points', layout: {
+                    'text-field': ['get', 'label'], 'text-size': 10, 'text-offset': [0, 1.2] }, paint: { 'text-color': '#000000' } });
                 // Ensure it renders after being revealed
                 setTimeout(() => map.resize(), 50);
             });
