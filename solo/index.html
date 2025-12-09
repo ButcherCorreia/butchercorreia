@@ -26,9 +26,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!-- MapLibre GL JS (token-free) -->
-    <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+    <!-- Three.js for globe (token-free) -->
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
     <title>DPP - SOLO</title>
     <style>
         * {
@@ -1004,7 +1004,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('product-journey')">&times;</span>
             <h2>product journey</h2>
-            <div id="map" class="mapbox-container"></div>
+            <div id="globe-container" style="width:100%; height:60vh;"></div>
             <p>this section is under construction.</p>
             </div>
     </div>
@@ -1205,15 +1205,18 @@
             document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden';
             if (modalId === 'product-journey') {
-                initProductJourneyMap();
+                initProductJourneyGlobe();
                 // Give Mapbox a moment, then force a resize to render correctly
                 setTimeout(() => {
-                    const mapEl = document.getElementById('map');
-                    if (mapEl) {
+                    const globeEl = document.getElementById('globe-container');
+                    if (globeEl) {
                         try {
-                            // If the map is attached to window, resize it
-                            if (window.__productJourneyMap) {
-                                window.__productJourneyMap.resize();
+                            if (window.__productJourneyRenderer && window.__productJourneyCamera) {
+                                const w = globeEl.clientWidth;
+                                const h = globeEl.clientHeight;
+                                window.__productJourneyRenderer.setSize(w, h);
+                                window.__productJourneyCamera.aspect = w / h;
+                                window.__productJourneyCamera.updateProjectionMatrix();
                             }
                         } catch (e) {}
                     }
@@ -1381,126 +1384,164 @@
         }
         bootstrapAutoplayOnFirstInteraction();
 
-        // Initialize MapLibre in product-journey modal on demand (no token needed)
-        function initProductJourneyMap() {
-            const mapEl = document.getElementById('map');
-            if (!mapEl || mapEl.dataset.initialized === 'true') return;
-            if (typeof maplibregl === 'undefined') return;
-            const map = new maplibregl.Map({
-                container: 'map',
-                style: 'https://demotiles.maplibre.org/style.json',
-                center: [10, 55],
-                zoom: 3.5
-            });
-            // Expose map for resize on modal open
-            window.__productJourneyMap = map;
-            map.on('load', () => {
-                // Make base map greyscale: adjust background and land colors (best-effort)
-                try {
-                    map.setPaintProperty('background', 'background-color', '#ffffff');
-                } catch(e) {}
+        // Three.js globe: initialize on demand in the product-journey modal
+        function initProductJourneyGlobe() {
+            const container = document.getElementById('globe-container');
+            if (!container || container.dataset.initialized === 'true') return;
+            if (typeof THREE === 'undefined') return;
 
-                // Remove labels: hide all symbol layers
-                const style = map.getStyle();
-                const layers = (style && style.layers) ? style.layers : [];
-                layers.forEach(layer => {
-                    if (layer.type === 'symbol') {
-                        try { map.setLayoutProperty(layer.id, 'visibility', 'none'); } catch(e) {}
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+            const camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 1000);
+            camera.position.set(0, 0, 3.2);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.06;
+            controls.enablePan = false;
+
+            const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+            scene.add(ambient);
+
+            // Globe (earth) with neutral texture; fallback to basic material if texture fails
+            const radius = 1;
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(radius, 64, 64),
+                new THREE.MeshPhongMaterial({ color: 0xdddddd, specular: 0x222222, shininess: 5 })
+            );
+            scene.add(sphere);
+            // Try loading an earth texture (grayscale-ish) for visual detail
+            new THREE.TextureLoader().load(
+                'https://unpkg.com/three-globe-textures@1.0.0/img/earth-dark.jpg',
+                (tex) => { sphere.material.map = tex; sphere.material.needsUpdate = true; },
+                undefined,
+                () => {}
+            );
+
+            // Helper: convert lat/lon to 3D position on sphere
+            function latLonToVec3(lat, lon, r = radius) {
+                const phi = (90 - lat) * (Math.PI/180);
+                const theta = (lon + 180) * (Math.PI/180);
+                const x = -r * Math.sin(phi) * Math.cos(theta);
+                const z = r * Math.sin(phi) * Math.sin(theta);
+                const y = r * Math.cos(phi);
+                return new THREE.Vector3(x, y, z);
+            }
+
+            // Helper: create a dashed arc between two lat/lon points
+            function addDashedArc(aLat, aLon, bLat, bLon, color = 0x0080ff, segments = 64) {
+                const start = latLonToVec3(aLat, aLon);
+                const end = latLonToVec3(bLat, bLon);
+                const mid = start.clone().add(end).normalize().multiplyScalar(radius * 1.02);
+                const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+                const points = curve.getPoints(segments);
+                const geom = new THREE.BufferGeometry().setFromPoints(points);
+                const mat = new THREE.LineDashedMaterial({ color, linewidth: 1, scale: 1, dashSize: 0.06, gapSize: 0.06 });
+                const line = new THREE.Line(geom, mat);
+                line.computeLineDistances();
+                scene.add(line);
+            }
+
+            // Helper: add labeled marker (small circle + text sprite)
+            function addMarker(lat, lon, label) {
+                const pos = latLonToVec3(lat, lon, radius * 1.002);
+                const marker = new THREE.Mesh(new THREE.SphereGeometry(0.01, 12, 12), new THREE.MeshBasicMaterial({ color: 0x0080ff }));
+                marker.position.copy(pos);
+                scene.add(marker);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = 128; canvas.height = 64;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = 'rgba(255,255,255,1)'; ctx.fillRect(0,0,128,64);
+                ctx.fillStyle = '#000000'; ctx.font = '28px PT Mono, monospace';
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(label, 64, 32);
+                const tex = new THREE.CanvasTexture(canvas);
+                const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+                const sprite = new THREE.Sprite(spriteMat);
+                sprite.scale.set(0.12, 0.06, 1);
+                sprite.position.copy(pos.clone().multiplyScalar(1.03));
+                scene.add(sprite);
+            }
+
+            // Journey 1: Garment (A-G)
+            const garment = [
+                { label: 'A', lat: 63.468, lon: 10.917 }, // Stjørdal
+                { label: 'B', lat: 63.285, lon: 10.400 }, // Klæbu
+                { label: 'C', lat: 58.852, lon: 5.735 },  // Sandnes
+                { label: 'D', lat: 59.912, lon: 10.757 }, // Manufacture Oslo
+                { label: 'E', lat: 63.433, lon: 10.420 }, // Mellomveien Trondheim
+                { label: 'F', lat: 59.912, lon: 10.757 }, // Manufacture Oslo
+                { label: 'G', lat: 63.433, lon: 10.420 }  // Mellomveien Trondheim
+            ];
+
+            for (let i = 0; i < garment.length - 1; i++) {
+                const a = garment[i], b = garment[i+1];
+                addDashedArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff);
+            }
+            garment.forEach(p => addMarker(p.lat, p.lon, p.label));
+
+            // Journey 2: Scenography (A-C)
+            const scenography = [
+                { label: 'A', lat: 63.468, lon: 10.917 },
+                { label: 'B', lat: 63.285, lon: 10.400 },
+                { label: 'C', lat: 63.433, lon: 10.420 }
+            ];
+            for (let i = 0; i < scenography.length - 1; i++) {
+                const a = scenography[i], b = scenography[i+1];
+                addDashedArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff);
+            }
+            scenography.forEach(p => addMarker(p.lat, p.lon, p.label));
+
+            // Country borders: load GeoJSON and render thin red outlines on the sphere
+            (function addCountryBorders(){
+                const url = 'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json';
+                fetch(url).then(r => r.json()).then(geo => {
+                    const mat = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 1 });
+                    function addRing(coords) {
+                        const pts = [];
+                        for (let i = 0; i < coords.length; i++) {
+                            const [lon, lat] = coords[i];
+                            pts.push(latLonToVec3(lat, lon, radius * 1.001));
+                        }
+                        const geom = new THREE.BufferGeometry().setFromPoints(pts);
+                        const line = new THREE.Line(geom, mat);
+                        scene.add(line);
                     }
+                    geo.features.forEach(f => {
+                        const g = f.geometry;
+                        if (!g) return;
+                        if (g.type === 'Polygon') {
+                            g.coordinates.forEach(ring => addRing(ring));
+                        } else if (g.type === 'MultiPolygon') {
+                            g.coordinates.forEach(poly => {
+                                poly.forEach(ring => addRing(ring));
+                            });
+                        }
+                    });
+                }).catch(() => {
+                    // silent fail; borders optional
                 });
+            })();
 
-                // Country borders with red outlines (OpenMapTiles boundary layer, admin level 2)
-                try {
-                    map.addLayer({
-                        id: 'country-borders-red',
-                        type: 'line',
-                        source: 'openmaptiles',
-                        'source-layer': 'boundary',
-                        filter: ['all', ['==', ['get', 'admin_level'], 2], ['==', ['get', 'maritime'], 0]],
-                        paint: {
-                            'line-color': '#ff0000',
-                            'line-width': 1
-                        }
-                    });
-                } catch(e) {}
+            // Animate
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
 
-                // Simplified coastlines: thin black outlines around water polygons
-                try {
-                    map.addLayer({
-                        id: 'coastlines-simple',
-                        type: 'line',
-                        source: 'openmaptiles',
-                        'source-layer': 'water',
-                        paint: {
-                            'line-color': '#000000',
-                            'line-width': 0.3
-                        }
-                    });
-                } catch(e) {}
-
-                // Add custom journey routes as GeoJSON sources/layers
-                const garmentRoute = {
-                    type: 'Feature',
-                    geometry: { type: 'LineString', coordinates: [
-                        [10.917, 63.468],
-                        [10.400, 63.285],
-                        [5.735, 58.852],
-                        [10.757, 59.912],
-                        [10.420, 63.433],
-                        [10.757, 59.912],
-                        [10.420, 63.433]
-                    ] }
-                };
-                const scenographyRoute = {
-                    type: 'Feature',
-                    geometry: { type: 'LineString', coordinates: [
-                        [10.917, 63.468],
-                        [10.400, 63.285],
-                        [10.420, 63.433]
-                    ] }
-                };
-                map.addSource('garment-line', { type: 'geojson', data: garmentRoute });
-                map.addSource('scenography-line', { type: 'geojson', data: scenographyRoute });
-                map.addLayer({ id: 'garment-journey', type: 'line', source: 'garment-line', paint: {
-                    'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
-                map.addLayer({ id: 'scenography-journey', type: 'line', source: 'scenography-line', paint: {
-                    'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
-
-                // Journey markers with letter labels (A-G) for garment, A-C for scenography
-                const journeyPoints = {
-                    type: 'FeatureCollection',
-                    features: [
-                        { type: 'Feature', properties: { label: 'A' }, geometry: { type: 'Point', coordinates: [10.917, 63.468] } },
-                        { type: 'Feature', properties: { label: 'B' }, geometry: { type: 'Point', coordinates: [10.400, 63.285] } },
-                        { type: 'Feature', properties: { label: 'C' }, geometry: { type: 'Point', coordinates: [5.735, 58.852] } },
-                        { type: 'Feature', properties: { label: 'D' }, geometry: { type: 'Point', coordinates: [10.757, 59.912] } },
-                        { type: 'Feature', properties: { label: 'E' }, geometry: { type: 'Point', coordinates: [10.420, 63.433] } },
-                        { type: 'Feature', properties: { label: 'F' }, geometry: { type: 'Point', coordinates: [10.757, 59.912] } },
-                        { type: 'Feature', properties: { label: 'G' }, geometry: { type: 'Point', coordinates: [10.420, 63.433] } }
-                    ]
-                };
-                const scenographyPoints = {
-                    type: 'FeatureCollection',
-                    features: [
-                        { type: 'Feature', properties: { label: 'A' }, geometry: { type: 'Point', coordinates: [10.917, 63.468] } },
-                        { type: 'Feature', properties: { label: 'B' }, geometry: { type: 'Point', coordinates: [10.400, 63.285] } },
-                        { type: 'Feature', properties: { label: 'C' }, geometry: { type: 'Point', coordinates: [10.420, 63.433] } }
-                    ]
-                };
-                map.addSource('journey-points', { type: 'geojson', data: journeyPoints });
-                map.addSource('scenography-points', { type: 'geojson', data: scenographyPoints });
-                map.addLayer({ id: 'journey-points-circle', type: 'circle', source: 'journey-points', paint: {
-                    'circle-color': '#ffffff', 'circle-stroke-color': '#0080ff', 'circle-stroke-width': 1, 'circle-radius': 4 } });
-                map.addLayer({ id: 'journey-points-label', type: 'symbol', source: 'journey-points', layout: {
-                    'text-field': ['get', 'label'], 'text-size': 10, 'text-offset': [0, 1.2] }, paint: { 'text-color': '#000000' } });
-                map.addLayer({ id: 'scenography-points-circle', type: 'circle', source: 'scenography-points', paint: {
-                    'circle-color': '#ffffff', 'circle-stroke-color': '#0080ff', 'circle-stroke-width': 1, 'circle-radius': 4 } });
-                map.addLayer({ id: 'scenography-points-label', type: 'symbol', source: 'scenography-points', layout: {
-                    'text-field': ['get', 'label'], 'text-size': 10, 'text-offset': [0, 1.2] }, paint: { 'text-color': '#000000' } });
-                // Ensure it renders after being revealed
-                setTimeout(() => map.resize(), 50);
-            });
-            mapEl.dataset.initialized = 'true';
+            // Save refs and mark initialized
+            window.__productJourneyRenderer = renderer;
+            window.__productJourneyCamera = camera;
+            container.dataset.initialized = 'true';
         }
 
         // Smooth scroll inside annotations modal for section menu
