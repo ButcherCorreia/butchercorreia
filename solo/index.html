@@ -1006,10 +1006,8 @@
             <h2>product journey</h2>
             <div id="map" class="mapbox-container"></div>
             <p>this section is under construction.</p>
-
             </div>
     </div>
-
 
     <!-- About BUTCHER & CORREIA Modal -->
     <div id="about-butcher-correia" class="modal">
@@ -1208,6 +1206,18 @@
             document.body.style.overflow = 'hidden';
             if (modalId === 'product-journey') {
                 initProductJourneyMap();
+                // Give Mapbox a moment, then force a resize to render correctly
+                setTimeout(() => {
+                    const mapEl = document.getElementById('map');
+                    if (mapEl) {
+                        try {
+                            // If the map is attached to window, resize it
+                            if (window.__productJourneyMap) {
+                                window.__productJourneyMap.resize();
+                            }
+                        } catch (e) {}
+                    }
+                }, 50);
             }
         }
 
@@ -1378,12 +1388,17 @@
             if (typeof mapboxgl === 'undefined') return;
             // TODO: replace with a valid token
             mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN';
+            if (!mapboxgl.accessToken || mapboxgl.accessToken === 'YOUR_MAPBOX_TOKEN') {
+                console.warn('Mapbox: Missing access token. Set mapboxgl.accessToken to a valid token.');
+            }
             const map = new mapboxgl.Map({
                 container: 'map',
                 style: 'mapbox://styles/mapbox/light-v11',
                 center: [10, 55],
                 zoom: 3.5
             });
+            // Expose map for resize on modal open
+            window.__productJourneyMap = map;
             map.on('load', () => {
                 // remove symbol labels
                 const layers = map.getStyle().layers || [];
@@ -1434,6 +1449,8 @@
                     'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
                 map.addLayer({ id: 'scenography-journey', type: 'line', source: 'scenography-line', paint: {
                     'line-color': '#0080ff', 'line-width': 1.5, 'line-dasharray': [2, 2] } });
+                // Ensure it renders after being revealed
+                setTimeout(() => map.resize(), 50);
             });
             mapEl.dataset.initialized = 'true';
         }
