@@ -26,6 +26,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Mapbox GL JS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
     <title>DPP - SOLO</title>
     <style>
         * {
@@ -404,6 +407,12 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 0.3rem;
             align-items: start;
+        }
+
+        /* Mapbox container inside modal */
+        .mapbox-container {
+            width: 100%;
+            height: 60vh;
         }
 
         /* Make links in modal info rows behave like links-section */
