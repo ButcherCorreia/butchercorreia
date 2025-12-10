@@ -1584,8 +1584,8 @@
             let prevX = 0, prevY = 0;
             let velX = 0, velY = 0;
             let targetDistance = camera.position.length();
-            const minDistance = 1.25; // allow closer
-            const maxDistance = 10.0; // allow further zoom out
+            const minDistance = 0.5; // allow closer
+            const maxDistance = 16.0; // allow more zoom out
             container.addEventListener('pointerdown', (e) => {
                 isDragging = true;
                 prevX = e.clientX; prevY = e.clientY;
@@ -1606,7 +1606,7 @@
             container.addEventListener('pointercancel', () => { isDragging = false; });
             container.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                const factor = e.deltaY > 0 ? 1.06 : 0.94;
+                const factor = e.deltaY > 0 ? 1.08 : 0.92; // slightly stronger zoom
                 targetDistance = THREE.MathUtils.clamp(targetDistance * factor, minDistance, maxDistance);
             }, { passive: false });
 
