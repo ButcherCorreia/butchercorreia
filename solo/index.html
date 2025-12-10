@@ -1489,38 +1489,39 @@
                 globeGroup.add(line);
             }
 
-            // Helper: add labeled marker (small circle + text sprite)
+            // Helper: add labeled marker as small blue circle with white number
             function addMarker(lat, lon, label) {
                 const pos = latLonToVec3(lat, lon, radius * 1.002);
-                const marker = new THREE.Mesh(new THREE.SphereGeometry(0.01, 12, 12), new THREE.MeshBasicMaterial({ color: 0x0080ff }));
-                marker.position.copy(pos);
-                globeGroup.add(marker);
-
                 const canvas = document.createElement('canvas');
-                canvas.width = 128; canvas.height = 64;
+                canvas.width = 128; canvas.height = 128;
                 const ctx = canvas.getContext('2d');
-                // transparent sprite background
-                ctx.clearRect(0,0,128,64);
-                ctx.fillStyle = '#000000'; ctx.font = '28px PT Mono, monospace';
+                ctx.clearRect(0,0,128,128);
+                // blue circle
+                ctx.beginPath();
+                ctx.arc(64, 64, 26, 0, Math.PI*2);
+                ctx.fillStyle = 'rgb(0,0,255)';
+                ctx.fill();
+                // white number
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 36px PT Mono, monospace';
                 ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(label, 64, 32);
+                ctx.fillText(String(label), 64, 64);
                 const tex = new THREE.CanvasTexture(canvas);
                 const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
                 const sprite = new THREE.Sprite(spriteMat);
-                sprite.scale.set(0.12, 0.06, 1);
+                // smaller marker size
+                sprite.scale.set(0.08, 0.08, 1);
                 sprite.position.copy(pos.clone().multiplyScalar(1.03));
                 globeGroup.add(sprite);
             }
 
             // Journey 1: Garment (A-G)
             const garment = [
-                { label: 'A', lat: 63.468, lon: 10.917 }, // Stjørdal
-                { label: 'B', lat: 63.285, lon: 10.400 }, // Klæbu
-                { label: 'C', lat: 58.852, lon: 5.735 },  // Sandnes
-                { label: 'D', lat: 59.912, lon: 10.757 }, // Manufacture Oslo
-                { label: 'E', lat: 63.433, lon: 10.420 }, // Mellomveien Trondheim
-                { label: 'F', lat: 59.912, lon: 10.757 }, // Manufacture Oslo
-                { label: 'G', lat: 63.433, lon: 10.420 }  // Mellomveien Trondheim
+                { label: '1', lat: 63.468, lon: 10.917 }, // Stjørdal
+                { label: '2', lat: 63.285, lon: 10.400 }, // Klæbu
+                { label: '3', lat: 58.852, lon: 5.735 },  // Sandnes
+                { label: '4', lat: 59.912, lon: 10.757 }, // Manufacture Oslo
+                { label: '5', lat: 63.433, lon: 10.420 }  // Mellomveien Trondheim
             ];
 
             for (let i = 0; i < garment.length - 1; i++) {
@@ -1531,9 +1532,9 @@
 
             // Journey 2: Scenography (A-C)
             const scenography = [
-                { label: 'A', lat: 63.468, lon: 10.917 },
-                { label: 'B', lat: 63.285, lon: 10.400 },
-                { label: 'C', lat: 63.433, lon: 10.420 }
+                { label: '1', lat: 63.468, lon: 10.917 },
+                { label: '2', lat: 63.285, lon: 10.400 },
+                { label: '3', lat: 63.433, lon: 10.420 }
             ];
             for (let i = 0; i < scenography.length - 1; i++) {
                 const a = scenography[i], b = scenography[i+1];
@@ -1573,9 +1574,13 @@
             })();
 
             // Animate
-            // Simple drag + wheel controls
+            // Smooth drag + wheel controls with damping and zoom limits
             let isDragging = false;
             let prevX = 0, prevY = 0;
+            let velX = 0, velY = 0;
+            let targetDistance = camera.position.length();
+            const minDistance = 1.35; // keep camera outside the sphere to avoid black
+            const maxDistance = 6.0;
             container.addEventListener('pointerdown', (e) => {
                 isDragging = true;
                 prevX = e.clientX; prevY = e.clientY;
@@ -1586,20 +1591,33 @@
                 const dx = e.clientX - prevX;
                 const dy = e.clientY - prevY;
                 prevX = e.clientX; prevY = e.clientY;
-                globeGroup.rotation.y += dx * 0.005;
-                globeGroup.rotation.x += dy * 0.005;
+                velX = dx * 0.0045;
+                velY = dy * 0.0045;
+                globeGroup.rotation.y += velX;
+                globeGroup.rotation.x += velY;
                 globeGroup.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, globeGroup.rotation.x));
             });
             container.addEventListener('pointerup', () => { isDragging = false; });
             container.addEventListener('pointercancel', () => { isDragging = false; });
             container.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                const factor = e.deltaY > 0 ? 1.05 : 0.95;
-                camera.position.multiplyScalar(factor);
+                const factor = e.deltaY > 0 ? 1.06 : 0.94;
+                targetDistance = THREE.MathUtils.clamp(targetDistance * factor, minDistance, maxDistance);
             }, { passive: false });
 
             function animate() {
                 requestAnimationFrame(animate);
+                // apply drag damping when not dragging
+                if (!isDragging) {
+                    velX *= 0.92; velY *= 0.92;
+                    globeGroup.rotation.y += velX;
+                    globeGroup.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, globeGroup.rotation.x + velY));
+                }
+                // smooth zoom towards targetDistance
+                const currentDistance = camera.position.length();
+                const lerped = THREE.MathUtils.lerp(currentDistance, targetDistance, 0.15);
+                camera.position.setLength(lerped);
+                camera.lookAt(0,0,0);
                 renderer.render(scene, camera);
             }
             animate();
