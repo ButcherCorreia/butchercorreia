@@ -1444,10 +1444,12 @@
                 camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 1000);
                 camera.position.set(0, 0, 3.2);
 
-                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
                 renderer.setPixelRatio(window.devicePixelRatio || 1);
                 renderer.setSize(width, height);
                 container.appendChild(renderer.domElement);
+                // ensure transparent background
+                renderer.setClearColor(0x000000, 0);
                 
                 const ambient = new THREE.AmbientLight(0xffffff, 0.9);
                 scene.add(ambient);
@@ -1459,7 +1461,7 @@
             const radius = 1;
             sphere = new THREE.Mesh(
                 new THREE.SphereGeometry(radius, 64, 64),
-                new THREE.MeshPhongMaterial({ color: 0xdddddd, specular: 0x222222, shininess: 5 })
+                new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x222222, shininess: 8 })
             );
             globeGroup.add(sphere);
             console.log('[Globe] Initialized sphere');
@@ -1584,7 +1586,7 @@
             let prevX = 0, prevY = 0;
             let velX = 0, velY = 0;
             let targetDistance = camera.position.length();
-            const minDistance = 0.5; // allow closer
+            const minDistance = 1; // allow closer
             const maxDistance = 16.0; // allow more zoom out
             container.addEventListener('pointerdown', (e) => {
                 isDragging = true;
