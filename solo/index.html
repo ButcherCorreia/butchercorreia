@@ -1476,7 +1476,7 @@
 
             // Helper: create a dashed arc between two lat/lon points
             // Helper: create a thicker arc between two lat/lon points using TubeGeometry
-            function addThickArc(aLat, aLon, bLat, bLon, color = 0x0080ff, segments = 64, radiusTube = 0.006) {
+            function addThickArc(aLat, aLon, bLat, bLon, color = 0x0080ff, segments = 64, radiusTube = 0.0027) {
                 const start = latLonToVec3(aLat, aLon);
                 const end = latLonToVec3(bLat, bLon);
                 const mid = start.clone().add(end).normalize().multiplyScalar(radius * 1.02);
@@ -1531,7 +1531,7 @@
 
             for (let i = 0; i < garment.length - 1; i++) {
                 const a = garment[i], b = garment[i+1];
-                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.008);
+                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.0027);
             }
             garment.forEach(p => addMarker(p.lat, p.lon, p.label));
 
@@ -1543,7 +1543,7 @@
             ];
             for (let i = 0; i < scenography.length - 1; i++) {
                 const a = scenography[i], b = scenography[i+1];
-                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.008);
+                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.0027);
             }
             scenography.forEach(p => addMarker(p.lat, p.lon, p.label));
 
@@ -1584,8 +1584,8 @@
             let prevX = 0, prevY = 0;
             let velX = 0, velY = 0;
             let targetDistance = camera.position.length();
-            const minDistance = 1.35; // keep camera outside the sphere to avoid black
-            const maxDistance = 6.0;
+            const minDistance = 1.25; // allow closer
+            const maxDistance = 10.0; // allow further zoom out
             container.addEventListener('pointerdown', (e) => {
                 isDragging = true;
                 prevX = e.clientX; prevY = e.clientY;
@@ -1610,15 +1610,12 @@
                 targetDistance = THREE.MathUtils.clamp(targetDistance * factor, minDistance, maxDistance);
             }, { passive: false });
 
-            // Center Norway as initial view
+            // Center Norway as initial view, keeping north up
             (function centerOnNorway(){
-                const norway = latLonToVec3(63.0, 10.5); // approx Trøndelag
-                const targetDir = norway.clone().normalize();
-                const currentDir = new THREE.Vector3(0,0,1); // camera looks down -Z, so put point to +Z of globe
-                // Rotate globe so Norway points toward +Z
-                const q = new THREE.Quaternion().setFromUnitVectors(targetDir, currentDir);
-                globeGroup.quaternion.premultiply(q);
-                // place camera at a comfortable distance and look at origin
+                const lat = 63.0, lon = 10.5; // approx Trøndelag
+                globeGroup.rotation.set(0, 0, 0);
+                globeGroup.rotation.y = THREE.MathUtils.degToRad(-lon);
+                globeGroup.rotation.x = THREE.MathUtils.degToRad(lat);
                 camera.position.set(0, 0, 3.0);
                 targetDistance = camera.position.length();
                 camera.lookAt(0,0,0);
