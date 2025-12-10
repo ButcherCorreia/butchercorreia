@@ -1218,21 +1218,27 @@
             document.body.style.overflow = 'hidden';
             if (modalId === 'product-journey') {
                 initProductJourneyGlobe();
-                // Give Mapbox a moment, then force a resize to render correctly
-                setTimeout(() => {
-                    const globeEl = document.getElementById('globe-container');
-                    if (globeEl) {
-                        try {
-                            if (window.__productJourneyRenderer && window.__productJourneyCamera) {
-                                const w = globeEl.clientWidth;
-                                const h = globeEl.clientHeight;
-                                window.__productJourneyRenderer.setSize(w, h);
-                                window.__productJourneyCamera.aspect = w / h;
-                                window.__productJourneyCamera.updateProjectionMatrix();
-                            }
-                        } catch (e) {}
-                    }
-                }, 50);
+                const globeEl = document.getElementById('globe-container');
+                const resizeGlobe = () => {
+                    if (!globeEl) return;
+                    try {
+                        if (window.__productJourneyRenderer && window.__productJourneyCamera) {
+                            const w = globeEl.clientWidth || globeEl.offsetWidth || 800;
+                            const h = globeEl.clientHeight || globeEl.offsetHeight || 400;
+                            window.__productJourneyRenderer.setSize(w, h);
+                            window.__productJourneyCamera.aspect = w / h;
+                            window.__productJourneyCamera.updateProjectionMatrix();
+                            console.log('[Globe] Resized to', w, h);
+                        }
+                    } catch (e) {}
+                };
+                // Resize soon and after CSS transition completes
+                setTimeout(resizeGlobe, 80);
+                const modalNode = document.getElementById(modalId);
+                if (modalNode) {
+                    const handler = () => { resizeGlobe(); modalNode.removeEventListener('transitionend', handler); };
+                    modalNode.addEventListener('transitionend', handler, { once: true });
+                }
             }
         }
 
@@ -1421,20 +1427,14 @@
             const ambient = new THREE.AmbientLight(0xffffff, 0.9);
             scene.add(ambient);
 
-            // Globe (earth) with neutral texture; fallback to basic material if texture fails
+            // Globe (earth) with neutral material only (no external texture to avoid CORS)
             const radius = 1;
             const sphere = new THREE.Mesh(
                 new THREE.SphereGeometry(radius, 64, 64),
                 new THREE.MeshPhongMaterial({ color: 0xdddddd, specular: 0x222222, shininess: 5 })
             );
             scene.add(sphere);
-            // Try loading an earth texture (grayscale-ish) for visual detail
-            new THREE.TextureLoader().load(
-                'https://unpkg.com/three-globe-textures@1.0.0/img/earth-dark.jpg',
-                (tex) => { sphere.material.map = tex; sphere.material.needsUpdate = true; },
-                undefined,
-                () => {}
-            );
+            console.log('[Globe] Initialized sphere');
 
             // Helper: convert lat/lon to 3D position on sphere
             function latLonToVec3(lat, lon, r = radius) {
@@ -1554,6 +1554,7 @@
             window.__productJourneyRenderer = renderer;
             window.__productJourneyCamera = camera;
             container.dataset.initialized = 'true';
+            console.log('[Globe] Init complete. Size:', width, height);
         }
 
         // Smooth scroll inside annotations modal for section menu
