@@ -1475,17 +1475,16 @@
             }
 
             // Helper: create a dashed arc between two lat/lon points
-            function addDashedArc(aLat, aLon, bLat, bLon, color = 0x0080ff, segments = 64) {
+            // Helper: create a thicker arc between two lat/lon points using TubeGeometry
+            function addThickArc(aLat, aLon, bLat, bLon, color = 0x0080ff, segments = 64, radiusTube = 0.006) {
                 const start = latLonToVec3(aLat, aLon);
                 const end = latLonToVec3(bLat, bLon);
                 const mid = start.clone().add(end).normalize().multiplyScalar(radius * 1.02);
                 const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-                const points = curve.getPoints(segments);
-                const geom = new THREE.BufferGeometry().setFromPoints(points);
-                const mat = new THREE.LineDashedMaterial({ color, linewidth: 1, scale: 1, dashSize: 0.06, gapSize: 0.06 });
-                const line = new THREE.Line(geom, mat);
-                line.computeLineDistances();
-                globeGroup.add(line);
+                const geom = new THREE.TubeGeometry(curve, segments, radiusTube, 8, false);
+                const mat = new THREE.MeshBasicMaterial({ color });
+                const mesh = new THREE.Mesh(geom, mat);
+                globeGroup.add(mesh);
             }
 
             // Helper: add labeled marker as small blue circle with white number
@@ -1532,7 +1531,7 @@
 
             for (let i = 0; i < garment.length - 1; i++) {
                 const a = garment[i], b = garment[i+1];
-                addDashedArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff);
+                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.008);
             }
             garment.forEach(p => addMarker(p.lat, p.lon, p.label));
 
@@ -1544,7 +1543,7 @@
             ];
             for (let i = 0; i < scenography.length - 1; i++) {
                 const a = scenography[i], b = scenography[i+1];
-                addDashedArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff);
+                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.008);
             }
             scenography.forEach(p => addMarker(p.lat, p.lon, p.label));
 
@@ -1610,6 +1609,20 @@
                 const factor = e.deltaY > 0 ? 1.06 : 0.94;
                 targetDistance = THREE.MathUtils.clamp(targetDistance * factor, minDistance, maxDistance);
             }, { passive: false });
+
+            // Center Norway as initial view
+            (function centerOnNorway(){
+                const norway = latLonToVec3(63.0, 10.5); // approx Trøndelag
+                const targetDir = norway.clone().normalize();
+                const currentDir = new THREE.Vector3(0,0,1); // camera looks down -Z, so put point to +Z of globe
+                // Rotate globe so Norway points toward +Z
+                const q = new THREE.Quaternion().setFromUnitVectors(targetDir, currentDir);
+                globeGroup.quaternion.premultiply(q);
+                // place camera at a comfortable distance and look at origin
+                camera.position.set(0, 0, 3.0);
+                targetDistance = camera.position.length();
+                camera.lookAt(0,0,0);
+            })();
 
             function animate() {
                 requestAnimationFrame(animate);
