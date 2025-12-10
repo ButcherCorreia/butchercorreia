@@ -1517,8 +1517,8 @@
                 tex.anisotropy = (window.__productJourneyRenderer && window.__productJourneyRenderer.capabilities) ? window.__productJourneyRenderer.capabilities.getMaxAnisotropy() : 0;
                 const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
                 const sprite = new THREE.Sprite(spriteMat);
-                // visible size stays small; texture is high-res
-                sprite.scale.set(0.08, 0.08, 1);
+                // make marker half the previous size
+                sprite.scale.set(0.04, 0.04, 1);
                 sprite.position.copy(pos.clone().multiplyScalar(1.03));
                 globeGroup.add(sprite);
             }
