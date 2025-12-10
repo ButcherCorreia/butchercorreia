@@ -1450,8 +1450,10 @@
                 // ensure transparent background
                 renderer.setClearColor(0x000000, 0);
                 
-                const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+                const ambient = new THREE.AmbientLight(0xffffff, 1.0);
                 scene.add(ambient);
+                const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+                scene.add(hemi);
 
                 globeGroup = new THREE.Group();
                 scene.add(globeGroup);
@@ -1585,8 +1587,8 @@
             let prevX = 0, prevY = 0;
             let velX = 0, velY = 0;
             let targetDistance = camera.position.length();
-            const minDistance = 1; // allow closer
-            const maxDistance = 16.0; // allow more zoom out
+            const minDistance = 1.2; // prevent entering sphere (radius=1)
+            const maxDistance = 18.0; // allow more zoom out
             container.addEventListener('pointerdown', (e) => {
                 isDragging = true;
                 prevX = e.clientX; prevY = e.clientY;
@@ -1607,7 +1609,7 @@
             container.addEventListener('pointercancel', () => { isDragging = false; });
             container.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                const factor = e.deltaY > 0 ? 1.08 : 0.92; // slightly stronger zoom
+                const factor = e.deltaY > 0 ? 1.06 : 0.94; // gentler zoom to reduce jumpiness
                 targetDistance = THREE.MathUtils.clamp(targetDistance * factor, minDistance, maxDistance);
             }, { passive: false });
 
