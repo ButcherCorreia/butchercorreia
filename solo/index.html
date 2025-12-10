@@ -591,6 +591,16 @@
         /* Consistent gallery dot colors across all screens */
         .gallery-dot { background: #cccccc; }
         .gallery-dot.active { background: rgb(0, 0, 255); }
+
+        /* Product Journey globe container safeguards */
+        #globe-container {
+            min-height: 300px;
+            display: block;
+            background: #ffffff;
+        }
+        #product-journey .modal-content {
+            overflow: hidden auto;
+        }
     </style>
 </head>
 <body>
@@ -1410,30 +1420,49 @@
         function initProductJourneyGlobe() {
             const container = document.getElementById('globe-container');
             if (!container || container.dataset.initialized === 'true') return;
-            if (typeof THREE === 'undefined') return;
+            if (typeof THREE === 'undefined') {
+                container.innerHTML = '<div style="color:#000">3D library not available.</div>';
+                return;
+            }
 
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffffff);
-            const camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 1000);
-            camera.position.set(0, 0, 3.2);
+            const width = Math.max(container.clientWidth || 0, 320);
+            const height = Math.max(container.clientHeight || 0, 240);
 
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(width, height);
-            container.appendChild(renderer.domElement);
+            // Guard: library/WebGL availability and visible container
+            if (typeof THREE === 'undefined') {
+                container.innerHTML = '<div style="color:#000">Unable to load 3D library.</div>';
+                return;
+            }
+            const testCanvas = document.createElement('canvas');
+            const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+            if (!gl) {
+                container.innerHTML = '<div style="color:#000">Your browser does not support WebGL.</div>';
+                return;
+            }
+            let scene, camera, renderer, controls, sphere;
+            try {
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0xffffff);
+                camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 1000);
+                camera.position.set(0, 0, 3.2);
 
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.06;
-            controls.enablePan = false;
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+                renderer.setPixelRatio(window.devicePixelRatio || 1);
+                renderer.setSize(width, height);
+                container.appendChild(renderer.domElement);
 
-            const ambient = new THREE.AmbientLight(0xffffff, 0.9);
-            scene.add(ambient);
+                if (!THREE.OrbitControls) throw new Error('OrbitControls missing');
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.06;
+                controls.enablePan = false;
+
+                const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+                scene.add(ambient);
 
             // Globe (earth) with neutral material only (no external texture to avoid CORS)
             const radius = 1;
-            const sphere = new THREE.Mesh(
+            sphere = new THREE.Mesh(
                 new THREE.SphereGeometry(radius, 64, 64),
                 new THREE.MeshPhongMaterial({ color: 0xdddddd, specular: 0x222222, shininess: 5 })
             );
@@ -1549,6 +1578,8 @@
             // Animate
             function animate() {
                 requestAnimationFrame(animate);
+                // gentle rotation to make it obvious it's rendered
+                sphere.rotation.y += 0.0008;
                 controls.update();
                 renderer.render(scene, camera);
             }
@@ -1559,6 +1590,21 @@
             window.__productJourneyCamera = camera;
             container.dataset.initialized = 'true';
             console.log('[Globe] Init complete. Size:', width, height);
+
+            // Handle window resize while modal is open
+            function handleResize(){
+                const w = Math.max(container.clientWidth || 0, 320);
+                const h = Math.max(container.clientHeight || 0, 240);
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+            }
+            window.addEventListener('resize', handleResize);
+            } catch (err) {
+                console.error('[Globe] Init error:', err);
+                container.innerHTML = '<div style="color:#000">Globe failed to initialize.</div>';
+                return;
+            }
         }
 
         // Smooth scroll inside annotations modal for section menu
