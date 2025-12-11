@@ -1354,11 +1354,14 @@
             const el = document.getElementById('leaflet-map');
             if (!el || el.dataset.initialized === 'true') return;
             const map = L.map(el, { zoomControl: true });
-            // OSM tiles with attribution
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            // Styled raster tiles with labels; flat aesthetic
+            // Carto Voyager (labels, light land, blue water) with retina support
+            const tiles = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                 maxZoom: 19,
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
+                attribution: '&copy; OpenStreetMap &copy; CARTO',
+                detectRetina: true
+            });
+            tiles.addTo(map);
 
             // Points
             const garment = [
@@ -1374,8 +1377,22 @@
                 { label: '3', lat: 63.433, lon: 10.420 }
             ];
 
-            // Fit to Norway
-            map.setView([63.0, 10.5], 6);
+                        // Fit to Norway
+                        map.setView([63.0, 10.5], 6);
+
+                        // Country borders (red outlines)
+                        fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
+                            .then(r => r.json())
+                            .then(geojson => {
+                                L.geoJSON(geojson, {
+                                    style: {
+                                        color: 'rgb(255,0,0)',
+                                        weight: 1,
+                                        opacity: 0.8
+                                    }
+                                }).addTo(map);
+                            })
+                            .catch(err => console.warn('[Leaflet] Borders layer error', err));
 
             // Helper for numbered circle markers
             function addNumberMarker(lat, lon, label) {
