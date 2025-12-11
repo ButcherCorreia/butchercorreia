@@ -1066,16 +1066,41 @@
                 <a href="#" data-journey="scenography">scenography</a>
             </div>
             <div id="leaflet-map"></div>
-            <p>garment:<br>
-            1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre</a><br>
-            2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
-            3: Sandnes (NO) - <a href="https://www.varpogveft.no" target="_blank">Varp & Veft</a><br>
-            4: Oslo (NO) - <a href="https://www.manufacture-oslo.no/" target="_blank">Manufacture Oslo</a><br>
-            5: Trondheim (NO) - <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a><br></p>
-            <p>scenography:<br>
-            1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a><br>
-            2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
-            3: Trondheim (NO) - <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a></p>
+            <h3>garment</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#1</div>
+                <div class="modal-info-value">Stjørdal (NO) — <a href="https://www.ofsti.no/" target="_blank" rel="noopener noreferrer">Øfsti Søndre</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#2</div>
+                <div class="modal-info-value">Klæbu (NO) — <a href="https://www.selbuspinneri.no/" target="_blank" rel="noopener noreferrer">Selbu Spinneri</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#3</div>
+                <div class="modal-info-value">Sandnes (NO) — <a href="https://www.varpogveft.no" target="_blank" rel="noopener noreferrer">Varp & Veft</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#4</div>
+                <div class="modal-info-value">Oslo (NO) — <a href="https://www.manufacture-oslo.no/" target="_blank" rel="noopener noreferrer">Manufacture Oslo</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#5</div>
+                <div class="modal-info-value">Trondheim (NO) — <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">BUTCHER & CORREIA studio</a></div>
+            </div>
+
+            <h3>scenography</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#1</div>
+                <div class="modal-info-value">Stjørdal (NO) — <a href="https://www.ofsti.no/" target="_blank" rel="noopener noreferrer">Øfsti Søndre</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#2</div>
+                <div class="modal-info-value">Klæbu (NO) — <a href="https://www.selbuspinneri.no/" target="_blank" rel="noopener noreferrer">Selbu Spinneri</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">#3</div>
+                <div class="modal-info-value">Trondheim (NO) — <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">BUTCHER & CORREIA studio</a></div>
+            </div>
         </div>
     </div>
 
@@ -1468,10 +1493,10 @@
             // Garment markers with hover tooltips (same style as scenography)
             const garmentTooltips = {
                 '1': '<div><a href="https://www.ofsti.no" target="_blank">Øfsti søndre</a></div><div>farming & breeding</div>',
-                '2': '<div>Selbu Spinneri</div><div>washing & spinning</div>',
-                '3': '<div>Varp & Veft</div><div>weaving</div>',
-                '4': '<div>Manufacture Oslo</div><div>construction</div>',
-                '5': '<div>BUTCHER & CORREIA studio</div><div>finishing</div>'
+                '2': '<div><a href="https://www.selbuspinneri.no" target="_blank">Selbu Spinneri</a></div><div>washing & spinning</div>',
+                '3': '<div><a href="https://www.varpogveft.no/" target="_blank">Varp & Veft</a></div><div>weaving</div>',
+                '4': '<div><a href="https://www.manufacture-oslo.com" target="_blank">Manufacture Oslo</a></div><div>construction</div>',
+                '5': '<div><a href="https://www.butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a></div><div>finishing</div>'
             };
             garment.forEach(p => {
                 const m = addNumberMarker(garmentGroup, p.lat, p.lon, p.label);
@@ -1484,8 +1509,8 @@
             // Scenography markers with hover tooltips
             const scenographyTooltips = {
                 '1': '<div><a href="https://www.ofsti.no" target="_blank">Øfsti søndre</a></div><div>farming & breeding</div>',
-                '2': '<div>Selbu Spinneri</div><div>washing & spinning</div>',
-                '3': '<div>BUTCHER & CORREIA studio</div><div>felting</div>'
+                '2': '<div><a href="https://www.selbuspinneri.no" target="_blank">Selbu Spinneri</a></div><div>washing & spinning</div>',
+                '3': '<div><a href="https://www.butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a></div><div>felting</div>'
             };
             scenography.forEach(p => {
                 const icon = L.divIcon({
