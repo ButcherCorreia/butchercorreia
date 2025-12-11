@@ -1017,6 +1017,10 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('product-journey')">&times;</span>
             <h2>product journey</h2>
+            <div class="modal-section-menu" id="journey-menu" aria-label="journey menu">
+                <a href="#" data-journey="garment">garment</a>
+                <a href="#" data-journey="scenography">scenography</a>
+            </div>
             <div id="leaflet-map"></div>
             <p>(this section is under construction.)</p>
             <p>garment:<br>
@@ -1394,27 +1398,71 @@
                             })
                             .catch(err => console.warn('[Leaflet] Borders layer error', err));
 
-            // Helper for numbered circle markers
-            function addNumberMarker(lat, lon, label) {
+            // Layer groups for toggling
+            const garmentGroup = L.layerGroup();
+            const scenographyGroup = L.layerGroup();
+
+            // Helper for numbered circle markers added to a group
+            function addNumberMarker(group, lat, lon, label) {
                 const icon = L.divIcon({
                     className: 'bc-num-marker',
                     html: `<div style="width:18px;height:18px;border-radius:50%;background:rgb(0,0,255);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'PT Mono',monospace;font-size:10px;line-height:1;">${label}</div>`,
                     iconSize: [18, 18],
                     iconAnchor: [9, 9]
                 });
-                L.marker([lat, lon], { icon }).addTo(map);
+                const marker = L.marker([lat, lon], { icon });
+                group.addLayer(marker);
             }
 
-            // Dashed route helper
-            function addDashedRoute(points, color = 'rgb(0,0,255)') {
+            // Dashed route helper added to a group
+            function addDashedRoute(group, points, color = 'rgb(0,0,255)') {
                 const latlngs = points.map(p => [p.lat, p.lon]);
-                L.polyline(latlngs, { color, weight: 2, dashArray: '4,4' }).addTo(map);
+                const route = L.polyline(latlngs, { color, weight: 2, dashArray: '4,4' });
+                group.addLayer(route);
             }
 
-            garment.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
-            addDashedRoute(garment);
-            scenography.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
-            addDashedRoute(scenography);
+            // Build groups
+            garment.forEach(p => addNumberMarker(garmentGroup, p.lat, p.lon, p.label));
+            addDashedRoute(garmentGroup, garment);
+            scenography.forEach(p => addNumberMarker(scenographyGroup, p.lat, p.lon, p.label));
+            addDashedRoute(scenographyGroup, scenography);
+
+            // Toggle function
+            function showJourney(which) {
+                if (map.hasLayer(garmentGroup)) map.removeLayer(garmentGroup);
+                if (map.hasLayer(scenographyGroup)) map.removeLayer(scenographyGroup);
+                if (which === 'garment') {
+                    garmentGroup.addTo(map);
+                } else {
+                    scenographyGroup.addTo(map);
+                }
+                const menu = document.getElementById('journey-menu');
+                if (menu) {
+                    const links = menu.querySelectorAll('a[data-journey]');
+                    links.forEach(a => {
+                        const active = a.dataset.journey === which;
+                        a.style.color = active ? 'rgb(255, 0, 0)' : '';
+                        a.setAttribute('aria-selected', active ? 'true' : 'false');
+                    });
+                }
+            }
+
+            // Bind menu clicks
+            const journeyMenu = document.getElementById('journey-menu');
+            if (journeyMenu) {
+                journeyMenu.addEventListener('click', (e) => {
+                    const link = e.target.closest('a[data-journey]');
+                    if (!link) return;
+                    e.preventDefault();
+                    showJourney(link.dataset.journey);
+                });
+            }
+
+            // Default view
+            showJourney('garment');
+
+            // Ensure proper sizing once modal is visible
+            setTimeout(() => { try { map.invalidateSize(); } catch(_){} }, 120);
 
             el.dataset.initialized = 'true';
         }
