@@ -1222,6 +1222,10 @@
     </div>
 
     <script>
+        // Global error guard to avoid broken UI and surface issues
+        window.addEventListener('error', function(e){
+            console.error('[App Error]', e.message, 'at', e.filename + ':' + e.lineno);
+        });
         let currentImageIndex = 1;
         
         function openModal(modalId) {
