@@ -423,7 +423,7 @@
             border-radius: 0; /* no round corners */
             box-shadow: none;
             padding: 6px 8px;
-            font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; /* match body text */
+            font-family: 'PT Mono', monospace; /* switch to the other site font */
             font-size: 0.9rem; /* align with normal body text scale */
             line-height: 1.2;
         }
@@ -1071,7 +1071,7 @@
             2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
             3: Sandnes (NO) - <a href="https://www.varpogveft.no" target="_blank">Varp & Veft</a><br>
             4: Oslo (NO) - <a href="https://www.manufacture-oslo.no/" target="_blank">Manufacture Oslo</a><br>
-            5: Trondheim (NO) - <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">butchercorreia.com</a><br></p>
+            5: Trondheim (NO) - <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a><br></p>
             <p>scenography:<br>
             1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a><br>
             2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
@@ -1467,7 +1467,7 @@
             // Build groups
             // Garment markers with hover tooltips (same style as scenography)
             const garmentTooltips = {
-                '1': '<div>Øfsti Søndre</div><div>farming & breeding</div>',
+                '1': '<div><a href="https://www.ofsti.no" target="_blank">Øfsti søndre</a></div><div>farming & breeding</div>',
                 '2': '<div>Selbu Spinneri</div><div>washing & spinning</div>',
                 '3': '<div>Varp & Veft</div><div>weaving</div>',
                 '4': '<div>Manufacture Oslo</div><div>construction</div>',
@@ -1483,7 +1483,7 @@
             addDashedRoute(garmentGroup, garment);
             // Scenography markers with hover tooltips
             const scenographyTooltips = {
-                '1': '<div>Øfsti Søndre</div><div>farming & breeding</div>',
+                '1': '<div><a href="https://www.ofsti.no" target="_blank">Øfsti søndre</a></div><div>farming & breeding</div>',
                 '2': '<div>Selbu Spinneri</div><div>washing & spinning</div>',
                 '3': '<div>BUTCHER & CORREIA studio</div><div>felting</div>'
             };
