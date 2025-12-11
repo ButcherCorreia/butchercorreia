@@ -415,6 +415,22 @@
             height: 60vh;
         }
 
+        /* Leaflet zoom control customization */
+        .leaflet-control-zoom a {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: rgb(0, 0, 255) !important;
+            font-weight: 700;
+        }
+        .leaflet-control-zoom a:focus {
+            outline: none !important;
+        }
+        .leaflet-control-zoom {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
         /* Product Journey links: match annotations style */
         #product-journey .modal-content a {
             color: #ffffff;
@@ -1033,7 +1049,7 @@
             </div>
             <div id="leaflet-map"></div>
             <p>garment:<br>
-            1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a><br>
+            1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre</a><br>
             2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
             3: Sandnes (NO) - <a href="https://www.varpogveft.no" target="_blank">Varp & Veft</a><br>
             4: Oslo (NO) - <a href="https://www.manufacture-oslo.no/" target="_blank">Manufacture Oslo</a><br>
@@ -1041,7 +1057,7 @@
             <p>scenography:<br>
             1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a><br>
             2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
-            3: Trondheim (NO) - <a href="https://butchercorreia.com" target="_blank">butchercorreia.com</a></p>
+            3: Trondheim (NO) - <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a></p>
         </div>
     </div>
 
@@ -1432,7 +1448,26 @@
             // Build groups
             garment.forEach(p => addNumberMarker(garmentGroup, p.lat, p.lon, p.label));
             addDashedRoute(garmentGroup, garment);
-            scenography.forEach(p => addNumberMarker(scenographyGroup, p.lat, p.lon, p.label));
+            // Scenography markers with hover tooltips
+            const scenographyTooltips = {
+                '1': 'Øfsti Søndre: farming & breeding',
+                '2': 'Selbu Spinneri: washing and spinning',
+                '3': 'BUTCHER & CORREIA studio: felting'
+            };
+            scenography.forEach(p => {
+                const icon = L.divIcon({
+                    className: 'bc-num-marker',
+                    html: `<div style="width:18px;height:18px;border-radius:50%;background:rgb(0,0,255);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'PT Mono',monospace;font-size:10px;line-height:1;">${p.label}</div>`,
+                    iconSize: [18, 18],
+                    iconAnchor: [9, 9]
+                });
+                const m = L.marker([p.lat, p.lon], { icon });
+                const tip = scenographyTooltips[p.label];
+                if (tip) {
+                    m.bindTooltip(`<strong>${p.label}</strong> - ${tip}`, { permanent: false, direction: 'top', offset: [0, -10] });
+                }
+                scenographyGroup.addLayer(m);
+            });
             addDashedRoute(scenographyGroup, scenography);
 
             // Toggle function
