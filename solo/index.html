@@ -1228,7 +1228,17 @@
             document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden';
             if (modalId === 'product-journey') {
-                initProductJourneyLeaflet();
+                try {
+                    if (typeof L === 'undefined') {
+                        console.warn('[Leaflet] Library not loaded; skipping map init');
+                    } else if (typeof initProductJourneyLeaflet === 'function') {
+                        initProductJourneyLeaflet();
+                    } else {
+                        console.warn('[Leaflet] Init function missing');
+                    }
+                } catch (err) {
+                    console.error('[Leaflet] Map init error:', err);
+                }
             }
         }
 
