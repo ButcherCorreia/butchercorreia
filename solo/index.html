@@ -1022,17 +1022,16 @@
                 <a href="#" data-journey="scenography">scenography</a>
             </div>
             <div id="leaflet-map"></div>
-            <p>(this section is under construction.)</p>
             <p>garment:<br>
-            A: Stjørdal (NO)<br>
-            B: Klæbu (NO)<br>
-            C: Sandnes (NO)<br>
-            D: Manufacture Oslo (NO)<br>
-            E: BUTCHER & CORREIA studio, Trondheim (NO)<br>
+            1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a><br>
+            2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
+            3: Sandnes (NO) - <a href="https://www.varpogveft.no" target="_blank">Varp & Veft</a><br>
+            4: Oslo (NO) - <a href="https://www.manufacture-oslo.no/" target="_blank">Manufacture Oslo</a><br>
+            5: Trondheim (NO) - <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">butchercorreia.com</a></p>
             <p>scenography:<br>
-            A: Stjørdal (NO)<br>
-            B: Klæbu (NO)<br>
-            C: BUTCHER & CORREIA studio, Trondheim (NO)</p>
+            1: Stjørdal (NO) - <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a><br>
+            2: Klæbu (NO) - <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a><br>
+            3: Trondheim (NO) - <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">butchercorreia.com</a></p>
             </div>
     </div>
 
@@ -1357,7 +1356,7 @@
         function initProductJourneyLeaflet() {
             const el = document.getElementById('leaflet-map');
             if (!el || el.dataset.initialized === 'true') return;
-            const map = L.map(el, { zoomControl: true });
+            const map = L.map(el, { zoomControl: true, attributionControl: false });
             // Styled raster tiles with labels; flat aesthetic
             // Carto Voyager (labels, light land, blue water) with retina support
             const tiles = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
