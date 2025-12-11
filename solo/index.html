@@ -26,9 +26,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!-- Three.js for globe (token-free) -->
-    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Leaflet (token-free maps) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4QG6qvXgS2vYQH3GJQGmE0A0rYcPmnN2RkQmQfX3oM=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1j8v+1Q8rjvZq2rY0FZPGcQwqvCjWbYQvZ3zZ1tA=" crossorigin=""></script>
     <title>DPP - SOLO</title>
     <style>
         * {
@@ -409,8 +409,8 @@
             align-items: start;
         }
 
-        /* Mapbox container inside modal */
-        .mapbox-container {
+        /* Map container inside modal */
+        #leaflet-map {
             width: 100%;
             height: 60vh;
         }
@@ -1017,7 +1017,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('product-journey')">&times;</span>
             <h2>product journey</h2>
-            <div id="globe-container" style="width:100%; height:60vh;"></div>
+            <div id="leaflet-map"></div>
             <p>(this section is under construction.)</p>
             <p>garment:<br>
             A: Stjørdal (NO)<br>
@@ -1228,28 +1228,7 @@
             document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden';
             if (modalId === 'product-journey') {
-                initProductJourneyGlobe();
-                const globeEl = document.getElementById('globe-container');
-                const resizeGlobe = () => {
-                    if (!globeEl) return;
-                    try {
-                        if (window.__productJourneyRenderer && window.__productJourneyCamera) {
-                            const w = globeEl.clientWidth || globeEl.offsetWidth || 800;
-                            const h = globeEl.clientHeight || globeEl.offsetHeight || 400;
-                            window.__productJourneyRenderer.setSize(w, h);
-                            window.__productJourneyCamera.aspect = w / h;
-                            window.__productJourneyCamera.updateProjectionMatrix();
-                            console.log('[Globe] Resized to', w, h);
-                        }
-                    } catch (e) {}
-                };
-                // Resize soon and after CSS transition completes
-                setTimeout(resizeGlobe, 80);
-                const modalNode = document.getElementById(modalId);
-                if (modalNode) {
-                    const handler = () => { resizeGlobe(); modalNode.removeEventListener('transitionend', handler); };
-                    modalNode.addEventListener('transitionend', handler, { once: true });
-                }
+                initProductJourneyLeaflet();
             }
         }
 
@@ -1362,306 +1341,58 @@
             videos.forEach(video => {
                 // Ensure clicks only toggle playback
                 video.style.cursor = 'pointer';
-                // Strengthen autoplay conditions for mobile browsers
-                video.setAttribute('playsinline', '');
-                video.muted = true;
-                // If marked for autoplay, attempt to start
-                if (video.autoplay || video.getAttribute('autoplay') !== null) {
-                    const start = () => {
-                        const p = video.play();
-                        if (p && typeof p.then === 'function') {
-                            p.catch(() => {
-                                // Ignore autoplay rejections silently
-                            });
-                        }
-                    };
-                    // Try after metadata for reliable dimensions and policies
-                    if (video.readyState >= 1) {
-                        start();
-                    } else {
-                        video.addEventListener('loadedmetadata', start, { once: true });
+                // Leaflet map: token-free basemap and simple journeys
+                function initProductJourneyLeaflet() {
+                    const el = document.getElementById('leaflet-map');
+                    if (!el || el.dataset.initialized === 'true') return;
+                    const map = L.map(el, { zoomControl: true });
+                    // OSM tiles with attribution
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(map);
+
+                    // Points
+                    const garment = [
+                        { label: '1', lat: 63.468, lon: 10.917 },
+                        { label: '2', lat: 63.285, lon: 10.400 },
+                        { label: '3', lat: 58.852, lon: 5.735 },
+                        { label: '4', lat: 59.912, lon: 10.757 },
+                        { label: '5', lat: 63.433, lon: 10.420 }
+                    ];
+                    const scenography = [
+                        { label: '1', lat: 63.468, lon: 10.917 },
+                        { label: '2', lat: 63.285, lon: 10.400 },
+                        { label: '3', lat: 63.433, lon: 10.420 }
+                    ];
+
+                    // Fit to Norway
+                    map.setView([63.0, 10.5], 6);
+
+                    // Helper for numbered circle markers
+                    function addNumberMarker(lat, lon, label) {
+                        const icon = L.divIcon({
+                            className: 'bc-num-marker',
+                            html: `<div style="width:18px;height:18px;border-radius:50%;background:rgb(0,0,255);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'PT Mono',monospace;font-size:10px;line-height:1;">${label}</div>`,
+                            iconSize: [18, 18],
+                            iconAnchor: [9, 9]
+                        });
+                        L.marker([lat, lon], { icon }).addTo(map);
                     }
+
+                    // Dashed route helper
+                    function addDashedRoute(points, color = 'rgb(0,0,255)') {
+                        const latlngs = points.map(p => [p.lat, p.lon]);
+                        L.polyline(latlngs, { color, weight: 2, dashArray: '4,4' }).addTo(map);
+                    }
+
+                    garment.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
+                    addDashedRoute(garment);
+                    scenography.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
+                    addDashedRoute(scenography);
+
+                    el.dataset.initialized = 'true';
                 }
-                video.addEventListener('click', () => {
-                    if (video.paused) {
-                        video.play();
-                    } else {
-                        video.pause();
-                    }
-                });
-            });
-        }
-
-        window.addEventListener('load', bindVideoClickToggle);
-
-        // One-time user gesture bootstrap: if autoplay is delayed, start on first click/touch
-        function bootstrapAutoplayOnFirstInteraction() {
-            const startAll = () => {
-                document.removeEventListener('click', startAll);
-                document.removeEventListener('touchstart', startAll);
-                const videos = document.querySelectorAll('video');
-                videos.forEach(v => {
-                    // Attempt play; ignore promise rejections
-                    const p = v.play();
-                    if (p && typeof p.then === 'function') {
-                        p.catch(() => {});
-                    }
-                });
-            };
-            document.addEventListener('click', startAll, { once: true });
-            document.addEventListener('touchstart', startAll, { once: true });
-        }
-        bootstrapAutoplayOnFirstInteraction();
-
-        // Three.js globe: initialize on demand in the product-journey modal
-        function initProductJourneyGlobe() {
-            const container = document.getElementById('globe-container');
-            if (!container || container.dataset.initialized === 'true') return;
-            if (typeof THREE === 'undefined') {
-                container.innerHTML = '<div style="color:#000">3D library not available.</div>';
-                return;
-            }
-
-            const width = Math.max(container.clientWidth || 0, 320);
-            const height = Math.max(container.clientHeight || 0, 240);
-
-            // Guard: library/WebGL availability and visible container
-            if (typeof THREE === 'undefined') {
-                container.innerHTML = '<div style="color:#000">Unable to load 3D library.</div>';
-                return;
-            }
-            const testCanvas = document.createElement('canvas');
-            const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
-            if (!gl) {
-                container.innerHTML = '<div style="color:#000">Your browser does not support WebGL.</div>';
-                return;
-            }
-            let scene, camera, renderer, sphere, globeGroup;
-            try {
-                scene = new THREE.Scene();
-                // transparent renderer background; modal blue surrounds
-                camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 1000);
-                camera.position.set(0, 0, 3.2);
-
-                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-                renderer.setPixelRatio(window.devicePixelRatio || 1);
-                renderer.setSize(width, height);
-                container.appendChild(renderer.domElement);
-                // ensure transparent background
-                renderer.setClearColor(0x000000, 0);
-                
-                const ambient = new THREE.AmbientLight(0xffffff, 1.0);
-                scene.add(ambient);
-                const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
-                scene.add(hemi);
-
-                globeGroup = new THREE.Group();
-                scene.add(globeGroup);
-
-            // Globe (earth) with neutral material only (no external texture to avoid CORS)
-            const radius = 1;
-            sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(radius, 64, 64),
-                new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x222222, shininess: 8 })
-            );
-            globeGroup.add(sphere);
-            console.log('[Globe] Initialized sphere');
-
-            // Helper: convert lat/lon to 3D position on sphere
-            function latLonToVec3(lat, lon, r = radius) {
-                const phi = (90 - lat) * (Math.PI/180);
-                const theta = (lon + 180) * (Math.PI/180);
-                const x = -r * Math.sin(phi) * Math.cos(theta);
-                const z = r * Math.sin(phi) * Math.sin(theta);
-                const y = r * Math.cos(phi);
-                return new THREE.Vector3(x, y, z);
-            }
-
-            // Helper: create a dashed arc between two lat/lon points
-            // Helper: create a thicker arc between two lat/lon points using TubeGeometry
-            function addThickArc(aLat, aLon, bLat, bLon, color = 0x0080ff, segments = 64, radiusTube = 0.0027) {
-                const start = latLonToVec3(aLat, aLon);
-                const end = latLonToVec3(bLat, bLon);
-                const mid = start.clone().add(end).normalize().multiplyScalar(radius * 1.02);
-                const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-                const geom = new THREE.TubeGeometry(curve, segments, radiusTube, 8, false);
-                const mat = new THREE.MeshBasicMaterial({ color });
-                const mesh = new THREE.Mesh(geom, mat);
-                globeGroup.add(mesh);
-            }
-
-            // Helper: add labeled marker as small blue circle with white number
-            function addMarker(lat, lon, label) {
-                const pos = latLonToVec3(lat, lon, radius * 1.002);
-                const dpr = Math.max(window.devicePixelRatio || 1, 2);
-                const size = 256 * dpr; // higher-res canvas for crisp text
-                const center = size / 2;
-                const radiusPx = 52 * dpr;
-                const canvas = document.createElement('canvas');
-                canvas.width = size; canvas.height = size;
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0,0,size,size);
-                // blue circle
-                ctx.beginPath();
-                ctx.arc(center, center, radiusPx, 0, Math.PI*2);
-                ctx.fillStyle = 'rgb(0,0,255)';
-                ctx.fill();
-                // white number
-                ctx.fillStyle = '#ffffff';
-                ctx.font = `${Math.round(72*dpr)}px PT Mono, monospace`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(String(label), center, center + (2*dpr));
-                const tex = new THREE.CanvasTexture(canvas);
-                tex.minFilter = THREE.LinearFilter;
-                tex.magFilter = THREE.LinearFilter;
-                tex.anisotropy = (window.__productJourneyRenderer && window.__productJourneyRenderer.capabilities) ? window.__productJourneyRenderer.capabilities.getMaxAnisotropy() : 0;
-                const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true });
-                const sprite = new THREE.Sprite(spriteMat);
-                // make marker half the previous size
-                sprite.scale.set(0.04, 0.04, 1);
-                sprite.position.copy(pos.clone().multiplyScalar(1.03));
-                globeGroup.add(sprite);
-            }
-
-            // Journey 1: Garment (A-G)
-            const garment = [
-                { label: '1', lat: 63.468, lon: 10.917 }, // Stjørdal
-                { label: '2', lat: 63.285, lon: 10.400 }, // Klæbu
-                { label: '3', lat: 58.852, lon: 5.735 },  // Sandnes
-                { label: '4', lat: 59.912, lon: 10.757 }, // Manufacture Oslo
-                { label: '5', lat: 63.433, lon: 10.420 }  // Mellomveien Trondheim
-            ];
-
-            for (let i = 0; i < garment.length - 1; i++) {
-                const a = garment[i], b = garment[i+1];
-                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.0027);
-            }
-            garment.forEach(p => addMarker(p.lat, p.lon, p.label));
-
-            // Journey 2: Scenography (A-C)
-            const scenography = [
-                { label: '1', lat: 63.468, lon: 10.917 },
-                { label: '2', lat: 63.285, lon: 10.400 },
-                { label: '3', lat: 63.433, lon: 10.420 }
-            ];
-            for (let i = 0; i < scenography.length - 1; i++) {
-                const a = scenography[i], b = scenography[i+1];
-                addThickArc(a.lat, a.lon, b.lat, b.lon, 0x0080ff, 96, 0.0027);
-            }
-            scenography.forEach(p => addMarker(p.lat, p.lon, p.label));
-
-            // Country borders: load GeoJSON and render thin red outlines on the sphere
-            (function addCountryBorders(){
-                const url = 'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json';
-                fetch(url).then(r => r.json()).then(geo => {
-                    const mat = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 4 });
-                    function addRing(coords) {
-                        const pts = [];
-                        for (let i = 0; i < coords.length; i++) {
-                            const [lon, lat] = coords[i];
-                            pts.push(latLonToVec3(lat, lon, radius * 1.001));
-                        }
-                        const geom = new THREE.BufferGeometry().setFromPoints(pts);
-                        const line = new THREE.Line(geom, mat);
-                        globeGroup.add(line);
-                    }
-                    geo.features.forEach(f => {
-                        const g = f.geometry;
-                        if (!g) return;
-                        if (g.type === 'Polygon') {
-                            g.coordinates.forEach(ring => addRing(ring));
-                        } else if (g.type === 'MultiPolygon') {
-                            g.coordinates.forEach(poly => {
-                                poly.forEach(ring => addRing(ring));
-                            });
-                        }
-                    });
-                }).catch(() => {
-                    // silent fail; borders optional
-                });
-            })();
-
-            // Animate
-            // Smooth drag + wheel controls with damping and zoom limits
-            let isDragging = false;
-            let prevX = 0, prevY = 0;
-            let velX = 0, velY = 0;
-            let targetDistance = camera.position.length();
-            const minDistance = 1.2; // prevent entering sphere (radius=1)
-            const maxDistance = 18.0; // allow more zoom out
-            container.addEventListener('pointerdown', (e) => {
-                isDragging = true;
-                prevX = e.clientX; prevY = e.clientY;
-                try { container.setPointerCapture(e.pointerId); } catch(_){}
-            });
-            container.addEventListener('pointermove', (e) => {
-                if (!isDragging) return;
-                const dx = e.clientX - prevX;
-                const dy = e.clientY - prevY;
-                prevX = e.clientX; prevY = e.clientY;
-                velX = dx * 0.0045;
-                velY = dy * 0.0045;
-                globeGroup.rotation.y += velX;
-                globeGroup.rotation.x += velY;
-                globeGroup.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, globeGroup.rotation.x));
-            });
-            container.addEventListener('pointerup', () => { isDragging = false; });
-            container.addEventListener('pointercancel', () => { isDragging = false; });
-            container.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const factor = e.deltaY > 0 ? 1.06 : 0.94; // gentler zoom to reduce jumpiness
-                targetDistance = THREE.MathUtils.clamp(targetDistance * factor, minDistance, maxDistance);
-            }, { passive: false });
-
-            // Center Norway as initial view, keeping north up
-            (function centerOnNorway(){
-                const lat = 63.0, lon = 10.5; // approx Trøndelag
-                globeGroup.rotation.set(0, 0, 0);
-                globeGroup.rotation.y = THREE.MathUtils.degToRad(-lon);
-                globeGroup.rotation.x = THREE.MathUtils.degToRad(lat);
-                camera.position.set(0, 0, 3.0);
-                targetDistance = camera.position.length();
-                camera.lookAt(0,0,0);
-            })();
-
-            function animate() {
-                requestAnimationFrame(animate);
-                // apply drag damping when not dragging
-                if (!isDragging) {
-                    velX *= 0.92; velY *= 0.92;
-                    globeGroup.rotation.y += velX;
-                    globeGroup.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, globeGroup.rotation.x + velY));
-                }
-                // smooth zoom towards targetDistance
-                const currentDistance = camera.position.length();
-                const lerped = THREE.MathUtils.lerp(currentDistance, targetDistance, 0.15);
-                camera.position.setLength(lerped);
-                camera.lookAt(0,0,0);
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            // Save refs and mark initialized
-            window.__productJourneyRenderer = renderer;
-            window.__productJourneyCamera = camera;
-            container.dataset.initialized = 'true';
-            console.log('[Globe] Init complete. Size:', width, height);
-
-            // Handle window resize while modal is open
-            function handleResize(){
-                const w = Math.max(container.clientWidth || 0, 320);
-                const h = Math.max(container.clientHeight || 0, 240);
-                renderer.setSize(w, h);
-                camera.aspect = w / h;
-                camera.updateProjectionMatrix();
-            }
-            window.addEventListener('resize', handleResize);
-            } catch (err) {
-                console.error('[Globe] Init error:', err);
-                container.innerHTML = '<div style="color:#000">Globe failed to initialize.</div>';
-                return;
-            }
-        }
 
         // Smooth scroll inside annotations modal for section menu
         (function initModalSectionMenu(){
