@@ -1349,64 +1349,71 @@
             computeGalleryHeight();
         }
 
+        // Leaflet map: token-free basemap and simple journeys
+        function initProductJourneyLeaflet() {
+            const el = document.getElementById('leaflet-map');
+            if (!el || el.dataset.initialized === 'true') return;
+            const map = L.map(el, { zoomControl: true });
+            // OSM tiles with attribution
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Points
+            const garment = [
+                { label: '1', lat: 63.468, lon: 10.917 },
+                { label: '2', lat: 63.285, lon: 10.400 },
+                { label: '3', lat: 58.852, lon: 5.735 },
+                { label: '4', lat: 59.912, lon: 10.757 },
+                { label: '5', lat: 63.433, lon: 10.420 }
+            ];
+            const scenography = [
+                { label: '1', lat: 63.468, lon: 10.917 },
+                { label: '2', lat: 63.285, lon: 10.400 },
+                { label: '3', lat: 63.433, lon: 10.420 }
+            ];
+
+            // Fit to Norway
+            map.setView([63.0, 10.5], 6);
+
+            // Helper for numbered circle markers
+            function addNumberMarker(lat, lon, label) {
+                const icon = L.divIcon({
+                    className: 'bc-num-marker',
+                    html: `<div style="width:18px;height:18px;border-radius:50%;background:rgb(0,0,255);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'PT Mono',monospace;font-size:10px;line-height:1;">${label}</div>`,
+                    iconSize: [18, 18],
+                    iconAnchor: [9, 9]
+                });
+                L.marker([lat, lon], { icon }).addTo(map);
+            }
+
+            // Dashed route helper
+            function addDashedRoute(points, color = 'rgb(0,0,255)') {
+                const latlngs = points.map(p => [p.lat, p.lon]);
+                L.polyline(latlngs, { color, weight: 2, dashArray: '4,4' }).addTo(map);
+            }
+
+            garment.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
+            addDashedRoute(garment);
+            scenography.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
+            addDashedRoute(scenography);
+
+            el.dataset.initialized = 'true';
+        }
+
         // Toggle play/pause when clicking on videos (no icon)
         function bindVideoClickToggle() {
             const videos = document.querySelectorAll('video');
             videos.forEach(video => {
-                // Ensure clicks only toggle playback
                 video.style.cursor = 'pointer';
-                // Leaflet map: token-free basemap and simple journeys
-                function initProductJourneyLeaflet() {
-                    const el = document.getElementById('leaflet-map');
-                    if (!el || el.dataset.initialized === 'true') return;
-                    const map = L.map(el, { zoomControl: true });
-                    // OSM tiles with attribution
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '&copy; OpenStreetMap contributors'
-                    }).addTo(map);
-
-                    // Points
-                    const garment = [
-                        { label: '1', lat: 63.468, lon: 10.917 },
-                        { label: '2', lat: 63.285, lon: 10.400 },
-                        { label: '3', lat: 58.852, lon: 5.735 },
-                        { label: '4', lat: 59.912, lon: 10.757 },
-                        { label: '5', lat: 63.433, lon: 10.420 }
-                    ];
-                    const scenography = [
-                        { label: '1', lat: 63.468, lon: 10.917 },
-                        { label: '2', lat: 63.285, lon: 10.400 },
-                        { label: '3', lat: 63.433, lon: 10.420 }
-                    ];
-
-                    // Fit to Norway
-                    map.setView([63.0, 10.5], 6);
-
-                    // Helper for numbered circle markers
-                    function addNumberMarker(lat, lon, label) {
-                        const icon = L.divIcon({
-                            className: 'bc-num-marker',
-                            html: `<div style="width:18px;height:18px;border-radius:50%;background:rgb(0,0,255);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'PT Mono',monospace;font-size:10px;line-height:1;">${label}</div>`,
-                            iconSize: [18, 18],
-                            iconAnchor: [9, 9]
-                        });
-                        L.marker([lat, lon], { icon }).addTo(map);
-                    }
-
-                    // Dashed route helper
-                    function addDashedRoute(points, color = 'rgb(0,0,255)') {
-                        const latlngs = points.map(p => [p.lat, p.lon]);
-                        L.polyline(latlngs, { color, weight: 2, dashArray: '4,4' }).addTo(map);
-                    }
-
-                    garment.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
-                    addDashedRoute(garment);
-                    scenography.forEach(p => addNumberMarker(p.lat, p.lon, p.label));
-                    addDashedRoute(scenography);
-
-                    el.dataset.initialized = 'true';
-                }
+                video.addEventListener('click', () => {
+                    if (video.paused) video.play(); else video.pause();
+                });
+            });
+        }
+        // Bind after DOM ready
+        window.addEventListener('DOMContentLoaded', bindVideoClickToggle);
 
         // Smooth scroll inside annotations modal for section menu
         (function initModalSectionMenu(){
