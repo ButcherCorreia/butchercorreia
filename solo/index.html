@@ -422,6 +422,7 @@
             box-shadow: none !important;
             color: rgb(0, 0, 255) !important;
             font-weight: 700;
+            text-decoration: none; /* remove underline from +/- */
         }
         .leaflet-control-zoom a:focus {
             outline: none !important;
@@ -1450,9 +1451,9 @@
             addDashedRoute(garmentGroup, garment);
             // Scenography markers with hover tooltips
             const scenographyTooltips = {
-                '1': 'Øfsti Søndre: farming & breeding',
-                '2': 'Selbu Spinneri: washing and spinning',
-                '3': 'BUTCHER & CORREIA studio: felting'
+                '1': '<div>Øfsti Søndre</div><div>farming & breeding</div>',
+                '2': '<div>Selbu Spinneri</div><div>washing & spinning</div>',
+                '3': '<div>BUTCHER & CORREIA studio</div><div>felting</div>'
             };
             scenography.forEach(p => {
                 const icon = L.divIcon({
@@ -1464,7 +1465,7 @@
                 const m = L.marker([p.lat, p.lon], { icon });
                 const tip = scenographyTooltips[p.label];
                 if (tip) {
-                    m.bindTooltip(`<strong>${p.label}</strong> - ${tip}`, { permanent: false, direction: 'top', offset: [0, -10] });
+                    m.bindTooltip(`${tip}`, { permanent: false, direction: 'top', offset: [0, -10] });
                 }
                 scenographyGroup.addLayer(m);
             });
