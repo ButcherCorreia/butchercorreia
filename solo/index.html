@@ -415,6 +415,23 @@
             height: 60vh;
         }
 
+        /* Scenography tooltip styling: square corners, blue bg, white text */
+        .leaflet-tooltip.bc-tooltip {
+            background: rgb(0, 0, 255);
+            color: #ffffff;
+            border: none;
+            border-radius: 0; /* no round corners */
+            box-shadow: none;
+            padding: 6px 8px;
+            font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif; /* match body text */
+            font-size: 0.9rem; /* align with normal body text scale */
+            line-height: 1.2;
+        }
+        .leaflet-tooltip.bc-tooltip:before {
+            /* remove default little arrow pointer */
+            display: none;
+        }
+
         /* Leaflet zoom control customization */
         .leaflet-control-zoom a {
             background: transparent !important;
@@ -1437,6 +1454,7 @@
                 });
                 const marker = L.marker([lat, lon], { icon });
                 group.addLayer(marker);
+                return marker;
             }
 
             // Dashed route helper added to a group
@@ -1447,7 +1465,21 @@
             }
 
             // Build groups
-            garment.forEach(p => addNumberMarker(garmentGroup, p.lat, p.lon, p.label));
+            // Garment markers with hover tooltips (same style as scenography)
+            const garmentTooltips = {
+                '1': '<div>Øfsti Søndre</div><div>farming & breeding</div>',
+                '2': '<div>Selbu Spinneri</div><div>washing & spinning</div>',
+                '3': '<div>Varp & Veft</div><div>weaving</div>',
+                '4': '<div>Manufacture Oslo</div><div>construction</div>',
+                '5': '<div>BUTCHER & CORREIA studio</div><div>finishing</div>'
+            };
+            garment.forEach(p => {
+                const m = addNumberMarker(garmentGroup, p.lat, p.lon, p.label);
+                const tip = garmentTooltips[p.label];
+                if (m && tip) {
+                    m.bindTooltip(`${tip}`, { permanent: false, direction: 'top', offset: [0, -10], className: 'bc-tooltip' });
+                }
+            });
             addDashedRoute(garmentGroup, garment);
             // Scenography markers with hover tooltips
             const scenographyTooltips = {
@@ -1465,7 +1497,7 @@
                 const m = L.marker([p.lat, p.lon], { icon });
                 const tip = scenographyTooltips[p.label];
                 if (tip) {
-                    m.bindTooltip(`${tip}`, { permanent: false, direction: 'top', offset: [0, -10] });
+                    m.bindTooltip(`${tip}`, { permanent: false, direction: 'top', offset: [0, -10], className: 'bc-tooltip' });
                 }
                 scenographyGroup.addLayer(m);
             });
