@@ -662,6 +662,7 @@
             border-radius: 50%;
             animation: imgSpin 0.8s linear infinite;
             pointer-events: none;
+            z-index: 2;
         }
         @keyframes imgSpin {
             to { transform: rotate(360deg); }
@@ -1632,11 +1633,33 @@
                 wrapper.appendChild(img);
                 wrapper.appendChild(spinner);
                 img.dataset.loaderWrapped = 'true';
-                // Hide spinner when loaded or errored
-                const hide = () => { spinner.style.display = 'none'; };
+                // Delayed show (avoid flicker) and minimum display duration
+                const showDelay = 200; // ms before showing spinner
+                const minVisible = 300; // ms minimum visible once shown
+                let showTimer = null;
+                let visibleAt = 0;
+                const show = () => {
+                    if (spinner.style.display !== 'none') return; // already showing
+                    spinner.style.display = '';
+                    visibleAt = performance.now();
+                };
+                const hide = () => {
+                    if (visibleAt === 0) {
+                        // spinner not shown yet: cancel delayed show
+                        if (showTimer) clearTimeout(showTimer);
+                        spinner.style.display = 'none';
+                        return;
+                    }
+                    const elapsed = performance.now() - visibleAt;
+                    const remaining = Math.max(0, minVisible - elapsed);
+                    setTimeout(() => { spinner.style.display = 'none'; }, remaining);
+                };
+                // Initially hide spinner; schedule delayed show if not instantly complete
+                spinner.style.display = 'none';
                 if (img.complete && img.naturalWidth > 0) {
-                    hide();
+                    // Already loaded, no spinner needed
                 } else {
+                    showTimer = setTimeout(show, showDelay);
                     img.addEventListener('load', hide, { once: true });
                     img.addEventListener('error', hide, { once: true });
                 }
