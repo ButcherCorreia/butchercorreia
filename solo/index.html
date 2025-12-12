@@ -649,7 +649,11 @@
         .img-loader-wrapper {
             position: relative;
             display: inline-block;
+            min-width: 40px;  /* ensure wrapper has size before image loads */
+            min-height: 40px; /* so spinner has a canvas to sit on */
+            vertical-align: middle;
         }
+        .img-loader-wrapper img { display: block; }
         .img-loader-spinner {
             position: absolute;
             top: 50%;
@@ -1634,7 +1638,7 @@
                 wrapper.appendChild(spinner);
                 img.dataset.loaderWrapped = 'true';
                 // Delayed show (avoid flicker) and minimum display duration
-                const showDelay = 200; // ms before showing spinner
+                const showDelay = 100; // ms before showing spinner (reduce to improve visibility)
                 const minVisible = 300; // ms minimum visible once shown
                 let showTimer = null;
                 let visibleAt = 0;
