@@ -644,6 +644,28 @@
         #product-journey .modal-content {
             overflow: hidden auto;
         }
+
+        /* Image loading spinner (blue) */
+        .img-loader-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .img-loader-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 22px;
+            height: 22px;
+            margin: -11px 0 0 -11px;
+            border: 2px solid rgba(0,0,255,0.3);
+            border-top-color: rgb(0,0,255);
+            border-radius: 50%;
+            animation: imgSpin 0.8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes imgSpin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -1068,37 +1090,37 @@
             <div id="leaflet-map"></div>
             <h3>garment</h3>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#1</div>
+                <div class="modal-info-label">1</div>
                 <div class="modal-info-value">Stjørdal (NO) — <a href="https://www.ofsti.no/" target="_blank" rel="noopener noreferrer">Øfsti Søndre</a></div>
             </div>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#2</div>
+                <div class="modal-info-label">2</div>
                 <div class="modal-info-value">Klæbu (NO) — <a href="https://www.selbuspinneri.no/" target="_blank" rel="noopener noreferrer">Selbu Spinneri</a></div>
             </div>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#3</div>
+                <div class="modal-info-label">3</div>
                 <div class="modal-info-value">Sandnes (NO) — <a href="https://www.varpogveft.no" target="_blank" rel="noopener noreferrer">Varp & Veft</a></div>
             </div>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#4</div>
+                <div class="modal-info-label">4</div>
                 <div class="modal-info-value">Oslo (NO) — <a href="https://www.manufacture-oslo.no/" target="_blank" rel="noopener noreferrer">Manufacture Oslo</a></div>
             </div>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#5</div>
+                <div class="modal-info-label">5</div>
                 <div class="modal-info-value">Trondheim (NO) — <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">BUTCHER & CORREIA studio</a></div>
             </div>
 
             <h3>scenography</h3>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#1</div>
+                <div class="modal-info-label">1</div>
                 <div class="modal-info-value">Stjørdal (NO) — <a href="https://www.ofsti.no/" target="_blank" rel="noopener noreferrer">Øfsti Søndre</a></div>
             </div>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#2</div>
+                <div class="modal-info-label">2</div>
                 <div class="modal-info-value">Klæbu (NO) — <a href="https://www.selbuspinneri.no/" target="_blank" rel="noopener noreferrer">Selbu Spinneri</a></div>
             </div>
             <div class="modal-info-grid">
-                <div class="modal-info-label">#3</div>
+                <div class="modal-info-label">3</div>
                 <div class="modal-info-value">Trondheim (NO) — <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">BUTCHER & CORREIA studio</a></div>
             </div>
         </div>
@@ -1595,6 +1617,46 @@
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        })();
+
+        // Show a small blue spinner on images while they load
+        (function initImageLoadingSpinners(){
+            function wrapWithLoader(img){
+                if (!img || img.dataset.loaderWrapped === 'true') return;
+                const wrapper = document.createElement('span');
+                wrapper.className = 'img-loader-wrapper';
+                const spinner = document.createElement('span');
+                spinner.className = 'img-loader-spinner';
+                // Insert wrapper before image and move image inside
+                img.parentNode.insertBefore(wrapper, img);
+                wrapper.appendChild(img);
+                wrapper.appendChild(spinner);
+                img.dataset.loaderWrapped = 'true';
+                // Hide spinner when loaded or errored
+                const hide = () => { spinner.style.display = 'none'; };
+                if (img.complete && img.naturalWidth > 0) {
+                    hide();
+                } else {
+                    img.addEventListener('load', hide, { once: true });
+                    img.addEventListener('error', hide, { once: true });
+                }
+            }
+            // Apply to gallery and all modal images
+            const imgs = document.querySelectorAll('.gallery img, .modal-content img');
+            imgs.forEach(wrapWithLoader);
+            // Observe future images added/changed (e.g., after toggles)
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach(m => {
+                    m.addedNodes.forEach(node => {
+                        if (node && node.nodeType === 1) {
+                            if (node.tagName === 'IMG') wrapWithLoader(node);
+                            const nested = node.querySelectorAll ? node.querySelectorAll('img') : [];
+                            nested.forEach(wrapWithLoader);
+                        }
+                    });
+                });
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
         })();
 
         // Right-aligned plus/minus toggles (supports multiple sections)
