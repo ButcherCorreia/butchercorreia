@@ -31,6 +31,9 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- Three.js for optional 3D globe -->
     <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <!-- CesiumJS (full 3D globe engine) -->
+    <link rel="stylesheet" href="https://unpkg.com/cesium/Build/Cesium/Widgets/widgets.css">
+    <script src="https://unpkg.com/cesium/Build/Cesium/Cesium.js"></script>
     <title>DPP - SOLO</title>
     <style>
         * {
@@ -449,6 +452,18 @@
             transform: translate(-50%, -120%);
             white-space: nowrap;
             display: none;
+        }
+
+        /* Cesium container styled as a circle to match layout */
+        #cesiumContainer {
+            width: min(90vw, 640px);
+            aspect-ratio: 1 / 1;
+            height: auto;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            display: none; /* toggled on when globe selected */
+            position: relative;
         }
 
         /* Scenography tooltip styling: square corners, blue bg, white text */
@@ -1129,10 +1144,11 @@
                 <a href="#" data-journey="scenography">scenography</a>
                 <span style="margin:0 0.5rem; color:#999;">|</span>
                 <a href="#" data-view="map" aria-selected="true">map</a>
-                <a href="#" data-view="globe">globe (3D)</a>
+                <a href="#" data-view="cesium">globe (3D)</a>
             </div>
             <div id="leaflet-map"></div>
-            <div id="globe3d"><div class="tooltip" id="globe-tooltip"></div></div>
+            <div id="globe3d" style="display:none"><div class="tooltip" id="globe-tooltip"></div></div>
+            <div id="cesiumContainer"></div>
             <h3>garment</h3>
             <div class="modal-info-grid">
                 <div class="modal-info-label">1</div>
@@ -1624,16 +1640,18 @@
                     const link = e.target.closest('a[data-journey]');
                     if (viewLink) {
                         e.preventDefault();
-                        const isGlobe = viewLink.dataset.view === 'globe';
+                        const view = viewLink.dataset.view;
                         const mapEl = document.getElementById('leaflet-map');
                         const globeEl = document.getElementById('globe3d');
-                        if (mapEl && globeEl) {
-                            mapEl.style.display = isGlobe ? 'none' : 'block';
-                            globeEl.style.display = isGlobe ? 'block' : 'none';
-                        }
+                        const cesiumEl = document.getElementById('cesiumContainer');
+                        if (mapEl) mapEl.style.display = view === 'map' ? 'block' : 'none';
+                        if (globeEl) globeEl.style.display = view === 'globe' ? 'block' : 'none';
+                        if (cesiumEl) cesiumEl.style.display = view === 'cesium' ? 'block' : 'none';
                         journeyMenu.querySelectorAll('a[data-view]').forEach(a => a.setAttribute('aria-selected', a === viewLink ? 'true' : 'false'));
-                        if (isGlobe) {
+                        if (view === 'globe') {
                             try { initProductJourneyGlobe(); } catch(_){}
+                        } else if (view === 'cesium') {
+                            try { initProductJourneyCesium(); } catch(_){}
                         } else {
                             setTimeout(() => { try { map.invalidateSize(); } catch(_){} }, 120);
                         }
@@ -1641,7 +1659,22 @@
                     }
                     if (link) {
                         e.preventDefault();
-                        showJourney(link.dataset.journey);
+                        const which = link.dataset.journey;
+                        showJourney(which);
+                        // Also toggle sets if Cesium is active
+                        const cesiumEl = document.getElementById('cesiumContainer');
+                        if (cesiumEl && cesiumEl.style.display !== 'none' && cesiumEl.__sets) {
+                            const sets = cesiumEl.__sets;
+                            ['garment','scenography'].forEach(name => {
+                                const show = name === which;
+                                const ents = sets[name] || [];
+                                ents.forEach(ent => {
+                                    if (ent.point) ent.point.show = show;
+                                    if (ent.polyline) ent.polyline.show = show;
+                                    if (ent.label) ent.label.show = false; // hide labels until hover
+                                });
+                            });
+                        }
                     }
                 });
             }
@@ -1797,6 +1830,137 @@
                 window.addEventListener('resize', onResize);
 
                 container.dataset.initialized = 'true';
+            }
+
+            // CesiumJS globe: true 3D earth with markers and routes
+            function initProductJourneyCesium() {
+                const container = document.getElementById('cesiumContainer');
+                if (!container || container.dataset.initialized === 'true' || !window.Cesium) return;
+
+                // Basic viewer without default UI clutter
+                const viewer = new Cesium.Viewer(container, {
+                    animation: false,
+                    timeline: false,
+                    homeButton: false,
+                    geocoder: false,
+                    sceneModePicker: false,
+                    navigationHelpButton: false,
+                    baseLayerPicker: true,
+                    fullscreenButton: false,
+                    selectionIndicator: false,
+                    infoBox: false
+                });
+                viewer.scene.globe.enableLighting = true;
+                viewer.scene.highDynamicRange = true;
+
+                // Focus roughly on Norway
+                viewer.camera.flyTo({
+                    destination: Cesium.Cartesian3.fromDegrees(10.5, 63.0, 1500000.0)
+                });
+
+                const garment = [
+                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding' },
+                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning' },
+                    { label: '3', lat: 58.852,   lon: 5.735,     name: 'Varp & Veft', info: 'weaving' },
+                    { label: '4', lat: 59.924,   lon: 10.813,    name: 'Manufacture Oslo', info: 'construction' },
+                    { label: '5', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'finishing' }
+                ];
+
+                const scenography = [
+                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding' },
+                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning' },
+                    { label: '3', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'felting' }
+                ];
+
+                const blue = Cesium.Color.BLUE;
+                const red = Cesium.Color.RED;
+
+                // Utility to add a small blue point marker with label tooltip
+                function addPoint(p) {
+                    return viewer.entities.add({
+                        position: Cesium.Cartesian3.fromDegrees(p.lon, p.lat),
+                        point: { pixelSize: 6, color: blue },
+                        label: {
+                            text: `${p.name} — ${p.info}`,
+                            font: '12px PT Mono',
+                            fillColor: Cesium.Color.WHITE,
+                            showBackground: true,
+                            backgroundColor: Cesium.Color.BLUE,
+                            style: Cesium.LabelStyle.FILL,
+                            pixelOffset: new Cesium.Cartesian2(0, -20),
+                            show: false
+                        }
+                    });
+                }
+
+                // Toggle labels on hover via screen space events
+                const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+                handler.setInputAction(function onMove(movement) {
+                    const picked = viewer.scene.pick(movement.endPosition);
+                    viewer.entities.values.forEach(ent => { if (ent.label) ent.label.show = false; });
+                    if (Cesium.defined(picked) && picked.id && picked.id.label) {
+                        picked.id.label.show = true;
+                    }
+                }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+                // Build garment markers and routes
+                const garmentEntities = [];
+                garment.forEach(p => garmentEntities.push(addPoint(p)));
+                for (let i = 0; i < garment.length - 1; i++) {
+                    const a = garment[i];
+                    const b = garment[i+1];
+                    const ent = viewer.entities.add({
+                        polyline: {
+                            positions: Cesium.Cartesian3.fromDegreesArray([a.lon, a.lat, b.lon, b.lat]),
+                            width: 2,
+                            material: new Cesium.PolylineDashMaterialProperty({
+                                color: blue,
+                                dashLength: 8
+                            })
+                        }
+                    });
+                    garmentEntities.push(ent);
+                }
+
+                // Build scenography markers and routes (red)
+                function addPointRed(p) {
+                    return viewer.entities.add({
+                        position: Cesium.Cartesian3.fromDegrees(p.lon, p.lat),
+                        point: { pixelSize: 6, color: red },
+                        label: {
+                            text: `${p.name} — ${p.info}`,
+                            font: '12px PT Mono',
+                            fillColor: Cesium.Color.WHITE,
+                            showBackground: true,
+                            backgroundColor: Cesium.Color.RED,
+                            style: Cesium.LabelStyle.FILL,
+                            pixelOffset: new Cesium.Cartesian2(0, -20),
+                            show: false
+                        }
+                    });
+                }
+                const scenographyEntities = [];
+                scenography.forEach(p => scenographyEntities.push(addPointRed(p)));
+                for (let i = 0; i < scenography.length - 1; i++) {
+                    const a = scenography[i];
+                    const b = scenography[i+1];
+                    const ent = viewer.entities.add({
+                        polyline: {
+                            positions: Cesium.Cartesian3.fromDegreesArray([a.lon, a.lat, b.lon, b.lat]),
+                            width: 2,
+                            material: new Cesium.PolylineDashMaterialProperty({
+                                color: red,
+                                dashLength: 8
+                            })
+                        }
+                    });
+                    scenographyEntities.push(ent);
+                }
+
+                // Store initialized flag
+                container.dataset.initialized = 'true';
+                container.__viewer = viewer;
+                container.__sets = { garment: garmentEntities, scenography: scenographyEntities };
             }
 
         // Toggle play/pause when clicking on videos (no icon)
