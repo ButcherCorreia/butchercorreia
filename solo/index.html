@@ -26,10 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!-- Leaflet (token-free maps) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Three.js for optional 3D globe -->
+    <!-- Three.js (kept for potential future visuals) -->
     <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
     <!-- CesiumJS (full 3D globe engine) -->
     <link rel="stylesheet" href="https://unpkg.com/cesium/Build/Cesium/Widgets/widgets.css">
@@ -414,19 +411,7 @@
             align-items: start;
         }
 
-        /* Map container inside modal: circular viewport */
-        #leaflet-map {
-            width: min(90vw, 640px);
-            aspect-ratio: 1 / 1;
-            height: auto;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 0 auto; /* center the circle */
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
-        }
-        /* Keep Leaflet controls tucked inside the circular edge */
-        #leaflet-map .leaflet-top.leaflet-left { top: 8px; left: 8px; }
-        #leaflet-map .leaflet-top.leaflet-right { top: 8px; right: 8px; }
+        /* (Removed Leaflet map styles) */
 
         /* Three.js globe canvas container */
         #globe3d {
@@ -454,15 +439,14 @@
             display: none;
         }
 
-        /* Cesium container styled as a circle to match layout */
+        /* Cesium container: rectangular, responsive */
         #cesiumContainer {
-            width: min(90vw, 640px);
-            aspect-ratio: 1 / 1;
-            height: auto;
-            border-radius: 50%;
+            width: 100%;
+            height: 60vh;
+            border-radius: 0;
             overflow: hidden;
             margin: 0 auto;
-            display: none; /* toggled on when globe selected */
+            display: block;
             position: relative;
         }
 
@@ -1140,14 +1124,9 @@
             <span class="close" onclick="closeModal('product-journey')">&times;</span>
             <h2>product journey</h2>
             <div class="modal-section-menu" id="journey-menu" aria-label="journey menu">
-                <a href="#" data-journey="garment">garment</a>
+                <a href="#" data-journey="garment" aria-selected="true">garment</a>
                 <a href="#" data-journey="scenography">scenography</a>
-                <span style="margin:0 0.5rem; color:#999;">|</span>
-                <a href="#" data-view="map" aria-selected="true">map</a>
-                <a href="#" data-view="cesium">globe (3D)</a>
             </div>
-            <div id="leaflet-map"></div>
-            <div id="globe3d" style="display:none"><div class="tooltip" id="globe-tooltip"></div></div>
             <div id="cesiumContainer"></div>
             <h3>garment</h3>
             <div class="modal-info-grid">
@@ -1388,15 +1367,11 @@
             document.body.style.overflow = 'hidden';
             if (modalId === 'product-journey') {
                 try {
-                    if (typeof L === 'undefined') {
-                        console.warn('[Leaflet] Library not loaded; skipping map init');
-                    } else if (typeof initProductJourneyLeaflet === 'function') {
-                        initProductJourneyLeaflet();
-                    } else {
-                        console.warn('[Leaflet] Init function missing');
+                    if (typeof initProductJourneyCesium === 'function') {
+                        initProductJourneyCesium();
                     }
                 } catch (err) {
-                    console.error('[Leaflet] Map init error:', err);
+                    console.error('[Cesium] Globe init error:', err);
                 }
             }
         }
@@ -1505,188 +1480,7 @@
         }
 
         // Leaflet map: token-free basemap and simple journeys
-        function initProductJourneyLeaflet() {
-            const el = document.getElementById('leaflet-map');
-            if (!el || el.dataset.initialized === 'true') return;
-            const map = L.map(el, { zoomControl: true, attributionControl: false });
-            // Styled raster tiles with labels; flat aesthetic
-            // Carto Voyager (labels, light land, blue water) with retina support
-            const tiles = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                maxZoom: 19,
-                attribution: '&copy; OpenStreetMap &copy; CARTO',
-                detectRetina: true
-            });
-            tiles.addTo(map);
-
-            // Points
-            const garment = [
-                { label: '1', lat: 63.45101, lon: 11.04968 }, // Øfsti Søndre, Stjørdal
-                { label: '2', lat: 63.285,   lon: 10.400   }, // Amundsdalvegen 91, Klæbu (approx)
-                { label: '3', lat: 58.852,  lon: 5.735    }, // Andreashagen 7, Sandnes (approx)
-                { label: '4', lat: 59.924,  lon: 10.813   }, // Kabelgata 13, Oslo (approx)
-                { label: '5', lat: 63.431,  lon: 10.420   }  // Mellomveien 3, Trondheim (approx)
-            ];
-            const scenography = [
-                { label: '1', lat: 63.45101, lon: 11.04968 }, // Øfsti Søndre, Stjørdal
-                { label: '2', lat: 63.285,   lon: 10.400   }, // Amundsdalvegen 91, Klæbu (approx)
-                { label: '3', lat: 63.431,   lon: 10.420   }  // Mellomveien 3, Trondheim (approx)
-            ];
-
-                        // Fit to Norway
-                        map.setView([63.0, 10.5], 5);
-
-                        // Country borders (red outlines)
-                        fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
-                            .then(r => r.json())
-                            .then(geojson => {
-                                L.geoJSON(geojson, {
-                                    style: {
-                                        color: 'rgb(255,0,0)',
-                                        weight: 1,
-                                        opacity: 0.8
-                                    }
-                                }).addTo(map);
-                            })
-                            .catch(err => console.warn('[Leaflet] Borders layer error', err));
-
-            // Layer groups for toggling
-            const garmentGroup = L.layerGroup();
-            const scenographyGroup = L.layerGroup();
-
-            // Helper for numbered circle markers added to a group
-            function addNumberMarker(group, lat, lon, label) {
-                const icon = L.divIcon({
-                    className: 'bc-num-marker',
-                    html: `<div style="width:18px;height:18px;border-radius:50%;background:rgb(0,0,255);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'PT Mono',monospace;font-size:10px;line-height:1;">${label}</div>`,
-                    iconSize: [18, 18],
-                    iconAnchor: [9, 9]
-                });
-                const marker = L.marker([lat, lon], { icon });
-                group.addLayer(marker);
-                return marker;
-            }
-
-            // Dashed route helper added to a group
-            function addDashedRoute(group, points, color = 'rgb(0,0,255)') {
-                const latlngs = points.map(p => [p.lat, p.lon]);
-                const route = L.polyline(latlngs, { color, weight: 2, dashArray: '4,4' });
-                group.addLayer(route);
-            }
-
-            // Build groups
-            // Garment markers with hover tooltips (same style as scenography)
-            const garmentTooltips = {
-                '1': '<div><a href="https://www.ofsti.no" target="_blank">Øfsti søndre</a></div><div>farming & breeding</div>',
-                '2': '<div><a href="https://www.selbuspinneri.no" target="_blank">Selbu Spinneri</a></div><div>washing & spinning</div>',
-                '3': '<div><a href="https://www.varpogveft.no/" target="_blank">Varp & Veft</a></div><div>weaving</div>',
-                '4': '<div><a href="https://www.manufacture-oslo.com" target="_blank">Manufacture Oslo</a></div><div>construction</div>',
-                '5': '<div><a href="https://www.butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a></div><div>finishing</div>'
-            };
-            garment.forEach(p => {
-                const m = addNumberMarker(garmentGroup, p.lat, p.lon, p.label);
-                const tip = garmentTooltips[p.label];
-                if (m && tip) {
-                    m.bindTooltip(`${tip}`, { permanent: false, direction: 'top', offset: [0, -10], className: 'bc-tooltip' });
-                }
-            });
-            addDashedRoute(garmentGroup, garment);
-            // Scenography markers with hover tooltips
-            const scenographyTooltips = {
-                '1': '<div><a href="https://www.ofsti.no" target="_blank">Øfsti søndre</a></div><div>farming & breeding</div>',
-                '2': '<div><a href="https://www.selbuspinneri.no" target="_blank">Selbu Spinneri</a></div><div>washing & spinning</div>',
-                '3': '<div><a href="https://www.butchercorreia.com" target="_blank">BUTCHER & CORREIA studio</a></div><div>felting</div>'
-            };
-            scenography.forEach(p => {
-                const icon = L.divIcon({
-                    className: 'bc-num-marker',
-                    html: `<div style="width:18px;height:18px;border-radius:50%;background:rgb(0,0,255);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'PT Mono',monospace;font-size:10px;line-height:1;">${p.label}</div>`,
-                    iconSize: [18, 18],
-                    iconAnchor: [9, 9]
-                });
-                const m = L.marker([p.lat, p.lon], { icon });
-                const tip = scenographyTooltips[p.label];
-                if (tip) {
-                    m.bindTooltip(`${tip}`, { permanent: false, direction: 'top', offset: [0, -10], className: 'bc-tooltip' });
-                }
-                scenographyGroup.addLayer(m);
-            });
-            addDashedRoute(scenographyGroup, scenography);
-
-            // Toggle function
-            function showJourney(which) {
-                if (map.hasLayer(garmentGroup)) map.removeLayer(garmentGroup);
-                if (map.hasLayer(scenographyGroup)) map.removeLayer(scenographyGroup);
-                if (which === 'garment') {
-                    garmentGroup.addTo(map);
-                } else {
-                    scenographyGroup.addTo(map);
-                }
-                const menu = document.getElementById('journey-menu');
-                if (menu) {
-                    const links = menu.querySelectorAll('a[data-journey]');
-                    links.forEach(a => {
-                        const active = a.dataset.journey === which;
-                        a.style.color = active ? 'rgb(255, 0, 0)' : '';
-                        a.setAttribute('aria-selected', active ? 'true' : 'false');
-                    });
-                }
-            }
-
-            // Bind menu clicks
-            const journeyMenu = document.getElementById('journey-menu');
-            if (journeyMenu) {
-                journeyMenu.addEventListener('click', (e) => {
-                    const viewLink = e.target.closest('a[data-view]');
-                    const link = e.target.closest('a[data-journey]');
-                    if (viewLink) {
-                        e.preventDefault();
-                        const view = viewLink.dataset.view;
-                        const mapEl = document.getElementById('leaflet-map');
-                        const globeEl = document.getElementById('globe3d');
-                        const cesiumEl = document.getElementById('cesiumContainer');
-                        if (mapEl) mapEl.style.display = view === 'map' ? 'block' : 'none';
-                        if (globeEl) globeEl.style.display = view === 'globe' ? 'block' : 'none';
-                        if (cesiumEl) cesiumEl.style.display = view === 'cesium' ? 'block' : 'none';
-                        journeyMenu.querySelectorAll('a[data-view]').forEach(a => a.setAttribute('aria-selected', a === viewLink ? 'true' : 'false'));
-                        if (view === 'globe') {
-                            try { initProductJourneyGlobe(); } catch(_){}
-                        } else if (view === 'cesium') {
-                            try { initProductJourneyCesium(); } catch(_){}
-                        } else {
-                            setTimeout(() => { try { map.invalidateSize(); } catch(_){} }, 120);
-                        }
-                        return;
-                    }
-                    if (link) {
-                        e.preventDefault();
-                        const which = link.dataset.journey;
-                        showJourney(which);
-                        // Also toggle sets if Cesium is active
-                        const cesiumEl = document.getElementById('cesiumContainer');
-                        if (cesiumEl && cesiumEl.style.display !== 'none' && cesiumEl.__sets) {
-                            const sets = cesiumEl.__sets;
-                            ['garment','scenography'].forEach(name => {
-                                const show = name === which;
-                                const ents = sets[name] || [];
-                                ents.forEach(ent => {
-                                    if (ent.point) ent.point.show = show;
-                                    if (ent.polyline) ent.polyline.show = show;
-                                    if (ent.label) ent.label.show = false; // hide labels until hover
-                                });
-                            });
-                        }
-                    }
-                });
-            }
-
-            // Default view
-            showJourney('garment');
-
-            // Ensure proper sizing once modal is visible
-            setTimeout(() => { try { map.invalidateSize(); } catch(_){} }, 120);
-
-            el.dataset.initialized = 'true';
-        }
+        // (Removed Leaflet map implementation)
 
             // Three.js globe: minimal sphere with markers and routes
             function initProductJourneyGlobe() {
@@ -1853,10 +1647,33 @@
                 viewer.scene.globe.enableLighting = true;
                 viewer.scene.highDynamicRange = true;
 
+                // Improve resolution and visuals
+                try {
+                    viewer.resolutionScale = Math.min(window.devicePixelRatio || 1, 2);
+                    viewer.scene.postProcessStages.fxaa.enabled = true;
+                    if (viewer.scene.msaaSamples !== undefined) viewer.scene.msaaSamples = 4;
+                } catch(_) {}
+
+                // Remove imagery for a flat look and set base color
+                try {
+                    viewer.imageryLayers.removeAll();
+                    viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#001a66');
+                    viewer.scene.globe.showGroundAtmosphere = false;
+                } catch(_) {}
+
                 // Focus roughly on Norway
                 viewer.camera.flyTo({
                     destination: Cesium.Cartesian3.fromDegrees(10.5, 63.0, 1500000.0)
                 });
+
+                // Red country borders (GeoJSON outline, no fill)
+                Cesium.GeoJsonDataSource.load('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json', {
+                    stroke: Cesium.Color.RED,
+                    fill: Cesium.Color.TRANSPARENT,
+                    strokeWidth: 1
+                }).then(ds => {
+                    viewer.dataSources.add(ds);
+                }).catch(err => console.warn('[Cesium] Borders layer error', err));
 
                 const garment = [
                     { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding' },
