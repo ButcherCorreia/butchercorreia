@@ -450,6 +450,16 @@
             position: relative;
         }
 
+        /* MapLibre popup styling: remove border/shadow and tip */
+        .maplibregl-popup-content {
+            border: none;
+            box-shadow: none;
+            padding: 0; /* content handles its own padding */
+        }
+        .maplibregl-popup-tip {
+            display: none;
+        }
+
         /* Scenography tooltip styling: square corners, blue bg, white text */
         .leaflet-tooltip.bc-tooltip {
             background: rgb(0, 0, 255);
@@ -1641,8 +1651,7 @@
                                 tiles: [
                                     'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
                                 ],
-                                tileSize: 256,
-                                attribution: '© OpenStreetMap, © CARTO'
+                                tileSize: 256
                             }
                         },
                         layers: [
@@ -1652,7 +1661,8 @@
                     center: [10.5, 63.0],
                     zoom: 4.8,
                     pitch: 0,
-                    bearing: 0
+                    bearing: 0,
+                    attributionControl: false
                 });
 
                 const garmentPts = [
@@ -1697,6 +1707,7 @@
                         el.style.background = color; el.style.color = '#fff';
                         el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center';
                         el.style.fontFamily = 'PT Mono, monospace'; el.style.fontSize = '10px';
+                        el.style.lineHeight = '18px'; el.style.textAlign = 'center';
                         el.textContent = text; el.style.cursor = 'pointer';
                         return el;
                     }
@@ -1707,9 +1718,9 @@
                         .addTo(map));
 
                     const scenoMarkers = scenographyPts.map(p => {
-                        const m = new maplibregl.Marker({ element: makeMarker('rgb(255,0,0)', p.label) })
+                        const m = new maplibregl.Marker({ element: makeMarker('rgb(0,0,255)', p.label) })
                             .setLngLat([p.lon, p.lat])
-                            .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12 }).setHTML(`<div style="background:#f00;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`))
+                            .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12 }).setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`))
                             .addTo(map);
                         m.getElement().style.display = 'none';
                         return m;
