@@ -28,9 +28,9 @@
 <link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Three.js (kept for potential future visuals) -->
     <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-    <!-- CesiumJS (full 3D globe engine) -->
-    <link rel="stylesheet" href="https://unpkg.com/cesium/Build/Cesium/Widgets/widgets.css">
-    <script src="https://unpkg.com/cesium/Build/Cesium/Cesium.js"></script>
+    <!-- MapLibre GL JS (token-free) -->
+    <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
     <title>DPP - SOLO</title>
     <style>
         * {
@@ -1367,11 +1367,11 @@
             document.body.style.overflow = 'hidden';
             if (modalId === 'product-journey') {
                 try {
-                    if (typeof initProductJourneyCesium === 'function') {
-                        initProductJourneyCesium();
+                    if (typeof initProductJourneyMapLibre === 'function') {
+                        initProductJourneyMapLibre();
                     }
                 } catch (err) {
-                    console.error('[Cesium] Globe init error:', err);
+                    console.error('[MapLibre] Map init error:', err);
                 }
             }
         }
@@ -1626,158 +1626,129 @@
                 container.dataset.initialized = 'true';
             }
 
-            // CesiumJS globe: true 3D earth with markers and routes
-            function initProductJourneyCesium() {
+            // MapLibre GL: token-free flat map with red borders and toggles
+            function initProductJourneyMapLibre() {
                 const container = document.getElementById('cesiumContainer');
-                if (!container || container.dataset.initialized === 'true' || !window.Cesium) return;
+                if (!container || container.dataset.initialized === 'true' || !window.maplibregl) return;
 
-                // Basic viewer without default UI clutter
-                const viewer = new Cesium.Viewer(container, {
-                    animation: false,
-                    timeline: false,
-                    homeButton: false,
-                    geocoder: false,
-                    sceneModePicker: false,
-                    navigationHelpButton: false,
-                    baseLayerPicker: true,
-                    fullscreenButton: false,
-                    selectionIndicator: false,
-                    infoBox: false
-                });
-                viewer.scene.globe.enableLighting = true;
-                viewer.scene.highDynamicRange = true;
-
-                // Improve resolution and visuals
-                try {
-                    viewer.resolutionScale = Math.min(window.devicePixelRatio || 1, 2);
-                    viewer.scene.postProcessStages.fxaa.enabled = true;
-                    if (viewer.scene.msaaSamples !== undefined) viewer.scene.msaaSamples = 4;
-                } catch(_) {}
-
-                // Remove imagery for a flat look and set base color
-                try {
-                    viewer.imageryLayers.removeAll();
-                    viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#001a66');
-                    viewer.scene.globe.showGroundAtmosphere = false;
-                } catch(_) {}
-
-                // Focus roughly on Norway
-                viewer.camera.flyTo({
-                    destination: Cesium.Cartesian3.fromDegrees(10.5, 63.0, 1500000.0)
+                const map = new maplibregl.Map({
+                    container: 'cesiumContainer',
+                    style: {
+                        version: 8,
+                        sources: {
+                            'raster-tiles': {
+                                type: 'raster',
+                                tiles: [
+                                    'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
+                                ],
+                                tileSize: 256,
+                                attribution: '© OpenStreetMap, © CARTO'
+                            }
+                        },
+                        layers: [
+                            { id: 'base', type: 'raster', source: 'raster-tiles', minzoom: 0, maxzoom: 20 }
+                        ]
+                    },
+                    center: [10.5, 63.0],
+                    zoom: 4.8,
+                    pitch: 0,
+                    bearing: 0
                 });
 
-                // Red country borders (GeoJSON outline, no fill)
-                Cesium.GeoJsonDataSource.load('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json', {
-                    stroke: Cesium.Color.RED,
-                    fill: Cesium.Color.TRANSPARENT,
-                    strokeWidth: 1
-                }).then(ds => {
-                    viewer.dataSources.add(ds);
-                }).catch(err => console.warn('[Cesium] Borders layer error', err));
-
-                const garment = [
-                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding' },
-                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning' },
-                    { label: '3', lat: 58.852,   lon: 5.735,     name: 'Varp & Veft', info: 'weaving' },
-                    { label: '4', lat: 59.924,   lon: 10.813,    name: 'Manufacture Oslo', info: 'construction' },
-                    { label: '5', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'finishing' }
+                const garmentPts = [
+                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding', url: 'https://www.ofsti.no' },
+                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning', url: 'https://www.selbuspinneri.no' },
+                    { label: '3', lat: 58.852,   lon: 5.735,     name: 'Varp & Veft', info: 'weaving', url: 'https://www.varpogveft.no' },
+                    { label: '4', lat: 59.924,   lon: 10.813,    name: 'Manufacture Oslo', info: 'construction', url: 'https://www.manufacture-oslo.com' },
+                    { label: '5', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'finishing', url: 'https://www.butchercorreia.com' }
+                ];
+                const scenographyPts = [
+                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding', url: 'https://www.ofsti.no' },
+                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning', url: 'https://www.selbuspinneri.no' },
+                    { label: '3', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'felting', url: 'https://www.butchercorreia.com' }
                 ];
 
-                const scenography = [
-                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding' },
-                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning' },
-                    { label: '3', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'felting' }
-                ];
-
-                const blue = Cesium.Color.BLUE;
-                const red = Cesium.Color.RED;
-
-                // Utility to add a small blue point marker with label tooltip
-                function addPoint(p) {
-                    return viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(p.lon, p.lat),
-                        point: { pixelSize: 6, color: blue },
-                        label: {
-                            text: `${p.name} — ${p.info}`,
-                            font: '12px PT Mono',
-                            fillColor: Cesium.Color.WHITE,
-                            showBackground: true,
-                            backgroundColor: Cesium.Color.BLUE,
-                            style: Cesium.LabelStyle.FILL,
-                            pixelOffset: new Cesium.Cartesian2(0, -20),
-                            show: false
-                        }
-                    });
+                function toLineString(points) {
+                    return {
+                        type: 'Feature',
+                        geometry: { type: 'LineString', coordinates: points.map(p => [p.lon, p.lat]) }
+                    };
                 }
 
-                // Toggle labels on hover via screen space events
-                const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-                handler.setInputAction(function onMove(movement) {
-                    const picked = viewer.scene.pick(movement.endPosition);
-                    viewer.entities.values.forEach(ent => { if (ent.label) ent.label.show = false; });
-                    if (Cesium.defined(picked) && picked.id && picked.id.label) {
-                        picked.id.label.show = true;
+                map.on('load', () => {
+                    // Red borders
+                    map.addSource('countries', {
+                        type: 'geojson',
+                        data: 'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson'
+                    });
+                    map.addLayer({ id: 'borders', type: 'line', source: 'countries', paint: { 'line-color': '#ff0000', 'line-width': 1 } });
+
+                    // Routes
+                    map.addSource('garment-route', { type: 'geojson', data: toLineString(garmentPts) });
+                    map.addLayer({ id: 'garment-route', type: 'line', source: 'garment-route', paint: { 'line-color': '#0000ff', 'line-width': 2, 'line-dasharray': [2,2] } });
+
+                    map.addSource('sceno-route', { type: 'geojson', data: toLineString(scenographyPts) });
+                    map.addLayer({ id: 'sceno-route', type: 'line', source: 'sceno-route', paint: { 'line-color': '#ff0000', 'line-width': 2, 'line-dasharray': [2,2] }, layout: { visibility: 'none' } });
+
+                    // Markers
+                    function makeMarker(color, text) {
+                        const el = document.createElement('div');
+                        el.style.width = '18px'; el.style.height = '18px'; el.style.borderRadius = '50%';
+                        el.style.background = color; el.style.color = '#fff';
+                        el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center';
+                        el.style.fontFamily = 'PT Mono, monospace'; el.style.fontSize = '10px';
+                        el.textContent = text; el.style.cursor = 'pointer';
+                        return el;
                     }
-                }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
-                // Build garment markers and routes
-                const garmentEntities = [];
-                garment.forEach(p => garmentEntities.push(addPoint(p)));
-                for (let i = 0; i < garment.length - 1; i++) {
-                    const a = garment[i];
-                    const b = garment[i+1];
-                    const ent = viewer.entities.add({
-                        polyline: {
-                            positions: Cesium.Cartesian3.fromDegreesArray([a.lon, a.lat, b.lon, b.lat]),
-                            width: 2,
-                            material: new Cesium.PolylineDashMaterialProperty({
-                                color: blue,
-                                dashLength: 8
-                            })
-                        }
-                    });
-                    garmentEntities.push(ent);
-                }
+                    const garmentMarkers = garmentPts.map(p => new maplibregl.Marker({ element: makeMarker('rgb(0,0,255)', p.label) })
+                        .setLngLat([p.lon, p.lat])
+                        .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12 }).setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`))
+                        .addTo(map));
 
-                // Build scenography markers and routes (red)
-                function addPointRed(p) {
-                    return viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(p.lon, p.lat),
-                        point: { pixelSize: 6, color: red },
-                        label: {
-                            text: `${p.name} — ${p.info}`,
-                            font: '12px PT Mono',
-                            fillColor: Cesium.Color.WHITE,
-                            showBackground: true,
-                            backgroundColor: Cesium.Color.RED,
-                            style: Cesium.LabelStyle.FILL,
-                            pixelOffset: new Cesium.Cartesian2(0, -20),
-                            show: false
-                        }
+                    const scenoMarkers = scenographyPts.map(p => {
+                        const m = new maplibregl.Marker({ element: makeMarker('rgb(255,0,0)', p.label) })
+                            .setLngLat([p.lon, p.lat])
+                            .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12 }).setHTML(`<div style="background:#f00;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`))
+                            .addTo(map);
+                        m.getElement().style.display = 'none';
+                        return m;
                     });
-                }
-                const scenographyEntities = [];
-                scenography.forEach(p => scenographyEntities.push(addPointRed(p)));
-                for (let i = 0; i < scenography.length - 1; i++) {
-                    const a = scenography[i];
-                    const b = scenography[i+1];
-                    const ent = viewer.entities.add({
-                        polyline: {
-                            positions: Cesium.Cartesian3.fromDegreesArray([a.lon, a.lat, b.lon, b.lat]),
-                            width: 2,
-                            material: new Cesium.PolylineDashMaterialProperty({
-                                color: red,
-                                dashLength: 8
-                            })
-                        }
-                    });
-                    scenographyEntities.push(ent);
-                }
 
-                // Store initialized flag
-                container.dataset.initialized = 'true';
-                container.__viewer = viewer;
-                container.__sets = { garment: garmentEntities, scenography: scenographyEntities };
+                    // Toggle behavior
+                    const menu = document.getElementById('journey-menu');
+                    function setActive(which) {
+                        const links = menu ? menu.querySelectorAll('a[data-journey]') : [];
+                        links.forEach(a => {
+                            const active = a.dataset.journey === which;
+                            a.style.color = active ? 'rgb(255, 0, 0)' : '';
+                            a.setAttribute('aria-selected', active ? 'true' : 'false');
+                        });
+                        if (which === 'garment') {
+                            garmentMarkers.forEach(m => m.getElement().style.display = 'block');
+                            scenoMarkers.forEach(m => m.getElement().style.display = 'none');
+                            map.setLayoutProperty('garment-route', 'visibility', 'visible');
+                            map.setLayoutProperty('sceno-route', 'visibility', 'none');
+                        } else {
+                            garmentMarkers.forEach(m => m.getElement().style.display = 'none');
+                            scenoMarkers.forEach(m => m.getElement().style.display = 'block');
+                            map.setLayoutProperty('garment-route', 'visibility', 'none');
+                            map.setLayoutProperty('sceno-route', 'visibility', 'visible');
+                        }
+                    }
+                    if (menu) {
+                        menu.addEventListener('click', (e) => {
+                            const link = e.target.closest('a[data-journey]');
+                            if (!link) return;
+                            e.preventDefault();
+                            setActive(link.dataset.journey);
+                        });
+                    }
+                    setActive('garment');
+
+                    container.dataset.initialized = 'true';
+                    container.__map = map;
+                });
             }
 
         // Toggle play/pause when clicking on videos (no icon)
