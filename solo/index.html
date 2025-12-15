@@ -1686,6 +1686,13 @@
                 }
 
                 map.on('load', () => {
+                    const hoverDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth >= 900 && window.innerHeight >= 600;
+                    function attachHover(marker, popup) {
+                        if (!hoverDesktop) return;
+                        const el = marker.getElement();
+                        el.addEventListener('mouseenter', () => { try { marker.togglePopup(); } catch(_){} });
+                        el.addEventListener('mouseleave', () => { try { marker.togglePopup(); } catch(_){} });
+                    }
                     // Red borders
                     map.addSource('countries', {
                         type: 'geojson',
@@ -1712,16 +1719,25 @@
                         return el;
                     }
 
-                    const garmentMarkers = garmentPts.map(p => new maplibregl.Marker({ element: makeMarker('rgb(0,0,255)', p.label) })
-                        .setLngLat([p.lon, p.lat])
-                        .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12 }).setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`))
-                        .addTo(map));
-
-                    const scenoMarkers = scenographyPts.map(p => {
+                    const garmentMarkers = garmentPts.map(p => {
+                        const popup = new maplibregl.Popup({ closeButton: !hoverDesktop, offset: 12 })
+                            .setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`);
                         const m = new maplibregl.Marker({ element: makeMarker('rgb(0,0,255)', p.label) })
                             .setLngLat([p.lon, p.lat])
-                            .setPopup(new maplibregl.Popup({ closeButton: false, offset: 12 }).setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`))
+                            .setPopup(popup)
                             .addTo(map);
+                        attachHover(m, popup);
+                        return m;
+                    });
+
+                    const scenoMarkers = scenographyPts.map(p => {
+                        const popup = new maplibregl.Popup({ closeButton: !hoverDesktop, offset: 12 })
+                            .setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`);
+                        const m = new maplibregl.Marker({ element: makeMarker('rgb(0,0,255)', p.label) })
+                            .setLngLat([p.lon, p.lat])
+                            .setPopup(popup)
+                            .addTo(map);
+                        attachHover(m, popup);
                         m.getElement().style.display = 'none';
                         return m;
                     });
