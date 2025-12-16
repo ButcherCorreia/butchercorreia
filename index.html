@@ -1,1398 +1,1934 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
-
-  <!-- SEO metadata -->
-  <meta name="description" content="BUTCHER & CORREIA is an interdisciplinary artist duo."/>
-  <meta name="keywords" content="BUTCHER & CORREIA, Katherine Butcher, Carlos A. Correia, artist, portfolio, contemporary art, visual art" />
-  <meta name="author" content="BUTCHER & CORREIA" />
-  
-  <!-- Open Graph (OG) metadata -->
-  <meta property="og:title" content="BUTCHER & CORREIA - " />
-  <meta property="og:description" content="Explore the portfolio, CV, and contact information." />
-  <meta property="og:image" content="https://butchercorreia.com" />
-  <meta property="og:url" content="https://butchercorreia.com" />
-  <meta property="og:type" content="website" />
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <title>BUTCHER & CORREIA</title>
-  <!-- favicon -->
-  <link rel="icon" href="favicon.PNG" type="image/png">
-
-  <style>
-  :root { --accent: #0000FF; --site-side-pad: 20px; --site-top-pad: 8px; --top-menu-link-pad: 4px; --top-menu-link-bottom: 6px; }
-  /* Mobile simple title should be hidden by default (desktop) */
-  .mobile-site-title { display: none; }
-
-  /* Custom circular cursor that matches the link accent color.
-    Uses an inline SVG data URL (percent-encoded). The hotspot is centered (8 8).
-    Applied globally; interactive elements (links, buttons) will also show it. */
-  :root {
-  /* Small square cursor (same color) applied site-wide. Hotspot centered. */
-  /* Use the diamond cursor for both base and hover; color set to #0000FF */
-  --cursor-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpolygon points='7,0 14,7 7,14 0,7' fill='%230000FF'/%3E%3C/svg%3E") 7 7, auto;
-  --cursor-core: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpolygon points='7,0 14,7 7,14 0,7' fill='%230000FF'/%3E%3C/svg%3E") 7 7, auto;
-  }
-
-  /* Apply the custom cursor broadly. Keep fallback to default if browser
-    doesn't support SVG cursors. */
-  html, body, a, button, input, textarea { cursor: var(--cursor-svg); }
-
-  /* When hovering interactive links and controls, remove the faded outline
-     by switching to the core-only cursor so only the filled dot remains. */
-  /* On interactive hover/focus switch to the core-only cursor (remove faded ring).
-     Use !important to ensure this takes precedence in case other rules try to
-     force a different cursor (e.g., header overrides). */
-  /* Keep the same square cursor when hovering interactive elements */
-  a:hover, a:focus, button:hover, button:focus, input:hover, textarea:hover, .project-item:hover {
-    cursor: var(--cursor-core) !important;
-  }
-
-  /* Selection highlight: use the site's accent blue at reduced opacity */
-  ::selection { background: rgba(0,0,255,0.25); color: inherit; }
-  ::-moz-selection { background: rgba(0,0,255,0.25); color: inherit; }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: Georgia, serif;
-      background-color: transparent;
-      width: 100%;
-    }
-
-    /* Site title box as a full-width fixed homepage button. */
-    .site-title-box {
-      position: fixed;
-      top: 20px;
-      left: 0;
-      right: 0;
-      z-index: 100000; /* ensure this sits above other UI */
-      display: grid;
-      grid-template-rows: auto auto auto; /* header row | divider | menu */
-      align-items: center;
-  padding: var(--site-top-pad) var(--site-side-pad);             /* uses CSS vars for consistent insets */
-      text-decoration: none;
-      color: black;
-      font-size: 0.95rem;
-      cursor: default; /* do not show clickable cursor */
-      user-select: none;
-      background: transparent;
-    }
-
-    /* ensure header and its inner elements don't show pointer cursor */
-    .site-title-box, .site-title-box * { cursor: default !important; }
-
-    .site-title-box .title-row {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      width: 100%;
-      position: relative; /* anchor absolute children (mobile toggle) to the header row */
-    }
-
-    .site-title-box .site-left,
-    .site-title-box .site-center,
-    .site-title-box .site-right {
-      display: inline-block;
-      line-height: 1;
-      font-weight: 700;
-      color: #000;
-      white-space: nowrap;
-      pointer-events: none; /* individual spans won't capture clicks; the container is the button */
-    }
-    .site-title-box .site-left { text-align: left; font-size: 1rem; }
-    .site-title-box .site-center{ text-align: center; font-size: 1.2rem; }
-    .site-title-box .site-right { text-align: right; font-size: 1rem; }
-
-    /* top horizontal menu placed in the left column and aligned to the left */
-    .site-title-box .top-menu {
-      display: flex;
-      grid-column: 1 / 2; /* place the menu in the left column */
-      justify-content: flex-start; /* align to the left within the left column */
-      gap: 1.5rem;
-      width: 100%;
-      padding-bottom: 2px;
-      padding-left: 0; /* start at the left edge (container already has 20px padding) */
-    }
-    .site-title-box .top-menu a {
-      color: #000;
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.02em;
-      padding: var(--top-menu-link-pad) 0 var(--top-menu-link-bottom) 0; 
-      position: relative;
-      display: inline-block;
-      cursor: var(--cursor-svg);
-      line-height: 1;
-      vertical-align: bottom;
-    }
-    .site-title-box .top-menu a::after,
-    .popup .projects-list a::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 3px; /* 3px ~ 3pt */
-      background: transparent;
-      transition: background-color 120ms ease;
-      pointer-events: none;
-      box-sizing: content-box;
-    }
-    .site-title-box .top-menu a:hover::after,
-    .site-title-box .top-menu a:focus::after,
-    .popup .projects-list a:hover::after,
-    .popup .projects-list a:focus::after {
-      background: var(--accent);
-    }
-
-    .popup .projects-list a.active::after,
-    .popup .projects-list a.active:focus::after {
-      background: var(--accent);
-    }
-    .popup .projects-list a.active {
-      color: var(--accent);
-      font-weight: inherit;
-    }
-
-    .site-title-box .top-menu a,
-    .popup .projects-list a {
-      display: inline-block;
-      position: relative; /* anchor for the absolute ::after */
-      padding-left: 0;
-      padding-right: 0;
-      text-decoration: none;
-      color: var(--accent); /* use accent for all link text */
-    }
-
-    /* ensure general page links also use accent unless overridden */
-    a { color: var(--accent); }
-    a:visited { color: var(--accent); }
-    a:hover, a:focus { color: var(--accent); }
-
-    /* remove any visible outline/border/box-shadow for header, popup and their descendants (per user request) */
-    .site-title-box .top-menu a,
-    .popup .projects-list a,
-    .popup,
-    .popup * {
-      outline: none !important;
-      border: none !important;
-      box-shadow: none !important;
-    }
-
-    /* remove horizontal padding so underline width matches text */
-    .site-title-box .top-menu a,
-    .popup .projects-list a { display: inline-block; padding-left: 0; padding-right: 0; }
-
-    /* ensure nav and links inside header can receive pointer events */
-    .site-title-box .top-menu,
-    .site-title-box .top-menu a { pointer-events: auto; }
-
-    /* ensure page content starts below the fixed header + menu */
-    body { padding-top: 120px; }
-
-    /* landing image - was fixed; change to inline block shown at the end of the document */
-    #landing-img {
-      position: fixed;
-      left: 20px;
-      bottom: 20px;
-      z-index: 99999;
-      width: auto;
-      max-width: 60px;
-      height: auto;
-      cursor: var(--cursor-svg);
-    }
-    /* ensure popup sits above landing image */
-    .popup { z-index: 100002; }
-
-    /* Render the projects list and details as a static block in the page (always visible) */
-    .popup {
-      display: block; /* always visible */
-      position: static; /* flow in document */
-      top: auto;
-      left: auto;
-      z-index: 100001;
-      max-width: none;
-      width: calc(100% - 40px);
-      margin: 8px 20px 0 20px; /* sit below the fixed header */
-      background: transparent;
-      padding: 0;
-      box-shadow: none;
-      border: none;
-      box-sizing: border-box;
-    }
-    .popup.show-about .projects-list { display: none; }
-    .popup.show-about .project-detail { gap: 1rem; }
-    .popup.show-about .detail-col-left { flex: 0 0 550px !important; width: 100% !important; }
-    .popup.show-about .detail-col-right { flex: 0 0 450px !important; width: 100% !important; }
-
-    .popup .popup-inner {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start; /* ensure top alignment */
-    }
-    .popup .projects-list,
-    .popup .project-detail {
-      font-size: 0.9rem; /* match .site-title-box .top-menu a */
-      line-height: 1.3;
-      margin: 0;
-      padding: 0;
-    }
-    .popup .project-detail > * {
-      margin-top: 0;
-    }
-    .popup .project-detail h4 { margin-top: 0; margin-bottom: 0.25rem; font-size: 0.95rem; }
-  /* keep top margin 0 but match global paragraph spacing for project descriptions */
-  .popup .project-detail p { margin: 0 0 2.5rem 0; padding-left: 2px; text-indent: -2px; }
-    /* Ensure the left list has no extra top offset */
-    .popup .projects-list { margin-top: 0; padding-top: 0; }
-    .popup .projects-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      min-width: auto; /* allow width to shrink to content */
-      align-self: flex-start; /* ensure it stays at the top */
-      align-items: flex-start; /* prevent children stretching */
-      padding-left: 0; /* remove accidental indentation */
-    }
-    .popup .projects-list a {
-      color: #000;
-      text-decoration: none;
-      padding: 4px 0 6px 0; /* match top menu padding so underline width matches */
-      display: inline-block; /* inline-block to let underline width match text */
-      position: relative;
-      cursor: var(--cursor-svg);
-      line-height: 1;
-      vertical-align: bottom;
-      width: auto; /* ensure width fits content only */
-      padding-left: 0; /* ensure underline matches only the word */
-      padding-right: 0;
-      align-self: flex-start; /* prevent flex column from stretching anchors to container width */
-      white-space: nowrap; /* ensure the word doesn't wrap and expands the anchor only as needed */
-    }
-
-    /* add extra breathing room above the About link so it visually separates from the main project list */
-    .popup .projects-list a[data-key="about"] {
-      margin-top: 1rem; /* adjust this value to taste (e.g. 0.75rem or 1.25rem) */
-      padding-top: 0.25rem; /* slight extra padding to keep underline spacing consistent */
-    }
-
-    /* ensure underline ::after follows only the inline width (already left/right:0 on ::after) */
-    .popup .projects-list a::after { left: 0; right: 0; }
-
-    /* remove focus rings for project list links (user requested no outlines) */
-    .popup .projects-list a,
-    .site-title-box .top-menu a { outline: none !important; box-shadow: none !important; }
-    .popup .projects-list a:focus,
-    .popup .projects-list a:focus-visible,
-    .site-title-box .top-menu a:focus,
-    .site-title-box .top-menu a:focus-visible {
-      outline: none !important;
-      box-shadow: none !important;
-    }
-
-    /* project-detail uses a two-column flex layout (left = fixed width, right = fluid */
-    .popup .project-detail {
-      display: flex;
-      gap: 1.5rem;
-      align-items: flex-start;
-    }
-    .detail-col-left {
-      /* fixed-width left column */
-      flex: 0 0 550px;
-      width: 550px;
-      box-sizing: border-box;
-      padding: 0;
-      align-self: flex-start; /* ensure this column aligns to the top of the projects list */
-    }
-    .detail-col-right {
-      /* fixed-width right column */
-      flex: 0 0 450px;
-      width: 100%;
-      box-sizing: border-box;
-      align-self: flex-start; /* ensure this column aligns to the top of the projects list */
-    }
-
-    /* Prevent long content or images from forcing column widths */
-    .project-detail img { max-width: 100%; height: auto; display: block; }
-    .project-detail { word-wrap: break-word; overflow-wrap: break-word; }
-
-    /* footnote */
-    .footnote-wrapper {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      z-index: 2;
-      color: black;
-      font-size: 0.8rem;
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-
-      max-width: 1200px;
-      margin: 60px 0 0 20px; /* left edge 20px from page */
-      padding: 2rem;
-
-      line-height: 1.5;
-      text-align: left;
-      align-items: start;
-    }
-
-    .column {
-      line-height: 1.5;
-    }
-
-    /* About section styles */
-    .about-section { margin: 1.5rem 20px 3rem 20px; }
-    .about-inner { display: flex; gap: 1.5rem; align-items: flex-start; }
-    .about-col-left { width: 48%; }
-    .about-col-right { flex: 1 1 auto; }
-
-    .about-portrait {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    /* About-specific figure so the portrait isn't constrained by gallery widths */
-    .about-figure { width: auto; margin: 0; }
-    .about-figure .about-portrait { max-width: 360px; width: 100%; height: auto; display: block; }
-
-    .project-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      /* remove top margin so gallery aligns with project list and right column */
-      margin-top: 0;
-      align-items: flex-start;
-      padding-bottom: 100px;
-
-    }
-    .project-figure {
-      width: calc(50% - 6px);
-      margin: 0;
-      background: transparent;
-      position: relative; /* required for credit overlay positioning */
-    }
-    .project-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
-
-    .vertical-gallery {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      /* remove small top offset so vertical galleries align with header and list */
-      margin-top: 0;
-      max-height: none;
-      overflow: visible;
-      padding-right: 0;
-      align-items: stretch;
-      padding-bottom: 100px;
-    }
-    .vertical-gallery .project-figure { width: 100%; margin: 0; }
-    .vertical-gallery .project-image { width: 100%; height: auto; display: block; }
-
-    /* Photo credit overlay removed site-wide; keep only static .project-caption */
-    .photo-credit { display: none !important; }
-    /* allow keyboard focus on figure but keep outline disabled per UI choice */
-    .project-figure[tabindex] { outline: none; }
-
-    /* Consistent caption styling for images when SHOW_CAPTIONS = true */
-    .project-caption {
-      display: block;
-      font-size: 0.75rem;
-      color: #333; /* neutral, readable color */
-      margin-top: 0.25rem;
-      line-height: 1.25;
-      background: transparent;
-      padding: 0 0px;
-      /* when captions wrap, shift continuation lines 2px to the right */
-      padding-left: 2px;
-      text-indent: -2px;
-    }
-
-    /* helper class: shift continuation (wrapped) lines by 2px
-       Usage: add .wrap-continuation-2px to any block-level element */
-    .wrap-continuation-2px { padding-left: 2px; text-indent: -2px; }
-
-    /* single-column/full-width override for specific projects */
-    .detail-col-left .project-gallery.single {
-      display: block;
-    }
-    .detail-col-left .project-gallery.single .project-figure {
-      width: 100% !important;
-      margin: 0 !important;
-      display: block;
-    }
-
-    .detail-col-right .project-gallery .project-figure { width: 100% !important; } .detail-col-right .project-image { object-fit: contain; } .detail-col-right { padding: 0; }
-
-
-    @media (max-width: 700px) {
-      .project-figure { width: 100%; }
-    }
-
-    /* Mobile: stack detail columns so images (left column) appear above right column */
-    @media (max-width: 700px) {
-      .popup .popup-inner { flex-direction: column; gap: 1rem; }
-      .popup .project-detail { flex-direction: column; gap: 1rem; }
-      .popup .project-detail .detail-col-left,
-      .popup .project-detail .detail-col-right {
-        flex: 0 0 auto !important;
-        width: 100% !important;
-        box-sizing: border-box;
-      }
-      /* ensure left column (images) renders before right column */
-      .popup .project-detail .detail-col-left { order: 0; }
-      .popup .project-detail .detail-col-right { order: 1; }
-    }
-
-    @media (max-width: 420px) {
-      /* reduce header padding on very small screens and update CSS vars so
-         the mobile toggle can reference the same values */
-      .site-title-box {
-        font-size: 0.75rem;
-        --site-side-pad: 12px;
-        --site-top-pad: 0px;
-        padding: var(--site-top-pad) var(--site-side-pad);
-      }
-
-    }
-
-    @media (max-width: 1024px) {
-      .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
-    }
-
-    .popup .projects-list a:hover,
-    .popup .projects-list a:focus,
-    .popup .projects-list a:focus-visible {
-      color: var(--accent);
-      transition: color 120ms ease;
-    }  
-
-    @media (max-width: 1024px) {
-      .detail-col-left, .detail-col-right { flex: 1 1 50%; width: auto; }
-    }
-
-    .popup .projects-list a:hover,
-    .popup .projects-list a:focus,
-    .popup .projects-list a:focus-visible {
-      color: var(--accent);
-      transition: color 120ms ease;
-    }
-
-    /* Large paragraph */
-    p { margin-bottom: 2.5rem; }
-
-    /* enlarge images in the left detail column so they span full column width */ 
-    .detail-col-left .project-gallery .project-figure { width: 100% !important; } .detail-col-left .project-image { object-fit: contain; }
-    /* custom scrollbar: thinner and auto-hide by default; visible on hover or while scrolling */
-    /* WebKit-based browsers (Chrome, Edge, Safari) */
-    *::-webkit-scrollbar { width: 8px; height: 8px; }
-    *::-webkit-scrollbar-track { background: transparent; }
-    *::-webkit-scrollbar-thumb {
-      background: rgba(254,0,0,1); /* red thumb */
-      border-radius: 6px;
-      transition: background-color 200ms ease, opacity 200ms ease;
-      min-height: 24px;
-    }
-
-    /* show thumb when hovering a scrollable area */
-    body:hover *::-webkit-scrollbar-thumb,
-    .project-gallery:hover::-webkit-scrollbar-thumb,
-    .detail-col-left:hover::-webkit-scrollbar-thumb,
-    .detail-col-right:hover::-webkit-scrollbar-thumb {
-      background: rgba(254,0,0,0.95);
-    }
-
-    /* allow JS to reveal the thumb briefly during scroll */
-    body.show-scroll *::-webkit-scrollbar-thumb { background: rgba(254,0,0,0.95); }
-
-    /* Firefox: thin scrollbar by default and hidden thumb color; reveal on hover/scroll */
-    :root { scrollbar-width: thin; scrollbar-color: rgba(254,0,0,1) transparent; }
-    .project-gallery:hover, .detail-col-left:hover, .detail-col-right:hover, body.show-scroll {
-      scrollbar-color: rgba(254,0,0,1) transparent;
-    }
-  
-    @media (max-width: 700px) {
-      .popup { padding-bottom: 60px; }
-
-      #landing-img {
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 20px;
-      }
-
-      /* Hide complex desktop header row; show simple mobile title */
-      .site-title-box .title-row { display: none !important; }
-      .mobile-site-title {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #000;
-        /* Align flush with container's left padding; avoid double inset */
-        padding: 0;
-        text-align: left;
-      }
-
-      /* Position mobile text 'Menu' toggle top-right */
-      .mobile-menu-toggle {
-        position: absolute;
-        right: var(--site-side-pad);
-        /* Align vertically with .mobile-site-title top */
-        top: var(--site-top-pad);
-      }
-      /* Make mobile text toggle match site link styling */
-      .mobile-menu-text {
-        display: inline-flex !important;
-        background: transparent;
-        border: none;
-        padding: 0;
-        font-size: 0.9rem; /* match .top-menu a */
-        color: var(--accent); /* match link color */
-        letter-spacing: 0.02em;
-        font-family: inherit;
-        font-weight: inherit;
-        line-height: 1;
-      }
-      .mobile-menu-toggle .hamburger { display: none !important; }
-
-      .mobile-menu-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: auto;
-        height: auto;
-        background: transparent;
-        border: none;
-        padding: 0;
-        cursor: var(--cursor-svg);
-        /* keep absolute positioning but anchor to the right */
-        position: absolute;
-        right: var(--site-side-pad);
-        top: var(--site-top-pad);
-        transform: none;
-        z-index: 100020; /* sit above other UI */
-      }
-
-    /* When the projects overlay is open on mobile, hide the meatball toggle
-       so it doesn't overlap the expanded list. JS will toggle
-       `projects-open` on the body when opening/closing. */
-    /* When overlay is open, keep text 'Menu' visible; hide only hamburger */
-    body.projects-open .mobile-menu-toggle:not(.mobile-menu-text) { display: none !important; }
-    body.projects-open .mobile-menu-text { display: inline-flex !important; }
-
-    /* Default: ensure the meatball toggle is visible on mobile unless the
-       projects list is open. Use !important to override other rules. */
-    .mobile-menu-toggle { display: inline-flex !important; }
-
-      /* Remove native button chrome (background/rounded box) while keeping
-         the hamburger bars visible. Only the button itself resets to
-         transparent/flat; the .hamburger bars keep their background color. */
-      .mobile-menu-toggle {
-        outline: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        background: transparent !important;
-        border-radius: 0 !important;
-        -webkit-appearance: none !important;
-        appearance: none !important;
-        -webkit-tap-highlight-color: transparent !important;
-      }
-
-      /* Keep the hamburger bars visible: remove only outline/box-shadow from
-         the bar elements but DO NOT change their background. The background
-         for the bars is defined earlier (.hamburger { background: #0000ff }). */
-      .mobile-menu-toggle .hamburger,
-      .mobile-menu-toggle .hamburger::before,
-      .mobile-menu-toggle .hamburger::after {
-        outline: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        border-radius: 0 !important;
-        -webkit-appearance: none !important;
-        appearance: none !important;
-        -webkit-tap-highlight-color: transparent !important;
-      }
-
-      .mobile-menu-toggle:focus,
-      .mobile-menu-toggle:focus-visible {
-        outline: none !important;
-        box-shadow: none !important;
-      }
-
-      /* Ensure the complex desktop title row remains hidden on mobile */
-      .site-title-box .title-row { display: none !important; }
-
-      /* Meatballs: three small red dots arranged horizontally. On expand
-         they morph into an X using the pseudo-elements. */
-      .mobile-menu-toggle .hamburger {
-        display: block;
-        width: 8px;
-        height: 8px;
-        background: #ff0000; /* red dot */
-        border-radius: 50%;
-        position: relative;
-        z-index: 100021; /* ensure the 3 dots are above everything */
-        transition: background 160ms ease, width 160ms ease, height 160ms ease, transform 200ms ease, left 160ms ease, top 160ms ease;
-        transform-origin: center;
-      }
-
-      /* top and bottom dots */
-      .mobile-menu-toggle .hamburger::before,
-      .mobile-menu-toggle .hamburger::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        width: 8px;
-        height: 8px;
-        background: #ff0000; /* red dot */
-        border-radius: 50%;
-        transition: transform 160ms ease, top 160ms ease, opacity 160ms ease, background 160ms ease, width 160ms ease, height 160ms ease, left 160ms ease;
-        z-index: 100021;
-        transform-origin: center;
-      }
-      /* Arrange dots horizontally (left and right offsets) */
-      .mobile-menu-toggle .hamburger::before { left: -12px; top: 0; }
-      .mobile-menu-toggle .hamburger::after  { left: 12px; top: 0; }
-
-      /* Toggle -> X state when expanded (use aria-expanded so we don't rely on DOM order)
-         Morph dots into two crossing bars by expanding width/height and rotating. */
-      .mobile-menu-toggle[aria-expanded="true"]:not(.no-cross) .hamburger { background: transparent; }
-      .mobile-menu-toggle[aria-expanded="true"]:not(.no-cross) .hamburger::before {
-        top: 0;
-        left: -7px;
-        width: 22px;
-        height: 2px;
-        border-radius: 2px;
-        transform: rotate(45deg);
-        background: #ff0000;
-      }
-      .mobile-menu-toggle[aria-expanded="true"]:not(.no-cross) .hamburger::after  {
-        top: 0;
-        left: -7px;
-        width: 22px;
-        height: 2px;
-        border-radius: 2px;
-        transform: rotate(-45deg);
-        background: #ff0000;
-      }
-
-      /* Hide the left projects list by default — show as overlay when menu is open */
-      .popup .projects-list {
-        display: none;
-        /* Keep the overlay anchored to the mobile toggle (top-right) */
-        position: fixed;
-        top: calc(var(--site-top-pad) + 28px);
-        left: auto;
-        right: var(--site-side-pad);
-        background: transparent;
-        padding: 0; /* remove padding on small screens per request */
-        box-shadow: none; /* remove border/shadow */
-        border-radius: 0; /* remove rounded corners */
-        max-height: 60vh;
-        overflow: auto;
-        z-index: 100003;
-        flex-direction: column;
-        gap: 0.25rem; /* tighter spacing between items */
-        width: auto;
-        min-width: 220px; /* ensure a reasonable width */
-        align-items: flex-end; /* align content to right edge */
-      }
-
-      .popup.mobile-open .projects-list {
-        display: flex;
-        text-align: right; /* align text to right under the Menu */
-      }
-    }
-
-    /* Hide toggle on larger screens */
-    @media (min-width: 701px) {
-      .mobile-menu-toggle { display: none; }
-      .mobile-menu-text { display: none !important; }
-      .mobile-site-title { display: none !important; }
-    }
-  </style>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.counter.dev/script.js" data-id="dad985f2-4cf5-45ef-983b-e17b014b5c75" data-utcoffset="1"></script>
+
+    <!-- SEO metadata -->
+    <meta name="description" content="Digital Product Passport (DPP) for SOLO" />
+    <meta name="keywords" content="BUTCHER & CORREIA, DPP, Soft Sculpture" />
+    <meta name="author" content="BUTCHER & CORREIA" />
+    
+    <!-- Open Graph (OG) metadata -->
+    <meta property="og:title" content="BUTCHER & CORREIA" />
+    <meta property="og:description" content="Explore DPP for SOLO, forlengelser performance" />
+    <meta property="og:image" content="https://butchercorreia.com" />
+    <meta property="og:url" content="https://butchercorreia.com" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- favicon -->
+    <link rel="icon" href="/favicon.PNG" type="image/png">
+    <!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Three.js (kept for potential future visuals) -->
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <!-- MapLibre GL JS (token-free) -->
+    <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+    <title>DPP - SOLO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Text selection color */
+        ::selection {
+            background: rgb(0, 0, 255);
+            color: #ffffff;
+        }
+        /* Firefox */
+        ::-moz-selection {
+            background: rgb(0, 0, 255);
+            color: #ffffff;
+        }
+
+        body {
+            font-family: 'PT Mono', monospace;
+            font-weight: 400;
+            background-color: #fff;
+            color: #000;
+            line-height: 1;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem 2rem 1.2rem 2rem;
+        }
+
+        .gallery {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 0.6rem auto;
+            border-radius: 1px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item {
+            display: none;
+            width: 100%;
+        }
+
+        .gallery-item.active {
+            display: block;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gallery-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            color: rgb(0, 0, 255);
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+
+        .gallery-nav:hover {
+            transform: translateY(-50%) scale(1.02);
+        }
+
+        .gallery-prev {
+            left: 1rem;
+        }
+
+        .gallery-next {
+            right: 1rem;
+        }
+
+        .gallery-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .gallery-dot.active {
+            background: rgb(0, 0, 255);
+        }
+
+        .gallery-dots {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .header {
+            max-width: 800px;
+            text-align: left;
+            margin-bottom: 1.2rem;
+            padding: 0.6rem 0 0.4rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .passport-title {
+            max-width: 600px;
+            font-size: 1.05rem;
+            font-weight: 300;
+            margin-bottom: 0.2rem;
+            color: #000000;
+            font-size: 0.9rem;
+        }
+
+        .product-name {
+            max-width: 600px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 0.6rem;
+            color: rgb(0, 0, 255);
+            line-height: 1.03;
+            font-size: 1.5rem;
+        }
+
+        .product-info {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 0.1rem;
+            margin-bottom: 0.1rem;
+            padding: 0.4rem 0.1rem;
+            border-bottom: 1px solid #dcdcdc;
+        }
+
+        .info-label {
+            color: #000000;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            color: #000000;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .navigation {
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            gap: 0.3rem;
+            margin: 2rem auto;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.7rem 1.1rem;
+            border: 2px solid rgb(0, 0, 255);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background-color: rgb(0, 0, 255);
+            text-align: center;
+            line-height: 1.2;
+            font-size: 0.95rem;
+            border-radius: 1px;
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            background-color: rgb(0, 0, 255);
+            color: #fff;
+            border-color: rgb(0, 0, 255);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: rgb(0, 0, 255);
+            margin: 2% auto;
+            padding: 2rem;
+            border-radius: 1px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #ffffff;
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+            z-index: 10;
+        }
+
+        .close:hover {
+            color: #000000;
+        }
+
+        .modal h2 {
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+            text-align: left;
+        }
+
+        .modal h3 {
+            margin: 2rem 0 1rem 0;
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .modal h4 {
+            margin: 2rem 0 1rem 0;
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 0.3rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .modal-info-label {
+            color: #fffefe;
+        }
+
+        .modal-info-value {
+            color: #ffffff;
+            text-align: right;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        .modal p {
+            font-family: 'PT Mono', monospace;
+            margin-bottom: 1rem;
+            font-weight: 400;
+            line-height: 1;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        /* Use Roboto for h2, h3, product-name, and nav links */
+        h2, h3, .product-name, .nav-link {
+            font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+        }
+
+        .annotations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 0.3rem;
+            margin: 2rem 0;
+        }
+
+        .annotation-item {
+            border: none;
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .annotation-item img {
+            width: 100%;
+            height: auto;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .links-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ffffff;
+        }
+
+        .links-section a {
+            display: block;
+            color: rgb(255, 255, 255);
+            text-decoration: underline;
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+
+        .links-section a:hover {
+            text-decoration: underline;
+            color: rgb(255, 0, 0);
+        }
+
+        /* Modal section menu */
+        .modal-section-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0.5rem 0 1rem 0;
+        }
+        .modal-section-menu a {
+            font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+            font-size: 0.9rem;
+            color: #ffffff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .modal-section-menu a:hover {
+            color: rgb(255, 0, 0);
+            text-decoration: underline;
+        }
+
+        /* Figures and captions */
+        figure {
+            margin: 0;
+        }
+        figcaption {
+            font-family: 'PT Mono', monospace;
+            font-weight: 400;
+            font-size: 0.6rem;
+            line-height: 1.15;
+            color: #666;
+            margin-top: 0.1rem;
+        }
+        .modal figcaption {
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.3rem;
+            align-items: start;
+        }
+
+        /* (Removed Leaflet map styles) */
+
+        /* Three.js globe canvas container */
+        #globe3d {
+            width: min(90vw, 640px);
+            aspect-ratio: 1 / 1;
+            height: auto;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            background: radial-gradient(circle at 30% 30%, #0b1b4b 0%, #000822 60%, #000510 100%);
+            display: none; /* hidden by default; toggle on */
+            position: relative;
+        }
+        #globe3d .tooltip {
+            position: absolute;
+            background: rgb(0,0,255);
+            color: #fff;
+            padding: 4px 6px;
+            font-family: 'PT Mono', monospace;
+            font-size: 12px;
+            border-radius: 0;
+            pointer-events: none;
+            transform: translate(-50%, -120%);
+            white-space: nowrap;
+            display: none;
+        }
+
+        /* Cesium container: rectangular, responsive */
+        #cesiumContainer {
+            width: 100%;
+            height: 60vh;
+            border-radius: 0;
+            overflow: hidden;
+            margin: 0 auto;
+            display: block;
+            position: relative;
+        }
+
+        /* MapLibre popup styling: remove border/shadow and tip */
+        .maplibregl-popup-content {
+            border: none;
+            box-shadow: none;
+            padding: 0; /* content handles its own padding */
+        }
+        .maplibregl-popup-tip {
+            display: none;
+        }
+
+        /* Scenography tooltip styling: square corners, blue bg, white text */
+        .leaflet-tooltip.bc-tooltip {
+            background: rgb(0, 0, 255);
+            color: #ffffff;
+            border: none;
+            border-radius: 0; /* no round corners */
+            box-shadow: none;
+            padding: 6px 8px;
+            font-family: 'PT Mono', monospace; /* switch to the other site font */
+            font-size: 0.9rem; /* align with normal body text scale */
+            line-height: 1.2;
+        }
+        .leaflet-tooltip.bc-tooltip:before {
+            /* remove default little arrow pointer */
+            display: none;
+        }
+
+        /* Leaflet zoom control customization */
+        .leaflet-control-zoom a {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: rgb(0, 0, 255) !important;
+            font-weight: 700;
+            text-decoration: none; /* remove underline from +/- */
+        }
+        .leaflet-control-zoom a:focus {
+            outline: none !important;
+        }
+        .leaflet-control-zoom {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Product Journey links: match annotations style */
+        #product-journey .modal-content a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        #product-journey .modal-content a:hover {
+            color: rgb(255, 0, 0);
+            text-decoration: underline;
+        }
+
+        /* Make links in modal info rows behave like links-section */
+        .modal-info-value a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        .modal-info-value a:hover {
+            color: rgb(255, 0, 0);
+            text-decoration: underline;
+
+        }
+
+        /* Modal-specific text selection (red-purple) */
+        .modal ::selection {
+            background: #9d51c1; /* red-purple */
+            color: #ffffff;
+        }
+        .modal ::-moz-selection {
+            background: #9d51c1; /* red-purple */
+            color: #ffffff;
+        }
+
+        /* Footer */
+        .footer-note {
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        /* Scrollbar (WebKit browsers: Chrome, Edge, Safari) */
+        *::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        *::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        *::-webkit-scrollbar-thumb {
+            background-color: rgb(0, 0, 255);
+            border-radius: 8px;
+            border: 2px solid #ffffff;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+            background-color: rgb(0, 0, 220);
+        }
+
+        /* Modal-specific scrollbar (WebKit) */
+        .modal-content::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background-color: rgb(255, 0, 0);
+            border-radius: 8px;
+            border: 2px solid #ffffff;
+        }
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background-color: rgb(200, 0, 0);
+        }
+
+        /* Scrollbar (Firefox) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgb(0, 0, 255) #f0f0f0;
+        }
+
+        /* Modal-specific scrollbar (Firefox) */
+        .modal-content {
+            scrollbar-width: thin;
+            scrollbar-color: rgb(255, 0, 0) #f0f0f0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .gallery-dot {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgb(0, 0, 255);
+                margin: 0 0.5rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            .gallery-dot.active {
+                background: rgb(0, 0, 255);
+            }
+        }
+
+        /* Small phones (iPhone SE 2/3, small Android) */
+        @media (max-width: 400px) {
+            .container {
+                padding: 0.9rem 1rem 1rem 1rem;
+            }
+            .header {
+                margin-bottom: 1rem;
+                padding: 0.5rem 0 0.3rem 0;
+            }
+            .passport-title {
+                font-size: 0.85rem;
+            }
+            .product-name {
+                font-size: 1.35rem;
+                letter-spacing: 1.5px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr; /* stack label/value */
+                gap: 0.2rem;
+            }
+            .info-label, .info-value {
+                text-align: left;
+            }
+            .navigation {
+                margin: 1.5rem auto;
+                gap: 0.25rem;
+            }
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+            .modal-content {
+                padding: 1rem;
+                width: 92%;
+            }
+            .modal h2 {
+                font-size: 1.25rem;
+            }
+            .modal h3, .modal h4 {
+                font-size: 0.9rem;
+            }
+            .modal p {
+                font-size: 0.9rem;
+                line-height: 1.15;
+            }
+            .modal-info-grid {
+                grid-template-columns: 1fr; /* stack rows in modal */
+            }
+            .annotations-grid {
+                grid-template-columns: 1fr; /* single column for images */
+            }
+            .gallery-nav {
+                padding: 0.4rem 0.8rem;
+                font-size: 1.35rem;
+            }
+        }
+        /* Cursor Trail */
+        .cursor-trail-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,0,255,0.45) 0%, rgba(0,0,255,0.25) 45%, rgba(0,0,255,0) 100%);
+            pointer-events: none;
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            filter: blur(2.5px);
+            will-change: transform, opacity;
+            z-index: 9999;
+            animation: trailFade 700ms ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Consistent gallery dot colors across all screens */
+        .gallery-dot { background: #cccccc; }
+        .gallery-dot.active { background: rgb(0, 0, 255); }
+
+        /* Product Journey globe container safeguards */
+        #globe-container {
+            min-height: 300px;
+            display: block;
+        }
+        #product-journey .modal-content {
+            overflow: hidden auto;
+        }
+
+        /* Image loading spinner (blue) */
+        .img-loader-wrapper {
+            position: relative;
+            display: inline-block;
+            min-width: 40px;  /* ensure wrapper has size before image loads */
+            min-height: 40px; /* so spinner has a canvas to sit on */
+            vertical-align: middle;
+        }
+        .img-loader-wrapper img { display: block; }
+        .img-loader-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            margin: -12px 0 0 -12px;
+            border: 3px solid rgba(0,0,255,0.3);
+            border-top-color: rgb(0,0,255);
+            border-radius: 50%;
+            animation: imgSpin 0.7s linear infinite;
+            pointer-events: none;
+            z-index: 2;
+        }
+        @keyframes imgSpin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-  <div class="site-title-box">
-    <div class="title-row">
-      <span class="site-left">BUTCHER</span>
-      <span class="site-center">&amp;</span>
-      <span class="site-right">CORREIA</span>
-
-      <!-- Mobile hamburger toggle moved into the header grid so we can use
-           CSS Grid placement instead of absolute positioning. -->
-      <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-expanded="false" aria-controls="projectsList" aria-label="Open projects menu">
-        <span class="hamburger" aria-hidden="true"></span>
-      </button>
-    </div>
-    <!-- Mobile simple header shown only under @media rules -->
-    <span class="mobile-site-title" aria-hidden="true">BUTCHER &amp; CORREIA</span>
-    <!-- Mobile text menu toggle (shown only on small screens) -->
-    <button id="mobile-menu-text-toggle" class="mobile-menu-toggle mobile-menu-text" aria-expanded="false" aria-controls="projectsList" aria-label="Open projects menu">Menu</button>
-    <!-- top-menu kept for desktop links or future content; currently empty -->
-    <div class="top-menu" aria-hidden="false"></div>
-  </div>
-
-  <div class="popup" id="mainPopup" aria-hidden="true" tabindex="-1">
-    <div class="popup-inner">
-      <nav id="projectsList" class="projects-list" aria-label="Projects list">
-        <a href="#solo" data-key="solo" class="project-item">SOLO</a>
-        <a href="#sound-of-things" data-key="sound-of-things" class="project-item">The Sound of Things</a>
-        <a href="#just-this" data-key="just-this" class="project-item">Just This And Only That</a>
-        <a href="#taste-of-sound" data-key="taste-of-sound" class="project-item">Taste of Sound</a>
-        <a href="#performance-vista2" data-key="performance-vista2" class="project-item">Performance Vista (Part II)</a>
-        <a href="#performance-vista" data-key="performance-vista" class="project-item">Performance Vista (Scenes I-IV)</a>
-        <a href="#about" data-key="about" class="project-item">About</a>
-      </nav>
-      <section class="project-detail" id="projectDetail" aria-live="polite">
-        <div class="detail-col detail-col-left" id="detailLeft">
+    <div class="container">
+        <!-- Gallery Section -->
+        <div class="gallery">
+            <div class="gallery-item active">
+                <video autoplay muted loop playsinline preload="auto">
+                    <source src="solo_white.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="gallery-item">
+                <img src="05_forlengelser.gif" alt="Forlengelser" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="04_SOLO.gif" alt="SOLO" loading="lazy">
+            </div>
+            <div class="gallery-item">
+                <img src="solo_map.jpg" alt="SOLO map" loading="lazy">
+            </div>
+            <button class="gallery-nav gallery-prev" onclick="previousImage()">&larr;</button>
+            <button class="gallery-nav gallery-next" onclick="nextImage()">&rarr;</button>
         </div>
-        <div class="detail-col detail-col-right" id="detailRight">
-          <!-- secondary column for extra content -->
+        <div class="gallery-dots">
+            <span class="gallery-dot active" onclick="currentImage(1)"></span>
+            <span class="gallery-dot" onclick="currentImage(2)"></span>
+            <span class="gallery-dot" onclick="currentImage(3)"></span>
+            <span class="gallery-dot" onclick="currentImage(4)"></span>
         </div>
-      </section>
+
+        <!-- Header Section -->
+        <div class="header">
+            <div class="passport-title">digital product passport for</div>
+            <div class="product-name">SOLO</div>
+            
+            <!-- Product Information -->
+            <div class="product-info">
+                <div class="info-grid">
+                    <div class="info-label">type</div>
+                    <div class="info-value">wearable soft sculpture</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">author</div>
+                    <div class="info-value">BUTCHER & CORREIA studio</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">ID</div>
+                    <div class="info-value">one-of-a-kind</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">main material</div>
+                    <div class="info-value">wool</div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-label">origin & design</div>
+                    <div class="info-value">Norway</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="navigation">
+            <button type="button" class="nav-link" onclick="openModal('about-solo')">about SOLO</button>
+            <button type="button" class="nav-link" onclick="openModal('about-product')">about product</button>
+            <button type="button" class="nav-link" onclick="openModal('product-journey')">product journey</button>
+            <button type="button" class="nav-link" onclick="openModal('annotations')">extensions</button>
+            <button type="button" class="nav-link" onclick="openModal('about-butcher-correia')">BUTCHER & CORREIA</button>
+        </div>
+
     </div>
-  </div>
 
-  <!-- landing image placed inline at the very end of the document -->
-  <div class="landing-wrap" aria-hidden="false">
-    <img id="landing-img" src="favicon.PNG" alt="Butcher & Correia" loading="lazy">
-  </div>
+    <!-- Modals -->
+    <!-- About SOLO Modal -->
+    <div id="about-solo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('about-solo')">&times;</span>
+            <h2>about SOLO</h2>
+            <p>SOLO is developed by BUTCHER & CORREIA, together with Joana Bruno, as a world of visual gestures that gathers around the moving body of Rannei Grenne. Grenne brings with her a decade of practice, a vocabulary lived through the fibres of her training clothes. From attentive watching and from deep conversation, SOLO grows as costume, scenography, sound and relation, threaded into Forlengelser, translated as Extensions. Wool, hand, floor, animal, machine and time are held in a single orbit, each answering the other. The fibre carries energy, the surfaces draw movement into presence, the space listens. SOLO drifts within, without and between the emerging frame of the Digital Product Passport, one possible answer to the crisis, revealing the openings and the blindspots in the attempt to remake the textiles we live in and love. Sustainable thinking must compete with the pressures of increasing market share, and the work asks what it would take to imagine these everyday items otherwise, through a form of attention that moves against this current. It traces where this insistance holds, where it strains, where it breaks and where it opens toward new forms of making, learning and understanding. The material is more than tangible. It is intention, process, method, company, decision and consequence. It is the unseen pressures and the felt constraints that leave their traces on the work. SOLO attends to Forlengelser.</p>
+            
+            <h3>credits</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">performance concept, coreography, dance</div>
+                <div class="modal-info-value"><a href="https://www.ranneigrenne.com" target="_blank">Rannei Grenne</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">visual identity (costume design, scenography, sonic landscape)</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">artistic design assistant</div>
+                <div class="modal-info-value">Joana Bruno</div>
+            </div>
+            
+            <h3>locations</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">location #1</div>
+                <div class="modal-info-value"><a href="https://lkv.no/en/babel" target="_blank" rel="noopener noreferrer">BABEL</a>, Trondheim (NO) December 2025</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">location #2</div>
+                <div class="modal-info-value"><a href="https://www.steinkjerkulturhus.no/aktorer-pa-kulturkvartalet/kunstrom-jakob/" target="_blank" rel="noopener noreferrer">Kunstrom Jakob</a>, Steinkjer (NO) June 2026</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">location #3</div>
+                <div class="modal-info-value"><a href="https://www.pink-mcr.com" target="_blank" rel="noopener noreferrer">Pink</a>, Stockport (UK) 2026/2027</div>
+            </div>
+            
+            <h3>production details</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">scenography</div>
+                <div class="modal-info-value">felted wool (from Trønder Sheep) from <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a> (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">costume design</div>
+                <div class="modal-info-value">translation work by <a href="https://www.manufacture-oslo.no/" target="_blank">Manufacture Oslo</a> (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">garment's fabric</div>
+                <div class="modal-info-value">weaved by  <a href="https://www.varpogveft.no" target="_blank">Varp & Veft</a> with trønder sheep wool (yarn from <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a>) (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">sound</div>
+                <div class="modal-info-value">LOM Geofón, omnidirectional geophone, <a href="https://store.lom.audio/" target="_blank">LOM</a>, Bratislava (SK)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">light</div>
+                <div class="modal-info-value">Exterior Wash™ 310, Marten Lighting, Aarhus (DK) - discontinued</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">hair/eye</div>
+                <div class="modal-info-value"><a href="https://theunseenbeauty.co.uk/" target="_blank">Unseen Beauty</a>, London (UK)</div>
+            </div>
+            
+            <h3>additional credits</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">external eye for coreography and dance</div>
+                <div class="modal-info-value">Ásgerður G. Gunnarsdóttir</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">light design</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">artistic documentation concept</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">photography and video</div>
+                <div class="modal-info-value"><a href="https://lilizaneta.com" target="_blank">Lili Zaneta</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">hair design</div>
+                <div class="modal-info-value">Solvår K. Sandvik</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">special thanks to</div>
+                <div class="modal-info-value">Astrid Ljungberg, Pekka Stokke, Yahya Khider, Veslemøy Lilleengen, Monika Mørck, Grey Trøndelag sheep supported by <a href="https://www.nsg.no/gra-trondersau/" target="_blank">Norsk Sau og Geit (NSG)</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">supported by</div>
+                <div class="modal-info-value"><a href="https://www.kulturdirektoratet.no/en/" target="_blank">Arts Council Norway</a>, <a href="https://www.trondheim.kommune.no/english/" target="_blank">Trondheim municipality</a>, <a href="https://www.trondelagfylke.no/english/" target="_blank">Trøndelag county</a>, <a href="https://www.ffuk.no/about-the-fund-for-performing-artists.5979278.html" target="_blank">Fund for Performing Artists</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">co-producer</div>
+                <div class="modal-info-value"><a href="https://dansit.no/" target="_blank">DansiT koreografisk senter</a>, Trondheim (NO)</div>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    // landing image: scroll to top when clicked
-    (function(){
-      const landing = document.getElementById('landing-img');
-      if (!landing) return;
-      landing.addEventListener('click', function(e){
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    })();
-  </script>
+    <!-- About Product Modal -->
+    <div id="about-product" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('about-product')">&times;</span>
+            <h2>about product</h2>
+            
+            <h3>product identification</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">product name</div>
+                <div class="modal-info-value">SOLO</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">product category</div>
+                <div class="modal-info-value">Apparel, Clothing / Home textiles, Furnishings</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">product type code (CPA)</div>
+                <div class="modal-info-value">Garment: CPA 14.19 / Cushion: CPA 13.92.1</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">unique product ID (HS/CN)</div>
+                <div class="modal-info-value">Garment: HS/CN 6211.49 / Cushion: HS/CN 9404.90</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">author</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">artistic design consultant</div>
+                <div class="modal-info-value"><a href="https://joanabruno.net" target="_blank">Joana Bruno</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">country of origin</div>
+                <div class="modal-info-value">Norway*</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">country of design</div>
+                <div class="modal-info-value">Norway</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">batch/serial Number</div>
+                <div class="modal-info-value">One-of-a-kind</div>
+            </div>
+            
+            <h3>material composition</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">primary fiber</div>
+                <div class="modal-info-value">Virgin wool from Grå Trøndersau (Trønder sheep)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">norwegian wool standard details</div>
+                <div class="modal-info-value">C1S</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">primary fiber origin</div>
+                <div class="modal-info-value">Trøndelag, Norway</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">recycled content</div>
+                <div class="modal-info-value">0%</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">dyeing</div>
+                <div class="modal-info-value">Undyed natural colour and indigo dye</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">chemical substances used</div>
+                <div class="modal-info-value">None beyond standard wool-washing agents; local breed wool. Optional traceability available via the Norwegian Wool Standard (NWS) classification</div>
+            </div>
+            
+            <h3>other materials</h3>
+            <p><strong>materials (notions and accessories)</strong></p>
+            
+            <div class="modal-info-grid">
+                <div class="modal-info-label">construction thread</div>
+                <div class="modal-info-value">100% polyester / Supplier: Amatec / Sourced by: <a href="https://www.manufacture-oslo.no/" target="_blank"><a href="https://manufacture-oslo.no" target="_blank">Manufacture Oslo</a></a> (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">embroidery thread</div>
+                <div class="modal-info-value">WonderFil Splendor 40 wt Rayon, colour Surf The Web, code R3119 / Origin: Canada / Supplier: Buran Library, Trondheim / Sourced by: <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> (NO)</div>
+            </div>
+             <div class="modal-info-grid">
+                <div class="modal-info-label">garment elastic</div>
+                <div class="modal-info-value">Elastic band for waistband / Supplier: unkown until today / Sourced by: <a href="https://www.manufacture-oslo.no/" target="_blank">Manufacture Oslo</a> (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">garment button</div>
+                <div class="modal-info-value">Button for back closure / Origin: Portugal / Composition: 99 percent cotton / Supplier: <a href="https://www.kforkinkeliane.no/" target="_blank">Kinkeliane</a>, Stavanger (NO) / Sourced by: <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">garment drawstring</div>
+                <div class="modal-info-value">Drawstring cord for trousers / GTIN: 7054490111145 / Origin: Germany / Composition: 100 percent cotton / Supplier: <a href="https://msommer.no/" target="_blank">M Sommer AS</a>, Trondheim (NO) / Sourced by: <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> (NO)</div>
+            </div>
+             <div class="modal-info-grid">
+                <div class="modal-info-label">tag</div>
+                <div class="modal-info-value">Cotton identification tag / Origin: China / Composition: 100% cotton / Supplier: Selfmade Norge AS, Trondheim / Sourced by: <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">cap</div>
+                <div class="modal-info-value"> Cap with SOLO embroidery / Origin: Oppland Gjøviksikker, based on Sverresborg Digital Museum research
+                / Composition: 99% Cotton, elastin, alloy eyelets / Produced: Opplandske Luefabrikk A/Ssikker / Supplier: Sirkulus Brukthandleri / Sourced by: <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">shoes</div>
+                <div class="modal-info-value"> Rehearsal shoes / Produced: Nike / Supplier: Unkown / Origin: China / Sourced by: <a href="https://ranneigrenne.com" target="_blank">Rannei Grenne</a> (NO)</div>
+            </div>
 
-  <script>
-    // Project descriptions (detailed content)
-    console.log('page script loaded');
-    const projectDescriptions = {
-      'solo': `
-        <p>SOLO is developed by BUTCHER & CORREIA, together with Joana Bruno, as a world of visual gestures that gathers around the moving body of Rannei Grenne. Grenne brings with her a decade of practice, a vocabulary lived through the fibres of her training clothes. From attentive watching and from deep conversation, SOLO grows as costume, scenography, sound and relation, threaded into Forlengelser, translated as Extensions. Wool, hand, floor, animal, machine and time are held in a single orbit, each answering the other. The fibre carries energy, the surfaces draw movement into presence, the space listens. SOLO drifts within, without and between the emerging frame of the Digital Product Passport, one possible answer to the crisis, revealing the openings and the blindspots in the attempt to remake the textiles we live in and love. Sustainable thinking must compete with the pressures of increasing market share, and the work asks what it would take to imagine these everyday items otherwise, through a form of attention that moves against this current. It traces where this insistance holds, where it strains, where it breaks and where it opens toward new forms of making, learning and understanding. The material is more than tangible. It is intention, process, method, company, decision and consequence. It is the unseen pressures and the felt constraints that leave their traces on the work. SOLO attends to Forlengelser.
-        </p>
-        <p>Costume design, scenography and sonic landscape: BUTCHER & CORREIA<br>  
-        Concept/coreography/dance: <a href="https://ranneigrenne.com" target="_blank" rel="noopener noreferrer">Rannei Grenne</a><br>
-        Artistic design assistant: Joana Bruno
-        </p>
-        <p>BABEL visningsrom, Trondheim (NO) December 2025<br>
-        Kunstrom Jakob, Steinkjer (NO) June 2026<br>
-        Pink, Stockport (GB) 2026/2027<br>
-        </p>
-        <p>
-        Scenography: felted wool (from Trønder Sheep - Selbu Spinneri)<br>
-        Costume design: replica of Rannei's training garment, traced, assembled, 3D by Manufacture Oslo<br>
-        Costume's fabric: weaved by Varp & Veft (with Trønder sheep - Selbu Spinneri)<br>
-        Sound: captured with geophone
-        </p>
-        <p>
-        External eye for coreography and dance: Ásgerður G. Gunnarsdóttir<br>
-        Light design: BUTCHER & CORREIA<br>
-        Artistic documentation concept: BUTCHER & CORREIA<br>
-        Photography and Video: Lili Zaneta<br>
-        Hair design: Solvår K. Sandvik<br>
-        <p>Special thanks to: Astrid Ljungberg, Pekka Stokke, Yahya Khider, Veslemøy Lilleengen, Monika Mørck, Grey Trøndelag sheep supported by Norsk Sau og Geit (NSG)</p>
-        Technician responsible at BABEL: Stig Berg / DansiT<br>
-        Supported by: Kulturrådet, Trondheim kommune, Trøndelag fylkeskommune, Fond for utøvende kunstnere<br>
-        Co-producer: DansiT koreografisk senter
-        </p>
-      `,
+            <div class="modal-info-grid">
+                <div class="modal-info-label">socks</div>
+                <div class="modal-info-value"> Art.nr.: 1227407002 / Composition: 67% cotton 27% polyamide 4% elastodiene 2% elastone / Produced: SUNGHWA TRADING Co. Ltd. (VN) / Supplier: H&M / Sourced by: <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> (NO)</div>
+            </div>
+            
+            <h3>manufacturing and supply chain</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">farming & breeding (costume & scenography)</div>
+                <div class="modal-info-value"><a href="https://www.ofsti.no" target="_blank">Øfsti søndre</a>, Stjørdal (NO) supported by Raselaget for Grå Trøndersau, <a href="https://www.nsg.no/gra-trondersau/" target="_blank">Norsk Sau og Geit (NSG)</a>. NSG is part of the organisation Landbrukets Klimaselskap SA https://klimasmartlandbruk.no/forside/.</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">felting (scenography)</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a>, Trondheim (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">washing (costume & scenography)</div>
+                <div class="modal-info-value"><a href="https://www.selbuspinneri.no" target="_blank">Selbu Spinneri</a>, Klæbu (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">spinning (costume)</div>
+                <div class="modal-info-value"><a href="https://www.selbuspinneri.no" target="_blank">Selbu Spinneri</a>, Klæbu (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">weaving (costume)</div>
+                <div class="modal-info-value"><a href="https://www.villveis.com" target="_blank">Varp & Veft</a>, Sandnes (NO)</div>
 
-      'sound-of-things': `
-        Performance, 60 min.<br>
-        <p>Only Connect 2025, Rosendal Teater - Trondheim (NO)</p>
-        <p>
-        The Sound of Things (2025) explores how sound frequencies influence flavor perception. Combining sound, taste, and visual design, the performance investigates how sensory alignment can reshape the experience of eating and listening. Using edible materials and live sound manipulation, we test how small shifts in frequency and color alter the perception of different flavour profiles. Through this, B&amp;C examine food politics, hospitality, and circular economy, connecting sensory pleasure with ecological and ethical awareness.
-        </p>
-        <p>Concept: Katherine Butcher and Klaus E. Holm w. Carlos A. Correia</p>
-        Sound Composition: Klaus E. Holm<br>
-        Visuals &amp; Dramaturgy: BUTCHER &amp; CORREIA<br>
-        Sound: Aksiom Ensemble<br>
-        Food: Ieva Grigelionyte<br>
-        Light designer: Abigail Nava<br>
-        Light technician: Torbjørn Benjaminsen
-      `,
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">top construction (costume)</div>
+                <div class="modal-info-value">Caroline Cherry / <a href="https://www.manufacture-oslo.no/" target="_blank">MO</a>, Oslo (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">trouser construction (costume)</div>
+                <div class="modal-info-value">Victoria Castro / <a href="https://www.manufacture-oslo.no/" target="_blank">MO</a>, Oslo (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">top technician (costume)</div>
+                <div class="modal-info-value">Petra Clough-Helgese / <a href="https://www.manufacture-oslo.no/" target="_blank">MO</a>, Oslo (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">trouser technician (costume)</div>
+                <div class="modal-info-value">Linnea Therese Helle / <a href="https://www.manufacture-oslo.no/" target="_blank">MO</a>, Oslo (NO)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">tags (costume & scenography)</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA Studio</a> / Digital embroidery - <a href="https://janome.no/products/memory-craft-550e" target="_blank">Janome Memory Craft 550E Limited Edition</a>, <a href="https://biblioteket.trondheim.kommune.no/innhold/om-biblioteket/avdelinger/buranbibliotek/" target="_blank">Buran Library</a>, Trondheim (NO) </div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">supply chain traceability</div>
+                <div class="modal-info-value">Fully traceable up to our best, 99% Norwegian production</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">energy source</div>
+                <div class="modal-info-value">Individual company energy supplies are not detailed. International Energy Agency (IEA), Norway: Energy Mix (2024). Hydropower accounts for 43% of total energy supply, and oil and oil products for 28%. Based on the 2023 reporting on Energy consumption by sector Norwegian industry uses 28.6% of Total Final Consumption.</div>
+            </div>
+            
+            <h3>environmental and circularity data</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">fiber renewability</div>
+                <div class="modal-info-value">100% renewable natural fiber</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">material breakdown (for circularity and recovery)</div>
+                <div class="modal-info-value">Wool: ≈99% of total material composition; virgin C1S-grade Grå Trøndersau wool. Suitable for mechanical fibre recovery; no coatings or chemical finishes. Cotton Accessories: <1% (drawstring, tags). Remove manually before fibre recycling. Notions: Button (material pending), elastic (synthetic), thread (pending). All must be removed prior to recycling.</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">transport emissions</div>
+                <div class="modal-info-value">Posten: Trondheim return shipments (studio ⇄ Oslo), low-volume parcels; estimated low-impact due to national electric fleet mix</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">carbon footprint (estimated)</div>
+                <div class="modal-info-value">&lt;10 kg CO₂e/kg, based on Nordic small-scale wool LCA values (SIFO/OsloMet 2021; EU JRC PEFCR 2018).</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">repairability</div>
+                <div class="modal-info-value">High (wool is re-mendable and re-feltable)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">recyclability</div>
+                <div class="modal-info-value">&gt;95% wool component recyclable (mechanical processing), Non-wool components fully removable, Wool suitable for reuse as felt, insulation, acoustic materials, or batting</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">bio- degradability</div>
+                <div class="modal-info-value">Yes (under natural conditions)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">end-of-life guidance</div>
+                <div class="modal-info-value">Remove cotton drawstring and tag > Remove elastic, button, thread, and all non-wool components > Shred remaining wool textile > Card into reclaimed fibre > Reuse as felt, insulation, acoustic material or compost / return to mechanical recycling</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">hazard warnings</div>
+                <div class="modal-info-value">No hazardous substances; washed with standard wool detergents</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">circularity score</div>
+                <div class="modal-info-value">High recyclability (&gt;95%) Transport footprint low due to short-distance national logistics and partial electrification of Posten fleet</div>
+            </div>
+            
+            <h3>usage and care</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">care instruction</div>
+                <div class="modal-info-value">Hand wash cold with wool detergent, air dry flat</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">durability rating</div>
+                <div class="modal-info-value">Expected lifespan &gt;10 years with maintenance</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">repair guidance</div>
+                <div class="modal-info-value">Darning / patching supported by Manufacture Oslo (optional service)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">spare components</div>
+                <div class="modal-info-value">N/A</div>
+            </div>
+            
+            <h3>compliance and legal</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">conformity</div>
+                <div class="modal-info-value">Follows EU Textile Regulation (1007/2011)</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">origin marking</div>
+                <div class="modal-info-value">Made in Norway</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">safety standards</div>
+                <div class="modal-info-value">Meets Norwegian textile safety and labelling requirements</div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">digital passport storage</div>
+                <div class="modal-info-value">Secure QR code / NFC link on product label</div>
+            </div>
+        </div>
+    </div>
 
-      'just-this': `
-        <a href="https://www.justthisandonlythat.com" target="_blank" rel="noopener">www.justthisandonlythat.com</a><br>
-        Durational performance in public space<br>
-        <p>January 1st – 31st 2024, Trøndelag (NO)</p>
-        <p>
-        We investigate the relationship between uniforms and work tasks. This 31-day performance in Trøndelag focused on the journey from concept to completion, documenting the process as it unfolded. By working with different stakeholders, we explored how ideas take shape, highlighting both successes and failures. A parallel aim of the project was to create the perfect working garment, making the evolving process an integral part of the final work.
-        </p>
-        <p>97 companies contacted in the region<br>
-        11 positive responses<br>
-        HUB borrowed for 1 month from Coop AS.<br>
-        Donations to the working garment archive.<br>
-        Costume design assistant: Joana Bruno
-        </p>
-      `,
+    <!-- About Product Journey -->
+    <div id="product-journey" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('product-journey')">&times;</span>
+            <h2>product journey</h2>
+            <div class="modal-section-menu" id="journey-menu" aria-label="journey menu">
+                <a href="#" data-journey="garment" aria-selected="true">garment</a>
+                <a href="#" data-journey="scenography">scenography</a>
+            </div>
+            <div id="cesiumContainer"></div>
+            <h3>garment</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">1</div>
+                <div class="modal-info-value">Stjørdal (NO) — <a href="https://www.ofsti.no/" target="_blank" rel="noopener noreferrer">Øfsti Søndre</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">2</div>
+                <div class="modal-info-value">Klæbu (NO) — <a href="https://www.selbuspinneri.no/" target="_blank" rel="noopener noreferrer">Selbu Spinneri</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">3</div>
+                <div class="modal-info-value">Sandnes (NO) — <a href="https://www.varpogveft.no" target="_blank" rel="noopener noreferrer">Varp & Veft</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">4</div>
+                <div class="modal-info-value">Oslo (NO) — <a href="https://www.manufacture-oslo.no/" target="_blank" rel="noopener noreferrer">Manufacture Oslo</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">5</div>
+                <div class="modal-info-value">Trondheim (NO) — <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">BUTCHER & CORREIA studio</a></div>
+            </div>
 
-      'taste-of-sound': `
-        Performance, 60 min</br>
-        <p>KunstFest, 2023 — Rotvoll Kunstnerkollektiv, Trondheim</p>
-        <p>
-        Taste of Sound explores the possibilities of multisensory input while investigating how the activation of multiple sensory impressions simultaneously — sound, flavor, and visual impressions — can alter perception. Through manipulation of these elements, our gestures aim to challenge one’s sense of flavor, unveil novel and unexpected soundscapes, and challenge conventional taste perceptions by altering the visual presentation of food.
-        </p>
-        <p>Visuals &amp; Choreography: BUTCHER &amp; CORREIA</p>
-        Sound: Klaus Ellerhusen Holm and Andreas Røysum<br>
-        Food: Martin Moen Mosti and Even Østby
-      `,
+            <h3>scenography</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">1</div>
+                <div class="modal-info-value">Stjørdal (NO) — <a href="https://www.ofsti.no/" target="_blank" rel="noopener noreferrer">Øfsti Søndre</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">2</div>
+                <div class="modal-info-value">Klæbu (NO) — <a href="https://www.selbuspinneri.no/" target="_blank" rel="noopener noreferrer">Selbu Spinneri</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">3</div>
+                <div class="modal-info-value">Trondheim (NO) — <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">BUTCHER & CORREIA studio</a></div>
+            </div>
+        </div>
+    </div>
 
-      'performance-vista2': `
-        Group exhibition<br>
-        <p>Polaroids, metal plate, straps<br>
+    <!-- About BUTCHER & CORREIA Modal -->
+    <div id="about-butcher-correia" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('about-butcher-correia')">&times;</span>
+            <h2>about us</h2>
+            <p>BUTCHER & CORREIA is an interdisciplinary artist duo based in Trondheim/Sydney. Formed in 2022, they examine perception as a political act, using sensory attunement to expose and unsettle dominant structures of seeing and knowing.</p>
+            
+            <div class="modal-info-grid">
+                <div class="modal-info-label">website</div>
+                <div class="modal-info-value"><a href="https://butchercorreia.com" target="_blank">butchercorreia.com</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">contact</div>
+                <div class="modal-info-value"><a href="mailto:studio@butchercorreia.com">studio@butchercorreia.com</a></div>
+            </div>
+            <div class="annotation-item">
+                <img src="/BCportrait.jpg" alt="polaroid" loading="lazy">
+            </div>
+        </div>
+    </div>
+
+    <!-- Annotations Modal -->
+    <div id="annotations" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('annotations')">&times;</span>
+            <h2>extensions</h2>
+            <div class="modal-section-menu" aria-label="section menu">
+                <a href="#sec-bc">BUTCHER & CORREIA</a>
+                <a href="#sec-mo">MANUFACTURE OSLO</a>
+                <a href="#sec-selbu">Selbu spinneri</a>
+                <a href="#sec-babel">BABEL</a>
+                <a href="#sec-jakob">Kunstkrom Jakob</a>
+                <a href="#sec-pink">PINK</a>
+
+                <a href="#sec-links">links</a>
+            </div>
+            
+            <h3 id="sec-bc">BUTCHER & CORREIA</h3>
+            <div class="annotations-grid">
+                <div class="gallery-item active">
+                <video autoplay muted loop playsinline preload="auto">
+                    <source src="trailersolo.mp4" type="video/mp4">
+                </video>
+                </div>
+                <div class="annotation-item">
+                    <img src="solo_map.jpg" alt="Solo map" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="01_pants_adidas.gif" alt="Adida pants" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="02_tshirt_no_brand.gif" alt="T-shirt no brand" loading="lazy">
+                </div>
+                <div class="annotation-item">
+                    <img src="03_shoes_nikes.gif" alt="Nike shoes" loading="lazy">
+                </div>
+            </div>
+
+                        <!-- Extra info toggle (right-aligned) -->
+            <div style="text-align: right; margin-top: 0.5rem;">
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+            </div>
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+                <div class="extra-grid">
+                    <figure class="annotation-item">
+                        <img src="janome.gif" alt="Janome embroidery process" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="Flier_forlengelser-solo1.gif" alt="publication" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="solo_lilizaneta.jpg" alt="SOLO by Lili Zaneta" loading="lazy">
+                        <figcaption>photo: Lili Zaneta</figcaption>
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="solo_lilizaneta2.jpg" alt="SOLO by Lili Zaneta (2)" loading="lazy">
+                        <figcaption>photo: Lili Zaneta</figcaption>
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="solo_lilizaneta3.jpg" alt="SOLO by Lili Zaneta (3)" loading="lazy">
+                        <figcaption>photo: Lili Zaneta</figcaption>
+                    </figure>
+                    <figure class="annotation-item">
+                    <img src="05_forlengelser.gif" alt="Forlengelser" loading="lazy">
+                        </figure>
+                   <figure class="annotation-item">
+                        <img src="04_SOLO.gif" alt="SOLO" loading="lazy">
+                   </figure>
+                </div>
+            </div>
+
+               <h3 id="sec-mo">MANUFACTURE OSLO</h3>
+            
+            <h4>Project Background</h4>
+            <p>The first meeting with the dancer, Rannei Grenne, took place at our Manufacture Oslo office at Kabelgata 13 on Tuesday 13 September at 13:00. She brought her favourite rehearsal uniform: a pair of sweatpants and an oversized T-shirt, both in soft, stretchy materials that had become worn and comfortable through years of use.</p>
+            <p>The initial idea was to recreate this uniform using materials that are fully Norwegian in both fibre and production. Norwegian wool was essential.</p>
+
+            <h4>Design Challenges</h4>
+            <p>The main challenge was recreating the uniform as authentically as possible while making necessary adjustments to accommodate the very different behaviours of the new materials. The original garments were made from elastic jersey, whereas the new ones would be made from a rigid woven wool. We also considered the tactile experience of wearing wool, which can feel drier or itchier, but Rannei assured us this would not be a problem for her.</p>
+
+            <h4>Key Design Changes</h4>
+            <p>One of the main modifications to the top was introducing a keyhole opening at the back neckline. We also incorporated subtle details inspired by Norwegian bunad heritage. These additions felt both functional and poetically fitting, transforming a plain T-shirt into something more intentional.</p>
+            <p>We chose not to include interfacing in the neckline to avoid introducing materials that were not Norwegian. Apart from this, we kept most of the original T-shirt details.</p>
+            <p>For the trousers, the inseam and crotch area were widened to maintain the same freedom of movement Rannei was used to. Because the original sweatpants were stretchy and the wool is not, this adjustment was essential. We added pockets and kept the elastic waistband to preserve the original functionality and look.</p>
+
+            <h4>Fitting</h4>
+            <p>During the fitting, Rannei tried on the outfit and we agreed on several modifications to the top. The woven fabric had a different drape and carried more volume, causing it to lift away from the body. We therefore adjusted the sleeves as well as the length and width of the body.</p>
+            <p>For the trousers, we shortened the legs to prevent excessive gathering at the hem, resulting in a cleaner silhouette. The elastic waist was also adjusted to balance the fabric's weight and suit the dancer's waist-to-hip ratio.</p>
+
+            <h3 id="sec-selbu">SELBU SPINNERI</h3>
+            <p>Ulla dere har kjøpt er ull fra Grå Trøndersau fra Trøndelag av ullklassen C1S. C1S er den «beste» kvaliteten av grå ull. Denne ulla er like fin som hvit ull av tilsvarende klasse, men fordi den er grå, er den mye lavere priset i ullprisene. Vi kjøper ulla fra lokale bønder og fra det lokale ullmottaket i Malvik. Sauene ulla kommer fra, har helt definitivt et nummer, det har alle sauer og produksjonsdyr som holdes etter reglene i Norge. De fleste sauene har også navn. De som har gamle saueraser som Grå Trøndersau er som regel veldig glade i dyrene sine og gir dem godt stell og mye omsorg. Noen ganger er ulla vi kjøper puttet i sekker med navnet til sauen, «Milla», «Lita», «Rosa», «Lillelammet» og «Rubus» er noen navn som har stått. I våre systemer kan vi spore ulla tilbake til gården den kommer fra, eller hvilken ball fra ullmottaket. Ullmottaket har videre sporbarhet til gård og individ.</p>
+            <p>Gårdene vi kjøper fra, bruker som regel en fast klipper, men dette er en prosess som foregår på gården, ikke hos oss, så vi har ikke navn på klipperen bak ulla.</p>
+            <p>Vi sorterer all ulla vi bruker selv. Den sorteres etter lengde på fiberen, tykkelse på fiberen, krimp (hvor bølgete den er) og farge. Summen av alle disse faktorene gjør at vi sorterer til forskjellige typer garn, teppegarn og filting. Ved å sortere slik og tilby en bredde av produkter, kan vi bruke nesten all ull vi får inn, fordi vi har produkter som bruker alle kvalitetene av ull. Selv «resteulla» selger vi til folk som bruker det til å isolere biler, uthus, forsendelser og til å dekke i hagen.</p>
+            <p>Det er vannkrevende å vaske ull, men vi er så heldige å være i et område med veldig god tilgang på vann, så belastningen på omgivelsene av vårt vannforbruk er svært liten. Vi driver i så liten skala at vårt gråvann går inn i kommunens renseanlegg uten å belaste det ekstra. Vi renser eller gjenbruker ikke vaskevannet vårt selv.</p>
+            <p>Vi håper fremtiden til spinneriet er god. Som liten bedrift, med et sterkt bærekraftfokus, er det veldig krevende å få det til å gå fra måned til måned. Vi er veldig sårbare for svingninger i sesong og mer langvarige trender. Vi håper den etterspørselen etter lokale tekstiler vi har opplevd vil fortsette å øke og at det kommer flere bedrifter som kan gjøre andre steg av produksjonskjeden. Maskinstrikk, veving, filting og søm spesialisert på norsk ull er produksjoner vi håper vokser frem i nærområdet snart.</p>
+
+            <h3 id="sec-babel">BABEL</h3>
+            <!-- Extra info toggle (right-aligned) -->
+            <div style="text-align: right; margin-top: 0.5rem;">
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+            </div>
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+                <div class="extra-grid">
+                    <figure class="annotation-item">
+                        <img src="Hose_1.gif" alt="hose" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="flier_stand.gif" alt="publication stand" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="clock.gif" alt="Janome embroidery process" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="Geophone.gif" alt="geophone" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="Speaker_brown-blue.gif" alt="speakers" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="Yamaha_mixer.gif" alt="yamaha mixer" loading="lazy">
+                    </figure>
+                    <figure class="annotation-item">
+                        <img src="clothe_stand_1.gif" alt="Clothe stand" loading="lazy">
+                    </figure>
+                </div>
+            </div>
+            
+            <h3 id="sec-jakob">Kunstkrom Jakob</h3>
+            <!-- Extra info toggle (right-aligned) -->
+            <div style="text-align: right; margin-top: 0.5rem;">
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+            </div>
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+                <div class="extra-grid">
+                <p>more information coming.</p>
+                </div>
+            </div>
+            
+            <h3 id="sec-pink">PINK</h3>
+            <!-- Extra info toggle (right-aligned) -->
+            <div style="text-align: right; margin-top: 0.5rem;">
+                <button class="bc-extra-toggle" type="button" aria-expanded="false" style="background: transparent; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; line-height: 1;">+</button>
+            </div>
+            <div class="bc-extra-content" style="display: none; margin-top: 0.5rem;">
+                <div class="extra-grid">
+                <p>more information coming.</p>
+                </div>
+            </div>
+            
+            <div class="links-section">
+                <h3 id="sec-links">links</h3>
+                <a href="https://www.animalia.no/contentassets/d91150be325e4d72b5b814f83b92b2f8/202961-animalia-ullstandard-engelsk-04.pdf" target="_blank">Animalia Wool Standard</a>
+                <a href="https://biblioteket.trondheim.kommune.no/innhold/om-biblioteket/avdelinger/buranbibliotek/" target="_blank">Buran Bibliotek</a>
+                <a href="https://butchercorreia.com" target="_blank">BUTCHER & CORREIA</a>
+                <a href="/solo/Menneskekroppen%20er%20i%20f%C3%B8rste%20rekke%20der%20for%20a%CC%8A%20fullf%C3%B8re%20en%20r%C3%B8mningsplan_tommy_olson.pdf" download target="_blank">Review by Tommy Olson / Norsk Shakespearetidsskrift</a>
+                <a href="https://data.europa.eu/en/news-events/news/eus-digital-product-passport-advancing-transparency-and-sustainability" target="_blank">EU on Digital Product Passport</a>
+                <a href="https://www.manufacture-oslo.no/" target="_blank">Manufacture Oslo</a>
+                <a href="https://manufacture-oslo.dpp.page/0a737a8d-5ff3-4d58-b6cc-0df512d52045" target="_blank">Manufacture Oslo / Digital Product Passport</a>
+                <a href="https://www.nsg.no/gra-trondersau/" target="_blank">Trønder Sheep</a>
+                <a href="https://www.ofsti.no/" target="_blank">Øfsti Søndre/</a>
+                <a href="https://www.ranneigrenne.com/" target="_blank">Rannei Grenne</a>
+                <a href="https://www.selbuspinneri.no/" target="_blank">Selbu Spinneri</a>
+                <a href="https://standard.no/fagomrader/digitale-produktpass-dpp/" target="_blank">Standard Norge - Digitale produktpass (DPP)</a>
+                <a href="https://www.varpogveft.no/en/pages/save-the-black-sheep" target="_blank">Save The Black Sheep</a>
+                <a href="https://www.villveis.com" target="_blank">Villveis</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global error guard to avoid broken UI and surface issues
+        window.addEventListener('error', function(e){
+            console.error('[App Error]', e.message, 'at', e.filename + ':' + e.lineno);
+        });
+        let currentImageIndex = 1;
         
-        <p>net,nett, nether, 2023<br>
-        Heimdal Kunstforening, Trondheim (NO)</p>
-      `,
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (modalId === 'product-journey') {
+                try {
+                    if (typeof initProductJourneyMapLibre === 'function') {
+                        initProductJourneyMapLibre();
+                    }
+                } catch (err) {
+                    console.error('[MapLibre] Map init error:', err);
+                }
+            }
+        }
 
-      'performance-vista': `
-        Group exhibition<br>
-        Radio, anemometer, support jacks, lifting straps, Hoeflon C10 crane<br>
-        Variable dimensions
-        <p>Unlikely the same as yesterday, 2022 — Grenseløs, Trondheim (NO)</p>
-        <p>Performance Vista is a pleasing sight, between a long narrow row of trees, a succession of anticipated events, a vision, a view of a series of actions in the mind, played out, unfolding retrospectively and prospectively. Synchronising these actions into a perfect frame, a painting to portray a memory that can be either baffling or very ordinary.</p>
-        <p><a href="https://vimeo.com/815321834" target="_blank" rel="noopener">www.vimeo.com/815321834</a></p>
-        <a href="https://www.performancevista.com" target="_blank" rel="noopener">www.performancevista.com</a><br>
-        @performancevista
-      `
-    };
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
 
-    const projectExtras = {
-      'solo': `
-        <strong>Digital product passport (DPP)</strong><br>
-        <p>The project SOLO aligns with the emerging EU Digital Product Passport framework by foregrounding material transparency and lifecycle awareness. By tracing the origins, transformations, and future pathways of the materials we work with, the project mirrors the DPP’s emphasis on clear, accessible information about production, use, and reuse. SOLO uses artistic practice to make these processes visible and tangible, connecting creative work with broader shifts toward accountability, circularity, and informed engagement with the objects and systems that surround us.</p>
-        <p>
-        <a href="/solo" target="_blank" rel="noopener">link to DPP</a>
-        </p>
+        function showImage(index) {
+            const items = document.querySelectorAll('.gallery-item');
+            const dots = document.querySelectorAll('.gallery-dot');
+            
+            // Hide all items and deactivate all dots
+            items.forEach(item => item.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show selected item and activate corresponding dot
+            items[index - 1].classList.add('active');
+            dots[index - 1].classList.add('active');
+            
+            currentImageIndex = index;
+        }
 
-      `,
-      'sound-of-things': ``,
-      'just-this': `
-        <strong>Manifesto</strong>
-        <p>Just This And Only That believes in the collective adoption of sustainable living. Communication by asking and answering one another, guides us towards shared action.</p>
-        <p>Just This And Only That aims to transform overlooked aspects into valuable contributions that are rooted in the local community. By intertwining creativity and daily existence, we strive to achieve sustainable living.</p>
-        <p>Just This And Only That aims to create artistic constellations that promote shared responsibility, unexpected discoveries, and evolving identities.</p>
-        <p>Just This And Only That allocates resources in the support of freedom of expression, shelter, and movement.</p>
-        <p>Just This And Only That emphasises materiality, to underscore the significance of chosen materials, their texture, physicality, and contact with the body.</p>
-        <p>Just This And Only That emphasises present moment awareness to fully appreciate our surroundings and the artistic process.</p>
-        <p>Just This And Only That focuses on urgency to address environmental issues through actions that move within the distractions.</p>
-        <p>Just This And Only That aims to reduce our environmental footprint by encouraging sustainable choices and responsible practices.</p>
-        <p>Just This And Only That embraces Intersectionality by acknowledging the link between climate justice and social justice, to engage with these overlaps and consider the wider impact.</p>
-      `,
-     
-      'taste-of-sound': ``,
-      'performance-vista2': ``,
-      'performance-vista': ``
-    };
+        function nextImage() {
+            const totalImages = document.querySelectorAll('.gallery-item').length;
+            const nextIndex = currentImageIndex >= totalImages ? 1 : currentImageIndex + 1;
+            showImage(nextIndex);
+        }
 
-    // Map of project images (fill with files from `tos/` folder). Empty by default.
-    const projectImages = {
-      'solo': [
-        { src: 'solo/solo_white.mp4', caption: 'Manufacture Oslo', credit: 'Manufacture Oslo' },
+        function previousImage() {
+            const totalImages = document.querySelectorAll('.gallery-item').length;
+            const prevIndex = currentImageIndex <= 1 ? totalImages : currentImageIndex - 1;
+            showImage(prevIndex);
+        }
 
-        ],
-      'sound-of-things': [
-          { src: 'tsot/tsot.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tsot/tsot_2.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tsot/tsot_3.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tsot/tsot_4.jpg', caption: 'Thor E. Leirtrø', credit: 'Thor E. Leirtrø' },
-          { src: 'tsot/tsot_5.jpg', caption: 'Thor E. Leirtrø', credit: 'Thor E. Leirtrø' }
-        ],
-      'taste-of-sound': [
-          { src: 'tos/ToS_1.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tos/ToS_2.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tos/ToS_3.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tos/ToS_4.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tos/ToS_5.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tos/ToS_6.jpg', caption: 'Lili Zaneta', credit: 'Lili Zaneta' },
-          { src: 'tos/ToS_7.jpg', caption: '', credit: 'B&C' }
-        ],
-      'performance-vista2': [
-          { src: 'pv2/pv2.jpg', caption: 'Daniel V. Hansen', credit: 'Daniel Vincent Hansen' }
-        ],
-      'performance-vista': [
-          { src: 'pv/PV_00.jpg', caption: '', credit: 'B&C' },
-          { src: 'pv/PV_01.jpg', caption: 'Mikkel Marhaug', credit: 'Mikkel Marhaug' },
-          { src: 'pv/PV_02.gif', caption: '', credit: 'B&C' },
-          { src: 'pv/PV_03.jpg', caption: '', credit: 'B&C' },
-          { src: 'pv/PV_05.jpg', caption: '', credit: 'B&C' },
-          { src: 'pv/PV_06.jpg', caption: '', credit: 'B&C' },
-          { src: 'pv/PV_07.jpg', caption: '', credit: 'B&C' },
-          { src: 'pv/PV_08.jpg', caption: '', credit: 'B&C' },
-        ],
-      'just-this': [
-          { src: 'jtaot/JTAOT_1.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_2.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_3.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_5.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_6.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_7.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_8.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_9.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_10.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_11.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_12.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_13.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_14.jpg', caption: '', credit: 'B&C' },
-          { src: 'jtaot/JTAOT_15.jpg', caption: '', credit: 'B&C' },
-        ]
-    };
-  // Feature flag: show captions under images when true. Set true so captions are visible; edit captions in projectImages below.
-  const SHOW_CAPTIONS = true;
-  // helper: accept either a string (legacy) or an object { src, alt, caption }
-  function normalizeEntry(entry) {
-    if (!entry) return { src: '', alt: '', caption: '', credit: '', source: '', license: '' };
-    if (typeof entry === 'string') return { src: entry, alt: '', caption: '', credit: '', source: '', license: '' };
-    return {
-      src: String(entry.src || ''),
-      alt: String(entry.alt || ''),
-      caption: String(entry.caption || ''),
-      credit: String(entry.credit || ''),
-      source: String(entry.source || ''),
-      license: String(entry.license || '')
-    };
-  }
+        function currentImage(index) {
+            showImage(index);
+        }
 
-  // small helper to escape minimal HTML for injected attributes/captions
-  function escapeHtml(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+
+        // Keyboard navigation for gallery
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousImage();
+            } else if (event.key === 'ArrowRight') {
+                nextImage();
+            }
+        });
+
+        // Fix gallery height to tallest item to avoid layout fluctuation
+        function computeGalleryHeight() {
+            const gallery = document.querySelector('.gallery');
+            if (!gallery) return;
+            const items = document.querySelectorAll('.gallery-item');
+            let maxHeight = 0;
+
+            items.forEach(item => {
+                // Ensure item is measurable
+                const wasActive = item.classList.contains('active');
+                if (!wasActive) item.style.display = 'block';
+
+                const media = item.querySelector('img, video');
+                if (media) {
+                    const h = media.getBoundingClientRect().height || media.offsetHeight;
+                    if (h > maxHeight) maxHeight = h;
+                }
+
+                if (!wasActive) item.style.display = ''; // revert to stylesheet
+            });
+
+            if (maxHeight > 0) {
+                gallery.style.minHeight = Math.ceil(maxHeight) + 'px';
+            }
+        }
+
+        // Recompute after media loads and on resize
+        window.addEventListener('load', computeGalleryHeight);
+        window.addEventListener('resize', computeGalleryHeight);
+        // Also recompute after changing slides
+        const _showImage = showImage;
+        showImage = function(index) {
+            _showImage(index);
+            computeGalleryHeight();
+        }
+
+        // Leaflet map: token-free basemap and simple journeys
+        // (Removed Leaflet map implementation)
+
+            // Three.js globe: minimal sphere with markers and routes
+            function initProductJourneyGlobe() {
+                const container = document.getElementById('globe3d');
+                if (!container || container.dataset.initialized === 'true' || !window.THREE) return;
+
+                const tooltip = document.getElementById('globe-tooltip');
+
+                const width = container.clientWidth;
+                const height = container.clientHeight || container.clientWidth;
+                const scene = new THREE.Scene();
+                const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(width, height);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                container.appendChild(renderer.domElement);
+
+                const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
+                camera.position.set(0, 0, 3.2);
+
+                const group = new THREE.Group();
+                scene.add(group);
+
+                const radius = 1.2;
+                const globeGeom = new THREE.SphereGeometry(radius, 64, 64);
+                const globeMat = new THREE.MeshStandardMaterial({
+                    color: 0x001a66,
+                    roughness: 0.9,
+                    metalness: 0.0,
+                    emissive: 0x000000
+                });
+                const globe = new THREE.Mesh(globeGeom, globeMat);
+                group.add(globe);
+
+                const light1 = new THREE.DirectionalLight(0xffffff, 1.0);
+                light1.position.set(3, 2, 4);
+                scene.add(light1);
+                const amb = new THREE.AmbientLight(0xffffff, 0.35);
+                scene.add(amb);
+
+                // Helpers: lat/lon to 3D and to screen
+                function latLonToVec3(lat, lon, r = radius) {
+                    const phi = (90 - lat) * (Math.PI / 180);
+                    const theta = (lon + 180) * (Math.PI / 180);
+                    const x = -r * Math.sin(phi) * Math.cos(theta);
+                    const z = r * Math.sin(phi) * Math.sin(theta);
+                    const y = r * Math.cos(phi);
+                    return new THREE.Vector3(x, y, z);
+                }
+
+                function toScreenPosition(vec3) {
+                    const v = vec3.clone();
+                    v.project(camera);
+                    const sx = (v.x * 0.5 + 0.5) * renderer.domElement.clientWidth;
+                    const sy = (-(v.y * 0.5) + 0.5) * renderer.domElement.clientHeight;
+                    return { x: sx, y: sy };
+                }
+
+                const garment = [
+                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding' },
+                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning' },
+                    { label: '3', lat: 58.852,   lon: 5.735,     name: 'Varp & Veft', info: 'weaving' },
+                    { label: '4', lat: 59.924,   lon: 10.813,    name: 'Manufacture Oslo', info: 'construction' },
+                    { label: '5', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'finishing' }
+                ];
+
+                // Markers
+                const markerMat = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+                const markers = [];
+                garment.forEach(p => {
+                    const pos = latLonToVec3(p.lat, p.lon, radius + 0.01);
+                    const m = new THREE.Mesh(new THREE.SphereGeometry(0.015, 12, 12), markerMat);
+                    m.position.copy(pos);
+                    m.userData = p;
+                    group.add(m);
+                    markers.push(m);
+                });
+
+                // Route arcs (simple straight segments on sphere surface for now)
+                const routeMat = new THREE.LineBasicMaterial({ color: 0x0000ff, linewidth: 1 });
+                for (let i = 0; i < garment.length - 1; i++) {
+                    const a = latLonToVec3(garment[i].lat, garment[i].lon);
+                    const b = latLonToVec3(garment[i+1].lat, garment[i+1].lon);
+                    const curve = new THREE.CatmullRomCurve3([a, b]);
+                    const pts = curve.getPoints(16);
+                    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+                    const line = new THREE.Line(geo, routeMat);
+                    group.add(line);
+                }
+
+                // Basic drag rotate
+                let isDragging = false;
+                let prev = { x: 0, y: 0 };
+                container.addEventListener('pointerdown', e => { isDragging = true; prev.x = e.clientX; prev.y = e.clientY; });
+                window.addEventListener('pointerup', () => { isDragging = false; });
+                container.addEventListener('pointermove', e => {
+                    if (!isDragging) return;
+                    const dx = (e.clientX - prev.x) / container.clientWidth;
+                    const dy = (e.clientY - prev.y) / container.clientHeight;
+                    group.rotation.y += dx * Math.PI;
+                    group.rotation.x += dy * Math.PI * 0.5;
+                    group.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, group.rotation.x));
+                    prev.x = e.clientX; prev.y = e.clientY;
+                });
+
+                // Hover picking using raycaster
+                const raycaster = new THREE.Raycaster();
+                const mouse = new THREE.Vector2();
+                container.addEventListener('pointermove', e => {
+                    const rect = renderer.domElement.getBoundingClientRect();
+                    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                    mouse.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+                    raycaster.setFromCamera(mouse, camera);
+                    const hits = raycaster.intersectObjects(markers, false);
+                    if (hits.length > 0) {
+                        const hit = hits[0].object;
+                        const p = hit.userData;
+                        const screen = toScreenPosition(hit.position);
+                        tooltip.textContent = `${p.name} — ${p.info}`;
+                        tooltip.style.left = `${screen.x}px`;
+                        tooltip.style.top = `${screen.y}px`;
+                        tooltip.style.display = 'block';
+                    } else {
+                        tooltip.style.display = 'none';
+                    }
+                });
+
+                function animate() {
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(animate);
+                }
+                animate();
+
+                // Handle resize
+                function onResize() {
+                    const w = container.clientWidth;
+                    const h = container.clientHeight || w;
+                    renderer.setSize(w, h);
+                    camera.aspect = w / h;
+                    camera.updateProjectionMatrix();
+                }
+                window.addEventListener('resize', onResize);
+
+                container.dataset.initialized = 'true';
+            }
+
+            // MapLibre GL: token-free flat map with red borders and toggles
+            function initProductJourneyMapLibre() {
+                const container = document.getElementById('cesiumContainer');
+                if (!container || container.dataset.initialized === 'true' || !window.maplibregl) return;
+
+                const map = new maplibregl.Map({
+                    container: 'cesiumContainer',
+                    style: {
+                        version: 8,
+                        sources: {
+                            'raster-tiles': {
+                                type: 'raster',
+                                tiles: [
+                                    'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'
+                                ],
+                                tileSize: 256
+                            }
+                        },
+                        layers: [
+                            { id: 'base', type: 'raster', source: 'raster-tiles', minzoom: 0, maxzoom: 20 }
+                        ]
+                    },
+                    center: [10.5, 63.0],
+                    zoom: 4.8,
+                    pitch: 0,
+                    bearing: 0,
+                    attributionControl: false
+                });
+
+                const garmentPts = [
+                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding', url: 'https://www.ofsti.no' },
+                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning', url: 'https://www.selbuspinneri.no' },
+                    { label: '3', lat: 58.852,   lon: 5.735,     name: 'Varp & Veft', info: 'weaving', url: 'https://www.varpogveft.no' },
+                    { label: '4', lat: 59.924,   lon: 10.813,    name: 'Manufacture Oslo', info: 'construction', url: 'https://www.manufacture-oslo.com' },
+                    { label: '5', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'finishing', url: 'https://www.butchercorreia.com' }
+                ];
+                const scenographyPts = [
+                    { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding', url: 'https://www.ofsti.no' },
+                    { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning', url: 'https://www.selbuspinneri.no' },
+                    { label: '3', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'felting', url: 'https://www.butchercorreia.com' }
+                ];
+
+                function toLineString(points) {
+                    return {
+                        type: 'Feature',
+                        geometry: { type: 'LineString', coordinates: points.map(p => [p.lon, p.lat]) }
+                    };
+                }
+
+                map.on('load', () => {
+                    const hoverDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth >= 900 && window.innerHeight >= 600;
+                    function attachHover(marker, popup) {
+                        if (!hoverDesktop) return;
+                        const el = marker.getElement();
+                        el.addEventListener('mouseenter', () => { try { marker.togglePopup(); } catch(_){} });
+                        el.addEventListener('mouseleave', () => { try { marker.togglePopup(); } catch(_){} });
+                    }
+                    // Red borders
+                    map.addSource('countries', {
+                        type: 'geojson',
+                        data: 'https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson'
+                    });
+                    map.addLayer({ id: 'borders', type: 'line', source: 'countries', paint: { 'line-color': '#ff0000', 'line-width': 1 } });
+
+                    // Routes
+                    map.addSource('garment-route', { type: 'geojson', data: toLineString(garmentPts) });
+                    map.addLayer({ id: 'garment-route', type: 'line', source: 'garment-route', paint: { 'line-color': '#0000ff', 'line-width': 2, 'line-dasharray': [2,2] } });
+
+                    map.addSource('sceno-route', { type: 'geojson', data: toLineString(scenographyPts) });
+                    map.addLayer({ id: 'sceno-route', type: 'line', source: 'sceno-route', paint: { 'line-color': '#ff0000', 'line-width': 2, 'line-dasharray': [2,2] }, layout: { visibility: 'none' } });
+
+                    // Markers
+                    function makeMarker(color, text) {
+                        const el = document.createElement('div');
+                        el.style.width = '18px'; el.style.height = '18px'; el.style.borderRadius = '50%';
+                        el.style.background = color; el.style.color = '#fff';
+                        el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center';
+                        el.style.fontFamily = 'PT Mono, monospace'; el.style.fontSize = '10px';
+                        el.style.lineHeight = '18px'; el.style.textAlign = 'center';
+                        el.textContent = text; el.style.cursor = 'pointer';
+                        return el;
+                    }
+
+                    const garmentMarkers = garmentPts.map(p => {
+                        const popup = new maplibregl.Popup({ closeButton: !hoverDesktop, offset: 12 })
+                            .setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`);
+                        const m = new maplibregl.Marker({ element: makeMarker('rgb(0,0,255)', p.label) })
+                            .setLngLat([p.lon, p.lat])
+                            .setPopup(popup)
+                            .addTo(map);
+                        attachHover(m, popup);
+                        return m;
+                    });
+
+                    const scenoMarkers = scenographyPts.map(p => {
+                        const popup = new maplibregl.Popup({ closeButton: !hoverDesktop, offset: 12 })
+                            .setHTML(`<div style="background:#00f;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`);
+                        const m = new maplibregl.Marker({ element: makeMarker('rgb(0,0,255)', p.label) })
+                            .setLngLat([p.lon, p.lat])
+                            .setPopup(popup)
+                            .addTo(map);
+                        attachHover(m, popup);
+                        m.getElement().style.display = 'none';
+                        return m;
+                    });
+
+                    // Toggle behavior
+                    const menu = document.getElementById('journey-menu');
+                    function setActive(which) {
+                        const links = menu ? menu.querySelectorAll('a[data-journey]') : [];
+                        links.forEach(a => {
+                            const active = a.dataset.journey === which;
+                            a.style.color = active ? 'rgb(255, 0, 0)' : '';
+                            a.setAttribute('aria-selected', active ? 'true' : 'false');
+                        });
+                        if (which === 'garment') {
+                            garmentMarkers.forEach(m => m.getElement().style.display = 'block');
+                            scenoMarkers.forEach(m => m.getElement().style.display = 'none');
+                            map.setLayoutProperty('garment-route', 'visibility', 'visible');
+                            map.setLayoutProperty('sceno-route', 'visibility', 'none');
+                        } else {
+                            garmentMarkers.forEach(m => m.getElement().style.display = 'none');
+                            scenoMarkers.forEach(m => m.getElement().style.display = 'block');
+                            map.setLayoutProperty('garment-route', 'visibility', 'none');
+                            map.setLayoutProperty('sceno-route', 'visibility', 'visible');
+                        }
+                    }
+                    if (menu) {
+                        menu.addEventListener('click', (e) => {
+                            const link = e.target.closest('a[data-journey]');
+                            if (!link) return;
+                            e.preventDefault();
+                            setActive(link.dataset.journey);
+                        });
+                    }
+                    setActive('garment');
+
+                    container.dataset.initialized = 'true';
+                    container.__map = map;
+                });
+            }
+
+        // Toggle play/pause when clicking on videos (no icon)
+        function bindVideoClickToggle() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.style.cursor = 'pointer';
+                video.addEventListener('click', () => {
+                    if (video.paused) video.play(); else video.pause();
+                });
+            });
+        }
+        // Bind after DOM ready
+        window.addEventListener('DOMContentLoaded', bindVideoClickToggle);
+
+        // Smooth scroll inside annotations modal for section menu
+        (function initModalSectionMenu(){
+            const modal = document.getElementById('annotations');
+            if (!modal) return;
+            modal.addEventListener('click', (e) => {
+                const link = e.target.closest('.modal-section-menu a[href^="#"]');
+                if (!link) return;
+                e.preventDefault();
+                const targetId = link.getAttribute('href').slice(1);
+                const target = modal.querySelector('#' + CSS.escape(targetId));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        })();
+
+        // Show a small blue spinner on images while they load
+        (function initImageLoadingSpinners(){
+            function wrapWithLoader(img){
+                if (!img || img.dataset.loaderWrapped === 'true') return;
+                const wrapper = document.createElement('span');
+                wrapper.className = 'img-loader-wrapper';
+                const spinner = document.createElement('span');
+                spinner.className = 'img-loader-spinner';
+                // Insert wrapper before image and move image inside
+                img.parentNode.insertBefore(wrapper, img);
+                wrapper.appendChild(img);
+                wrapper.appendChild(spinner);
+                img.dataset.loaderWrapped = 'true';
+                // Delayed show (avoid flicker) and minimum display duration
+                const showDelay = 100; // ms before showing spinner (reduce to improve visibility)
+                const minVisible = 300; // ms minimum visible once shown
+                let showTimer = null;
+                let visibleAt = 0;
+                const show = () => {
+                    if (spinner.style.display !== 'none') return; // already showing
+                    spinner.style.display = '';
+                    visibleAt = Date.now();
+                };
+                const hide = () => {
+                    if (visibleAt === 0) {
+                        // spinner not shown yet: cancel delayed show
+                        if (showTimer) clearTimeout(showTimer);
+                        spinner.style.display = 'none';
+                        return;
+                    }
+                    const elapsed = Date.now() - visibleAt;
+                    const remaining = Math.max(0, minVisible - elapsed);
+                    setTimeout(() => { spinner.style.display = 'none'; }, remaining);
+                };
+                // Initially hide spinner; schedule delayed show if not instantly complete
+                spinner.style.display = 'none';
+                if (img.complete && img.naturalWidth > 0) {
+                    // Already loaded, no spinner needed
+                } else {
+                    showTimer = setTimeout(show, showDelay);
+                    img.addEventListener('load', hide, { once: true });
+                    img.addEventListener('error', hide, { once: true });
+                }
+            }
+            // Apply to gallery and all modal images
+            const imgs = document.querySelectorAll('.gallery img, .modal-content img');
+            imgs.forEach(wrapWithLoader);
+            // Observe future images added/changed (e.g., after toggles)
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach(m => {
+                    m.addedNodes.forEach(node => {
+                        if (node && node.nodeType === 1) {
+                            if (node.tagName === 'IMG') wrapWithLoader(node);
+                            const nested = node.querySelectorAll ? node.querySelectorAll('img') : [];
+                            nested.forEach(wrapWithLoader);
+                        }
+                    });
+                });
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        })();
+
+        // Right-aligned plus/minus toggles (supports multiple sections)
+        (function initBcExtraToggles(){
+            const buttons = document.querySelectorAll('.bc-extra-toggle');
+            if (!buttons.length) return;
+            buttons.forEach(btn => {
+                const wrapper = btn.parentElement;
+                const content = wrapper ? wrapper.nextElementSibling : null;
+                if (!content || !content.classList.contains('bc-extra-content')) return;
+                // Initialize state
+                btn.setAttribute('aria-expanded', 'false');
+                content.style.display = 'none';
+                btn.addEventListener('click', () => {
+                    const isOpen = content.style.display !== 'none';
+                    content.style.display = isOpen ? 'none' : 'block';
+                    btn.textContent = isOpen ? '+' : '-';
+                    btn.setAttribute('aria-expanded', String(!isOpen));
+                });
+            });
+        })();
+    </script>
+    <script>
+        // Blue cursor trail (smooth, lightweight)
+        (function enableCursorTrail() {
+            let lastTime = 0;
+            const minInterval = 20; // ms, limit creation rate
+            const maxDots = 60; // cap number of dots to avoid buildup
+            const dots = [];
+
+            function addDot(x, y) {
+                const dot = document.createElement('div');
+                dot.className = 'cursor-trail-dot';
+                dot.style.left = x + 'px';
+                dot.style.top = y + 'px';
+                document.body.appendChild(dot);
+                dots.push(dot);
+                if (dots.length > maxDots) {
+                    const old = dots.shift();
+                    if (old && old.parentNode) old.parentNode.removeChild(old);
+                }
+                // Remove after animation ends
+                setTimeout(() => {
+                    if (dot && dot.parentNode) dot.parentNode.removeChild(dot);
+                }, 750);
+            }
+
+            window.addEventListener('mousemove', (e) => {
+                const now = performance.now();
+                if (now - lastTime < minInterval) return;
+                lastTime = now;
+                addDot(e.clientX, e.clientY);
+            });
+        })();
+    </script>
     
-    // Render a simple responsive gallery into a container element
-    // Ensure the container has the `project-gallery` class so CSS targeting
-    // `.detail-col-left .project-gallery .project-figure { width: 100% }` applies.
-    function renderGallery(containerEl, srcArray) {
-      if (!containerEl) return;
-      // remove any vertical-gallery class from the container (we'll use internal wrappers)
-      containerEl.classList.remove('vertical-gallery');
+    <!-- Favicon Image Above Footer -->
+    <div style="text-align: center; margin-top: 0.3rem;">
+        <img src="/favicon.PNG" alt="favicon" width="32" height="32">
+    </div>
 
-      if (!srcArray || srcArray.length === 0) {
-        containerEl.innerHTML = '';
-        return;
-      }
-
-      function mediaMarkup(entry, i) {
-        const e = normalizeEntry(entry);
-        const s = String(e.src || '').trim();
-        const lower = s.toLowerCase();
-        const altText = e.alt || `Image ${i+1}`;
-
-        // video files -> autoplaying, muted, looping <video>
-        if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
-          const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
-          return `<figure class="project-figure" tabindex="0"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video>${e.caption && SHOW_CAPTIONS ? `<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption>` : ''}</figure>`;
-        }
-
-        // GIFs -> render as <img> but do not lazy-load so animation starts immediately
-        if (lower.endsWith('.gif')) {
-          return `<figure class="project-figure" tabindex="0"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image">${e.caption && SHOW_CAPTIONS ? `<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption>` : ''}</figure>`;
-        }
-
-        // default images -> lazy-load
-        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image">`;
-        // optionally include caption
-        if (SHOW_CAPTIONS && e.caption) {
-          return `<figure class="project-figure" tabindex="0">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption></figure>`;
-        }
-        return `<figure class="project-figure" tabindex="0">${imgHtml}</figure>`;
-      }
-
-      
-
-      // wrap figures in an internal .project-gallery so CSS selectors like
-      // `.detail-col-left .project-gallery .project-figure` match correctly
-      const inner = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
-      containerEl.innerHTML = `<div class="project-gallery">${inner}</div>`;
-      // Ensure figures fill the column (use inline style to override any stubborn CSS)
-      const figs = containerEl.querySelectorAll('.project-figure');
-      figs.forEach(f => {
-        f.style.width = '100%';
-        f.style.margin = '0';
-      });
-    }
-
-    // Render a vertical stacked gallery used for taste-of-sound and similar projects
-    function renderVerticalGallery(containerEl, srcArray) {
-      if (!containerEl) return;
-      if (!srcArray || srcArray.length === 0) {
-        containerEl.innerHTML = '';
-        containerEl.classList.remove('vertical-gallery');
-        return;
-      }
-      // vertical galleries use an internal wrapper so the container element stays
-      // as `.detail-col-left` and our CSS selectors continue to work.
-      containerEl.classList.remove('project-gallery');
-      containerEl.classList.add('vertical-gallery');
-
-      // vertical gallery uses same normalization + markup helper
-      function mediaMarkup(entry, i) {
-        const e = normalizeEntry(entry);
-        const s = String(e.src || '').trim();
-        const lower = s.toLowerCase();
-        const altText = e.alt || `Image ${i+1}`;
-
-        if (lower.endsWith('.mp4') || lower.endsWith('.webm')) {
-          const mime = lower.endsWith('.mp4') ? 'video/mp4' : 'video/webm';
-          return `<figure class="project-figure" tabindex="0"><video class="project-image" autoplay loop muted playsinline><source src="${s}" type="${mime}">Your browser does not support the video tag.</video>${e.caption && SHOW_CAPTIONS ? `<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption>` : ''}</figure>`;
-        }
-        if (lower.endsWith('.gif')) {
-          return `<figure class="project-figure" tabindex="0"><img src="${s}" alt="${escapeHtml(altText)}" class="project-image gif-image">${e.caption && SHOW_CAPTIONS ? `<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption>` : ''}</figure>`;
-        }
-        const imgHtml = `<img src="${s}" alt="${escapeHtml(altText)}" loading="lazy" class="project-image">`;
-        if (SHOW_CAPTIONS && e.caption) {
-          return `<figure class="project-figure" tabindex="0">${imgHtml}<figcaption class="project-caption">${escapeHtml(e.caption)}</figcaption></figure>`;
-        }
-        return `<figure class="project-figure" tabindex="0">${imgHtml}</figure>`;
-      }
-
-      const innerV = srcArray.map((src, i) => mediaMarkup(src, i)).join('');
-      containerEl.innerHTML = `<div class="vertical-gallery">${innerV}</div>`;
-    }
-
-    // Normalize description HTML so that hanging-indent (text-indent) works.
-    // Many descriptions used <br> for line breaks; text-indent only affects
-    // wrapped lines inside the same block. If a description contains no
-    // <p> elements we convert <br> groups into <p> paragraphs so the CSS
-    // rule for `.popup .project-detail p` (padding-left:2px; text-indent:-2px)
-    // can apply and shift continuation lines by 2px as requested.
-    function normalizeDescriptionHtml(html) {
-      if (!html) return '';
-      // If the html already contains paragraph tags, assume it's structured
-      // and return as-is so we don't double-wrap.
-      if (/<p[\s>]/i.test(html)) return html;
-
-      // Replace <br/> and <br> with newlines, collapse multiple newlines,
-      // then split into paragraphs by double-newline. Single newlines are
-      // preserved as intra-paragraph line breaks.
-      const tmp = String(html).replace(/<br\s*\/?>/gi, '\n').replace(/\r/g, '\n').replace(/\n{2,}/g, '\n\n').trim();
-      const parts = tmp.split(/\n\n/).map(s => s.trim()).filter(Boolean);
-      return parts.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-    }
-
-    // About left/right column content - edit these strings to control About columns
-    const aboutColumns = {
-      left: `
-        <p>studio [at] butchercorreia.com</p>
-
-        <p><strong>upcoming</strong><br>
-          2025&nbsp;&nbsp;Scenography, costume design, sonic landscape for <em>Forlengelser</em> by Rannei Grenne, BABEL, Trondheim (NO)<br>
-          2026&nbsp;&nbsp;Group show — Trondheimsbiennalen (NO)<br>
-          2026&nbsp;&nbsp;Scenography, costume design, soundscape for <em>Forlengelser</em> by Rannei Grenne, Kunstrom Jakob, Steinkjer Kulturhus (NO)<br>
-          2027&nbsp;&nbsp;Artist residency and performance — Norsk Billedhoggerforening (NO)<br>
-        </p>
-
-        <p><strong>past</strong><br>
-          2025&nbsp;&nbsp;<em>The Sound of Things</em>, performance by Klaus E. Holm &amp; Katherine Butcher — OnlyConnect at Rosendal Teater, Trondheim (NO)<br>
-          2024&nbsp;&nbsp;<em>Just This And Only That</em>, performance in public realm, Trøndelag (NO)<br>
-          2023&nbsp;&nbsp;<em>Taste of Sound</em>, performance in collaboration with Klaus Ellerhusen Holm and Martin
-        </p>
-      `,
-      right: `
-         <p>BUTCHER & CORREIA (Katherine Butcher and Carlos A. Correia) is a collaborative practice spanning sculpture, sound, performance, installation, and relational aesthetics. Their work examines perception as a political act, tuning sensory experience to expose and unsettle dominant structures of seeing and knowing.</p>
-          <p>
-            <figure class="about-figure" tabindex="0">
-              <img src="BCportrait.jpg" alt="Portrait of Butcher & Correia" class="project-image about-portrait">
-            </figure>
-          </p>
-
-      ` 
-    };
-
-    // DOM references
-    const detailLeft = document.getElementById('detailLeft');
-    const detailRight = document.getElementById('detailRight');
-    const mainPopup = document.getElementById('mainPopup');
-    const menuAbout = document.getElementById('menu-about');
-    const siteTitle = document.querySelector('.site-title-box');
-    const projectItems = Array.from(document.querySelectorAll('.project-item'));
-
-    console.log('projectItems count:', projectItems.length);
-    projectItems.forEach(pi => console.log('found project item', pi.dataset.key));
-    projectItems.forEach(item => console.log('will attach listener to', item.dataset.key));
-
-    // Delegated fallback in case direct listeners don't fire
-    const projectsListEl = document.querySelector('.projects-list');
-    if (projectsListEl) {
-      projectsListEl.addEventListener('click', function(e) {
-        const a = e.target.closest('a');
-        if (!a) return;
-        const key = a.dataset.key;
-        console.log('delegated click on projects-list ->', key, 'target:', e.target);
-        e.preventDefault();
-        e.stopPropagation();
-        // call shared selector (function is hoisted)
-        try {
-          selectProject(key);
-        } catch (err) {
-          console.error('selectProject error (delegated):', err);
-        }
-        // update active state
-        const items = Array.from(document.querySelectorAll('.project-item'));
-        items.forEach(i => i.classList.remove('active'));
-        a.classList.add('active');
-        if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
-
-        // close mobile menu if open and restore the meatball toggle
-        if (mainPopup && mainPopup.classList.contains('mobile-open')) {
-          mainPopup.classList.remove('mobile-open');
-          const mobToggle = document.getElementById('mobile-menu-toggle');
-          if (mobToggle) {
-            mobToggle.setAttribute('aria-expanded', 'false');
-            mobToggle.classList.remove('no-cross');
-          }
-          try { document.body.classList.remove('projects-open'); } catch (e) { /* ignore */ }
-        }
-      });
-    }
-    // defensive check: ensure menu anchor variable exists (menu removed intentionally)
-    const menuProjects = document.getElementById('menu-projects');
-    if (!menuProjects) console.warn('menu-projects element not found (menu removed)');
-
-    // optional: clicking outside the popup will hide it (and remove show-about)
-    document.addEventListener('click', function(e) {
-      const target = e.target;
-      if (!mainPopup) return;
-      if (mainPopup.classList.contains('show-about')) {
-        if (mainPopup.contains(target) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
-        mainPopup.classList.remove('show-about');
-      }
-    });
-
-// handle project item clicks to show description
-function selectProject(key) {
-  // ensure any previous 'about' state is cleared
-  if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
-
-  // special-case About: load aboutColumns into detail columns and enable the about layout
-  if (key === 'about') {
-    if (mainPopup) mainPopup.classList.add('show-about');
-    detailLeft.classList.remove('vertical-gallery');
-    detailLeft.innerHTML = aboutColumns.left;
-    detailRight.innerHTML = aboutColumns.right;
-    return;
-  }
-
-  if (!projectDescriptions[key]) {
-    // no description: clear left gallery and show fallback on right
-    detailLeft.classList.remove('vertical-gallery');
-    detailLeft.innerHTML = '';
-    detailRight.innerHTML = '<p>No description available.</p>';
-    return;
-  }
-
-  // get images for this project
-  const imgs = (projectImages && projectImages[key]) ? projectImages[key] : [];
-
-  // Special layout for certain projects: vertical stacked gallery in the LEFT column and description in the RIGHT
-    if (['taste-of-sound', 'performance-vista', 'just-this'].includes(key)) {
-    // Left column: vertical stacked gallery
-    renderVerticalGallery(detailLeft, imgs);
-    // Right column: project description + extras
-    	detailRight.innerHTML = normalizeDescriptionHtml(projectDescriptions[key]) + (projectExtras[key] || '');
-    return;
-  }
-
-  // Default behaviour: render gallery in LEFT column and put description + extras in RIGHT column
-  detailLeft.classList.remove('vertical-gallery');
-
-  if (imgs.length) {
-    renderGallery(detailLeft, imgs);
-    // force single-column (full-width) layout for short galleries that should fill the column
-    if (['solo', 'performance-vista2'].includes(key)) {
-      const wrapper = detailLeft.querySelector('.project-gallery');
-      if (wrapper) wrapper.classList.add('single');
-    }
-  } else {
-    // no images -> clear left column
-    detailLeft.innerHTML = '';
-  }
-
-  // Ensure any gallery previously appended to the right column is removed
-  const existingGalleryInRight = detailRight.querySelector('.project-gallery');
-  if (existingGalleryInRight) existingGalleryInRight.remove();
-
-  // Set right column content to description + extras (normalize <br>-based
-  // descriptions into paragraphs so hanging-indents work)
-  detailRight.innerHTML = normalizeDescriptionHtml(projectDescriptions[key]) + (projectExtras[key] || '');
-}
-
-    projectItems.forEach(item => {
-      item.addEventListener('click', function(e) {
-        console.log('project click', this.dataset.key);
-        e.preventDefault();
-        e.stopPropagation();
-        const key = this.dataset.key;
-        selectProject(key);
-        projectItems.forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        // ensure projects-list is visible if a project was selected
-        if (mainPopup && mainPopup.classList.contains('show-about')) mainPopup.classList.remove('show-about');
-
-        // close mobile menu if open and restore the meatball toggle
-        if (mainPopup && mainPopup.classList.contains('mobile-open')) {
-          mainPopup.classList.remove('mobile-open');
-          const mobToggle = document.getElementById('mobile-menu-toggle');
-          if (mobToggle) {
-            mobToggle.setAttribute('aria-expanded', 'false');
-            mobToggle.classList.remove('no-cross');
-          }
-          try { document.body.classList.remove('projects-open'); } catch (e) { /* ignore */ }
-        }
-      });
-    });
-
-    // ensure clicking outside hides popup and removes show-about state
-    document.addEventListener('click', function(e) {
-      const target = e.target;
-      if (!mainPopup) return;
-      if (mainPopup.contains(target) || (menuProjects && menuProjects.contains(target)) || (menuAbout && menuAbout.contains(target)) || (siteTitle && siteTitle.contains(target))) return;
-      if (mainPopup.style.display === 'block') {
-        mainPopup.style.display = 'none';
-        mainPopup.setAttribute('aria-hidden', 'true');
-        mainPopup.classList.remove('show-about');
-      }
-    });
-  </script>
-
-  <!-- Mobile menu toggle script -->
-  <script>
-  (function(){
-    const toggle = document.getElementById('mobile-menu-toggle');
-    const textToggle = document.getElementById('mobile-menu-text-toggle');
-    const projectsList = document.getElementById('projectsList');
-    if (!toggle || !projectsList) return;
-
-    function openMenu() {
-      if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.add('mobile-open');
-      // keep aria-expanded for accessibility, but add a class to suppress
-      // the visual cross when the project list overlay is shown
-      if (toggle) toggle.classList.add('no-cross');
-      // hide the toggle while the projects list is expanded
-      try { document.body.classList.add('projects-open'); } catch (e) {}
-      toggle.setAttribute('aria-expanded', 'true');
-    }
-    function closeMenu() {
-      if (typeof mainPopup !== 'undefined' && mainPopup) mainPopup.classList.remove('mobile-open');
-      if (toggle) toggle.classList.remove('no-cross');
-      try { document.body.classList.remove('projects-open'); } catch (e) {}
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-
-    function bindToggle(btn){
-      if (!btn) return;
-      btn.addEventListener('click', function(e){
-        e.stopPropagation();
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        if (expanded) {
-          closeMenu();
-          btn.setAttribute('aria-expanded','false');
-        } else {
-          openMenu();
-          btn.setAttribute('aria-expanded','true');
-        }
-      });
-    }
-    bindToggle(toggle);
-    bindToggle(textToggle);
-
-    // Close after selecting a project in the mobile overlay
-    projectsList.addEventListener('click', function(e){
-      const a = e.target.closest('a');
-      if (!a) return;
-      // allow existing handlers to run, then close the overlay
-      setTimeout(() => {
-        closeMenu();
-        try { toggle.setAttribute('aria-expanded','false'); } catch(e){}
-        try { textToggle && textToggle.setAttribute('aria-expanded','false'); } catch(e){}
-      }, 50);
-    });
-
-    // click outside to close
-    document.addEventListener('click', function(e){
-      if (!mainPopup) return;
-      if (!mainPopup.classList.contains('mobile-open')) return;
-      if (mainPopup.contains(e.target) || (siteTitle && siteTitle.contains(e.target))) return;
-      closeMenu();
-      try { toggle.setAttribute('aria-expanded','false'); } catch(e){}
-      try { textToggle && textToggle.setAttribute('aria-expanded','false'); } catch(e){}
-    });
-
-    // Close if switching to desktop widths
-    window.addEventListener('resize', function(){
-      if (window.innerWidth > 700) {
-        closeMenu();
-        try { toggle.setAttribute('aria-expanded','false'); } catch(e){}
-        try { textToggle && textToggle.setAttribute('aria-expanded','false'); } catch(e){}
-      } // change 700->768 if you change the media query
-    }, { passive: true });
-
-    // Positioning is driven by CSS absolute positioning anchored to
-    // `.site-title-box .title-row` (which is positioned). No JS placement
-    // adjustments are necessary for the requested absolute top/left values.
-  })();
-  </script>
-
-  <script>
-    // Reveal scroll thumb while user is scrolling or hovering scrollable areas.
-    (function() {
-      const SHOW_CLASS = 'show-scroll';
-      let timer = null;
-
-      function reveal() {
-        document.body.classList.add(SHOW_CLASS);
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => document.body.classList.remove(SHOW_CLASS), 700);
-      }
-
-      // common scroll and input events
-      window.addEventListener('scroll', reveal, { passive: true });
-      window.addEventListener('wheel', reveal, { passive: true });
-      window.addEventListener('touchmove', reveal, { passive: true });
-      window.addEventListener('keydown', (e) => {
-        // show on navigation keys that cause scrolling
-        const keys = ['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '];
-        if (keys.includes(e.key)) reveal();
-      }, { passive: true });
-
-      // show while hovering known scrollable areas
-      const hoverTargets = document.querySelectorAll('.project-gallery, .detail-col-left, .detail-col-right, .projects-list');
-      hoverTargets.forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add(SHOW_CLASS), { passive: true });
-        el.addEventListener('mouseleave', () => document.body.classList.remove(SHOW_CLASS), { passive: true });
-      });
-
-      // For browsers that don't fire scroll events for some containers, observe wheel events on the document
-      document.addEventListener('wheel', reveal, { passive: true });
-    })();
-  </script>
+    <!-- Footer Note -->
+    <div class="footer-note"><a href="https://www.butchercorreia.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">powered by B&C studio</a></div>
 </body>
 </html>
