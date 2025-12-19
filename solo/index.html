@@ -72,11 +72,16 @@
             border-radius: 1px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            height: 360px; /* fixed height for consistent slides */
         }
 
         .gallery-item {
             display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
         }
 
         .gallery-item.active {
@@ -85,14 +90,17 @@
 
         .gallery-item img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
 
         .gallery-item video {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
+            background: #000;
         }
 
         .gallery-nav {
@@ -111,6 +119,11 @@
 
         .gallery-nav:hover {
             transform: translateY(-50%) scale(1.02);
+        }
+
+        .gallery-nav[disabled] {
+            opacity: 0.35;
+            pointer-events: none;
         }
 
         .gallery-prev {
@@ -139,6 +152,10 @@
         .gallery-dots {
             text-align: center;
             margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 400px) {
+            .gallery { height: 280px; }
         }
 
         .header {
@@ -1394,28 +1411,33 @@
         function showImage(index) {
             const items = document.querySelectorAll('.gallery-item');
             const dots = document.querySelectorAll('.gallery-dot');
-            
+            const total = items.length;
+
+            const clamped = Math.max(1, Math.min(index, total));
+
             // Hide all items and deactivate all dots
             items.forEach(item => item.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
-            
+
             // Show selected item and activate corresponding dot
-            items[index - 1].classList.add('active');
-            dots[index - 1].classList.add('active');
-            
-            currentImageIndex = index;
+            if (items[clamped - 1]) items[clamped - 1].classList.add('active');
+            if (dots[clamped - 1]) dots[clamped - 1].classList.add('active');
+
+            currentImageIndex = clamped;
+            updateGalleryNavDisabled(total);
         }
 
         function nextImage() {
             const totalImages = document.querySelectorAll('.gallery-item').length;
-            const nextIndex = currentImageIndex >= totalImages ? 1 : currentImageIndex + 1;
-            showImage(nextIndex);
+            if (currentImageIndex < totalImages) {
+                showImage(currentImageIndex + 1);
+            }
         }
 
         function previousImage() {
-            const totalImages = document.querySelectorAll('.gallery-item').length;
-            const prevIndex = currentImageIndex <= 1 ? totalImages : currentImageIndex - 1;
-            showImage(prevIndex);
+            if (currentImageIndex > 1) {
+                showImage(currentImageIndex - 1);
+            }
         }
 
         function currentImage(index) {
@@ -1453,40 +1475,24 @@
             }
         });
 
-        // Fix gallery height to tallest item to avoid layout fluctuation
-        function computeGalleryHeight() {
-            const gallery = document.querySelector('.gallery');
-            if (!gallery) return;
-            const items = document.querySelectorAll('.gallery-item');
-            let maxHeight = 0;
-
-            items.forEach(item => {
-                // Ensure item is measurable
-                const wasActive = item.classList.contains('active');
-                if (!wasActive) item.style.display = 'block';
-
-                const media = item.querySelector('img, video');
-                if (media) {
-                    const h = media.getBoundingClientRect().height || media.offsetHeight;
-                    if (h > maxHeight) maxHeight = h;
-                }
-
-                if (!wasActive) item.style.display = ''; // revert to stylesheet
-            });
-
-            if (maxHeight > 0) {
-                gallery.style.minHeight = Math.ceil(maxHeight) + 'px';
-            }
-        }
+        // Fixed gallery height is handled by CSS; keep function as no-op
+        function computeGalleryHeight() {}
 
         // Recompute after media loads and on resize
-        window.addEventListener('load', computeGalleryHeight);
+        window.addEventListener('load', () => { computeGalleryHeight(); showImage(currentImageIndex); });
         window.addEventListener('resize', computeGalleryHeight);
         // Also recompute after changing slides
         const _showImage = showImage;
         showImage = function(index) {
             _showImage(index);
             computeGalleryHeight();
+        }
+
+        function updateGalleryNavDisabled(total) {
+            const prevBtn = document.querySelector('.gallery-prev');
+            const nextBtn = document.querySelector('.gallery-next');
+            if (prevBtn) prevBtn.disabled = currentImageIndex <= 1;
+            if (nextBtn) nextBtn.disabled = currentImageIndex >= total;
         }
 
         // Leaflet map: token-free basemap and simple journeys
@@ -1851,17 +1857,18 @@
                     img.addEventListener('error', hide, { once: true });
                 }
             }
-            // Apply to gallery and all modal images
-            const imgs = document.querySelectorAll('.gallery img, .modal-content img');
+            // Apply only to modal images to avoid layout shifts in the gallery
+            const imgs = document.querySelectorAll('.modal-content img');
             imgs.forEach(wrapWithLoader);
             // Observe future images added/changed (e.g., after toggles)
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach(m => {
                     m.addedNodes.forEach(node => {
                         if (node && node.nodeType === 1) {
-                            if (node.tagName === 'IMG') wrapWithLoader(node);
+                            // Skip images inside the gallery
+                            if (node.tagName === 'IMG' && !node.closest('.gallery')) wrapWithLoader(node);
                             const nested = node.querySelectorAll ? node.querySelectorAll('img') : [];
-                            nested.forEach(wrapWithLoader);
+                            nested.forEach(img => { if (!img.closest('.gallery')) wrapWithLoader(img); });
                         }
                     });
                 });
