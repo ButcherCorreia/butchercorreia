@@ -113,6 +113,11 @@
             transform: translateY(-50%) scale(1.02);
         }
 
+        .gallery-nav[disabled] {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
         .gallery-prev {
             left: 1rem;
         }
@@ -1394,28 +1399,41 @@
         function showImage(index) {
             const items = document.querySelectorAll('.gallery-item');
             const dots = document.querySelectorAll('.gallery-dot');
-            
+            const total = items.length;
+
+            // Clamp to bounds (no wrap)
+            const clamped = Math.max(1, Math.min(index, total));
+
             // Hide all items and deactivate all dots
             items.forEach(item => item.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
-            
+
             // Show selected item and activate corresponding dot
-            items[index - 1].classList.add('active');
-            dots[index - 1].classList.add('active');
-            
-            currentImageIndex = index;
+            if (items[clamped - 1]) items[clamped - 1].classList.add('active');
+            if (dots[clamped - 1]) dots[clamped - 1].classList.add('active');
+
+            currentImageIndex = clamped;
+            updateGalleryNavDisabled(total);
+        }
+
+        function updateGalleryNavDisabled(total) {
+            const prevBtn = document.querySelector('.gallery-prev');
+            const nextBtn = document.querySelector('.gallery-next');
+            if (prevBtn) prevBtn.disabled = currentImageIndex <= 1;
+            if (nextBtn) nextBtn.disabled = currentImageIndex >= total;
         }
 
         function nextImage() {
             const totalImages = document.querySelectorAll('.gallery-item').length;
-            const nextIndex = currentImageIndex >= totalImages ? 1 : currentImageIndex + 1;
-            showImage(nextIndex);
+            if (currentImageIndex < totalImages) {
+                showImage(currentImageIndex + 1);
+            }
         }
 
         function previousImage() {
-            const totalImages = document.querySelectorAll('.gallery-item').length;
-            const prevIndex = currentImageIndex <= 1 ? totalImages : currentImageIndex - 1;
-            showImage(prevIndex);
+            if (currentImageIndex > 1) {
+                showImage(currentImageIndex - 1);
+            }
         }
 
         function currentImage(index) {
@@ -1480,7 +1498,7 @@
         }
 
         // Recompute after media loads and on resize
-        window.addEventListener('load', computeGalleryHeight);
+        window.addEventListener('load', () => { computeGalleryHeight(); showImage(currentImageIndex); });
         window.addEventListener('resize', computeGalleryHeight);
         // Also recompute after changing slides
         const _showImage = showImage;
@@ -1690,8 +1708,8 @@
                     function attachHover(marker, popup) {
                         if (!hoverDesktop) return;
                         const el = marker.getElement();
-                        el.addEventListener('mouseenter', () => { try { marker.togglePopup(); } catch(_){} });
-                        el.addEventListener('mouseleave', () => { try { marker.togglePopup(); } catch(_){} });
+                        el.addEventListener('mouseenter', () => { try { popup.addTo(map); } catch(_){} });
+                        el.addEventListener('mouseleave', () => { try { popup.remove(); } catch(_){} });
                     }
                     // Red borders
                     map.addSource('countries', {
