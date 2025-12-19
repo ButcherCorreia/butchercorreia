@@ -72,6 +72,7 @@
             border-radius: 1px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            height: 360px; /* fixed height for consistent slides */
         }
 
         .gallery-item {
@@ -612,6 +613,7 @@
             .container {
                 padding: 0.9rem 1rem 1rem 1rem;
             }
+            .gallery { height: 280px; }
             .header {
                 margin-bottom: 1rem;
                 padding: 0.5rem 0 0.3rem 0;
@@ -1475,27 +1477,7 @@
 
         // Fix gallery height to tallest item to avoid layout fluctuation
         function computeGalleryHeight() {
-            const gallery = document.querySelector('.gallery');
-            if (!gallery) return;
-
-            // Fixed height: use tallest media across slides
-            let maxHeight = 0;
-            const items = document.querySelectorAll('.gallery-item');
-            items.forEach(item => {
-                const wasActive = item.classList.contains('active');
-                if (!wasActive) item.style.display = 'block';
-                const media = item.querySelector('img, video');
-                if (media) {
-                    const h = media.getBoundingClientRect().height || media.offsetHeight || 0;
-                    if (h > maxHeight) maxHeight = h;
-                }
-                if (!wasActive) item.style.display = '';
-            });
-
-            if (maxHeight > 0) {
-                gallery.style.minHeight = '';
-                gallery.style.height = Math.ceil(maxHeight) + 'px';
-            }
+            // No-op: height is fixed via CSS for consistent layout
         }
 
         // Recompute after media loads and on resize
