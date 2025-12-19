@@ -85,13 +85,15 @@
 
         .gallery-item img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: contain;
             display: block;
         }
 
         .gallery-item video {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: contain;
             display: block;
         }
 
@@ -1475,25 +1477,24 @@
         function computeGalleryHeight() {
             const gallery = document.querySelector('.gallery');
             if (!gallery) return;
-            const items = document.querySelectorAll('.gallery-item');
-            let maxHeight = 0;
 
+            // Fixed height: use tallest media across slides
+            let maxHeight = 0;
+            const items = document.querySelectorAll('.gallery-item');
             items.forEach(item => {
-                // Ensure item is measurable
                 const wasActive = item.classList.contains('active');
                 if (!wasActive) item.style.display = 'block';
-
                 const media = item.querySelector('img, video');
                 if (media) {
-                    const h = media.getBoundingClientRect().height || media.offsetHeight;
+                    const h = media.getBoundingClientRect().height || media.offsetHeight || 0;
                     if (h > maxHeight) maxHeight = h;
                 }
-
-                if (!wasActive) item.style.display = ''; // revert to stylesheet
+                if (!wasActive) item.style.display = '';
             });
 
             if (maxHeight > 0) {
-                gallery.style.minHeight = Math.ceil(maxHeight) + 'px';
+                gallery.style.minHeight = '';
+                gallery.style.height = Math.ceil(maxHeight) + 'px';
             }
         }
 
