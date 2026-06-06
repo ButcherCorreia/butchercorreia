@@ -1136,6 +1136,7 @@
             <div class="modal-section-menu" id="journey-menu" aria-label="journey menu">
                 <a href="#" data-journey="garment" aria-selected="true">garment</a>
                 <a href="#" data-journey="scenography">scenography</a>
+                <a href="#" data-journey="performance">performance</a>
             </div>
             <div id="cesiumContainer"></div>
             <h3>garment</h3>
@@ -1172,6 +1173,15 @@
             <div class="modal-info-grid">
                 <div class="modal-info-label">3</div>
                 <div class="modal-info-value">Trondheim (NO) — <a href="https://butchercorreia.com" target="_blank" rel="noopener noreferrer">BUTCHER & CORREIA studio</a></div>
+            </div>
+            <h3>performance</h3>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">1</div>
+                <div class="modal-info-value">Trondheim (NO) — <a href="https://www.lkv.no/en/babel/forlengelser" target="_blank" rel="noopener noreferrer">BABEL</a></div>
+            </div>
+            <div class="modal-info-grid">
+                <div class="modal-info-label">2</div>
+                <div class="modal-info-value">Steinkjer (NO) — <a href="https://www.steinkjerkulturhus.no/aktorer-pa-kulturkvartalet/kunstrom-jakob/" target="_blank" rel="noopener noreferrer">Kunstrom Jakob</a></div>
             </div>
         </div>
     </div>
@@ -1676,6 +1686,11 @@
                     { label: '1', lat: 63.45101, lon: 11.04968, name: 'Øfsti søndre', info: 'farming & breeding', url: 'https://www.ofsti.no' },
                     { label: '2', lat: 63.285,   lon: 10.400,    name: 'Selbu Spinneri', info: 'washing & spinning', url: 'https://www.selbuspinneri.no' },
                     { label: '3', lat: 63.431,   lon: 10.420,    name: 'BUTCHER & CORREIA studio', info: 'felting', url: 'https://www.butchercorreia.com' }
+                ];
+                const performancePts = [
+                    { label: '1', lat: 63.43804, lon: 10.42923, name: 'BABEL', info: 'performance #1', url: 'https://www.lkv.no/en/babel/' },
+                    { label: '2', lat: 64.01542, lon: 11.49426, name: 'Kunstrom Jakob', info: 'performance #2', url: 'https://www.steinkjerkulturhus.no/aktorer-pa-kulturkvartalet/kunstrom-jakob/' },
+                    { label: '3', lat: 53.40763, lon: -2.15871, name: 'PINK', info: 'performance #3', url: 'https://www.pink-mcr.com/' }
                 ];
 
                 function toLineString(points) {
