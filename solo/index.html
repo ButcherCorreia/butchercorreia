@@ -1760,6 +1760,18 @@
                         return m;
                     });
 
+                    const performanceMarkers = performancePts.map(p => {
+                        const popup = new maplibregl.Popup({ closeButton: !hoverDesktop, offset: 12 })
+                            .setHTML(`<div style="background:#f00;color:#fff;padding:4px 6px;font-family:'PT Mono',monospace;font-size:12px;">${p.name} — ${p.info}</div>`);
+                        const m = new maplibregl.Marker({ element: makeMarker('rgb(255,0,0)', p.label) })
+                            .setLngLat([p.lon, p.lat])
+                            .setPopup(popup)
+                            .addTo(map);
+                        attachHover(m, popup);
+                        m.getElement().style.display = 'none';
+                        return m;
+                    });
+
                     // Toggle behavior
                     const menu = document.getElementById('journey-menu');
                     function setActive(which) {
@@ -1772,14 +1784,23 @@
                         if (which === 'garment') {
                             garmentMarkers.forEach(m => m.getElement().style.display = 'block');
                             scenoMarkers.forEach(m => m.getElement().style.display = 'none');
+                            performanceMarkers.forEach(m => m.getElement().style.display = 'none');
                             map.setLayoutProperty('garment-route', 'visibility', 'visible');
                             map.setLayoutProperty('sceno-route', 'visibility', 'none');
                             map.setLayoutProperty('performance-route', 'visibility', 'none');
-                        } else {
+                        } else if (which === 'scenography') {
                             garmentMarkers.forEach(m => m.getElement().style.display = 'none');
                             scenoMarkers.forEach(m => m.getElement().style.display = 'block');
+                            performanceMarkers.forEach(m => m.getElement().style.display = 'none');
                             map.setLayoutProperty('garment-route', 'visibility', 'none');
                             map.setLayoutProperty('sceno-route', 'visibility', 'visible');
+                            map.setLayoutProperty('performance-route', 'visibility', 'none');
+                        } else if (which === 'performance') {
+                            garmentMarkers.forEach(m => m.getElement().style.display = 'none');
+                            scenoMarkers.forEach(m => m.getElement().style.display = 'none');
+                            performanceMarkers.forEach(m => m.getElement().style.display = 'block');
+                            map.setLayoutProperty('garment-route', 'visibility', 'none');
+                            map.setLayoutProperty('sceno-route', 'visibility', 'none');
                             map.setLayoutProperty('performance-route', 'visibility', 'visible');
                         }
                     }
